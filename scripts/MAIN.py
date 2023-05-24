@@ -31,11 +31,26 @@ if __name__ == "__main__":
             file_name = os.path.basename(msp_path.replace(".msp", ""))
             spectrum_list = split_spectrums(msp_path)
 
+            # STEP 3: Execute multithreaded matchms
             matchms_treatment(spectrum_list)
-            # TO BE CONTINUED ... to sth with clean_msp_list
 
             # Write matchms clean msp into new msp file
             with open(os.path.join(r"..\OUTPUT\CLEAN_MSP)",file_name+"_clean"+".msp"), "w", encoding="UTF-8") as clean:
                 clean.write("\n\n".join(clean_msp_list))
+
+    # STEP 4: (All msp files were cleaned) --> Split POS and NEG spectrums
+    clean_msp_path = os.path.join(output_path,"CLEAN_MSP")
+    CONCATENATE_LIST = concatenate_clean_msp(clean_msp_path)
+
+    POS, NEG = split_pos_neg(CONCATENATE_LIST) # Multithreaded
+
+    with open(os.path.join(clean_msp_path,"FINAL_POS/POS_clean.msp"),"w",encoding="UTF-8") as pos:
+        pos.write("\n\n".join(POS))
+    with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_clean.msp"), "w", encoding="UTF-8") as neg:
+        neg.write("\n\n".join(NEG))
+
+
+
+
 
 

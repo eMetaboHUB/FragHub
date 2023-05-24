@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup as bs
+import concurrent.futures
 import json
 import lxml
 import re
@@ -171,5 +172,39 @@ def split_spectrums(msp_path):
     spectrums = file_content.split("\n\n")  # split spectrums into a list
 
     return spectrums
+
+def concatenate_clean_msp(clean_msp_path):
+    CONCATENATE_LIST = []
+    # append all spectrums of all cleaned files into CONCATENATE_LIST
+    for files in os.listdir(clean_msp_path):
+        if files.endswith("_clean.msp"):
+            with open(os.path.join(clean_msp_path,files),"r",encoding="UTF-8") as buffer:
+                temp = buffer.read().split("\n\n")
+
+            CONCATENATE_LIST.extend(temp)
+
+    return CONCATENATE_LIST
+
+def process_split_pos_neg(spectrum):
+    if int(re.search("(CHARGE): (.*)",spectrum).group(2)) > 0:
+        return True
+    else:
+        return False
+
+def split_pos_neg(CONCATENATE_LIST):
+    POS = []
+    NEG = []
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = [executor.submit(process_split_pos_neg, spectrum) for spectrum in CONCATENATE_LIST]
+
+        for future, boolean in zip(futures, CONCATENATE_LIST):
+            result = future.result()
+            if result:
+                POS.append(boolean)
+            else:
+                NEG.append(boolean)
+
+    return POS, NEG
 
 
