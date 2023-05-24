@@ -35,6 +35,7 @@ if __name__ == "__main__":
 
             # STEP 3: Execute multithreaded matchms
             print("matchms")
+            spectrum_list = list(load_from_msp(msp_path))
             matchms_treatment(spectrum_list)
 
             # Write matchms clean msp into new msp file
