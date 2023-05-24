@@ -163,3 +163,13 @@ def convert_to_msp(input_path):
             break
     if xml_to_do == True:
         xml_to_msp(xml_path)
+
+def split_spectrums(msp_path):
+    with open(msp_path,"r",encoding="UTF-8") as file_buffer:
+        file_content = file_buffer.read()
+
+    spectrums = file_content.split("\n\n")  # split spectrums into a list
+
+    return spectrums
+
+
