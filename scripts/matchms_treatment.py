@@ -7,10 +7,28 @@ import matchms.metadata_utils
 import matchms.Fragments
 import matchms.Metadata
 import matchms.hashing
+import pandas as pd
+import re
 
 import concurrent.futures
 
 clean_msp_list = []
+
+def harmonize_fields_names(spectrum):
+    df = pd.read_csv("./data/colomnsNames.csv", sep=";")
+    dict = df.to_dict()
+
+    # re-structure dict
+    for column, elements in dict.items():
+        dict[column] = [element for key, element in elements.items() if (element != column) and (str(element) != 'nan')]
+
+    # replace non_normalized fields by normalized fields
+    for column, lists in dict.items():
+        for non_normalize in lists:
+            spectrum = re.sub(non_normalize, column, spectrum)
+
+    return spectrum
+
 
 def multithreaded_matchms(spectrum):
     # apply_metadata_filters
@@ -35,6 +53,9 @@ def multithreaded_matchms(spectrum):
     spectrum = msfilters.select_by_mz(spectrum, mz_from=50, mz_to=2000.0)
     spectrum = msfilters.reduce_to_number_of_peaks(spectrum, n_max=500)
     spectrum = msfilters.require_minimum_number_of_peaks(spectrum, n_required=3)
+
+    # Replace non-normalized fields names by normalized.
+    spectrum = harmonize_fields_names(spectrum)
 
     return spectrum
 
