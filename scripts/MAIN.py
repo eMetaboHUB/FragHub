@@ -8,9 +8,11 @@ if __name__ == "__main__":
     output_path = r"..\OUTPUT"
 
     # STEP 1: convert files to msp if needed
+    print("conversion")
     convert_to_msp(input_path)
 
     # STEP 2: split spectrums into a list AND matchms clean
+    print("split spectrums into list")
     msp_dir = os.path.join(input_path, "MSP")
 
     # Check if there is msp file to process
@@ -32,6 +34,7 @@ if __name__ == "__main__":
             spectrum_list = split_spectrums(msp_path)
 
             # STEP 3: Execute multithreaded matchms
+            print("matchms")
             matchms_treatment(spectrum_list)
 
             # Write matchms clean msp into new msp file
