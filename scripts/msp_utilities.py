@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup as bs
 import concurrent.futures
 import pandas as pd
+import numpy as np
 import json
 import lxml
 import re
@@ -218,6 +219,49 @@ def harmonize_fields_names(file_path,file_name):
         file.truncate(0)
 
     return file_content
+
+def msp2csv(clean_msp_path):
+    dictionary = {"file_name":[],"PEAKS_LIST":[]}
+
+    POS_DIR = os.path.join(clean_msp_path,"FINAL_POS")
+    NEG_DIR = os.path.join(clean_msp_path,"FINAL_NEG")
+
+    for files in os.listdir(POS_DIR):
+        if files.endswith(".msp"):
+            with open(os.path.join(POS_DIR,files),"r",encoding="UTF-8") as msp_file_buffer:
+                msp_file = msp_file_buffer.read()
+
+            spectras_list = msp_file.split("\n\n") # une liste de spectres
+
+            for spectras in spectras_list[:-1]:
+                fields = re.findall(r"(.+?):(.*)",spectras)
+                dico_temp = {}
+                for element in fields:
+                    dico_temp[element[0]] = element[1]
+
+                dictionary["file_name"].append(files)
+
+                for key,value in dico_temp.items():
+                    if key not in dictionary.keys():
+                        if len(dictionary["file_name"]) < 1:
+                            dictionary[key] = []
+                            dictionary[key].append(value)
+                        else:
+                            dictionary[key] = [np.nan for i in range(len(dictionary["file_name"])-1)]
+                            dictionary[key].append(value)
+                    else:
+                        dictionary[key].append(value)
+
+                # vérification inverse
+                for key in dictionary.keys():
+                    if key not in dico_temp.keys() and key != "file_name" and key != "PEAKS_LIST":
+                        dictionary[key].append(np.nan)
+
+                dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)",spectras).group(2).split("\n"))
+
+    df_POS = pd.DataFrame.from_dict(dictionary)
+
+    df_POS.to_csv(r"..\msp_directory\test\csv\POS.csv",sep=";",encoding="UTF-8",index=False)
 
 
 
