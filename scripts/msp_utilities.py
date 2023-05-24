@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup as bs
 import concurrent.futures
+import pandas as pd
 import json
 import lxml
 import re
@@ -126,8 +127,7 @@ def xml_to_msp(xml_path):
             specrta_dict_final["peak_list"] = ""
 
             for mass_charge, intensity in zip(peak_list[0], peak_list[1]):
-                specrta_dict_final["peak_list"] = specrta_dict_final["peak_list"] + mass_charge[0] + " " + intensity[
-                    0] + "\n"
+                specrta_dict_final["peak_list"] = specrta_dict_final["peak_list"] + mass_charge[0] + " " + intensity[0] + "\n"
 
             MSP = ""
             for key, value in specrta_dict_final.items():
@@ -185,26 +185,39 @@ def concatenate_clean_msp(clean_msp_path):
 
     return CONCATENATE_LIST
 
-def process_split_pos_neg(spectrum):
-    if int(re.search("(CHARGE): (.*)",spectrum).group(2)) > 0:
-        return True
-    else:
-        return False
-
 def split_pos_neg(CONCATENATE_LIST):
     POS = []
     NEG = []
-
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        futures = [executor.submit(process_split_pos_neg, spectrum) for spectrum in CONCATENATE_LIST]
-
-        for future, boolean in zip(futures, CONCATENATE_LIST):
-            result = future.result()
-            if result:
-                POS.append(boolean)
+    for spectrum in CONCATENATE_LIST:
+        SEARCH = re.search("(CHARGE): (.*)", spectrum)
+        if SEARCH != None:
+            if int(SEARCH.group(2)) > 0:
+                POS.append(spectrum)
             else:
-                NEG.append(boolean)
-
+                NEG.append(spectrum)
     return POS, NEG
+
+
+def harmonize_fields_names(file_path,file_name):
+    df = pd.read_csv("./data/colomnsNames.csv", sep=";")
+    dict = df.to_dict()
+
+    # re-structure dict
+    for column, elements in dict.items():
+        dict[column] = [element for key, element in elements.items() if (element != column) and (str(element) != 'nan')]
+
+    with open(file_path, "r", encoding="UTF-8") as file:  # open the temporary file
+        file_content = file.read()
+
+    # replace non_normalized fields by normalized fields
+    for column, lists in dict.items():
+        for non_normalize in lists:
+            file_content = re.sub(non_normalize, column, file_content)
+
+    with open(file_path, "r+", encoding="UTF-8") as file:  # open the temporary file
+        file.truncate(0)
+
+    return file_content
+
 
 

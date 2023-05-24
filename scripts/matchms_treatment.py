@@ -4,30 +4,13 @@ from matchms.exporting import save_as_msp
 from tqdm.notebook import tqdm as tqdm
 import matchms.filtering as msfilters
 import matchms.metadata_utils
+from matchms import Spectrum
 import matchms.Fragments
 import matchms.Metadata
 import matchms.hashing
-import pandas as pd
 import re
 
 import concurrent.futures
-
-clean_msp_list = []
-
-def harmonize_fields_names(spectrum):
-    df = pd.read_csv("./data/colomnsNames.csv", sep=";")
-    dict = df.to_dict()
-
-    # re-structure dict
-    for column, elements in dict.items():
-        dict[column] = [element for key, element in elements.items() if (element != column) and (str(element) != 'nan')]
-
-    # replace non_normalized fields by normalized fields
-    for column, lists in dict.items():
-        for non_normalize in lists:
-            spectrum = re.sub(non_normalize, column, spectrum)
-
-    return spectrum
 
 
 def multithreaded_matchms(spectrum):
@@ -54,17 +37,9 @@ def multithreaded_matchms(spectrum):
     spectrum = msfilters.reduce_to_number_of_peaks(spectrum, n_max=500)
     spectrum = msfilters.require_minimum_number_of_peaks(spectrum, n_required=3)
 
-    # Replace non-normalized fields names by normalized.
-    spectrum = harmonize_fields_names(spectrum)
-
-    return spectrum
-
-
-def app_msp(spectrum):
-    clean_msp_list.append(spectrum)
+    save_as_msp(spectrum, "./temp.msp")
 
 def matchms_treatment(spectrum_list):
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        future_proc = {executor.submit(multithreaded_matchms, spectrum): spectrum for spectrum in spectrum_list}
-        for future in concurrent.futures.as_completed(future_proc):
-            app_msp(future.result())
+        results = executor.map(multithreaded_matchms, spectrum_list)
+
