@@ -199,7 +199,7 @@ def split_pos_neg(CONCATENATE_LIST):
     return POS, NEG
 
 
-def harmonize_fields_names(file_path,file_name):
+def harmonize_fields_names(file_path):
     df = pd.read_csv("./data/colomnsNames.csv", sep=";")
     dict = df.to_dict()
 
