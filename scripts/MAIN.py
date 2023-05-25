@@ -36,7 +36,7 @@ if __name__ == "__main__":
             spectrum_list = tqdm(list(load_from_msp(msp_path)))
             matchms_treatment(spectrum_list)
 
-            clean_content = harmonize_fields_names("./temp.msp",file_name)
+            clean_content = harmonize_fields_names("./temp.msp")
 
             # Write matchms clean msp into new msp file
             with open(os.path.join(r"..\OUTPUT\CLEAN_MSP",file_name+"_clean"+".msp"), "w", encoding="UTF-8") as clean:
