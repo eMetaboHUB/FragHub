@@ -29,7 +29,7 @@ def json_to_msp(json_path):
                             SPECTRUM = SPECTRUM + str(fragments[0]) + " " + str(fragments[1]) + "\n"
                 SPECTRUM = SPECTRUM + "\n\n"
 
-                with open(os.path.join("../INPUT/MSP",file_name+"converted"+".msp"), "w", encoding="UTF-8") as temp:  # Writing spectrum to msp format into msp directory
+                with open(os.path.join("../INPUT/MSP",file_name+"_converted"+".msp"), "w", encoding="UTF-8") as temp:  # Writing spectrum to msp format into msp directory
                     temp.write(SPECTRUM)
 
 def xml_to_msp(xml_path):
@@ -54,13 +54,37 @@ def xml_to_msp(xml_path):
             if specrta_dict["sample-mass"] != None:
                 specrta_dict["sample-mass"] = specrta_dict["sample-mass"].contents
 
+            specrta_dict["sample-assessment"] = soup.find("sample-assessment")
+            if specrta_dict["sample-assessment"] != None:
+                specrta_dict["sample-assessment"] = specrta_dict["sample-assessment"].contents
+
+            specrta_dict["spectra-assessment"] = soup.find("spectra-assessment")
+            if specrta_dict["spectra-assessment"] != None:
+                specrta_dict["spectra-assessment"] = specrta_dict["spectra-assessment"].contents
+
             specrta_dict["sample-source"] = soup.find("sample-source")
             if specrta_dict["sample-source"] != None:
                 specrta_dict["sample-source"] = specrta_dict["sample-source"].contents
 
+            specrta_dict["collection-date"] = soup.find("collection-date")
+            if specrta_dict["collection-date"] != None:
+                specrta_dict["collection-date"] = specrta_dict["collection-date"].contents
+
             specrta_dict["instrument-type"] = soup.find("instrument-type")
             if specrta_dict["instrument-type"] != None:
                 specrta_dict["instrument-type"] = specrta_dict["instrument-type"].contents
+
+            specrta_dict["peak-counter"] = soup.find("peak-counter")
+            if specrta_dict["peak-counter"] != None:
+                specrta_dict["peak-counter"] = specrta_dict["peak-counter"].contents
+
+            specrta_dict["created-at"] = soup.find("created-at")
+            if specrta_dict["created-at"] != None:
+                specrta_dict["created-at"] = specrta_dict["created-at"].contents
+
+            specrta_dict["updated-at"] = soup.find("updated-at")
+            if specrta_dict["updated-at"] != None:
+                specrta_dict["updated-at"] = specrta_dict["updated-at"].contents
 
             specrta_dict["mono-mass"] = soup.find("mono-mass")
             if specrta_dict["mono-mass"] != None:
@@ -74,9 +98,33 @@ def xml_to_msp(xml_path):
             if specrta_dict["collision-energy-level"] != None:
                 specrta_dict["collision-energy-level"] = specrta_dict["collision-energy-level"].contents
 
+            specrta_dict["collision-energy-voltage"] = soup.find("collision-energy-voltage")
+            if specrta_dict["collision-energy-voltage"] != None:
+                specrta_dict["collision-energy-voltage"] = specrta_dict["collision-energy-voltage"].contents
+
+            specrta_dict["ionization-mode"] = soup.find("ionization-mode")
+            if specrta_dict["ionization-mode"] != None:
+                specrta_dict["ionization-mode"] = specrta_dict["ionization-mode"].contents
+
+            specrta_dict["sample-concentration-units"] = soup.find("sample-concentration-units")
+            if specrta_dict["sample-concentration-units"] != None:
+                specrta_dict["sample-concentration-units"] = specrta_dict["sample-concentration-units"].contents
+
+            specrta_dict["sample-mass-units"] = soup.find("sample-mass-units")
+            if specrta_dict["sample-mass-units"] != None:
+                specrta_dict["sample-mass-units"] = specrta_dict["sample-mass-units"].contents
+
+            specrta_dict["predicted"] = soup.find("predicted")
+            if specrta_dict["predicted"] != None:
+                specrta_dict["predicted"] = specrta_dict["predicted"].contents
+
             specrta_dict["structure-id"] = soup.find("structure-id")
             if specrta_dict["structure-id"] != None:
                 specrta_dict["structure-id"] = specrta_dict["structure-id"].contents
+
+            specrta_dict["splash-key"] = soup.find("splash-key")
+            if specrta_dict["splash-key"] != None:
+                specrta_dict["splash-key"] = specrta_dict["splash-key"].contents
 
             specrta_dict["chromatography-type"] = soup.find("chromatography-type")
             if specrta_dict["chromatography-type"] != None:
@@ -90,9 +138,17 @@ def xml_to_msp(xml_path):
             if specrta_dict["ionization-type"] != None:
                 specrta_dict["ionization-type"] = specrta_dict["ionization-type"].contents
 
+            specrta_dict["charge-type"] = soup.find("charge-type")
+            if specrta_dict["charge-type"] != None:
+                specrta_dict["charge-type"] = specrta_dict["charge-type"].contents
+
             specrta_dict["data-source"] = soup.find("data-source")
             if specrta_dict["data-source"] != None:
                 specrta_dict["data-source"] = specrta_dict["data-source"].contents
+
+            specrta_dict["data-source-id"] = soup.find("data-source-id")
+            if specrta_dict["data-source-id"] != None:
+                specrta_dict["data-source-id"] = specrta_dict["data-source-id"].contents
 
             specrta_dict["adduct"] = soup.find("adduct")
             if specrta_dict["adduct"] != None:
@@ -110,9 +166,11 @@ def xml_to_msp(xml_path):
             if specrta_dict["database-id"] != None:
                 specrta_dict["database-id"] = specrta_dict["database-id"].contents
 
-            specrta_dict["database"] = soup.find("database")
-            if specrta_dict["database"] != None:
-                specrta_dict["database"] = specrta_dict["database"].contents
+            # Correcting 0 charge
+            if specrta_dict["ionization-mode"][0] == "Positive":
+                specrta_dict["charge"] = "1"
+            elif specrta_dict["ionization-mode"][0] == "Negative":
+                specrta_dict["charge"] = "-1"
 
             peak_list = [[mz.contents for mz in soup.find_all("mass-charge")],
                          [intensity.contents for intensity in soup.find_all("intensity")]]
@@ -138,9 +196,8 @@ def xml_to_msp(xml_path):
                 else:
                     MSP = MSP + key + ": " + str(specrta_dict_final[key]) + "\n"
 
-            with open(os.path.join("../INPUT/MSP",file_name+"converted"+".msp"), "a", encoding="UTF-8") as temp:
+            with open(os.path.join("../INPUT/MSP",file_name+"_converted"+".msp"), "a", encoding="UTF-8") as temp:
                 temp.write(MSP)
-                temp.write("\n")
 
 
 def convert_to_msp(input_path):
@@ -180,7 +237,7 @@ def concatenate_clean_msp(clean_msp_path):
     for files in os.listdir(clean_msp_path):
         if files.endswith("_clean.msp"):
             with open(os.path.join(clean_msp_path,files),"r",encoding="UTF-8") as buffer:
-                temp = buffer.read().split("\n\n")
+                temp = [element for element in buffer.read().split("\n\n") if element != "\n"]
 
             CONCATENATE_LIST.extend(temp)
 
