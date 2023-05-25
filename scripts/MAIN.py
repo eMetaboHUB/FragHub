@@ -53,6 +53,8 @@ if __name__ == "__main__":
     with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_clean.msp"), "w", encoding="UTF-8") as neg:
         neg.write("\n\n".join(NEG))
 
+    msp2csv(clean_msp_path)
+
 
 
 
