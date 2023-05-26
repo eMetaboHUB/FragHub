@@ -5,12 +5,14 @@ from tqdm.notebook import tqdm as tqdm
 import matchms.filtering as msfilters
 import matchms.metadata_utils
 from matchms import Spectrum
+import concurrent.futures
 import matchms.Fragments
 import matchms.Metadata
 import matchms.hashing
+import threading
 import re
 
-import concurrent.futures
+file_lock = threading.Lock()
 
 
 def multithreaded_matchms(spectrum):
@@ -37,7 +39,11 @@ def multithreaded_matchms(spectrum):
     spectrum = msfilters.reduce_to_number_of_peaks(spectrum, n_max=500)
     spectrum = msfilters.require_minimum_number_of_peaks(spectrum, n_required=3)
 
-    save_as_msp(spectrum, "./temp/temp.msp")
+    # Write to file with lock synchronization.
+    # In this way, each thread will have to wait until the lock is available before it can enter the critical section (writing to the file).
+    # This ensures that only one thread can write to the file at a time, avoiding conflicts.
+    with file_lock:
+        save_as_msp(spectrum, "./temp/temp.msp")
 
 def matchms_treatment(spectrum_list):
     with concurrent.futures.ProcessPoolExecutor() as executor:
