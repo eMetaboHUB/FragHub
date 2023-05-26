@@ -9,6 +9,7 @@ import os
 
 
 def json_to_msp(json_path):
+    FINAL_JSON = []
     for files in os.listdir(json_path):
         if files.endswith(".json"):
             file_name = os.path.basename(os.path.join(json_path, files)).replace(".json", "")
@@ -29,10 +30,14 @@ def json_to_msp(json_path):
                             SPECTRUM = SPECTRUM + str(fragments[0]) + " " + str(fragments[1]) + "\n"
                 SPECTRUM = SPECTRUM + "\n\n"
 
-                with open(os.path.join("../INPUT/MSP",file_name+"_converted"+".msp"), "w", encoding="UTF-8") as temp:  # Writing spectrum to msp format into msp directory
-                    temp.write(SPECTRUM)
+                # with open(os.path.join("../INPUT/MSP",file_name+"_converted"+".msp"), "w", encoding="UTF-8") as temp:  # Writing spectrum to msp format into msp directory
+                #     temp.write(SPECTRUM)
+                FINAL_JSON.extend([SPECTRUM])
+
+    return FINAL_JSON
 
 def xml_to_msp(xml_path):
+    FINAL_XML = []
     for files in os.listdir(xml_path):
         if files.endswith(".xml"):
             file_name = os.path.basename(os.path.join(xml_path, files).replace(".xml", ""))
@@ -196,12 +201,14 @@ def xml_to_msp(xml_path):
                 else:
                     MSP = MSP + key + ": " + str(specrta_dict_final[key]) + "\n"
 
-            with open(os.path.join("../INPUT/MSP",file_name+"_converted"+".msp"), "a", encoding="UTF-8") as temp:
-                temp.write(MSP)
+            FINAL_XML.extend([MSP])
+
+    return FINAL_XML
 
 
 def convert_to_msp(input_path):
     # JSON
+    FINAL_JSON = []
     json_to_do = False
     json_path = os.path.join(input_path,"JSON")
     # check if there is a json file into the directory
@@ -210,9 +217,10 @@ def convert_to_msp(input_path):
             json_to_do = True
             break
     if json_to_do == True:
-        json_to_msp(json_path)
+        FINAL_JSON = json_to_msp(json_path)
 
     # XML
+    FINAL_XML = []
     xml_to_do = False
     xml_path = os.path.join(input_path,"XML")
     # check if there is a xml file into the directory
@@ -221,7 +229,9 @@ def convert_to_msp(input_path):
             xml_to_do = True
             break
     if xml_to_do == True:
-        xml_to_msp(xml_path)
+        FINAL_XML = xml_to_msp(xml_path)
+
+    return FINAL_JSON,FINAL_XML
 
 def split_spectrums(msp_path):
     with open(msp_path,"r",encoding="UTF-8") as file_buffer:
