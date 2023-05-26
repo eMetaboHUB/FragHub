@@ -16,6 +16,8 @@ file_lock = threading.Lock()
 
 
 def multithreaded_matchms(spectrum):
+    thread_num = threading.get_ident()
+
     # apply_metadata_filters
     spectrum = msfilters.default_filters(spectrum)
     spectrum = msfilters.derive_adduct_from_name(spectrum)
@@ -43,7 +45,7 @@ def multithreaded_matchms(spectrum):
     # In this way, each thread will have to wait until the lock is available before it can enter the critical section (writing to the file).
     # This ensures that only one thread can write to the file at a time, avoiding conflicts.
     with file_lock:
-        save_as_msp(spectrum, "./temp/temp.msp")
+        save_as_msp(spectrum, "./temp/"+str(thread_num)+"_temp.msp")
 
 def matchms_treatment(spectrum_list):
     with concurrent.futures.ProcessPoolExecutor() as executor:

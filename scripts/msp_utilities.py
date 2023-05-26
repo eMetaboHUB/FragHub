@@ -257,6 +257,7 @@ def split_pos_neg(CONCATENATE_LIST):
 
 
 def harmonize_fields_names(file_path):
+    list_content = []
     df = pd.read_csv("./data/colomnsNames.csv", sep=";")
     dict = df.to_dict()
 
@@ -264,16 +265,22 @@ def harmonize_fields_names(file_path):
     for column, elements in dict.items():
         dict[column] = [element for key, element in elements.items() if (element != column) and (str(element) != 'nan')]
 
-    with open(file_path, "r", encoding="UTF-8") as file:  # open the temporary file
-        file_content = file.read()
+    for temps in os.listdir(file_path):
+        if temps.endswith("_temp.msp"):
+            with open(os.path.join(file_path,temps), "r", encoding="UTF-8") as file:  # open the temporary file
+                list_content.extend(file.read().split("\n\n"))
+
+    file_content = "\n\n".join(list_content)
 
     # replace non_normalized fields by normalized fields
     for column, lists in dict.items():
         for non_normalize in lists:
             file_content = re.sub(non_normalize, column, file_content)
 
-    with open(file_path, "r+", encoding="UTF-8") as file:  # open the temporary file
-        file.truncate(0)
+    # delete the temporary files
+    for temps in os.listdir(file_path):
+        if temps.endswith("_temp.msp"):
+            os.remove(os.path.join(file_path,temps))
 
     return file_content
 
