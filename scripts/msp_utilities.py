@@ -191,8 +191,8 @@ def xml_to_msp(xml_path):
             MSP = ""
             for key, value in specrta_dict_final.items():
                 if key == "peak_list":
-                    MSP = MSP + "num peaks: " + str(len(peak_list[0])) + "\n"
-                    MSP = MSP + str(specrta_dict_final[key]) + "\n"
+                    MSP = MSP + "NUM PEAKS: " + str(len(peak_list[0])) + "\n"
+                    MSP = MSP + str(specrta_dict_final[key])
                 else:
                     MSP = MSP + key + ": " + str(specrta_dict_final[key]) + "\n"
 
@@ -250,9 +250,9 @@ def split_pos_neg(CONCATENATE_LIST):
         SEARCH = re.search("(CHARGE): (.*)", spectrum)
         if SEARCH != None:
             if int(SEARCH.group(2)) > 0:
-                POS.append(spectrum)
+                POS.append(spectrum+"\n")
             else:
-                NEG.append(spectrum)
+                NEG.append(spectrum+"\n")
     return POS, NEG
 
 
