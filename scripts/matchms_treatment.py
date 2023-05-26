@@ -37,7 +37,7 @@ def multithreaded_matchms(spectrum):
     spectrum = msfilters.reduce_to_number_of_peaks(spectrum, n_max=500)
     spectrum = msfilters.require_minimum_number_of_peaks(spectrum, n_required=3)
 
-    save_as_msp(spectrum, "./temp.msp")
+    save_as_msp(spectrum, "./temp/temp.msp")
 
 def matchms_treatment(spectrum_list):
     with concurrent.futures.ProcessPoolExecutor() as executor:
