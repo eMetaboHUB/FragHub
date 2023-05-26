@@ -48,10 +48,13 @@ if __name__ == "__main__":
 
     POS, NEG = split_pos_neg(CONCATENATE_LIST) # Multithreaded
 
+    POS_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS))
+    NEG_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG))
+
     with open(os.path.join(clean_msp_path,"FINAL_POS/POS_clean.msp"),"w",encoding="UTF-8") as pos:
-        pos.write("\n\n".join(POS))
+        pos.write(POS_FULL)
     with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_clean.msp"), "w", encoding="UTF-8") as neg:
-        neg.write("\n\n".join(NEG))
+        neg.write(NEG_FULL)
 
     msp2csv(clean_msp_path)
 
