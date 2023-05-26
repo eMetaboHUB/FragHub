@@ -1,0 +1,9 @@
+tqdm==4.65.0
+pandas==2.0.1
+numpy==1.24.3
+lxml==4.9.2
+beautifulsoup4==4.12.2
+matchms==0.18.0
+rdkit==2023.3.1
+PyYAML==6.0
+jupyter==1.0
