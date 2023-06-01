@@ -48,61 +48,61 @@ def xml_to_msp(xml_path):
             soup = bs(xml_content, "lxml")
 
             # Starting retrieve all information contained in xml markdown
-            specrta_dict["sample-concentration"] = soup.find("sample-concentration")
-            if specrta_dict["sample-concentration"] != None:
-                specrta_dict["sample-concentration"] = specrta_dict["sample-concentration"].contents
-
-            specrta_dict["solvent"] = soup.find("solvent")
-            if specrta_dict["solvent"] != None:
-                specrta_dict["solvent"] = specrta_dict["solvent"].contents
-
-            specrta_dict["sample-mass"] = soup.find("sample-mass")
-            if specrta_dict["sample-mass"] != None:
-                specrta_dict["sample-mass"] = specrta_dict["sample-mass"].contents
-
-            specrta_dict["sample-assessment"] = soup.find("sample-assessment")
-            if specrta_dict["sample-assessment"] != None:
-                specrta_dict["sample-assessment"] = specrta_dict["sample-assessment"].contents
-
-            specrta_dict["spectra-assessment"] = soup.find("spectra-assessment")
-            if specrta_dict["spectra-assessment"] != None:
-                specrta_dict["spectra-assessment"] = specrta_dict["spectra-assessment"].contents
-
-            specrta_dict["sample-source"] = soup.find("sample-source")
-            if specrta_dict["sample-source"] != None:
-                specrta_dict["sample-source"] = specrta_dict["sample-source"].contents
-
-            specrta_dict["collection-date"] = soup.find("collection-date")
-            if specrta_dict["collection-date"] != None:
-                specrta_dict["collection-date"] = specrta_dict["collection-date"].contents
+            # specrta_dict["sample-concentration"] = soup.find("sample-concentration")
+            # if specrta_dict["sample-concentration"] != None:
+            #     specrta_dict["sample-concentration"] = specrta_dict["sample-concentration"].contents
+            #
+            # specrta_dict["solvent"] = soup.find("solvent")
+            # if specrta_dict["solvent"] != None:
+            #     specrta_dict["solvent"] = specrta_dict["solvent"].contents
+            #
+            # specrta_dict["sample-mass"] = soup.find("sample-mass")
+            # if specrta_dict["sample-mass"] != None:
+            #     specrta_dict["sample-mass"] = specrta_dict["sample-mass"].contents
+            #
+            # specrta_dict["sample-assessment"] = soup.find("sample-assessment")
+            # if specrta_dict["sample-assessment"] != None:
+            #     specrta_dict["sample-assessment"] = specrta_dict["sample-assessment"].contents
+            #
+            # specrta_dict["spectra-assessment"] = soup.find("spectra-assessment")
+            # if specrta_dict["spectra-assessment"] != None:
+            #     specrta_dict["spectra-assessment"] = specrta_dict["spectra-assessment"].contents
+            #
+            # specrta_dict["sample-source"] = soup.find("sample-source")
+            # if specrta_dict["sample-source"] != None:
+            #     specrta_dict["sample-source"] = specrta_dict["sample-source"].contents
+            #
+            # specrta_dict["collection-date"] = soup.find("collection-date")
+            # if specrta_dict["collection-date"] != None:
+            #     specrta_dict["collection-date"] = specrta_dict["collection-date"].contents
 
             specrta_dict["instrument-type"] = soup.find("instrument-type")
             if specrta_dict["instrument-type"] != None:
                 specrta_dict["instrument-type"] = specrta_dict["instrument-type"].contents
 
-            specrta_dict["peak-counter"] = soup.find("peak-counter")
-            if specrta_dict["peak-counter"] != None:
-                specrta_dict["peak-counter"] = specrta_dict["peak-counter"].contents
+            # specrta_dict["peak-counter"] = soup.find("peak-counter")
+            # if specrta_dict["peak-counter"] != None:
+            #     specrta_dict["peak-counter"] = specrta_dict["peak-counter"].contents
+            #
+            # specrta_dict["created-at"] = soup.find("created-at")
+            # if specrta_dict["created-at"] != None:
+            #     specrta_dict["created-at"] = specrta_dict["created-at"].contents
+            #
+            # specrta_dict["updated-at"] = soup.find("updated-at")
+            # if specrta_dict["updated-at"] != None:
+            #     specrta_dict["updated-at"] = specrta_dict["updated-at"].contents
 
-            specrta_dict["created-at"] = soup.find("created-at")
-            if specrta_dict["created-at"] != None:
-                specrta_dict["created-at"] = specrta_dict["created-at"].contents
-
-            specrta_dict["updated-at"] = soup.find("updated-at")
-            if specrta_dict["updated-at"] != None:
-                specrta_dict["updated-at"] = specrta_dict["updated-at"].contents
-
-            specrta_dict["mono-mass"] = soup.find("mono-mass")
-            if specrta_dict["mono-mass"] != None:
-                specrta_dict["mono-mass"] = specrta_dict["mono-mass"].contents
-
-            specrta_dict["energy-field"] = soup.find("energy-field")
-            if specrta_dict["energy-field"] != None:
-                specrta_dict["energy-field"] = specrta_dict["energy-field"].contents
-
-            specrta_dict["collision-energy-level"] = soup.find("collision-energy-level")
-            if specrta_dict["collision-energy-level"] != None:
-                specrta_dict["collision-energy-level"] = specrta_dict["collision-energy-level"].contents
+            # specrta_dict["mono-mass"] = soup.find("mono-mass")
+            # if specrta_dict["mono-mass"] != None:
+            #     specrta_dict["mono-mass"] = specrta_dict["mono-mass"].contents
+            #
+            # specrta_dict["energy-field"] = soup.find("energy-field")
+            # if specrta_dict["energy-field"] != None:
+            #     specrta_dict["energy-field"] = specrta_dict["energy-field"].contents
+            #
+            # specrta_dict["collision-energy-level"] = soup.find("collision-energy-level")
+            # if specrta_dict["collision-energy-level"] != None:
+            #     specrta_dict["collision-energy-level"] = specrta_dict["collision-energy-level"].contents
 
             specrta_dict["collision-energy-voltage"] = soup.find("collision-energy-voltage")
             if specrta_dict["collision-energy-voltage"] != None:
@@ -112,61 +112,61 @@ def xml_to_msp(xml_path):
             if specrta_dict["ionization-mode"] != None:
                 specrta_dict["ionization-mode"] = specrta_dict["ionization-mode"].contents
 
-            specrta_dict["sample-concentration-units"] = soup.find("sample-concentration-units")
-            if specrta_dict["sample-concentration-units"] != None:
-                specrta_dict["sample-concentration-units"] = specrta_dict["sample-concentration-units"].contents
-
-            specrta_dict["sample-mass-units"] = soup.find("sample-mass-units")
-            if specrta_dict["sample-mass-units"] != None:
-                specrta_dict["sample-mass-units"] = specrta_dict["sample-mass-units"].contents
+            # specrta_dict["sample-concentration-units"] = soup.find("sample-concentration-units")
+            # if specrta_dict["sample-concentration-units"] != None:
+            #     specrta_dict["sample-concentration-units"] = specrta_dict["sample-concentration-units"].contents
+            #
+            # specrta_dict["sample-mass-units"] = soup.find("sample-mass-units")
+            # if specrta_dict["sample-mass-units"] != None:
+            #     specrta_dict["sample-mass-units"] = specrta_dict["sample-mass-units"].contents
 
             specrta_dict["predicted"] = soup.find("predicted")
             if specrta_dict["predicted"] != None:
                 specrta_dict["predicted"] = specrta_dict["predicted"].contents
 
-            specrta_dict["structure-id"] = soup.find("structure-id")
-            if specrta_dict["structure-id"] != None:
-                specrta_dict["structure-id"] = specrta_dict["structure-id"].contents
-
-            specrta_dict["splash-key"] = soup.find("splash-key")
-            if specrta_dict["splash-key"] != None:
-                specrta_dict["splash-key"] = specrta_dict["splash-key"].contents
-
-            specrta_dict["chromatography-type"] = soup.find("chromatography-type")
-            if specrta_dict["chromatography-type"] != None:
-                specrta_dict["chromatography-type"] = specrta_dict["chromatography-type"].contents
-
-            specrta_dict["analyzer-type"] = soup.find("analyzer-type")
-            if specrta_dict["analyzer-type"] != None:
-                specrta_dict["analyzer-type"] = specrta_dict["analyzer-type"].contents
-
-            specrta_dict["ionization-type"] = soup.find("ionization-type")
-            if specrta_dict["ionization-type"] != None:
-                specrta_dict["ionization-type"] = specrta_dict["ionization-type"].contents
-
-            specrta_dict["charge-type"] = soup.find("charge-type")
-            if specrta_dict["charge-type"] != None:
-                specrta_dict["charge-type"] = specrta_dict["charge-type"].contents
-
-            specrta_dict["data-source"] = soup.find("data-source")
-            if specrta_dict["data-source"] != None:
-                specrta_dict["data-source"] = specrta_dict["data-source"].contents
-
-            specrta_dict["data-source-id"] = soup.find("data-source-id")
-            if specrta_dict["data-source-id"] != None:
-                specrta_dict["data-source-id"] = specrta_dict["data-source-id"].contents
+            # specrta_dict["structure-id"] = soup.find("structure-id")
+            # if specrta_dict["structure-id"] != None:
+            #     specrta_dict["structure-id"] = specrta_dict["structure-id"].contents
+            #
+            # specrta_dict["splash-key"] = soup.find("splash-key")
+            # if specrta_dict["splash-key"] != None:
+            #     specrta_dict["splash-key"] = specrta_dict["splash-key"].contents
+            #
+            # specrta_dict["chromatography-type"] = soup.find("chromatography-type")
+            # if specrta_dict["chromatography-type"] != None:
+            #     specrta_dict["chromatography-type"] = specrta_dict["chromatography-type"].contents
+            #
+            # specrta_dict["analyzer-type"] = soup.find("analyzer-type")
+            # if specrta_dict["analyzer-type"] != None:
+            #     specrta_dict["analyzer-type"] = specrta_dict["analyzer-type"].contents
+            #
+            # specrta_dict["ionization-type"] = soup.find("ionization-type")
+            # if specrta_dict["ionization-type"] != None:
+            #     specrta_dict["ionization-type"] = specrta_dict["ionization-type"].contents
+            #
+            # specrta_dict["charge-type"] = soup.find("charge-type")
+            # if specrta_dict["charge-type"] != None:
+            #     specrta_dict["charge-type"] = specrta_dict["charge-type"].contents
+            #
+            # specrta_dict["data-source"] = soup.find("data-source")
+            # if specrta_dict["data-source"] != None:
+            #     specrta_dict["data-source"] = specrta_dict["data-source"].contents
+            #
+            # specrta_dict["data-source-id"] = soup.find("data-source-id")
+            # if specrta_dict["data-source-id"] != None:
+            #     specrta_dict["data-source-id"] = specrta_dict["data-source-id"].contents
 
             specrta_dict["adduct"] = soup.find("adduct")
             if specrta_dict["adduct"] != None:
                 specrta_dict["adduct"] = specrta_dict["adduct"].contents
 
-            specrta_dict["adduct-type"] = soup.find("adduct-type")
-            if specrta_dict["adduct-type"] != None:
-                specrta_dict["adduct-type"] = specrta_dict["adduct-type"].contents
-
-            specrta_dict["adduct-mass"] = soup.find("adduct-mass")
-            if specrta_dict["adduct-mass"] != None:
-                specrta_dict["adduct-mass"] = specrta_dict["adduct-mass"].contents
+            # specrta_dict["adduct-type"] = soup.find("adduct-type")
+            # if specrta_dict["adduct-type"] != None:
+            #     specrta_dict["adduct-type"] = specrta_dict["adduct-type"].contents
+            #
+            # specrta_dict["adduct-mass"] = soup.find("adduct-mass")
+            # if specrta_dict["adduct-mass"] != None:
+            #     specrta_dict["adduct-mass"] = specrta_dict["adduct-mass"].contents
 
             specrta_dict["database-id"] = soup.find("database-id")
             if specrta_dict["database-id"] != None:
@@ -269,31 +269,44 @@ def split_pos_neg(CONCATENATE_LIST):
 
 def harmonize_fields_names(file_path):
     list_content = []
-    df = pd.read_csv("./data/colomnsNames.csv", sep=";")
-    dict = df.to_dict()
+    expected_fields = ["SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","COMPOUNDNAME","SPECTRUMID","ADDUCT","MSLEVEL",
+                       "INSTRUMENTTYPE","IONMODE","COLLISIONENERGY","PARENTMASS","PRECURSORMZ","CHARGE","NUM PEAKS","PREDICTED","RETENTIONTIME"]
 
-    # re-structure dict
-    for column, elements in dict.items():
-        dict[column] = [element for key, element in elements.items() if (element != column) and (str(element) != 'nan')]
+    for files in os.listdir(file_path): # Parcourir les fichiers temporaires
+        if files.endswith("_temp.msp"):
+            with open(os.path.join(file_path,files),"r",encoding="UTF-8") as file_buffer:
+                file_content = file_buffer.read()
 
-    for temps in os.listdir(file_path):
-        if temps.endswith("_temp.msp"):
-            with open(os.path.join(file_path,temps), "r", encoding="UTF-8") as file:  # open the temporary file
-                list_content.extend(file.read().split("\n\n"))
+            spectrum_list = [spectre for spectre in file_content.split("\n\n") if spectre != "\n"] # Séparer les spectres dans un liste
+
+            compteur = 0
+            for spectrums in spectrum_list: # Pour chaques spectres ...
+                spectrums = re.sub("PRECURSOR_MZ","PRECURSORMZ",spectrums,flags=re.I)
+                fields = re.finditer("(^|\n)(.*?):",spectrums)
+                fields_names = [matche.group(2) for matche in fields]
+                for field in fields_names:
+                    if field not in expected_fields: # Si champ dans le spectre pas voulu, on le supprime
+                        spectrums = re.sub(rf"{field}:.*\n","",spectrums)
+                for field in expected_fields:
+                    if field not in fields_names: # Si un champ voulu est manquant, on le rajoute
+                        spectrums = field+": None\n"+spectrums
+
+                # to do: mettre la charge...
+
+                spectrum_list[compteur] = re.sub("\n\n","\n",spectrums) # On met à jour le spectre
+                compteur += 1
+            list_content.extend(spectrum_list)
 
     file_content = "\n\n".join(list_content)
 
-    # replace non_normalized fields by normalized fields
-    for column, lists in dict.items():
-        for non_normalize in lists:
-            file_content = re.sub(non_normalize, column, file_content)
-
-    # delete the temporary files
-    for temps in os.listdir(file_path):
-        if temps.endswith("_temp.msp"):
-            os.remove(os.path.join(file_path,temps))
+    for files in os.listdir(file_path): # delete all temps files
+        if files.endswith("_temp.msp"):
+            os.remove(os.path.join(file_path,files))
 
     return file_content
+
+
+
 
 # def msp2csv(clean_msp_path):
 #     # POS
