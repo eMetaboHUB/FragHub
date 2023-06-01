@@ -527,7 +527,7 @@ def multithreaded_msp_to_csv_NEG(spectrum, i):
 
 
 def msp_to_csv_treatment(spectrum_list,files):
-    with concurrent.futures.ProcessPoolExecutor() as executor:
+    with concurrent.futures.ThreadPoolExecutor() as executor:
         if files == "POS_clean.msp":
             results = executor.map(multithreaded_msp_to_csv_POS, spectrum_list, [i for i in range(len(spectrum_list))])
         elif files == "NEG_clean.msp":
