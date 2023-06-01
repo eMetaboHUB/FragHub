@@ -269,31 +269,44 @@ def split_pos_neg(CONCATENATE_LIST):
 
 def harmonize_fields_names(file_path):
     list_content = []
-    df = pd.read_csv("./data/colomnsNames.csv", sep=";")
-    dict = df.to_dict()
+    expected_fields = ["SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","COMPOUNDNAME","SPECTRUMID","ADDUCT","MSLEVEL",
+                       "INSTRUMENTTYPE","IONMODE","COLLISIONENERGY","PARENTMASS","PRECURSORMZ","CHARGE","NUM PEAKS","PREDICTED","RETENTIONTIME"]
 
-    # re-structure dict
-    for column, elements in dict.items():
-        dict[column] = [element for key, element in elements.items() if (element != column) and (str(element) != 'nan')]
+    for files in os.listdir(file_path): # Parcourir les fichiers temporaires
+        if files.endswith("_temp.msp"):
+            with open(os.path.join(file_path,files),"r",encoding="UTF-8") as file_buffer:
+                file_content = file_buffer.read()
 
-    for temps in os.listdir(file_path):
-        if temps.endswith("_temp.msp"):
-            with open(os.path.join(file_path,temps), "r", encoding="UTF-8") as file:  # open the temporary file
-                list_content.extend(file.read().split("\n\n"))
+            spectrum_list = [spectre for spectre in file_content.split("\n\n") if spectre != "\n"] # Séparer les spectres dans un liste
+
+            compteur = 0
+            for spectrums in spectrum_list: # Pour chaques spectres ...
+                spectrums = re.sub("PRECURSOR_MZ","PRECURSORMZ",spectrums,flags=re.I)
+                fields = re.finditer("(^|\n)(.*?):",spectrums)
+                fields_names = [matche.group(2) for matche in fields]
+                for field in fields_names:
+                    if field not in expected_fields: # Si champ dans le spectre pas voulu, on le supprime
+                        spectrums = re.sub(rf"{field}:.*\n","",spectrums)
+                for field in expected_fields:
+                    if field not in fields_names: # Si un champ voulu est manquant, on le rajoute
+                        spectrums = field+": None\n"+spectrums
+
+                # to do: mettre la charge...
+
+                spectrum_list[compteur] = re.sub("\n\n","\n",spectrums) # On met à jour le spectre
+                compteur += 1
+            list_content.extend(spectrum_list)
 
     file_content = "\n\n".join(list_content)
 
-    # replace non_normalized fields by normalized fields
-    for column, lists in dict.items():
-        for non_normalize in lists:
-            file_content = re.sub(non_normalize, column, file_content)
-
-    # delete the temporary files
-    for temps in os.listdir(file_path):
-        if temps.endswith("_temp.msp"):
-            os.remove(os.path.join(file_path,temps))
+    for files in os.listdir(file_path): # delete all temps files
+        if files.endswith("_temp.msp"):
+            os.remove(os.path.join(file_path,files))
 
     return file_content
+
+
+
 
 # def msp2csv(clean_msp_path):
 #     # POS
