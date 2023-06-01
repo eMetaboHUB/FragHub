@@ -4,7 +4,11 @@ from matchms_treatment import *
 import sys
 import os
 
+import time
+
 if __name__ == "__main__":
+    start_time = time.time()
+    
     input_path = r"..\INPUT"
     output_path = r"..\OUTPUT"
 
@@ -62,7 +66,10 @@ if __name__ == "__main__":
     with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_clean.msp"), "w", encoding="UTF-8") as neg:
         neg.write(NEG_FULL)
 
-    msp2csv(clean_msp_path)
+    msp_to_csv(clean_msp_path)
+
+    print("--- %s seconds ---" % (time.time() - start_time))
+
 
 
 
