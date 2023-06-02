@@ -284,6 +284,7 @@ def harmonize_fields_names(file_path):
             for spectrums in spectrum_list: # Pour chaques spectres ...
                 try:
                     spectrums = re.sub("PRECURSOR_MZ","PRECURSORMZ",spectrums,flags=re.I)
+                    spectrums = re.sub("((^|\n)(.*?):) \n", "\1 None\n",spectrums)
                     fields = re.finditer("(^|\n)(.*?):",spectrums)
                     fields_names = [matche.group(2) for matche in fields]
 
@@ -571,7 +572,7 @@ def msp_to_csv(clean_msp_path):
             spectrum_list = msp_file.split("\n\n")  # une liste de spectres
 
             for spectrum in spectrum_list:
-                fields = re.findall(r"(.+?):(.*)", spectrum)
+                fields = re.findall(r"(.+?):(.*)\n", spectrum)
                 if first == True:
                     for element in fields:
                         dictionary[element[0]] = []
@@ -582,6 +583,7 @@ def msp_to_csv(clean_msp_path):
                         dictionary[element[0]].append(element[1])
 
                 dictionary["file_name"].append("POS_clean.msp")
+                dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
 
     POS_df = pd.DataFrame.from_dict(dictionary)
     POS_df.to_csv("../OUTPUT/CSV/FINAL_POS/POS_clean.csv", sep=";", encoding="UTF-8", index=False)
@@ -612,33 +614,34 @@ def msp_to_csv(clean_msp_path):
                         dictionary[element[0]].append(element[1])
 
                 dictionary["file_name"].append("POS_clean.msp")
+                dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
 
     NEG_df = pd.DataFrame.from_dict(dictionary)
     NEG_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_clean.csv", sep=";", encoding="UTF-8", index=False)
 
-def write_final_csv_POS(temporary_path):
-    # POS
-    POS_FULL_df = pd.DataFrame()
-    for files in os.listdir(temporary_path):
-        if files.endswith("POS_clean.csv"):
-            if POS_FULL_df.empty:
-                POS_FULL_df = pd.read_csv(os.path.join(temporary_path,files),sep=";",encoding="UTF-8")
-            else:
-                # Concaténer les DataFrames en utilisant axis=1 pour concaténer horizontalement
-                df_temp = pd.read_csv(os.path.join(temporary_path,files),sep=";",encoding="UTF-8")
-
-                # Fusionner les DataFrame en les concaténant verticalement (axis=0)
-                POS_FULL_df = pd.concat([POS_FULL_df, df_temp], axis=0)
-
-                # Réinitialiser les index pour éviter les index en double
-                POS_FULL_df = POS_FULL_df.reset_index(drop=True)
-
-    POS_FULL_df.to_csv(r"../OUTPUT/CSV/FINAL_POS/POS_clean.csv", sep=";", encoding="UTF-8", index=False)
-
-    # Supprimer les csv temporaires
-    for temps in os.listdir(temporary_path):
-        if temps.endswith("POS_clean.csv"):
-            os.remove(os.path.join(temporary_path,temps))
+# def write_final_csv_POS(temporary_path):
+#     # POS
+#     POS_FULL_df = pd.DataFrame()
+#     for files in os.listdir(temporary_path):
+#         if files.endswith("POS_clean.csv"):
+#             if POS_FULL_df.empty:
+#                 POS_FULL_df = pd.read_csv(os.path.join(temporary_path,files),sep=";",encoding="UTF-8")
+#             else:
+#                 # Concaténer les DataFrames en utilisant axis=1 pour concaténer horizontalement
+#                 df_temp = pd.read_csv(os.path.join(temporary_path,files),sep=";",encoding="UTF-8")
+#
+#                 # Fusionner les DataFrame en les concaténant verticalement (axis=0)
+#                 POS_FULL_df = pd.concat([POS_FULL_df, df_temp], axis=0)
+#
+#                 # Réinitialiser les index pour éviter les index en double
+#                 POS_FULL_df = POS_FULL_df.reset_index(drop=True)
+#
+#     POS_FULL_df.to_csv(r"../OUTPUT/CSV/FINAL_POS/POS_clean.csv", sep=";", encoding="UTF-8", index=False)
+#
+#     # Supprimer les csv temporaires
+#     for temps in os.listdir(temporary_path):
+#         if temps.endswith("POS_clean.csv"):
+#             os.remove(os.path.join(temporary_path,temps))
 
 
 

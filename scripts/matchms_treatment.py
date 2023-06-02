@@ -48,6 +48,6 @@ def multithreaded_matchms(spectrum):
         save_as_msp(spectrum, "./temp/"+str(thread_num)+"_temp.msp")
 
 def matchms_treatment(spectrum_list):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=24) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
         results = executor.map(multithreaded_matchms, spectrum_list)
 
