@@ -268,6 +268,7 @@ def split_pos_neg(CONCATENATE_LIST):
 
 
 def harmonize_fields_names(file_path):
+    punc = '''!()-[]{};:'"\,<>./?@#$%^&*~'''
     list_content = []
     expected_fields = ["SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","COMPOUNDNAME","SPECTRUMID","ADDUCT","MSLEVEL",
                        "INSTRUMENTTYPE","IONMODE","COLLISIONENERGY","PARENTMASS","PRECURSORMZ","CHARGE","NUM PEAKS","PREDICTED","RETENTIONTIME"]
@@ -281,17 +282,25 @@ def harmonize_fields_names(file_path):
 
             compteur = 0
             for spectrums in spectrum_list: # Pour chaques spectres ...
-                spectrums = re.sub("PRECURSOR_MZ","PRECURSORMZ",spectrums,flags=re.I)
-                fields = re.finditer("(^|\n)(.*?):",spectrums)
-                fields_names = [matche.group(2) for matche in fields]
-                for field in fields_names:
-                    if field not in expected_fields: # Si champ dans le spectre pas voulu, on le supprime
-                        spectrums = re.sub(rf"{field}:.*\n","",spectrums)
-                for field in expected_fields:
-                    if field not in fields_names: # Si un champ voulu est manquant, on le rajoute
-                        spectrums = field+": None\n"+spectrums
+                try:
+                    spectrums = re.sub("PRECURSOR_MZ","PRECURSORMZ",spectrums,flags=re.I)
+                    fields = re.finditer("(^|\n)(.*?):",spectrums)
+                    fields_names = [matche.group(2) for matche in fields]
 
-                # to do: mettre la charge...
+                    # Remove undesired punctuation
+                    for field in fields_names:
+                        spectrums = spectrums.replace(field,re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field))
+
+                    fields_names = [re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field) for field in fields_names]
+
+                    for field in fields_names:
+                        if field not in expected_fields: # Si champ dans le spectre pas voulu, on le supprime
+                            spectrums = re.sub(rf"{field}:.*\n","",spectrums)
+                    for field in expected_fields:
+                        if field not in fields_names: # Si un champ voulu est manquant, on le rajoute
+                            spectrums = field+": None\n"+spectrums
+                except:
+                    print(spectrums)
 
                 spectrum_list[compteur] = re.sub("\n\n","\n",spectrums) # On met à jour le spectre
                 compteur += 1
