@@ -9,14 +9,8 @@ import concurrent.futures
 import matchms.Fragments
 import matchms.Metadata
 import matchms.hashing
-import threading
-import re
-
-file_lock = threading.Lock()
-
 
 def multithreaded_matchms(spectrum):
-    thread_num = threading.get_ident()
 
     # apply_metadata_filters
     spectrum = msfilters.default_filters(spectrum)
@@ -41,13 +35,11 @@ def multithreaded_matchms(spectrum):
     spectrum = msfilters.reduce_to_number_of_peaks(spectrum, n_max=500)
     spectrum = msfilters.require_minimum_number_of_peaks(spectrum, n_required=3)
 
-    # Write to file with lock synchronization.
-    # In this way, each thread will have to wait until the lock is available before it can enter the critical section (writing to the file).
-    # This ensures that only one thread can write to the file at a time, avoiding conflicts.
-    with file_lock:
-        save_as_msp(spectrum, "./temp/"+str(thread_num)+"_temp.msp")
+    return spectrum
 
 def matchms_treatment(spectrum_list):
     with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
         results = executor.map(multithreaded_matchms, spectrum_list)
+
+    return [res for res in results] # retourn la list des différentes exécutions des différents workers.
 
