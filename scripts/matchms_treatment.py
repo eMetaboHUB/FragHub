@@ -1,6 +1,6 @@
 from matchms.logging_functions import set_matchms_logger_level, add_logging_to_file
 from matchms.importing import load_from_msp
-from matchms.exporting import save_as_msp
+from matchms.exporting import *
 from tqdm.notebook import tqdm as tqdm
 import matchms.filtering as msfilters
 import matchms.metadata_utils
@@ -9,6 +9,23 @@ import concurrent.futures
 import matchms.Fragments
 import matchms.Metadata
 import matchms.hashing
+import os
+
+def matchms_spectrum_to_str_msp(spectrum):
+    if spectrum is not None:
+        SPECTRUM = ""
+        for key, value in spectrum.metadata.items():
+            if not (key.lower().startswith("num peaks") or key.lower().startswith("num_peaks") or key.lower().startswith("peak_comments")):
+                SPECTRUM += f"{key.upper()}: {value}\n"
+
+        SPECTRUM += f"NUM PEAKS: {len(spectrum.peaks)}\n"
+
+        for mz, intensity in zip(spectrum.peaks.mz, spectrum.peaks.intensities):
+            SPECTRUM += f"{mz}\t{intensity}\n".expandtabs(12)
+
+        return SPECTRUM
+
+
 
 def multithreaded_matchms(spectrum):
 
@@ -35,11 +52,21 @@ def multithreaded_matchms(spectrum):
     spectrum = msfilters.reduce_to_number_of_peaks(spectrum, n_max=500)
     spectrum = msfilters.require_minimum_number_of_peaks(spectrum, n_required=3)
 
-    return spectrum
+    # dans l'idéal ... fair l'harmonization des champs ICI (appel a harmonize_fields_names() )
+    # ATTENTION: à ca stade le spectrum n'est pas une chaine de caractère, le seul moyen de matchms et de l'enregistrer dans un msp via func "save_as_msp" (d'ou l'ancienne version)
+    # Trouver un moyen alternatif ...
 
-def matchms_treatment(spectrum_list):
+    return matchms_spectrum_to_str_msp(spectrum)
+
+def matchms_treatment(spectrum_list,file_name):
     with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
         results = executor.map(multithreaded_matchms, spectrum_list)
 
-    return [res for res in results] # retourn la list des différentes exécutions des différents workers.
+    final = [res for res in results if res is not None]
+
+    for res in final:
+        print(res)
+
+    return final # retourn la list des différentes exécutions des différents workers.
+
 

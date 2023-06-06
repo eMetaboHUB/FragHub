@@ -44,8 +44,9 @@ if __name__ == "__main__":
 
             # STEP 3: Execute multithreaded matchms
             spectrum_list = tqdm(list(load_from_msp(msp_path)))
-            matchms_treatment(spectrum_list)
+            results = matchms_treatment(spectrum_list,file_name)
 
+            print("NEEEEXXXXXTTTT")
             clean_content = harmonize_fields_names("./temp")
 
             # Write matchms clean msp into new msp file
