@@ -268,8 +268,6 @@ def split_pos_neg(CONCATENATE_LIST):
 
 def harmonize_fields_names(spectrum):
     if spectrum is not None:
-        punc = '''!()-[]{};:'"\,<>./?@#$%^&*~'''
-        list_content = []
         expected_fields = ["SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","COMPOUNDNAME","SPECTRUMID","ADDUCT","MSLEVEL",
                            "INSTRUMENTTYPE","IONMODE","COLLISIONENERGY","PARENTMASS","PRECURSORMZ","CHARGE","NUM PEAKS","PREDICTED","RETENTIONTIME","FILENAME"]
 
@@ -292,7 +290,6 @@ def harmonize_fields_names(spectrum):
         for field in expected_fields:
             if field not in fields_names: # Si un champ voulu est manquant, on le rajoute
                 spectrum = field+": None\n"+spectrum
-
 
         return spectrum
 

@@ -47,7 +47,7 @@ if __name__ == "__main__":
             spectrum_list = split_spectrums(msp_path)
 
             # STEP 3: Execute multithreaded matchms
-            spectrum_list = tqdm(list(load_from_msp(msp_path)))
+            spectrum_list = list(load_from_msp(msp_path))
             results = matchms_treatment(spectrum_list,file_name)
 
             # Write matchms clean msp into new msp file
