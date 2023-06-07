@@ -1,8 +1,12 @@
 from tqdm.notebook import tqdm as tqdm
 from msp_utilities import *
 from matchms_treatment import *
+import logging
 import sys
 import os
+
+logger = logging.getLogger("matchms")
+logger.disabled = True
 
 import time
 
@@ -43,14 +47,12 @@ if __name__ == "__main__":
             spectrum_list = split_spectrums(msp_path)
 
             # STEP 3: Execute multithreaded matchms
-            spectrum_list = tqdm(list(load_from_msp(msp_path)))
-            matchms_treatment(spectrum_list)
-
-            clean_content = harmonize_fields_names("./temp")
+            spectrum_list = list(load_from_msp(msp_path))
+            results = matchms_treatment(spectrum_list,file_name)
 
             # Write matchms clean msp into new msp file
             with open(os.path.join(r"..\OUTPUT\CLEAN_MSP",file_name+"_clean"+".msp"), "w", encoding="UTF-8") as clean:
-                clean.write(clean_content)
+                clean.write("\n\n".join(results))
 
     # STEP 4: (All msp files were cleaned) --> Split POS and NEG spectrums
     clean_msp_path = os.path.join(output_path,"CLEAN_MSP")

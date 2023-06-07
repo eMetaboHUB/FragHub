@@ -266,301 +266,38 @@ def split_pos_neg(CONCATENATE_LIST):
                 NEG.append(spectrum+"\n")
     return POS, NEG
 
+def harmonize_fields_names(spectrum):
+    if spectrum is not None:
+        expected_fields = ["SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","COMPOUNDNAME","SPECTRUMID","ADDUCT","MSLEVEL",
+                           "INSTRUMENTTYPE","IONMODE","COLLISIONENERGY","PARENTMASS","PRECURSORMZ","CHARGE","NUM PEAKS","PREDICTED","RETENTIONTIME","FILENAME"]
 
-def harmonize_fields_names(file_path):
-    punc = '''!()-[]{};:'"\,<>./?@#$%^&*~'''
-    list_content = []
-    expected_fields = ["SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","COMPOUNDNAME","SPECTRUMID","ADDUCT","MSLEVEL",
-                       "INSTRUMENTTYPE","IONMODE","COLLISIONENERGY","PARENTMASS","PRECURSORMZ","CHARGE","NUM PEAKS","PREDICTED","RETENTIONTIME"]
+        spectrum = re.sub("PRECURSOR_MZ","PRECURSORMZ",spectrum,flags=re.I)
+        spectrum = re.sub("INCHIKEY: \n", "INCHIKEY: None\n", spectrum)
+        spectrum = re.sub("((^|\n)(.*?):) \n", "\n",spectrum)
+        spectrum = re.sub("\n{2,}", "\n", spectrum)
+        fields = re.finditer("(^|\n)(.*?):",spectrum)
+        fields_names = [matche.group(2) for matche in fields]
 
-    for files in os.listdir(file_path): # Parcourir les fichiers temporaires
-        if files.endswith("_temp.msp"):
-            with open(os.path.join(file_path,files),"r",encoding="UTF-8") as file_buffer:
-                file_content = file_buffer.read()
+        # Remove undesired punctuation
+        for field in fields_names:
+            spectrum = spectrum.replace(field,re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field))
 
-            spectrum_list = [spectre for spectre in file_content.split("\n\n") if spectre != "\n"] # Séparer les spectres dans un liste
+        fields_names = [re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field) for field in fields_names]
 
-            compteur = 0
-            for spectrums in spectrum_list: # Pour chaques spectres ...
-                try:
-                    spectrums = re.sub("PRECURSOR_MZ","PRECURSORMZ",spectrums,flags=re.I)
-                    spectrums = re.sub("((^|\n)(.*?):) \n", "\1 None\n",spectrums)
-                    fields = re.finditer("(^|\n)(.*?):",spectrums)
-                    fields_names = [matche.group(2) for matche in fields]
+        for field in fields_names:
+            if field not in expected_fields: # Si champ dans le spectre pas voulu, on le supprime
+                spectrum = re.sub(rf"{field}:.*\n","",spectrum)
+        for field in expected_fields:
+            if field not in fields_names: # Si un champ voulu est manquant, on le rajoute
+                spectrum = field+": None\n"+spectrum
 
-                    # Remove undesired punctuation
-                    for field in fields_names:
-                        spectrums = spectrums.replace(field,re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field))
-
-                    fields_names = [re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field) for field in fields_names]
-
-                    for field in fields_names:
-                        if field not in expected_fields: # Si champ dans le spectre pas voulu, on le supprime
-                            spectrums = re.sub(rf"{field}:.*\n","",spectrums)
-                    for field in expected_fields:
-                        if field not in fields_names: # Si un champ voulu est manquant, on le rajoute
-                            spectrums = field+": None\n"+spectrums
-                except:
-                    print(spectrums)
-
-                spectrum_list[compteur] = re.sub("\n\n","\n",spectrums) # On met à jour le spectre
-                compteur += 1
-            list_content.extend(spectrum_list)
-
-    file_content = "\n\n".join(list_content)
-
-    for files in os.listdir(file_path): # delete all temps files
-        if files.endswith("_temp.msp"):
-            os.remove(os.path.join(file_path,files))
-
-    return file_content
-
-
-
-
-# def msp2csv(clean_msp_path):
-#     # POS
-#     dictionary = {"file_name":[],"PEAKS_LIST":[]}
-#
-#     POS_DIR = os.path.join(clean_msp_path,"FINAL_POS")
-#
-#     for files in os.listdir(POS_DIR):
-#         if files.endswith(".msp"):
-#             with open(os.path.join(POS_DIR,files),"r",encoding="UTF-8") as msp_file_buffer:
-#                 msp_file = msp_file_buffer.read()
-#
-#             spectras_list = msp_file.split("\n\n") # une liste de spectres
-#
-#             for spectras in spectras_list[:-1]:
-#                 fields = re.findall(r"(.+?):(.*)",spectras)
-#                 dico_temp = {}
-#                 for element in fields:
-#                     dico_temp[element[0]] = element[1]
-#
-#                 dictionary["file_name"].append(files)
-#
-#                 for key,value in dico_temp.items():
-#                     if key not in dictionary.keys():
-#                         if len(dictionary["file_name"]) < 1:
-#                             dictionary[key] = []
-#                             dictionary[key].append(value)
-#                         else:
-#                             dictionary[key] = [np.nan for i in range(len(dictionary["file_name"])-1)]
-#                             dictionary[key].append(value)
-#                     else:
-#                         dictionary[key].append(value)
-#
-#                 # vérification inverse
-#                 for key in dictionary.keys():
-#                     if key not in dico_temp.keys() and key != "file_name" and key != "PEAKS_LIST":
-#                         dictionary[key].append(np.nan)
-#
-#                 dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)",spectras).group(2).split("\n"))
-#
-#     df_POS = pd.DataFrame.from_dict(dictionary)
-#
-#     df_POS.to_csv(os.path.join(r"..\OUTPUT\CSV\FINAL_POS","POS.csv"),sep=";",encoding="UTF-8",index=False)
-#
-#     # NEG
-#     dictionary = {"file_name": [], "PEAKS_LIST": []}
-#
-#     NEG_DIR = os.path.join(clean_msp_path, "FINAL_NEG")
-#
-#     for files in os.listdir(NEG_DIR):
-#         if files.endswith(".msp"):
-#             with open(os.path.join(NEG_DIR, files), "r", encoding="UTF-8") as msp_file_buffer:
-#                 msp_file = msp_file_buffer.read()
-#
-#             spectras_list = msp_file.split("\n\n")  # une liste de spectres
-#
-#             for spectras in spectras_list[:-1]:
-#                 fields = re.findall(r"(.+?):(.*)", spectras)
-#                 dico_temp = {}
-#                 for element in fields:
-#                     dico_temp[element[0]] = element[1]
-#
-#                 dictionary["file_name"].append(files)
-#
-#                 for key, value in dico_temp.items():
-#                     if key not in dictionary.keys():
-#                         if len(dictionary["file_name"]) < 1:
-#                             dictionary[key] = []
-#                             dictionary[key].append(value)
-#                         else:
-#                             dictionary[key] = [np.nan for i in range(len(dictionary["file_name"]) - 1)]
-#                             dictionary[key].append(value)
-#                     else:
-#                         dictionary[key].append(value)
-#
-#                 # vérification inverse
-#                 for key in dictionary.keys():
-#                     if key not in dico_temp.keys() and key != "file_name" and key != "PEAKS_LIST":
-#                         dictionary[key].append(np.nan)
-#
-#                 dictionary["PEAKS_LIST"].append(
-#                     re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectras).group(2).split("\n"))
-#
-#     df_NEG = pd.DataFrame.from_dict(dictionary)
-#
-#     df_NEG.to_csv(os.path.join(r"..\OUTPUT\CSV\FINAL_NEG", "NEG.csv"), sep=";", encoding="UTF-8", index=False)
-
-# def msp_to_csv(clean_msp_path):
-#     # POS
-#     POS_DIR = os.path.join(clean_msp_path, "FINAL_POS")
-#
-#     for files in os.listdir(POS_DIR):
-#         if files.endswith(".msp"):
-#             with open(os.path.join(POS_DIR, files), "r", encoding="UTF-8") as msp_file_buffer:
-#                 msp_file = msp_file_buffer.read()
-#
-#             spectrum_list = msp_file.split("\n\n")  # une liste de spectres
-#             msp_to_csv_treatment(spectrum_list,files)
-#
-#     # écrire les csv POS finaux et supprimer les fichiers temporaires
-#     write_final_csv_POS(r"./temp")
-#
-#     # NEG
-#     NEG_DIR = os.path.join(clean_msp_path, "FINAL_NEG")
-#
-#     for files in os.listdir(NEG_DIR):
-#         if files.endswith(".msp"):
-#             with open(os.path.join(NEG_DIR, files), "r", encoding="UTF-8") as msp_file_buffer:
-#                 msp_file = msp_file_buffer.read()
-#
-#             spectrum_list = msp_file.split("\n\n")  # une liste de spectres
-#             msp_to_csv_treatment(spectrum_list, files)
-#
-#     # écrire les csv POS finaux et supprimer les fichiers temporaires
-#     write_final_csv_NEG(r"./temp")
-#
-# def write_final_csv_POS(temporary_path):
-#     # POS
-#     POS_FULL_df = pd.DataFrame()
-#     for files in os.listdir(temporary_path):
-#         if files.endswith("POS_clean.csv"):
-#             if POS_FULL_df.empty:
-#                 POS_FULL_df = pd.read_csv(os.path.join(temporary_path,files),sep=";",encoding="UTF-8")
-#             else:
-#                 # Concaténer les DataFrames en utilisant axis=1 pour concaténer horizontalement
-#                 df_temp = pd.read_csv(os.path.join(temporary_path,files),sep=";",encoding="UTF-8")
-#
-#                 # Fusionner les DataFrame en les concaténant verticalement (axis=0)
-#                 POS_FULL_df = pd.concat([POS_FULL_df, df_temp], axis=0)
-#
-#                 # Réinitialiser les index pour éviter les index en double
-#                 POS_FULL_df = POS_FULL_df.reset_index(drop=True)
-#
-#     POS_FULL_df.to_csv(r"../OUTPUT/CSV/FINAL_POS/POS_clean.csv", sep=";", encoding="UTF-8", index=False)
-#
-#     # Supprimer les csv temporaires
-#     for temps in os.listdir(temporary_path):
-#         if temps.endswith("POS_clean.csv"):
-#             os.remove(os.path.join(temporary_path,temps))
-#
-# def write_final_csv_NEG(temporary_path):
-#     # NEG
-#     NEG_FULL_df = pd.DataFrame()
-#     for files in os.listdir(temporary_path):
-#         if files.endswith("NEG_clean.csv"):
-#             if NEG_FULL_df.empty:
-#                 NEG_FULL_df = pd.read_csv(os.path.join(temporary_path,files),sep=";",encoding="UTF-8")
-#             else:
-#                 # Concaténer les DataFrames en utilisant axis=1 pour concaténer horizontalement
-#                 df_temp = pd.read_csv(os.path.join(temporary_path,files),sep=";",encoding="UTF-8")
-#
-#                 # Fusionner les DataFrame en les concaténant verticalement (axis=0)
-#                 NEG_FULL_df = pd.concat([NEG_FULL_df, df_temp], axis=0)
-#
-#                 # Réinitialiser les index pour éviter les index en double
-#                 NEG_FULL_df = NEG_FULL_df.reset_index(drop=True)
-#
-#     NEG_FULL_df.to_csv(r"../OUTPUT/CSV/FINAL_NEG/NEG_clean.csv", sep=";", encoding="UTF-8", index=False)
-#
-#     # Supprimer les csv temporaires
-#     for temps in os.listdir(temporary_path):
-#         if temps.endswith("NEG_clean.csv"):
-#             os.remove(os.path.join(temporary_path,temps))
-#
-#
-# def multithreaded_msp_to_csv_POS(spectrum, i):
-#     dictionary = {"file_name":[],"PEAKS_LIST":[]}
-#
-#     fields = re.findall(r"(.+?):(.*)", spectrum)
-#     dico_temp = {}
-#     for element in fields:
-#         dico_temp[element[0]] = element[1]
-#
-#     dictionary["file_name"].append("POS_clean.msp")
-#
-#     for key, value in dico_temp.items():
-#         if key not in dictionary.keys():
-#             if len(dictionary["file_name"]) < 1:
-#                 dictionary[key] = []
-#                 dictionary[key].append(value)
-#             else:
-#                 dictionary[key] = [np.nan for i in range(len(dictionary["file_name"]) - 1)]
-#                 dictionary[key].append(value)
-#         else:
-#             dictionary[key].append(value)
-#
-#     # vérification inverse
-#     for key in dictionary.keys():
-#         if key not in dico_temp.keys() and key != "file_name" and key != "PEAKS_LIST":
-#             dictionary[key].append(np.nan)
-#
-#     dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
-#
-#
-#     df_POS = pd.DataFrame.from_dict(dictionary)
-#
-#     df_POS.to_csv(r"./temp/temp_"+str(i)+"_POS_clean.csv", sep=";", encoding="UTF-8", index=False)
-#
-# def multithreaded_msp_to_csv_NEG(spectrum, i):
-#     dictionary = {"file_name": [], "PEAKS_LIST": []}
-#
-#     fields = re.findall(r"(.+?):(.*)", spectrum)
-#     dico_temp = {}
-#     for element in fields:
-#         dico_temp[element[0]] = element[1]
-#
-#     dictionary["file_name"].append("NEG_clean.msp")
-#
-#     for key, value in dico_temp.items():
-#         if key not in dictionary.keys():
-#             if len(dictionary["file_name"]) < 1:
-#                 dictionary[key] = []
-#                 dictionary[key].append(value)
-#             else:
-#                 dictionary[key] = [np.nan for i in range(len(dictionary["file_name"]) - 1)]
-#                 dictionary[key].append(value)
-#         else:
-#             dictionary[key].append(value)
-#
-#     # vérification inverse
-#     for key in dictionary.keys():
-#         if key not in dico_temp.keys() and key != "file_name" and key != "PEAKS_LIST":
-#             dictionary[key].append(np.nan)
-#
-#     dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
-#
-#     df_NEG = pd.DataFrame.from_dict(dictionary)
-#
-#     df_NEG.to_csv(r"./temp/temp_" + str(i) + "_NEG_clean.csv", sep=";", encoding="UTF-8", index=False)
-#
-#
-#
-# def msp_to_csv_treatment(spectrum_list,files):
-#     with concurrent.futures.ThreadPoolExecutor(max_workers=24) as executor:
-#         if files == "POS_clean.msp":
-#             results = executor.map(multithreaded_msp_to_csv_POS, spectrum_list, [i for i in range(len(spectrum_list))])
-#         elif files == "NEG_clean.msp":
-#             results = executor.map(multithreaded_msp_to_csv_NEG, spectrum_list, [i for i in range(len(spectrum_list))])
+        return spectrum
 
 def msp_to_csv(clean_msp_path):
     # POS
     POS_DIR = os.path.join(clean_msp_path, "FINAL_POS")
 
-    dictionary = {"file_name": [], "PEAKS_LIST": []}
+    dictionary = {"PEAKS_LIST": []}
 
     first = True
 
@@ -572,18 +309,18 @@ def msp_to_csv(clean_msp_path):
             spectrum_list = msp_file.split("\n\n")  # une liste de spectres
 
             for spectrum in spectrum_list:
-                fields = re.findall(r"(.+?):(.*)\n", spectrum)
-                if first == True:
-                    for element in fields:
-                        dictionary[element[0]] = []
-                    first = False
+                if spectrum != "\n":
+                    fields = re.findall(r"(.+?):(.*)\n", spectrum)
+                    if first == True:
+                        for element in fields:
+                            dictionary[element[0]] = []
+                        first = False
 
-                if first == False:
-                    for element in fields:
-                        dictionary[element[0]].append(element[1])
+                    if first == False:
+                        for element in fields:
+                            dictionary[element[0]].append(element[1])
 
-                dictionary["file_name"].append("POS_clean.msp")
-                dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
+                    dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
 
     POS_df = pd.DataFrame.from_dict(dictionary)
     POS_df.to_csv("../OUTPUT/CSV/FINAL_POS/POS_clean.csv", sep=";", encoding="UTF-8", index=False)
@@ -591,7 +328,7 @@ def msp_to_csv(clean_msp_path):
     # NEG
     NEG_DIR = os.path.join(clean_msp_path, "FINAL_NEG")
 
-    dictionary = {"file_name": [], "PEAKS_LIST": []}
+    dictionary = {"PEAKS_LIST": []}
 
     first = True
 
@@ -603,45 +340,21 @@ def msp_to_csv(clean_msp_path):
             spectrum_list = msp_file.split("\n\n")  # une liste de spectres
 
             for spectrum in spectrum_list:
-                fields = re.findall(r"(.+?):(.*)", spectrum)
-                if first == True:
-                    for element in fields:
-                        dictionary[element[0]] = []
-                    first = False
+                if spectrum != "\n":
+                    fields = re.findall(r"(.+?):(.*)", spectrum)
+                    if first == True:
+                        for element in fields:
+                            dictionary[element[0]] = []
+                        first = False
 
-                if first == False:
-                    for element in fields:
-                        dictionary[element[0]].append(element[1])
+                    if first == False:
+                        for element in fields:
+                            dictionary[element[0]].append(element[1])
 
-                dictionary["file_name"].append("POS_clean.msp")
-                dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
+                    dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
 
     NEG_df = pd.DataFrame.from_dict(dictionary)
     NEG_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_clean.csv", sep=";", encoding="UTF-8", index=False)
-
-# def write_final_csv_POS(temporary_path):
-#     # POS
-#     POS_FULL_df = pd.DataFrame()
-#     for files in os.listdir(temporary_path):
-#         if files.endswith("POS_clean.csv"):
-#             if POS_FULL_df.empty:
-#                 POS_FULL_df = pd.read_csv(os.path.join(temporary_path,files),sep=";",encoding="UTF-8")
-#             else:
-#                 # Concaténer les DataFrames en utilisant axis=1 pour concaténer horizontalement
-#                 df_temp = pd.read_csv(os.path.join(temporary_path,files),sep=";",encoding="UTF-8")
-#
-#                 # Fusionner les DataFrame en les concaténant verticalement (axis=0)
-#                 POS_FULL_df = pd.concat([POS_FULL_df, df_temp], axis=0)
-#
-#                 # Réinitialiser les index pour éviter les index en double
-#                 POS_FULL_df = POS_FULL_df.reset_index(drop=True)
-#
-#     POS_FULL_df.to_csv(r"../OUTPUT/CSV/FINAL_POS/POS_clean.csv", sep=";", encoding="UTF-8", index=False)
-#
-#     # Supprimer les csv temporaires
-#     for temps in os.listdir(temporary_path):
-#         if temps.endswith("POS_clean.csv"):
-#             os.remove(os.path.join(temporary_path,temps))
 
 
 
