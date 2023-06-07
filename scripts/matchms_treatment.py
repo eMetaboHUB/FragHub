@@ -43,7 +43,6 @@ def multithreaded_matchms(spectrum,file_name):
     spectrum = msfilters.harmonize_undefined_smiles(spectrum)
     spectrum = msfilters.harmonize_undefined_inchi(spectrum)
     spectrum = msfilters.harmonize_undefined_inchikey(spectrum)
-    spectrum = msfilters.add_precursor_mz(spectrum)
 
     # normalize_and_filter_peaks
     spectrum = msfilters.normalize_intensities(spectrum)
