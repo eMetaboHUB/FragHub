@@ -234,14 +234,6 @@ def convert_to_msp(input_path):
 
     return FINAL_JSON,FINAL_XML
 
-def split_spectrums(msp_path):
-    with open(msp_path,"r",encoding="UTF-8") as file_buffer:
-        file_content = file_buffer.read()
-
-    spectrums = file_content.split("\n\n")  # split spectrums into a list
-
-    return spectrums
-
 def concatenate_clean_msp(clean_msp_path):
     CONCATENATE_LIST = []
     # append all spectrums of all cleaned files into CONCATENATE_LIST
