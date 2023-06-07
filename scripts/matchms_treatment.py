@@ -51,9 +51,6 @@ def multithreaded_matchms(spectrum,file_name):
     spectrum = msfilters.reduce_to_number_of_peaks(spectrum, n_max=500)
     spectrum = msfilters.require_minimum_number_of_peaks(spectrum, n_required=3)
 
-    # dans l'idéal ... fair l'harmonization des champs ICI (appel a harmonize_fields_names() )
-    # ATTENTION: à ca stade le spectrum n'est pas une chaine de caractère, le seul moyen de matchms et de l'enregistrer dans un msp via func "save_as_msp" (d'ou l'ancienne version)
-    # Trouver un moyen alternatif ...
     spectrum = matchms_spectrum_to_str_msp(spectrum,file_name)
     spectrum = harmonize_fields_names(spectrum)
 
