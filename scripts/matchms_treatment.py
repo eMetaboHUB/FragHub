@@ -1,22 +1,33 @@
-from matchms.logging_functions import set_matchms_logger_level, add_logging_to_file
+from matchms.logging_functions import set_matchms_logger_level
 from matchms.importing import load_from_msp
-from matchms.exporting import save_as_msp
+from matchms.exporting import *
 from tqdm.notebook import tqdm as tqdm
 import matchms.filtering as msfilters
 import matchms.metadata_utils
-from matchms import Spectrum
+from msp_utilities import *
 import concurrent.futures
 import matchms.Fragments
 import matchms.Metadata
 import matchms.hashing
-import threading
-import re
+import os
 
-file_lock = threading.Lock()
+def matchms_spectrum_to_str_msp(spectrum,file_name):
+    if spectrum is not None:
+        SPECTRUM = "FILENAME: " + file_name + "\n"
+        for key, value in spectrum.metadata.items():
+            if not (key.lower().startswith("num peaks") or key.lower().startswith("num_peaks") or key.lower().startswith("peak_comments")):
+                SPECTRUM += f"{key.upper()}: {value}\n"
+
+        SPECTRUM += f"NUM PEAKS: {len(spectrum.peaks)}\n"
+
+        for mz, intensity in zip(spectrum.peaks.mz, spectrum.peaks.intensities):
+            SPECTRUM += f"{mz}\t{intensity}\n".expandtabs(12)
+
+        return SPECTRUM
 
 
-def multithreaded_matchms(spectrum):
-    thread_num = threading.get_ident()
+
+def multithreaded_matchms(spectrum,file_name):
 
     # apply_metadata_filters
     spectrum = msfilters.default_filters(spectrum)
@@ -32,7 +43,6 @@ def multithreaded_matchms(spectrum):
     spectrum = msfilters.harmonize_undefined_smiles(spectrum)
     spectrum = msfilters.harmonize_undefined_inchi(spectrum)
     spectrum = msfilters.harmonize_undefined_inchikey(spectrum)
-    spectrum = msfilters.add_precursor_mz(spectrum)
 
     # normalize_and_filter_peaks
     spectrum = msfilters.normalize_intensities(spectrum)
@@ -41,13 +51,17 @@ def multithreaded_matchms(spectrum):
     spectrum = msfilters.reduce_to_number_of_peaks(spectrum, n_max=500)
     spectrum = msfilters.require_minimum_number_of_peaks(spectrum, n_required=3)
 
-    # Write to file with lock synchronization.
-    # In this way, each thread will have to wait until the lock is available before it can enter the critical section (writing to the file).
-    # This ensures that only one thread can write to the file at a time, avoiding conflicts.
-    with file_lock:
-        save_as_msp(spectrum, "./temp/"+str(thread_num)+"_temp.msp")
+    spectrum = matchms_spectrum_to_str_msp(spectrum,file_name)
+    spectrum = harmonize_fields_names(spectrum)
 
-def matchms_treatment(spectrum_list):
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = executor.map(multithreaded_matchms, spectrum_list)
+    return spectrum
+
+def matchms_treatment(spectrum_list,file_name):
+    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+        results = executor.map(multithreaded_matchms, spectrum_list, [file_name for i in range(len(spectrum_list))])
+
+    final = [res for res in results if res is not None]
+
+    return final # retourn la list des différentes exécutions des différents workers.
+
 
