@@ -1,19 +1,19 @@
-from matchms.logging_functions import set_matchms_logger_level, add_logging_to_file
+from matchms.logging_functions import set_matchms_logger_level
 from matchms.importing import load_from_msp
 from matchms.exporting import *
 from tqdm.notebook import tqdm as tqdm
 import matchms.filtering as msfilters
 import matchms.metadata_utils
-from matchms import Spectrum
+from msp_utilities import *
 import concurrent.futures
 import matchms.Fragments
 import matchms.Metadata
 import matchms.hashing
 import os
 
-def matchms_spectrum_to_str_msp(spectrum):
+def matchms_spectrum_to_str_msp(spectrum,file_name):
     if spectrum is not None:
-        SPECTRUM = ""
+        SPECTRUM = "FILENAME: " + file_name + "\n"
         for key, value in spectrum.metadata.items():
             if not (key.lower().startswith("num peaks") or key.lower().startswith("num_peaks") or key.lower().startswith("peak_comments")):
                 SPECTRUM += f"{key.upper()}: {value}\n"
@@ -27,7 +27,7 @@ def matchms_spectrum_to_str_msp(spectrum):
 
 
 
-def multithreaded_matchms(spectrum):
+def multithreaded_matchms(spectrum,file_name):
 
     # apply_metadata_filters
     spectrum = msfilters.default_filters(spectrum)
@@ -55,17 +55,16 @@ def multithreaded_matchms(spectrum):
     # dans l'idéal ... fair l'harmonization des champs ICI (appel a harmonize_fields_names() )
     # ATTENTION: à ca stade le spectrum n'est pas une chaine de caractère, le seul moyen de matchms et de l'enregistrer dans un msp via func "save_as_msp" (d'ou l'ancienne version)
     # Trouver un moyen alternatif ...
+    spectrum = matchms_spectrum_to_str_msp(spectrum,file_name)
+    spectrum = harmonize_fields_names(spectrum)
 
-    return matchms_spectrum_to_str_msp(spectrum)
+    return spectrum
 
 def matchms_treatment(spectrum_list,file_name):
     with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-        results = executor.map(multithreaded_matchms, spectrum_list)
+        results = executor.map(multithreaded_matchms, spectrum_list, [file_name for i in range(len(spectrum_list))])
 
     final = [res for res in results if res is not None]
-
-    for res in final:
-        print(res)
 
     return final # retourn la list des différentes exécutions des différents workers.
 

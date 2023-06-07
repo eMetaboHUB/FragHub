@@ -267,59 +267,89 @@ def split_pos_neg(CONCATENATE_LIST):
     return POS, NEG
 
 
-def harmonize_fields_names(file_path):
-    punc = '''!()-[]{};:'"\,<>./?@#$%^&*~'''
-    list_content = []
-    expected_fields = ["SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","COMPOUNDNAME","SPECTRUMID","ADDUCT","MSLEVEL",
-                       "INSTRUMENTTYPE","IONMODE","COLLISIONENERGY","PARENTMASS","PRECURSORMZ","CHARGE","NUM PEAKS","PREDICTED","RETENTIONTIME"]
+# def harmonize_fields_names(file_path):
+#     punc = '''!()-[]{};:'"\,<>./?@#$%^&*~'''
+#     list_content = []
+#     expected_fields = ["SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","COMPOUNDNAME","SPECTRUMID","ADDUCT","MSLEVEL",
+#                        "INSTRUMENTTYPE","IONMODE","COLLISIONENERGY","PARENTMASS","PRECURSORMZ","CHARGE","NUM PEAKS","PREDICTED","RETENTIONTIME"]
+#
+#     for files in os.listdir(file_path): # Parcourir les fichiers temporaires
+#         if files.endswith("_temp.msp"):
+#             with open(os.path.join(file_path,files),"r",encoding="UTF-8") as file_buffer:
+#                 file_content = file_buffer.read()
+#
+#             spectrum_list = [spectre for spectre in file_content.split("\n\n") if spectre != "\n"] # Séparer les spectres dans un liste
+#
+#             compteur = 0
+#             for spectrums in spectrum_list: # Pour chaques spectres ...
+#                 try:
+#                     spectrums = re.sub("PRECURSOR_MZ","PRECURSORMZ",spectrums,flags=re.I)
+#                     spectrums = re.sub("((^|\n)(.*?):) \n", "\1 None\n",spectrums)
+#                     fields = re.finditer("(^|\n)(.*?):",spectrums)
+#                     fields_names = [matche.group(2) for matche in fields]
+#
+#                     # Remove undesired punctuation
+#                     for field in fields_names:
+#                         spectrums = spectrums.replace(field,re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field))
+#
+#                     fields_names = [re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field) for field in fields_names]
+#
+#                     for field in fields_names:
+#                         if field not in expected_fields: # Si champ dans le spectre pas voulu, on le supprime
+#                             spectrums = re.sub(rf"{field}:.*\n","",spectrums)
+#                     for field in expected_fields:
+#                         if field not in fields_names: # Si un champ voulu est manquant, on le rajoute
+#                             spectrums = field+": None\n"+spectrums
+#                 except:
+#                     print(spectrums)
+#
+#                 spectrum_list[compteur] = re.sub("\n\n","\n",spectrums) # On met à jour le spectre
+#                 compteur += 1
+#             list_content.extend(spectrum_list)
+#
+#     file_content = "\n\n".join(list_content)
+#
+#     for files in os.listdir(file_path): # delete all temps files
+#         if files.endswith("_temp.msp"):
+#             os.remove(os.path.join(file_path,files))
+#
+#     return file_content
 
-    for files in os.listdir(file_path): # Parcourir les fichiers temporaires
-        if files.endswith("_temp.msp"):
-            with open(os.path.join(file_path,files),"r",encoding="UTF-8") as file_buffer:
-                file_content = file_buffer.read()
+def harmonize_fields_names(spectrum):
+    if spectrum is not None:
+        punc = '''!()-[]{};:'"\,<>./?@#$%^&*~'''
+        list_content = []
+        expected_fields = ["SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","COMPOUNDNAME","SPECTRUMID","ADDUCT","MSLEVEL",
+                           "INSTRUMENTTYPE","IONMODE","COLLISIONENERGY","PARENTMASS","PRECURSORMZ","CHARGE","NUM PEAKS","PREDICTED","RETENTIONTIME","FILENAME"]
 
-            spectrum_list = [spectre for spectre in file_content.split("\n\n") if spectre != "\n"] # Séparer les spectres dans un liste
+        spectrum = re.sub("PRECURSOR_MZ","PRECURSORMZ",spectrum,flags=re.I)
+        spectrum = re.sub("INCHIKEY: \n", "INCHIKEY: None\n", spectrum)
+        spectrum = re.sub("((^|\n)(.*?):) \n", "\n",spectrum)
+        spectrum = re.sub("\n{2,}", "\n", spectrum)
+        fields = re.finditer("(^|\n)(.*?):",spectrum)
+        fields_names = [matche.group(2) for matche in fields]
 
-            compteur = 0
-            for spectrums in spectrum_list: # Pour chaques spectres ...
-                try:
-                    spectrums = re.sub("PRECURSOR_MZ","PRECURSORMZ",spectrums,flags=re.I)
-                    spectrums = re.sub("((^|\n)(.*?):) \n", "\1 None\n",spectrums)
-                    fields = re.finditer("(^|\n)(.*?):",spectrums)
-                    fields_names = [matche.group(2) for matche in fields]
+        # Remove undesired punctuation
+        for field in fields_names:
+            spectrum = spectrum.replace(field,re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field))
 
-                    # Remove undesired punctuation
-                    for field in fields_names:
-                        spectrums = spectrums.replace(field,re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field))
+        fields_names = [re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field) for field in fields_names]
 
-                    fields_names = [re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field) for field in fields_names]
+        for field in fields_names:
+            if field not in expected_fields: # Si champ dans le spectre pas voulu, on le supprime
+                spectrum = re.sub(rf"{field}:.*\n","",spectrum)
+        for field in expected_fields:
+            if field not in fields_names: # Si un champ voulu est manquant, on le rajoute
+                spectrum = field+": None\n"+spectrum
 
-                    for field in fields_names:
-                        if field not in expected_fields: # Si champ dans le spectre pas voulu, on le supprime
-                            spectrums = re.sub(rf"{field}:.*\n","",spectrums)
-                    for field in expected_fields:
-                        if field not in fields_names: # Si un champ voulu est manquant, on le rajoute
-                            spectrums = field+": None\n"+spectrums
-                except:
-                    print(spectrums)
 
-                spectrum_list[compteur] = re.sub("\n\n","\n",spectrums) # On met à jour le spectre
-                compteur += 1
-            list_content.extend(spectrum_list)
-
-    file_content = "\n\n".join(list_content)
-
-    for files in os.listdir(file_path): # delete all temps files
-        if files.endswith("_temp.msp"):
-            os.remove(os.path.join(file_path,files))
-
-    return file_content
+        return spectrum
 
 def msp_to_csv(clean_msp_path):
     # POS
     POS_DIR = os.path.join(clean_msp_path, "FINAL_POS")
 
-    dictionary = {"file_name": [], "PEAKS_LIST": []}
+    dictionary = {"PEAKS_LIST": []}
 
     first = True
 
@@ -331,18 +361,18 @@ def msp_to_csv(clean_msp_path):
             spectrum_list = msp_file.split("\n\n")  # une liste de spectres
 
             for spectrum in spectrum_list:
-                fields = re.findall(r"(.+?):(.*)\n", spectrum)
-                if first == True:
-                    for element in fields:
-                        dictionary[element[0]] = []
-                    first = False
+                if spectrum != "\n":
+                    fields = re.findall(r"(.+?):(.*)\n", spectrum)
+                    if first == True:
+                        for element in fields:
+                            dictionary[element[0]] = []
+                        first = False
 
-                if first == False:
-                    for element in fields:
-                        dictionary[element[0]].append(element[1])
+                    if first == False:
+                        for element in fields:
+                            dictionary[element[0]].append(element[1])
 
-                dictionary["file_name"].append("POS_clean.msp")
-                dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
+                    dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
 
     POS_df = pd.DataFrame.from_dict(dictionary)
     POS_df.to_csv("../OUTPUT/CSV/FINAL_POS/POS_clean.csv", sep=";", encoding="UTF-8", index=False)
@@ -350,7 +380,7 @@ def msp_to_csv(clean_msp_path):
     # NEG
     NEG_DIR = os.path.join(clean_msp_path, "FINAL_NEG")
 
-    dictionary = {"file_name": [], "PEAKS_LIST": []}
+    dictionary = {"PEAKS_LIST": []}
 
     first = True
 
@@ -362,18 +392,18 @@ def msp_to_csv(clean_msp_path):
             spectrum_list = msp_file.split("\n\n")  # une liste de spectres
 
             for spectrum in spectrum_list:
-                fields = re.findall(r"(.+?):(.*)", spectrum)
-                if first == True:
-                    for element in fields:
-                        dictionary[element[0]] = []
-                    first = False
+                if spectrum != "\n":
+                    fields = re.findall(r"(.+?):(.*)", spectrum)
+                    if first == True:
+                        for element in fields:
+                            dictionary[element[0]] = []
+                        first = False
 
-                if first == False:
-                    for element in fields:
-                        dictionary[element[0]].append(element[1])
+                    if first == False:
+                        for element in fields:
+                            dictionary[element[0]].append(element[1])
 
-                dictionary["file_name"].append("POS_clean.msp")
-                dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
+                    dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
 
     NEG_df = pd.DataFrame.from_dict(dictionary)
     NEG_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_clean.csv", sep=";", encoding="UTF-8", index=False)
