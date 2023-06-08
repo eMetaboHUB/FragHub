@@ -21,11 +21,9 @@ def json_to_msp(json_path):
 
             data = [json.loads(line) for line in lines]  # returns JSON object as a list of dictionary
 
-            SPECTRUM = ""  # Creating empty spectrum string
-
-            SPECTRUM = SPECTRUM + "FILENAME: " + file_name + "\n"
-
             for spectras in data:  # Creating spectrum to msp format from json format
+                SPECTRUM = ""  # Creating empty spectrum string
+                SPECTRUM = SPECTRUM + "FILENAME: " + file_name + "\n"
                 for key, value in spectras.items():
                     if key != "peaks":
                         SPECTRUM = SPECTRUM + key + ": " + str(value) + "\n"
@@ -33,7 +31,6 @@ def json_to_msp(json_path):
                         SPECTRUM = SPECTRUM + "num peaks: " + str(len(spectras["peaks"])) + "\n"
                         for fragments in spectras["peaks"]:
                             SPECTRUM = SPECTRUM + str(fragments[0]) + " " + str(fragments[1]) + "\n"
-                SPECTRUM = SPECTRUM + "\n\n"
 
                 FINAL_JSON.extend([SPECTRUM])
 
@@ -221,7 +218,6 @@ def convert_to_msp(input_path):
     for files in os.listdir(json_path):
         if files.endswith(".json"):
             json_to_do = True
-            break
     if json_to_do == True:
         FINAL_JSON = json_to_msp(json_path)
 
@@ -233,7 +229,6 @@ def convert_to_msp(input_path):
     for files in os.listdir(xml_path):
         if files.endswith(".xml"):
             xml_to_do = True
-            break
     if xml_to_do == True:
         FINAL_XML = xml_to_msp(xml_path)
 
@@ -268,7 +263,8 @@ def harmonize_fields_names(spectrum):
         expected_fields = ["SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","COMPOUNDNAME","SPECTRUMID","ADDUCT","MSLEVEL",
                            "INSTRUMENTTYPE","IONMODE","COLLISIONENERGY","PARENTMASS","PRECURSORMZ","CHARGE","NUM PEAKS","PREDICTED","RETENTIONTIME","FILENAME"]
 
-        spectrum = re.sub("PRECURSOR_MZ","PRECURSORMZ",spectrum,flags=re.I)
+        spectrum = re.sub("COMPOUND_NAME","COMPOUNDNAME",spectrum,flags=re.I)
+        spectrum = re.sub("PRECURSOR_MZ", "PRECURSORMZ", spectrum, flags=re.I)
         spectrum = re.sub("INCHIKEY: \n", "INCHIKEY: None\n", spectrum)
         spectrum = re.sub("((^|\n)(.*?):) \n", "\n",spectrum)
         spectrum = re.sub("\n{2,}", "\n", spectrum)
