@@ -322,21 +322,38 @@ def harmonize_retention_time(spectrum):
             RT = re.search("((^|\n)(RETENTIONTIME:)) (.*)\n", spectrum).group(4)
             try:
                 RT_test = float(RT)
+                return spectrum
             except:
                 spectrum = re.sub("((^|\n)(RETENTIONTIME:)) (.*)\n", "\nRETENTIONTIME: None\n", spectrum)
-
-    return spectrum
+                return spectrum
 
 def harmonize_ms_level(spectrum):
-    spectrum = re.sub("MSLEVEL: MS1","MSLEVEL: 1",spectrum,flags=re.I)
-    spectrum = re.sub("MSLEVEL: MS2", "MSLEVEL: 2", spectrum,flags=re.I)
+    if spectrum != None:
+        spectrum = re.sub("MSLEVEL: MS1","MSLEVEL: 1",spectrum,flags=re.I)
+        spectrum = re.sub("MSLEVEL: MS2", "MSLEVEL: 2", spectrum,flags=re.I)
 
     return spectrum
+
+# def harmonize_collisionenergy(spectrum):
+#     if spectrum != None:
+#         if re.search("(^|\n)(COLLISIONENERGY:) ([0-9]*)([a-zA-Z]*)\n", spectrum):
+#             collisionenergy =  re.search("(^|\n)(COLLISIONENERGY:) ([0-9]*)([a-zA-Z]*)\n", spectrum)
+#             if collisionenergy.group(3) == '':
+#                 return spectrum
+#             elif collisionenergy.group(3).isnumeric():
+#                 if collisionenergy.group(4) == '':
+#                     return spectrum
+#                 elif collisionenergy.group(4).isalpha():
+#                     # TO BE CONTINUED ...
+#
+#
+#     return spectrum
 
 def harmonize_fields_values(spectrum):
     spectrum = harmonize_adduct(spectrum)
     spectrum = harmonize_retention_time(spectrum)
     spectrum = harmonize_ms_level(spectrum)
+    # harmonize_collisionenergy(spectrum)
 
     return spectrum
 
