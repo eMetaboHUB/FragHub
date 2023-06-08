@@ -6,6 +6,7 @@
 
 To install all dependencies, double click on "Install.bat".<br>
 NB: Make sure that python is in the path variables.
+Copie the 'known_key_conversions.csv' into the folder 'data' of matchms installation. Replace it.
 
 ## USE
 
