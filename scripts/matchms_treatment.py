@@ -13,7 +13,8 @@ import os
 
 def matchms_spectrum_to_str_msp(spectrum,file_name):
     if spectrum is not None:
-        SPECTRUM = "FILENAME: " + file_name + "\n"
+        if "FILENAME" not in  spectrum.metadata.keys():
+            SPECTRUM = "FILENAME: " + file_name + "\n"
         for key, value in spectrum.metadata.items():
             if not (key.lower().startswith("num peaks") or key.lower().startswith("num_peaks") or key.lower().startswith("peak_comments")):
                 SPECTRUM += f"{key.upper()}: {value}\n"

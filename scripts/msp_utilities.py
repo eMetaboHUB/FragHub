@@ -23,6 +23,8 @@ def json_to_msp(json_path):
 
             SPECTRUM = ""  # Creating empty spectrum string
 
+            SPECTRUM = SPECTRUM + "FILENAME: " + file_name + "\n"
+
             for spectras in data:  # Creating spectrum to msp format from json format
                 for key, value in spectras.items():
                     if key != "peaks":
@@ -194,15 +196,18 @@ def xml_to_msp(xml_path):
             for mass_charge, intensity in zip(peak_list[0], peak_list[1]):
                 specrta_dict_final["peak_list"] = specrta_dict_final["peak_list"] + mass_charge[0] + " " + intensity[0] + "\n"
 
-            MSP = ""
+            SPECTRUM = ""
+
+            SPECTRUM = SPECTRUM + "FILENAME: " + file_name + "\n"
+
             for key, value in specrta_dict_final.items():
                 if key == "peak_list":
-                    MSP = MSP + "NUM PEAKS: " + str(len(peak_list[0])) + "\n"
-                    MSP = MSP + str(specrta_dict_final[key])
+                    SPECTRUM = SPECTRUM + "NUM PEAKS: " + str(len(peak_list[0])) + "\n"
+                    SPECTRUM = SPECTRUM + str(specrta_dict_final[key])
                 else:
-                    MSP = MSP + key + ": " + str(specrta_dict_final[key]) + "\n"
+                    SPECTRUM = SPECTRUM + key + ": " + str(specrta_dict_final[key]) + "\n"
 
-            FINAL_XML.extend([MSP])
+            FINAL_XML.extend([SPECTRUM])
 
     return FINAL_XML
 
