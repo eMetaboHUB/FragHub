@@ -288,7 +288,7 @@ def harmonize_fields_names(spectrum):
 
 def harmonize_adduct(spectrum):
     if spectrum != None:
-        if re.search(f"((^|\n)(ADDUCT:)) (.*)\n",spectrum):
+        if re.search("((^|\n)(ADDUCT:)) (.*)\n",spectrum):
             adduct = re.search("((^|\n)(ADDUCT:)) (.*)\n",spectrum).group(4)
             if adduct != "None":
                 if "[" not in adduct or "]" not in adduct:
@@ -316,10 +316,30 @@ def harmonize_adduct(spectrum):
     else:
         return spectrum
 
-def harmonize_fields_values(spectrum):
-    spectrum = harmonize_adduct(spectrum)
+def harmonize_retention_time(spectrum):
+    if spectrum != None:
+        if re.search("(^|\n)(RETENTIONTIME:) (.*)\n",spectrum):
+            RT = re.search("((^|\n)(RETENTIONTIME:)) (.*)\n", spectrum).group(4)
+            try:
+                RT_test = float(RT)
+            except:
+                spectrum = re.sub("((^|\n)(RETENTIONTIME:)) (.*)\n", "\nRETENTIONTIME: None\n", spectrum)
 
     return spectrum
+
+def harmonize_ms_level(spectrum):
+    spectrum = re.sub("MSLEVEL: MS1","MSLEVEL: 1",spectrum,flags=re.I)
+    spectrum = re.sub("MSLEVEL: MS2", "MSLEVEL: 2", spectrum,flags=re.I)
+
+    return spectrum
+
+def harmonize_fields_values(spectrum):
+    spectrum = harmonize_adduct(spectrum)
+    spectrum = harmonize_retention_time(spectrum)
+    spectrum = harmonize_ms_level(spectrum)
+
+    return spectrum
+
 
 def msp_to_csv(clean_msp_path):
     # POS
