@@ -286,6 +286,41 @@ def harmonize_fields_names(spectrum):
 
         return spectrum
 
+def harmonize_adduct(spectrum):
+    if spectrum != None:
+        if re.search(f"((^|\n)(ADDUCT:)) (.*)\n",spectrum):
+            adduct = re.search("((^|\n)(ADDUCT:)) (.*)\n",spectrum).group(4)
+            if adduct != "None":
+                if "[" not in adduct or "]" not in adduct:
+                    if re.search("((^|\n)(IONMODE:)) (.*)\n",spectrum):
+                        ionmode = re.search("((^|\n)(IONMODE:)) (.*)\n",spectrum).group(4)
+                        if ionmode != "None":
+                            if ionmode.lower().startswith("p"):
+                                adduct = "["+adduct+"]"+"+\n"
+                                spectrum = re.sub("(^|\n)(ADDUCT:) (.*)\n",f"\nADDUCT: {adduct}",spectrum)
+                                return spectrum
+                            elif ionmode.lower().startswith("n"):
+                                adduct = "[" + adduct + "]" + "-\n"
+                                spectrum = re.sub("((^|\n)(ADDUCT:)) (.*)\n", f"\nADDUCT: {adduct}", spectrum)
+                                return spectrum
+                        else:
+                            return spectrum
+                    else:
+                        return spectrum
+                else:
+                    return spectrum
+            else:
+                return spectrum
+        else:
+            return spectrum
+    else:
+        return spectrum
+
+def harmonize_fields_values(spectrum):
+    spectrum = harmonize_adduct(spectrum)
+
+    return spectrum
+
 def msp_to_csv(clean_msp_path):
     # POS
     POS_DIR = os.path.join(clean_msp_path, "FINAL_POS")

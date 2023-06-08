@@ -56,6 +56,8 @@ def multithreaded_matchms(spectrum,file_name):
 
     spectrum = matchms_spectrum_to_str_msp(spectrum,file_name)
     spectrum = harmonize_fields_names(spectrum)
+    # Harmonize values here ...
+    spectrum = harmonize_fields_values(spectrum)
 
     return spectrum
 
