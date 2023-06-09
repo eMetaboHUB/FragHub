@@ -334,26 +334,32 @@ def harmonize_ms_level(spectrum):
 
     return spectrum
 
-# def harmonize_collisionenergy(spectrum):
-#     if spectrum != None:
-#         if re.search("(^|\n)(COLLISIONENERGY:) ([0-9]*)([a-zA-Z]*)\n", spectrum):
-#             collisionenergy =  re.search("(^|\n)(COLLISIONENERGY:) ([0-9]*)([a-zA-Z]*)\n", spectrum)
-#             if collisionenergy.group(3) == '':
-#                 return spectrum
-#             elif collisionenergy.group(3).isnumeric():
-#                 if collisionenergy.group(4) == '':
-#                     return spectrum
-#                 elif collisionenergy.group(4).isalpha():
-#                     # TO BE CONTINUED ...
-#
-#
-#     return spectrum
+def harmonize_collisionenergy(spectrum):
+    if spectrum != None:
+        if re.search("(^|\n)(COLLISIONENERGY:) ([0-9]*)((?:\()?)([a-zA-Z]*)((?:\))?)\n", spectrum):
+            collisionenergy =  re.search("(^|\n)(COLLISIONENERGY:) ([0-9]*)((?:\()?)([a-zA-Z]*)((?:\))?)\n", spectrum)
+            if collisionenergy.group(3) == '':
+                return spectrum
+            elif collisionenergy.group(3).isnumeric():
+                if collisionenergy.group(5) == '':
+                    return spectrum
+                elif collisionenergy.group(5).isalpha():
+                    fragmentation = collisionenergy.group(5)
+                    # deleting alpha caracters
+                    spectrum = re.sub("(^|\n)(COLLISIONENERGY:) ([0-9]*)((?:\()?)([a-zA-Z]*)((?:\))?)\n",f"\nCOLLISIONENERGY: {collisionenergy.group(3)}\n",spectrum)
+                    # check if fragmentation mode already exist
+                    if re.search("(^|\n)(FRAGMENTATIONMODE:) (.*)\n", spectrum):
+                        fragmentationmode = re.search("(^|\n)(FRAGMENTATIONMODE:) (.*)\n", spectrum).group(3)
+                        if fragmentationmode == "None":
+                            spectrum = re.sub("FRAGMENTATIONMODE: None",f"FRAGMENTATIONMODE: {fragmentation}",spectrum)
+
+    return spectrum
 
 def harmonize_fields_values(spectrum):
     spectrum = harmonize_adduct(spectrum)
     spectrum = harmonize_retention_time(spectrum)
     spectrum = harmonize_ms_level(spectrum)
-    # harmonize_collisionenergy(spectrum)
+    spectrum = harmonize_collisionenergy(spectrum)
 
     return spectrum
 
