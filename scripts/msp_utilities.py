@@ -311,12 +311,10 @@ def harmonize_adduct(spectrum):
                 elif re.search("((ADDUCT:)) ((.*\+)\*)\n",spectrum):
                     adduct = re.search("((ADDUCT:)) ((.*\+)\*)\n", spectrum).group(4)
                     spectrum = re.sub("((ADDUCT:)) ((.*\+)\*)\n",f"ADDUCT: {adduct}\n",spectrum)
-                    print(spectrum)
                     return spectrum
                 elif re.search("((ADDUCT:)) ((.*\-)\*)\n",spectrum):
                     adduct = re.search("((ADDUCT:)) ((.*\-)\*)\n", spectrum).group(4)
                     spectrum = re.sub("((ADDUCT:)) ((.*\-)\*)\n",f"ADDUCT: {adduct}\n",spectrum)
-                    print(spectrum)
                     return spectrum
                 else:
                     return spectrum
@@ -329,7 +327,10 @@ def harmonize_adduct(spectrum):
 
 def harmonize_retention_time(spectrum):
     if spectrum != None:
-        if re.search("(^|\n)(RETENTIONTIME:) (.*)\n",spectrum):
+        if re.search("RETENTIONTIME: 0\n",spectrum):
+            spectrum = re.sub("RETENTIONTIME: 0\n", "RETENTIONTIME: None\n", spectrum)
+            return spectrum
+        elif re.search("(^|\n)(RETENTIONTIME:) (.*)\n",spectrum):
             RT = re.search("((^|\n)(RETENTIONTIME:)) (.*)\n", spectrum).group(4)
             try:
                 RT_test = float(RT)
@@ -391,6 +392,13 @@ def harmonize_formula(spectrum):
 
     return spectrum
 
+def harmonize_empties(spectrum):
+    if spectrum != None:
+        if re.search(": \n",spectrum):
+            spectrum = re.sub(": \n",": None\n",spectrum)
+    return spectrum
+
+
 def harmonize_fields_values(spectrum):
     spectrum = harmonize_adduct(spectrum)
     spectrum = harmonize_retention_time(spectrum)
@@ -398,6 +406,7 @@ def harmonize_fields_values(spectrum):
     # spectrum = harmonize_collisionenergy(spectrum)
     spectrum = harmonize_syns(spectrum)
     spectrum = harmonize_formula(spectrum)
+    spectrum = harmonize_empties(spectrum)
 
     return spectrum
 
