@@ -398,8 +398,29 @@ def harmonize_empties(spectrum):
             spectrum = re.sub(": \n",": None\n",spectrum)
     return spectrum
 
+def predicted_correction(spectrum):
+    if spectrum != None:
+        if re.search("in-silico|insilico",spectrum,flags=re.I):
+            spectrum = re.sub("PREDICTED: .*\n","PREDICTED: true\n",spectrum)
+    return spectrum
+
+def remove_no_inchikey(spectrum):
+    if spectrum != None:
+        if re.search("INCHIKEY: \n|INCHIKEY: None\n",spectrum):
+            return None
+        else:
+            return spectrum
+
+def remove_no_mass(spectrum):
+    if spectrum != None:
+        if re.search("PRECURSORMZ: \n|PRECURSORMZ: None\n",spectrum):
+            return None
+        else:
+            return spectrum
 
 def harmonize_fields_values(spectrum):
+    spectrum = remove_no_inchikey(spectrum)
+    spectrum = remove_no_mass(spectrum)
     spectrum = harmonize_adduct(spectrum)
     spectrum = harmonize_retention_time(spectrum)
     spectrum = harmonize_ms_level(spectrum)
@@ -407,6 +428,7 @@ def harmonize_fields_values(spectrum):
     spectrum = harmonize_syns(spectrum)
     spectrum = harmonize_formula(spectrum)
     spectrum = harmonize_empties(spectrum)
+    # spectrum = predicted_correction(spectrum)
 
     return spectrum
 
