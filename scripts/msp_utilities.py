@@ -308,6 +308,16 @@ def harmonize_adduct(spectrum):
                             return spectrum
                     else:
                         return spectrum
+                elif re.search("((ADDUCT:)) ((.*\+)\*)\n",spectrum):
+                    adduct = re.search("((ADDUCT:)) ((.*\+)\*)\n", spectrum).group(4)
+                    spectrum = re.sub("((ADDUCT:)) ((.*\+)\*)\n",f"ADDUCT: {adduct}\n",spectrum)
+                    print(spectrum)
+                    return spectrum
+                elif re.search("((ADDUCT:)) ((.*\-)\*)\n",spectrum):
+                    adduct = re.search("((ADDUCT:)) ((.*\-)\*)\n", spectrum).group(4)
+                    spectrum = re.sub("((ADDUCT:)) ((.*\-)\*)\n",f"ADDUCT: {adduct}\n",spectrum)
+                    print(spectrum)
+                    return spectrum
                 else:
                     return spectrum
             else:
@@ -330,11 +340,13 @@ def harmonize_retention_time(spectrum):
 
 def harmonize_ms_level(spectrum):
     if spectrum != None:
+        spectrum = re.sub("MSLEVEL: MS\n", "MSLEVEL: 1\n", spectrum, flags=re.I)
         spectrum = re.sub("MSLEVEL: MS1","MSLEVEL: 1", spectrum,flags=re.I)
         spectrum = re.sub("MSLEVEL: MS2", "MSLEVEL: 2", spectrum,flags=re.I)
         spectrum = re.sub("MSLEVEL: MS3", "MSLEVEL: 3", spectrum, flags=re.I)
         spectrum = re.sub("MSLEVEL: MS4", "MSLEVEL: 4", spectrum, flags=re.I)
         spectrum = re.sub("MSLEVEL: 2-MS4 Composite", "MSLEVEL: 4", spectrum, flags=re.I)
+        spectrum = re.sub("MSLEVEL: 2-MS5 Composite", "MSLEVEL: 5", spectrum, flags=re.I)
 
     return spectrum
 
@@ -359,12 +371,33 @@ def harmonize_collisionenergy(spectrum):
 
     return spectrum
 
+def harmonize_syns(spectrum):
+    if spectrum != None:
+        if re.search("\$:00in-source",spectrum):
+            spectrum = re.sub("\$:00in-source","None",spectrum)
+
+    return spectrum
+
+def harmonize_formula(spectrum):
+    if spectrum != None:
+        if re.search("FORMULA: \[(.*)\](\+|-)\n",spectrum):
+            FORMULA = re.search("FORMULA: \[(.*)\](\+|-)\n",spectrum).group(1)
+            spectrum = re.sub("FORMULA: (.*)\n",f"FORMULA: {FORMULA}\n",spectrum)
+        elif re.search("FORMULA: (.*)(\+|-)\n",spectrum):
+            FORMULA = re.search("FORMULA: (.*)(\+|-)\n",spectrum).group(1)
+            spectrum = re.sub("FORMULA: (.*)\n", f"FORMULA: {FORMULA}\n",spectrum)
+        elif re.search(r"FORMULA: N\\A",spectrum,flags=re.I):
+            spectrum = re.sub(r"FORMULA: N\\A", "FORMULA: None", spectrum, flags=re.I)
+
+    return spectrum
 
 def harmonize_fields_values(spectrum):
     spectrum = harmonize_adduct(spectrum)
     spectrum = harmonize_retention_time(spectrum)
     spectrum = harmonize_ms_level(spectrum)
     # spectrum = harmonize_collisionenergy(spectrum)
+    spectrum = harmonize_syns(spectrum)
+    spectrum = harmonize_formula(spectrum)
 
     return spectrum
 
