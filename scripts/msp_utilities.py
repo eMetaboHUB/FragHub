@@ -271,11 +271,12 @@ def harmonize_fields_names(spectrum):
         fields = re.finditer("(^|\n)(.*?):",spectrum)
         fields_names = [matche.group(2) for matche in fields]
 
+
         # Remove undesired punctuation
         for field in fields_names:
-            spectrum = spectrum.replace(field,re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field))
+            spectrum = spectrum.replace(field,re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~|\+","",field))
 
-        fields_names = [re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field) for field in fields_names]
+        fields_names = [re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~|\+","",field) for field in fields_names]
 
         for field in fields_names:
             if field not in expected_fields: # Si champ dans le spectre pas voulu, on le supprime
@@ -329,24 +330,27 @@ def harmonize_retention_time(spectrum):
 
 def harmonize_ms_level(spectrum):
     if spectrum != None:
-        spectrum = re.sub("MSLEVEL: MS1","MSLEVEL: 1",spectrum,flags=re.I)
+        spectrum = re.sub("MSLEVEL: MS1","MSLEVEL: 1", spectrum,flags=re.I)
         spectrum = re.sub("MSLEVEL: MS2", "MSLEVEL: 2", spectrum,flags=re.I)
+        spectrum = re.sub("MSLEVEL: MS3", "MSLEVEL: 3", spectrum, flags=re.I)
+        spectrum = re.sub("MSLEVEL: MS4", "MSLEVEL: 4", spectrum, flags=re.I)
+        spectrum = re.sub("MSLEVEL: 2-MS4 Composite", "MSLEVEL: 4", spectrum, flags=re.I)
 
     return spectrum
 
 def harmonize_collisionenergy(spectrum):
     if spectrum != None:
-        if re.search("(^|\n)(COLLISIONENERGY:) ([0-9]*)((?:\()?)([a-zA-Z]*)((?:\))?)\n", spectrum):
-            collisionenergy =  re.search("(^|\n)(COLLISIONENERGY:) ([0-9]*)((?:\()?)([a-zA-Z]*)((?:\))?)\n", spectrum)
+        if re.search("(^|\n)(COLLISIONENERGY:) ([0-9]*)((?: )?)((?:\()?)([a-zA-Z]*)((?:\))?)\n", spectrum):
+            collisionenergy =  re.search("(^|\n)(COLLISIONENERGY:) ([0-9]*)((?: )?)((?:\()?)([a-zA-Z]*)((?:\))?)\n", spectrum)
             if collisionenergy.group(3) == '':
                 return spectrum
             elif collisionenergy.group(3).isnumeric():
-                if collisionenergy.group(5) == '':
+                if collisionenergy.group(6) == '':
                     return spectrum
-                elif collisionenergy.group(5).isalpha():
-                    fragmentation = collisionenergy.group(5)
+                elif collisionenergy.group(6).isalpha():
+                    fragmentation = collisionenergy.group(6)
                     # deleting alpha caracters
-                    spectrum = re.sub("(^|\n)(COLLISIONENERGY:) ([0-9]*)((?:\()?)([a-zA-Z]*)((?:\))?)\n",f"\nCOLLISIONENERGY: {collisionenergy.group(3)}\n",spectrum)
+                    spectrum = re.sub("(^|\n)(COLLISIONENERGY:) ([0-9]*)((?: )?)((?:\()?)([a-zA-Z]*)((?:\))?)\n",f"\nCOLLISIONENERGY: {collisionenergy.group(3)}\n",spectrum)
                     # check if fragmentation mode already exist
                     if re.search("(^|\n)(FRAGMENTATIONMODE:) (.*)\n", spectrum):
                         fragmentationmode = re.search("(^|\n)(FRAGMENTATIONMODE:) (.*)\n", spectrum).group(3)
@@ -355,14 +359,23 @@ def harmonize_collisionenergy(spectrum):
 
     return spectrum
 
+
 def harmonize_fields_values(spectrum):
     spectrum = harmonize_adduct(spectrum)
     spectrum = harmonize_retention_time(spectrum)
     spectrum = harmonize_ms_level(spectrum)
-    spectrum = harmonize_collisionenergy(spectrum)
+    # spectrum = harmonize_collisionenergy(spectrum)
 
     return spectrum
 
+def correct_uncomplete_charge(msp_path):
+    with open(msp_path, "r", encoding="UTF-8") as msp_buffer:
+        content = msp_buffer.read()
+
+    content = re.sub("charge: -\n","charge: -1\n",content,flags=re.I)
+
+    with open(msp_path, "w", encoding="UTF-8") as msp_buffer:
+        msp_buffer.write(content)
 
 def msp_to_csv(clean_msp_path):
     # POS

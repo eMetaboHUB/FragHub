@@ -47,6 +47,8 @@ if __name__ == "__main__":
             msp_path = os.path.join(msp_dir, files)
             file_name = os.path.basename(msp_path.replace(".msp", ""))
 
+            correct_uncomplete_charge(msp_path)
+
             # STEP 3: Execute multithreaded matchms
             spectrum_list = list(load_from_msp(msp_path))
             results = matchms_treatment(spectrum_list,file_name)
