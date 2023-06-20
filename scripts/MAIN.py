@@ -63,6 +63,10 @@ if __name__ == "__main__":
 
     POS, NEG = split_pos_neg(CONCATENATE_LIST)
 
+    # STEP 5: Remove duplicates spectrum when same peak_list for the same inchikey.
+    POS, NEG = remove_duplicatas(POS, NEG)
+
+
     POS_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS))
     NEG_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG))
 
