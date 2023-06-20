@@ -32,6 +32,20 @@ def json_to_msp(json_path):
 
     return FINAL_JSON
 
+def complete_HMDB(specrta_dict):
+    HMDB_df = pd.read_csv("../datas/HMDB.csv",sep=";",encoding="UTF-8")
+    HMDB_ID = specrta_dict["database-id"] # hmdb id retrieval for csv matching
+
+    line = HMDB_df.loc[HMDB_df['EXTERNAL_ID'] == HMDB_ID]
+
+    specrta_dict["inchikey"] = line["INCHIKEY"].values[0]
+    specrta_dict["smiles"] = line["SMILES"].values[0]
+    specrta_dict["inchi"] = line["INCHI"].values[0]
+    specrta_dict["formula"] = line["MOLECULAR_FORMULA"].values[0]
+    specrta_dict["PRECURSORMZ"] = line["ACC_MASS"].values[0]
+
+    return specrta_dict
+
 def xml_to_msp(xml_path):
     FINAL_XML = []
     for files in os.listdir(xml_path):
@@ -184,10 +198,18 @@ def xml_to_msp(xml_path):
                     specrta_dict_final[key] = specrta_dict[key][0]
 
             # Starting to write information from xml to msp format
+            specrta_dict_final["inchikey"] = ""
+            specrta_dict_final["smiles"] = ""
+            specrta_dict_final["inchi"] = ""
+            specrta_dict_final["formula"] = ""
+            specrta_dict_final["PRECURSORMZ"] = ""
             specrta_dict_final["peak_list"] = ""
 
             for mass_charge, intensity in zip(peak_list[0], peak_list[1]):
                 specrta_dict_final["peak_list"] = specrta_dict_final["peak_list"] + mass_charge[0] + " " + intensity[0] + "\n"
+
+            # complete HMDB spectrum with PKON23 datas
+            specrta_dict_final = complete_HMDB(specrta_dict_final)
 
             SPECTRUM = ""
 
