@@ -13,7 +13,10 @@ import os
 
 def matchms_spectrum_to_str_msp(spectrum,file_name):
     if spectrum is not None:
-        SPECTRUM = "FILENAME: " + file_name + "\n"
+        if "filename" not in  spectrum.metadata.keys():
+            SPECTRUM = "FILENAME: " + file_name + "\n"
+        else:
+            SPECTRUM = ""
         for key, value in spectrum.metadata.items():
             if not (key.lower().startswith("num peaks") or key.lower().startswith("num_peaks") or key.lower().startswith("peak_comments")):
                 SPECTRUM += f"{key.upper()}: {value}\n"
@@ -52,7 +55,10 @@ def multithreaded_matchms(spectrum,file_name):
     spectrum = msfilters.require_minimum_number_of_peaks(spectrum, n_required=3)
 
     spectrum = matchms_spectrum_to_str_msp(spectrum,file_name)
+
     spectrum = harmonize_fields_names(spectrum)
+    
+    spectrum = harmonize_fields_values(spectrum)
 
     return spectrum
 
