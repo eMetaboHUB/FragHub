@@ -422,6 +422,25 @@ def remove_no_mass(spectrum):
         else:
             return spectrum
 
+def harmonize_db_informations(spectrum):
+    if spectrum != None:
+        # GNPS CAS
+        if re.search("(DB#=(.*)(;|,)((?: )?)(origin=(.*)))",spectrum):
+            matche = re.search("(DB#=(.*)(;|,)((?: )?)(origin=(.*)))",spectrum)
+            spectrum_id = matche.group(2)
+            # adding spectrum id
+            spectrum = re.sub("SPECTRUMID: None\n",f"SPECTRUMID: {spectrum_id}\n",spectrum)
+        # MSMS CAS
+        elif re.search("(spec_id=(.*)(;|,)((?: )?)(origin=(.*)))", spectrum):
+            matche = re.search("(spec_id=(.*)(;|,)((?: )?)(origin=(.*)))", spectrum)
+            spectrum_id = matche.group(2)
+            # adding spectrum id
+            spectrum = re.sub("SPECTRUMID: None\n", f"SPECTRUMID: {spectrum_id}\n", spectrum)
+
+    return spectrum
+
+
+
 def harmonize_fields_values(spectrum):
     spectrum = remove_no_inchikey(spectrum)
     spectrum = remove_no_mass(spectrum)
@@ -434,6 +453,7 @@ def harmonize_fields_values(spectrum):
     spectrum = harmonize_formula(spectrum)
     spectrum = harmonize_empties(spectrum)
     spectrum = predicted_correction(spectrum)
+    spectrum = harmonize_db_informations(spectrum)
 
     return spectrum
 
