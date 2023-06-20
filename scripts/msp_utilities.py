@@ -2,14 +2,10 @@ from bs4 import BeautifulSoup as bs
 import concurrent.futures
 import pandas as pd
 import numpy as np
-import threading
 import json
 import lxml
 import re
 import os
-
-file_lock = threading.Lock()
-
 
 def json_to_msp(json_path):
     FINAL_JSON = []
@@ -207,7 +203,6 @@ def xml_to_msp(xml_path):
             FINAL_XML.extend([SPECTRUM])
 
     return FINAL_XML
-
 
 def convert_to_msp(input_path):
     # JSON
@@ -438,8 +433,6 @@ def harmonize_db_informations(spectrum):
             spectrum = re.sub("SPECTRUMID: None\n", f"SPECTRUMID: {spectrum_id}\n", spectrum)
 
     return spectrum
-
-
 
 def harmonize_fields_values(spectrum):
     spectrum = remove_no_inchikey(spectrum)
