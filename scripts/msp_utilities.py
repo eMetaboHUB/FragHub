@@ -189,6 +189,9 @@ def xml_to_msp(xml_path):
             for mass_charge, intensity in zip(peak_list[0], peak_list[1]):
                 specrta_dict_final["peak_list"] = specrta_dict_final["peak_list"] + mass_charge[0] + " " + intensity[0] + "\n"
 
+            # complete HMDB spectrum with PKON23 datas
+            specrta_dict_final = complete_HMDB(specrta_dict_final)
+
             SPECTRUM = ""
 
             SPECTRUM = SPECTRUM + "FILENAME: " + file_name + "\n"
@@ -203,6 +206,9 @@ def xml_to_msp(xml_path):
             FINAL_XML.extend([SPECTRUM])
 
     return FINAL_XML
+
+def complete_HMDB(specrta_dict):
+
 
 def convert_to_msp(input_path):
     # JSON
