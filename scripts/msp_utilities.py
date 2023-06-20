@@ -444,7 +444,6 @@ def harmonize_db_informations(spectrum):
 def harmonize_fields_values(spectrum):
     spectrum = remove_no_inchikey(spectrum)
     spectrum = remove_no_mass(spectrum)
-    # SUPPRESION DOUBLONS A FAIRE ICI
     spectrum = harmonize_adduct(spectrum)
     spectrum = harmonize_retention_time(spectrum)
     spectrum = harmonize_ms_level(spectrum)
