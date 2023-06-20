@@ -403,7 +403,6 @@ def predicted_correction(spectrum):
         temp_spectrum = re.sub("FILENAME: (.*)\n", "", spectrum)
         temp_spectrum = re.sub("PREDICTED: (.*)\n", "", temp_spectrum)
         if re.search("in-silico|insilico|predicted",temp_spectrum,flags=re.I):
-            print(temp_spectrum)
             spectrum = re.sub("PREDICTED: .*\n","PREDICTED: true\n",spectrum)
         else:
             spectrum = re.sub("PREDICTED: .*\n", "PREDICTED: false\n", spectrum)
@@ -426,6 +425,7 @@ def remove_no_mass(spectrum):
 def harmonize_fields_values(spectrum):
     spectrum = remove_no_inchikey(spectrum)
     spectrum = remove_no_mass(spectrum)
+    # SUPPRESION DOUBLONS A FAIRE ICI
     spectrum = harmonize_adduct(spectrum)
     spectrum = harmonize_retention_time(spectrum)
     spectrum = harmonize_ms_level(spectrum)
