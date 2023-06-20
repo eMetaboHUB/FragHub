@@ -400,8 +400,13 @@ def harmonize_empties(spectrum):
 
 def predicted_correction(spectrum):
     if spectrum != None:
-        if re.search("in-silico|insilico",spectrum,flags=re.I):
+        temp_spectrum = re.sub("FILENAME: (.*)\n", "", spectrum)
+        temp_spectrum = re.sub("PREDICTED: (.*)\n", "", temp_spectrum)
+        if re.search("in-silico|insilico|predicted",temp_spectrum,flags=re.I):
+            print(temp_spectrum)
             spectrum = re.sub("PREDICTED: .*\n","PREDICTED: true\n",spectrum)
+        else:
+            spectrum = re.sub("PREDICTED: .*\n", "PREDICTED: false\n", spectrum)
     return spectrum
 
 def remove_no_inchikey(spectrum):
@@ -428,7 +433,7 @@ def harmonize_fields_values(spectrum):
     spectrum = harmonize_syns(spectrum)
     spectrum = harmonize_formula(spectrum)
     spectrum = harmonize_empties(spectrum)
-    # spectrum = predicted_correction(spectrum)
+    spectrum = predicted_correction(spectrum)
 
     return spectrum
 
