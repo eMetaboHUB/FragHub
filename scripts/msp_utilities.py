@@ -271,11 +271,12 @@ def harmonize_fields_names(spectrum):
         fields = re.finditer("(^|\n)(.*?):",spectrum)
         fields_names = [matche.group(2) for matche in fields]
 
+
         # Remove undesired punctuation
         for field in fields_names:
-            spectrum = spectrum.replace(field,re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field))
+            spectrum = spectrum.replace(field,re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~|\+","",field))
 
-        fields_names = [re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~","",field) for field in fields_names]
+        fields_names = [re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~|\+","",field) for field in fields_names]
 
         for field in fields_names:
             if field not in expected_fields: # Si champ dans le spectre pas voulu, on le supprime
@@ -285,6 +286,165 @@ def harmonize_fields_names(spectrum):
                 spectrum = field+": None\n"+spectrum
 
         return spectrum
+
+def harmonize_adduct(spectrum):
+    if spectrum != None:
+        if re.search("((^|\n)(ADDUCT:)) (.*)\n",spectrum):
+            adduct = re.search("((^|\n)(ADDUCT:)) (.*)\n",spectrum).group(4)
+            if adduct != "None":
+                if "[" not in adduct or "]" not in adduct:
+                    if re.search("((^|\n)(IONMODE:)) (.*)\n",spectrum):
+                        ionmode = re.search("((^|\n)(IONMODE:)) (.*)\n",spectrum).group(4)
+                        if ionmode != "None":
+                            if ionmode.lower().startswith("p"):
+                                adduct = "["+adduct+"]"+"+\n"
+                                spectrum = re.sub("(^|\n)(ADDUCT:) (.*)\n",f"\nADDUCT: {adduct}",spectrum)
+                                return spectrum
+                            elif ionmode.lower().startswith("n"):
+                                adduct = "[" + adduct + "]" + "-\n"
+                                spectrum = re.sub("((^|\n)(ADDUCT:)) (.*)\n", f"\nADDUCT: {adduct}", spectrum)
+                                return spectrum
+                        else:
+                            return spectrum
+                    else:
+                        return spectrum
+                elif re.search("((ADDUCT:)) ((.*\+)\*)\n",spectrum):
+                    adduct = re.search("((ADDUCT:)) ((.*\+)\*)\n", spectrum).group(4)
+                    spectrum = re.sub("((ADDUCT:)) ((.*\+)\*)\n",f"ADDUCT: {adduct}\n",spectrum)
+                    return spectrum
+                elif re.search("((ADDUCT:)) ((.*\-)\*)\n",spectrum):
+                    adduct = re.search("((ADDUCT:)) ((.*\-)\*)\n", spectrum).group(4)
+                    spectrum = re.sub("((ADDUCT:)) ((.*\-)\*)\n",f"ADDUCT: {adduct}\n",spectrum)
+                    return spectrum
+                else:
+                    return spectrum
+            else:
+                return spectrum
+        else:
+            return spectrum
+    else:
+        return spectrum
+
+def harmonize_retention_time(spectrum):
+    if spectrum != None:
+        if re.search("RETENTIONTIME: 0\n",spectrum):
+            spectrum = re.sub("RETENTIONTIME: 0\n", "RETENTIONTIME: None\n", spectrum)
+            return spectrum
+        elif re.search("(^|\n)(RETENTIONTIME:) (.*)\n",spectrum):
+            RT = re.search("((^|\n)(RETENTIONTIME:)) (.*)\n", spectrum).group(4)
+            try:
+                RT_test = float(RT)
+                return spectrum
+            except:
+                spectrum = re.sub("((^|\n)(RETENTIONTIME:)) (.*)\n", "\nRETENTIONTIME: None\n", spectrum)
+                return spectrum
+
+def harmonize_ms_level(spectrum):
+    if spectrum != None:
+        spectrum = re.sub("MSLEVEL: MS\n", "MSLEVEL: 1\n", spectrum, flags=re.I)
+        spectrum = re.sub("MSLEVEL: MS1","MSLEVEL: 1", spectrum,flags=re.I)
+        spectrum = re.sub("MSLEVEL: MS2", "MSLEVEL: 2", spectrum,flags=re.I)
+        spectrum = re.sub("MSLEVEL: MS3", "MSLEVEL: 3", spectrum, flags=re.I)
+        spectrum = re.sub("MSLEVEL: MS4", "MSLEVEL: 4", spectrum, flags=re.I)
+        spectrum = re.sub("MSLEVEL: 2-MS4 Composite", "MSLEVEL: 4", spectrum, flags=re.I)
+        spectrum = re.sub("MSLEVEL: 2-MS5 Composite", "MSLEVEL: 5", spectrum, flags=re.I)
+
+    return spectrum
+
+def harmonize_collisionenergy(spectrum):
+    if spectrum != None:
+        if re.search("(^|\n)(COLLISIONENERGY:) ([0-9]*)((?: )?)((?:\()?)([a-zA-Z]*)((?:\))?)\n", spectrum):
+            collisionenergy =  re.search("(^|\n)(COLLISIONENERGY:) ([0-9]*)((?: )?)((?:\()?)([a-zA-Z]*)((?:\))?)\n", spectrum)
+            if collisionenergy.group(3) == '':
+                return spectrum
+            elif collisionenergy.group(3).isnumeric():
+                if collisionenergy.group(6) == '':
+                    return spectrum
+                elif collisionenergy.group(6).isalpha():
+                    fragmentation = collisionenergy.group(6)
+                    # deleting alpha caracters
+                    spectrum = re.sub("(^|\n)(COLLISIONENERGY:) ([0-9]*)((?: )?)((?:\()?)([a-zA-Z]*)((?:\))?)\n",f"\nCOLLISIONENERGY: {collisionenergy.group(3)}\n",spectrum)
+                    # check if fragmentation mode already exist
+                    if re.search("(^|\n)(FRAGMENTATIONMODE:) (.*)\n", spectrum):
+                        fragmentationmode = re.search("(^|\n)(FRAGMENTATIONMODE:) (.*)\n", spectrum).group(3)
+                        if fragmentationmode == "None":
+                            spectrum = re.sub("FRAGMENTATIONMODE: None",f"FRAGMENTATIONMODE: {fragmentation}",spectrum)
+
+    return spectrum
+
+def harmonize_syns(spectrum):
+    if spectrum != None:
+        if re.search("\$:00in-source",spectrum):
+            spectrum = re.sub("\$:00in-source","None",spectrum)
+
+    return spectrum
+
+def harmonize_formula(spectrum):
+    if spectrum != None:
+        if re.search("FORMULA: \[(.*)\](\+|-)\n",spectrum):
+            FORMULA = re.search("FORMULA: \[(.*)\](\+|-)\n",spectrum).group(1)
+            spectrum = re.sub("FORMULA: (.*)\n",f"FORMULA: {FORMULA}\n",spectrum)
+        elif re.search("FORMULA: (.*)(\+|-)\n",spectrum):
+            FORMULA = re.search("FORMULA: (.*)(\+|-)\n",spectrum).group(1)
+            spectrum = re.sub("FORMULA: (.*)\n", f"FORMULA: {FORMULA}\n",spectrum)
+        elif re.search(r"FORMULA: N\\A",spectrum,flags=re.I):
+            spectrum = re.sub(r"FORMULA: N\\A", "FORMULA: None", spectrum, flags=re.I)
+
+    return spectrum
+
+def harmonize_empties(spectrum):
+    if spectrum != None:
+        if re.search(": \n",spectrum):
+            spectrum = re.sub(": \n",": None\n",spectrum)
+    return spectrum
+
+def predicted_correction(spectrum):
+    if spectrum != None:
+        temp_spectrum = re.sub("FILENAME: (.*)\n", "", spectrum)
+        temp_spectrum = re.sub("PREDICTED: (.*)\n", "", temp_spectrum)
+        if re.search("in-silico|insilico|predicted",temp_spectrum,flags=re.I):
+            spectrum = re.sub("PREDICTED: .*\n","PREDICTED: true\n",spectrum)
+        else:
+            spectrum = re.sub("PREDICTED: .*\n", "PREDICTED: false\n", spectrum)
+    return spectrum
+
+def remove_no_inchikey(spectrum):
+    if spectrum != None:
+        if re.search("INCHIKEY: \n|INCHIKEY: None\n",spectrum):
+            return None
+        else:
+            return spectrum
+
+def remove_no_mass(spectrum):
+    if spectrum != None:
+        if re.search("PRECURSORMZ: \n|PRECURSORMZ: None\n",spectrum):
+            return None
+        else:
+            return spectrum
+
+def harmonize_fields_values(spectrum):
+    spectrum = remove_no_inchikey(spectrum)
+    spectrum = remove_no_mass(spectrum)
+    # SUPPRESION DOUBLONS A FAIRE ICI
+    spectrum = harmonize_adduct(spectrum)
+    spectrum = harmonize_retention_time(spectrum)
+    spectrum = harmonize_ms_level(spectrum)
+    # spectrum = harmonize_collisionenergy(spectrum)
+    spectrum = harmonize_syns(spectrum)
+    spectrum = harmonize_formula(spectrum)
+    spectrum = harmonize_empties(spectrum)
+    spectrum = predicted_correction(spectrum)
+
+    return spectrum
+
+def correct_uncomplete_charge(msp_path):
+    with open(msp_path, "r", encoding="UTF-8") as msp_buffer:
+        content = msp_buffer.read()
+
+    content = re.sub("charge: -\n","charge: -1\n",content,flags=re.I)
+
+    with open(msp_path, "w", encoding="UTF-8") as msp_buffer:
+        msp_buffer.write(content)
 
 def msp_to_csv(clean_msp_path):
     # POS

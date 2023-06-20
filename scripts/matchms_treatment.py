@@ -55,7 +55,10 @@ def multithreaded_matchms(spectrum,file_name):
     spectrum = msfilters.require_minimum_number_of_peaks(spectrum, n_required=3)
 
     spectrum = matchms_spectrum_to_str_msp(spectrum,file_name)
+
     spectrum = harmonize_fields_names(spectrum)
+    
+    spectrum = harmonize_fields_values(spectrum)
 
     return spectrum
 
