@@ -1,6 +1,7 @@
 from tqdm.notebook import tqdm as tqdm
-from msp_utilities import *
 from matchms_treatment import *
+from msp_utilities import *
+from converters import *
 import logging
 import sys
 import os
