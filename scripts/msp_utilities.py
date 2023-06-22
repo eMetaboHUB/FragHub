@@ -263,18 +263,6 @@ def concatenate_clean_msp(clean_msp_path):
 
     return CONCATENATE_LIST
 
-def split_pos_neg(CONCATENATE_LIST):
-    POS = []
-    NEG = []
-    for spectrum in CONCATENATE_LIST:
-        SEARCH = re.search("(CHARGE): (.*)", spectrum)
-        if SEARCH != None:
-            if int(SEARCH.group(2)) > 0:
-                POS.append(spectrum+"\n")
-            else:
-                NEG.append(spectrum+"\n")
-    return POS, NEG
-
 def harmonize_fields_names(spectrum):
     if spectrum is not None:
         expected_fields = ["SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","NAME","SPECTRUMID","PRECURSORTYPE","MSLEVEL",
@@ -495,69 +483,6 @@ def correct_uncomplete_charge(msp_path):
 
     with open(msp_path, "w", encoding="UTF-8") as msp_buffer:
         msp_buffer.write(content)
-
-def msp_to_csv(clean_msp_path):
-    # POS
-    POS_DIR = os.path.join(clean_msp_path, "FINAL_POS")
-
-    dictionary = {"PEAKS_LIST": []}
-
-    first = True
-
-    for files in os.listdir(POS_DIR):
-        if files.endswith(".msp"):
-            with open(os.path.join(POS_DIR, files), "r", encoding="UTF-8") as msp_file_buffer:
-                msp_file = msp_file_buffer.read()
-
-            spectrum_list = msp_file.split("\n\n")  # une liste de spectres
-
-            for spectrum in spectrum_list:
-                if spectrum != "\n":
-                    fields = re.findall(r"(.+?):(.*)\n", spectrum)
-                    if first == True:
-                        for element in fields:
-                            dictionary[element[0]] = []
-                        first = False
-
-                    if first == False:
-                        for element in fields:
-                            dictionary[element[0]].append(element[1])
-
-                    dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
-
-    POS_df = pd.DataFrame.from_dict(dictionary)
-    POS_df.to_csv("../OUTPUT/CSV/FINAL_POS/POS_clean.csv", sep=";", encoding="UTF-8", index=False)
-
-    # NEG
-    NEG_DIR = os.path.join(clean_msp_path, "FINAL_NEG")
-
-    dictionary = {"PEAKS_LIST": []}
-
-    first = True
-
-    for files in os.listdir(NEG_DIR):
-        if files.endswith(".msp"):
-            with open(os.path.join(NEG_DIR, files), "r", encoding="UTF-8") as msp_file_buffer:
-                msp_file = msp_file_buffer.read()
-
-            spectrum_list = msp_file.split("\n\n")  # une liste de spectres
-
-            for spectrum in spectrum_list:
-                if spectrum != "\n":
-                    fields = re.findall(r"(.+?):(.*)", spectrum)
-                    if first == True:
-                        for element in fields:
-                            dictionary[element[0]] = []
-                        first = False
-
-                    if first == False:
-                        for element in fields:
-                            dictionary[element[0]].append(element[1])
-
-                    dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
-
-    NEG_df = pd.DataFrame.from_dict(dictionary)
-    NEG_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_clean.csv", sep=";", encoding="UTF-8", index=False)
 
 def find_indices(l, value):
     duplicatas_index = [index for index, item in enumerate(l) if item == value]

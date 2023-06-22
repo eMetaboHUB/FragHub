@@ -250,3 +250,66 @@ def convert_to_msp(input_path):
         FINAL_XML = xml_to_msp(xml_path)
 
     return FINAL_JSON,FINAL_XML
+
+def msp_to_csv(clean_msp_path):
+    # POS
+    POS_DIR = os.path.join(clean_msp_path, "FINAL_POS")
+
+    dictionary = {"PEAKS_LIST": []}
+
+    first = True
+
+    for files in os.listdir(POS_DIR):
+        if files.endswith(".msp"):
+            with open(os.path.join(POS_DIR, files), "r", encoding="UTF-8") as msp_file_buffer:
+                msp_file = msp_file_buffer.read()
+
+            spectrum_list = msp_file.split("\n\n")  # une liste de spectres
+
+            for spectrum in spectrum_list:
+                if spectrum != "\n":
+                    fields = re.findall(r"(.+?):(.*)\n", spectrum)
+                    if first == True:
+                        for element in fields:
+                            dictionary[element[0]] = []
+                        first = False
+
+                    if first == False:
+                        for element in fields:
+                            dictionary[element[0]].append(element[1])
+
+                    dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
+
+    POS_df = pd.DataFrame.from_dict(dictionary)
+    POS_df.to_csv("../OUTPUT/CSV/FINAL_POS/POS_clean.csv", sep=";", encoding="UTF-8", index=False)
+
+    # NEG
+    NEG_DIR = os.path.join(clean_msp_path, "FINAL_NEG")
+
+    dictionary = {"PEAKS_LIST": []}
+
+    first = True
+
+    for files in os.listdir(NEG_DIR):
+        if files.endswith(".msp"):
+            with open(os.path.join(NEG_DIR, files), "r", encoding="UTF-8") as msp_file_buffer:
+                msp_file = msp_file_buffer.read()
+
+            spectrum_list = msp_file.split("\n\n")  # une liste de spectres
+
+            for spectrum in spectrum_list:
+                if spectrum != "\n":
+                    fields = re.findall(r"(.+?):(.*)", spectrum)
+                    if first == True:
+                        for element in fields:
+                            dictionary[element[0]] = []
+                        first = False
+
+                    if first == False:
+                        for element in fields:
+                            dictionary[element[0]].append(element[1])
+
+                    dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
+
+    NEG_df = pd.DataFrame.from_dict(dictionary)
+    NEG_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_clean.csv", sep=";", encoding="UTF-8", index=False)
