@@ -1,7 +1,9 @@
 from tqdm.notebook import tqdm as tqdm
-from matchms_treatment import *
+from duplicatas_remover import *
+from matchms_processing import *
 from msp_utilities import *
 from converters import *
+from splitter import *
 import logging
 import sys
 import os
@@ -17,7 +19,7 @@ if __name__ == "__main__":
     input_path = r"..\INPUT"
     output_path = r"..\OUTPUT"
 
-    # STEP 1: convert files to msp if needed
+    # STEP 1: convert files to msp if needed (Multithreaded)
     FINAL_JSON,FINAL_XML = convert_to_msp(input_path)
 
     if FINAL_JSON != [] :
@@ -50,9 +52,10 @@ if __name__ == "__main__":
 
             correct_uncomplete_charge(msp_path)
 
-            # STEP 3: Execute multithreaded matchms
+            # STEP 3: Execute matchms (Multithreaded)
+            print("MATCHMS PROCESSING ON: ",file_name)
             spectrum_list = list(load_from_msp(msp_path))
-            results = matchms_treatment(spectrum_list,file_name)
+            results = matchms_processing(spectrum_list,file_name)
 
             # Write matchms clean msp into new msp file
             with open(os.path.join(r"..\OUTPUT\CLEAN_MSP",file_name+"_clean"+".msp"), "w", encoding="UTF-8") as clean:
@@ -62,11 +65,14 @@ if __name__ == "__main__":
     clean_msp_path = os.path.join(output_path,"CLEAN_MSP")
     CONCATENATE_LIST = concatenate_clean_msp(clean_msp_path)
 
+    print("CONCATENATE_LIST: ",len(CONCATENATE_LIST))
+
+    print("SPLITTING POS / NEG")
     POS, NEG = split_pos_neg(CONCATENATE_LIST)
 
     # STEP 5: Remove duplicates spectrum when same peak_list for the same inchikey.
-    POS, NEG = remove_duplicatas(POS, NEG)
-
+    # print("REMOVING DUPLICATAS")
+    # POS, NEG = remove_duplicatas(POS, NEG)
 
     POS_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS))
     NEG_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG))
@@ -76,6 +82,7 @@ if __name__ == "__main__":
     with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_clean.msp"), "w", encoding="UTF-8") as neg:
         neg.write(NEG_FULL)
 
+    print("CONVERTING MSP TO CSV")
     msp_to_csv(clean_msp_path)
 
     print("--- %s seconds ---" % (time.time() - start_time))
