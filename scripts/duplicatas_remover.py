@@ -16,7 +16,7 @@ def remove_duplicatas(POS, NEG):
     POS_list = []
     POS_index_to_delete = []
     for spectrum in POS: # Generate a given list reduced to inchikey + peak_list
-        POS_list.append(str({"INCHIKEY": re.search("INCHIKEY: (.*)\n",spectrum).group(1), "PEAK_LIST": re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)",spectrum).group(2)}))
+        POS_list.append({"INCHIKEY": re.search("INCHIKEY: (.*)\n",spectrum).group(1),"PRECURSORTYPE": re.search("PRECURSORTYPE: (.*)\n",spectrum).group(1) ,"PEAK_LIST": re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)",spectrum).group(2)})
 
     for current_dict in POS_list:
         POS_index_to_delete.extend(find_indices(POS_list,current_dict))
@@ -32,8 +32,7 @@ def remove_duplicatas(POS, NEG):
     NEG_list = []
     NEG_index_to_delete = []
     for spectrum in NEG:  # Generate a given list reduced to inchikey + peak_list
-        NEG_list.append({"INCHIKEY": re.search("INCHIKEY: (.*)\n", spectrum).group(1),
-                         "PEAK_LIST": re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2)})
+        NEG_list.append({"INCHIKEY": re.search("INCHIKEY: (.*)\n", spectrum).group(1),"PRECURSORTYPE": re.search("PRECURSORTYPE: (.*)\n",spectrum).group(1), "PEAK_LIST": re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2)})
 
     for current_dict in NEG_list:
         NEG_index_to_delete.extend(find_indices(NEG_list, current_dict))
