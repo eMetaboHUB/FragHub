@@ -1,4 +1,5 @@
 from tqdm.notebook import tqdm as tqdm
+from duplicatas_remover import *
 from matchms_treatment import *
 from msp_utilities import *
 from converters import *
