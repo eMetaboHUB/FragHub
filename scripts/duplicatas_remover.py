@@ -2,8 +2,6 @@ import re
 
 def find_indices(l, value):
     duplicatas_index = [index for index, item in enumerate(l) if item == value]
-    duplicatas_item = [item for index, item in enumerate(l) if item == value]
-    print(duplicatas_item)
     if duplicatas_index != None:
         if len(duplicatas_index) >= 2:
             duplicatas_index = duplicatas_index[1:]
