@@ -234,6 +234,7 @@ def convert_to_msp(input_path):
         if files.endswith(".json"):
             json_to_do = True
     if json_to_do == True:
+        print("CONVERTING JSON TO MSP")
         FINAL_JSON = json_to_msp(json_path)
 
     # XML
@@ -245,6 +246,7 @@ def convert_to_msp(input_path):
         if files.endswith(".xml"):
             xml_to_do = True
     if xml_to_do == True:
+        print("CONVERTING XML TO MSP")
         FINAL_XML = xml_to_msp(xml_path)
 
     return FINAL_JSON,FINAL_XML
