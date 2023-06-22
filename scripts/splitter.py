@@ -3,10 +3,13 @@ def split_pos_neg(CONCATENATE_LIST):
     POS = []
     NEG = []
     for spectrum in CONCATENATE_LIST:
-        SEARCH = re.search("(CHARGE): (.*)", spectrum)
-        if SEARCH != None:
-            if int(SEARCH.group(2)) > 0:
-                POS.append(spectrum+"\n")
-            else:
-                NEG.append(spectrum+"\n")
+        #POS
+        if re.search("CHARGE: [0-9]\n",spectrum, flags=re.I) or re.search("PRECURSORTYPE: (.*)\+\n",spectrum, flags=re.I) or re.search("IONMODE: p(.*)\n",spectrum, flags=re.I):
+            POS.append(spectrum)
+        # NEG
+        elif re.search("CHARGE: \-[0-9]\n",spectrum, flags=re.I) or re.search("PRECURSORTYPE: (.*)\-\n",spectrum, flags=re.I) or re.search("IONMODE: n(.*)\n",spectrum, flags=re.I):
+            NEG.append(spectrum)
+        else:
+            print(spectrum)
+
     return POS, NEG

@@ -226,31 +226,6 @@ def xml_to_msp(xml_path):
 
     return FINAL_XML
 
-def convert_to_msp(input_path):
-    # JSON
-    FINAL_JSON = []
-    json_to_do = False
-    json_path = os.path.join(input_path,"JSON")
-    # check if there is a json file into the directory
-    for files in os.listdir(json_path):
-        if files.endswith(".json"):
-            json_to_do = True
-    if json_to_do == True:
-        FINAL_JSON = json_to_msp(json_path)
-
-    # XML
-    FINAL_XML = []
-    xml_to_do = False
-    xml_path = os.path.join(input_path,"XML")
-    # check if there is a xml file into the directory
-    for files in os.listdir(xml_path):
-        if files.endswith(".xml"):
-            xml_to_do = True
-    if xml_to_do == True:
-        FINAL_XML = xml_to_msp(xml_path)
-
-    return FINAL_JSON,FINAL_XML
-
 def concatenate_clean_msp(clean_msp_path):
     CONCATENATE_LIST = []
     # append all spectrums of all cleaned files into CONCATENATE_LIST

@@ -2,6 +2,7 @@ from tqdm.notebook import tqdm as tqdm
 from matchms_treatment import *
 from msp_utilities import *
 from converters import *
+from splitter import *
 import logging
 import sys
 import os
@@ -62,10 +63,12 @@ if __name__ == "__main__":
     clean_msp_path = os.path.join(output_path,"CLEAN_MSP")
     CONCATENATE_LIST = concatenate_clean_msp(clean_msp_path)
 
+    print("CONCATENATE_LIST: ",len(CONCATENATE_LIST))
+
     POS, NEG = split_pos_neg(CONCATENATE_LIST)
 
     # STEP 5: Remove duplicates spectrum when same peak_list for the same inchikey.
-    POS, NEG = remove_duplicatas(POS, NEG)
+    # POS, NEG = remove_duplicatas(POS, NEG)
 
 
     POS_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS))
@@ -76,6 +79,7 @@ if __name__ == "__main__":
     with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_clean.msp"), "w", encoding="UTF-8") as neg:
         neg.write(NEG_FULL)
 
+    print("CONVERTING MSP TO CSV")
     msp_to_csv(clean_msp_path)
 
     print("--- %s seconds ---" % (time.time() - start_time))
