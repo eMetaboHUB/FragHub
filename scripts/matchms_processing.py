@@ -62,7 +62,7 @@ def multithreaded_matchms(spectrum,file_name):
 
     return spectrum
 
-def matchms_treatment(spectrum_list,file_name):
+def matchms_processing(spectrum_list,file_name):
     with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
         results = executor.map(multithreaded_matchms, spectrum_list, [file_name for i in range(len(spectrum_list))])
 
