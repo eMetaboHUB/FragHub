@@ -423,11 +423,11 @@ def harmonize_db_informations(spectrum):
 def correct_ionmode(spectrum):
     if spectrum != None:
         if re.search("IONMODE: n/a",spectrum):
-            if re.search("PRECURSORTYPE: (.*)\-",spectrum):
+            if re.search("PRECURSORTYPE: (.*)\-\n",spectrum):
                 spectrum = re.sub("IONMODE: n/a","IONMODE: negative",spectrum)
                 spectrum = re.sub("CHARGE: (.*)\n", "CHARGE: -1\n", spectrum)
                 return spectrum
-            elif re.search("PRECURSORTYPE: (.*)\+",spectrum):
+            elif re.search("PRECURSORTYPE: (.*)\+\n",spectrum):
                 spectrum = re.sub("IONMODE: n/a","IONMODE: positive",spectrum)
                 spectrum = re.sub("CHARGE: (.*)\n", "CHARGE: 1\n", spectrum)
                 return spectrum
