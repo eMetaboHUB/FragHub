@@ -19,7 +19,7 @@ if __name__ == "__main__":
     input_path = r"..\INPUT"
     output_path = r"..\OUTPUT"
 
-    # STEP 1: convert files to msp if needed
+    # STEP 1: convert files to msp if needed (Multithreaded)
     FINAL_JSON,FINAL_XML = convert_to_msp(input_path)
 
     if FINAL_JSON != [] :
@@ -52,7 +52,7 @@ if __name__ == "__main__":
 
             correct_uncomplete_charge(msp_path)
 
-            # STEP 3: Execute multithreaded matchms
+            # STEP 3: Execute matchms (Multithreaded)
             print("MATCHMS PROCESSING ON: ",file_name)
             spectrum_list = list(load_from_msp(msp_path))
             results = matchms_processing(spectrum_list,file_name)
@@ -71,8 +71,8 @@ if __name__ == "__main__":
     POS, NEG = split_pos_neg(CONCATENATE_LIST)
 
     # STEP 5: Remove duplicates spectrum when same peak_list for the same inchikey.
-    print("REMOVING DUPLICATAS")
-    POS, NEG = remove_duplicatas(POS, NEG)
+    # print("REMOVING DUPLICATAS")
+    # POS, NEG = remove_duplicatas(POS, NEG)
 
     POS_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS))
     NEG_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG))
