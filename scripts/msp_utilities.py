@@ -307,8 +307,8 @@ def harmonize_fields_names(spectrum):
 
 def harmonize_adduct(spectrum):
     if spectrum != None:
-        if re.search("((^|\n)(ADDUCT:)) (.*)\n",spectrum):
-            adduct = re.search("((^|\n)(ADDUCT:)) (.*)\n",spectrum).group(4)
+        if re.search("((^|\n)(PRECURSORTYPE:)) (.*)\n",spectrum):
+            adduct = re.search("((^|\n)(PRECURSORTYPE:)) (.*)\n",spectrum).group(4)
             if adduct != "None":
                 if "[" not in adduct or "]" not in adduct:
                     if re.search("((^|\n)(IONMODE:)) (.*)\n",spectrum):
@@ -316,23 +316,23 @@ def harmonize_adduct(spectrum):
                         if ionmode != "None":
                             if ionmode.lower().startswith("p"):
                                 adduct = "["+adduct+"]"+"+\n"
-                                spectrum = re.sub("(^|\n)(ADDUCT:) (.*)\n",f"\nADDUCT: {adduct}",spectrum)
+                                spectrum = re.sub("(^|\n)(PRECURSORTYPE:) (.*)\n",f"\nPRECURSORTYPE: {adduct}",spectrum)
                                 return spectrum
                             elif ionmode.lower().startswith("n"):
                                 adduct = "[" + adduct + "]" + "-\n"
-                                spectrum = re.sub("((^|\n)(ADDUCT:)) (.*)\n", f"\nADDUCT: {adduct}", spectrum)
+                                spectrum = re.sub("((^|\n)(PRECURSORTYPE:)) (.*)\n", f"\nPRECURSORTYPE: {adduct}", spectrum)
                                 return spectrum
                         else:
                             return spectrum
                     else:
                         return spectrum
-                elif re.search("((ADDUCT:)) ((.*\+)\*)\n",spectrum):
-                    adduct = re.search("((ADDUCT:)) ((.*\+)\*)\n", spectrum).group(4)
-                    spectrum = re.sub("((ADDUCT:)) ((.*\+)\*)\n",f"ADDUCT: {adduct}\n",spectrum)
+                elif re.search("((PRECURSORTYPE:)) ((.*\+)\*)\n",spectrum):
+                    adduct = re.search("((PRECURSORTYPE:)) ((.*\+)\*)\n", spectrum).group(4)
+                    spectrum = re.sub("((PRECURSORTYPE:)) ((.*\+)\*)\n",f"PRECURSORTYPE: {adduct}\n",spectrum)
                     return spectrum
-                elif re.search("((ADDUCT:)) ((.*\-)\*)\n",spectrum):
-                    adduct = re.search("((ADDUCT:)) ((.*\-)\*)\n", spectrum).group(4)
-                    spectrum = re.sub("((ADDUCT:)) ((.*\-)\*)\n",f"ADDUCT: {adduct}\n",spectrum)
+                elif re.search("((PRECURSORTYPE:)) ((.*\-)\*)\n",spectrum):
+                    adduct = re.search("((PRECURSORTYPE:)) ((.*\-)\*)\n", spectrum).group(4)
+                    spectrum = re.sub("((PRECURSORTYPE:)) ((.*\-)\*)\n",f"PRECURSORTYPE: {adduct}\n",spectrum)
                     return spectrum
                 else:
                     return spectrum
@@ -460,11 +460,11 @@ def harmonize_db_informations(spectrum):
 def correct_ionmode(spectrum):
     if spectrum != None:
         if re.search("IONMODE: n/a",spectrum):
-            if re.search("ADDUCT: (.*)\-",spectrum):
+            if re.search("PRECURSORTYPE: (.*)\-",spectrum):
                 spectrum = re.sub("IONMODE: n/a","IONMODE: negative",spectrum)
                 spectrum = re.sub("CHARGE: (.*)\n", "CHARGE: -1\n", spectrum)
                 return spectrum
-            elif re.search("ADDUCT: (.*)\+",spectrum):
+            elif re.search("PRECURSORTYPE: (.*)\+",spectrum):
                 spectrum = re.sub("IONMODE: n/a","IONMODE: positive",spectrum)
                 spectrum = re.sub("CHARGE: (.*)\n", "CHARGE: 1\n", spectrum)
                 return spectrum
