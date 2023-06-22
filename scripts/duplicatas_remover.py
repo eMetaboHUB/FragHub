@@ -2,6 +2,8 @@ import re
 
 def find_indices(l, value):
     duplicatas_index = [index for index, item in enumerate(l) if item == value]
+    duplicatas_item = [item for index, item in enumerate(l) if item == value]
+    print(duplicatas_item)
     if duplicatas_index != None:
         if len(duplicatas_index) >= 2:
             duplicatas_index = duplicatas_index[1:]
@@ -10,11 +12,12 @@ def find_indices(l, value):
             return []
     else:
         return []
+
 def remove_duplicatas(POS, NEG):
     # POS
     POS_list = []
     POS_index_to_delete = []
-    for spectrum in POS: # Générer une liste donnée réduite à inchikey + peak_list
+    for spectrum in POS: # Generate a given list reduced to inchikey + peak_list
         POS_list.append(str({"INCHIKEY": re.search("INCHIKEY: (.*)\n",spectrum).group(1), "PEAK_LIST": re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)",spectrum).group(2)}))
 
     for current_dict in POS_list:
@@ -30,7 +33,7 @@ def remove_duplicatas(POS, NEG):
     # NEG
     NEG_list = []
     NEG_index_to_delete = []
-    for spectrum in NEG:  # Générer une liste donnée réduite à inchikey + peak_list
+    for spectrum in NEG:  # Generate a given list reduced to inchikey + peak_list
         NEG_list.append({"INCHIKEY": re.search("INCHIKEY: (.*)\n", spectrum).group(1),
                          "PEAK_LIST": re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2)})
 

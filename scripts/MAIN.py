@@ -1,6 +1,6 @@
 from tqdm.notebook import tqdm as tqdm
 from duplicatas_remover import *
-from matchms_treatment import *
+from matchms_processing import *
 from msp_utilities import *
 from converters import *
 from splitter import *
@@ -53,8 +53,9 @@ if __name__ == "__main__":
             correct_uncomplete_charge(msp_path)
 
             # STEP 3: Execute multithreaded matchms
+            print("MATCHMS PROCESSING ON: ",file_name)
             spectrum_list = list(load_from_msp(msp_path))
-            results = matchms_treatment(spectrum_list,file_name)
+            results = matchms_processing(spectrum_list,file_name)
 
             # Write matchms clean msp into new msp file
             with open(os.path.join(r"..\OUTPUT\CLEAN_MSP",file_name+"_clean"+".msp"), "w", encoding="UTF-8") as clean:
@@ -66,11 +67,12 @@ if __name__ == "__main__":
 
     print("CONCATENATE_LIST: ",len(CONCATENATE_LIST))
 
+    print("SPLITTING POS / NEG")
     POS, NEG = split_pos_neg(CONCATENATE_LIST)
 
     # STEP 5: Remove duplicates spectrum when same peak_list for the same inchikey.
-    # POS, NEG = remove_duplicatas(POS, NEG)
-
+    print("REMOVING DUPLICATAS")
+    POS, NEG = remove_duplicatas(POS, NEG)
 
     POS_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS))
     NEG_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG))
