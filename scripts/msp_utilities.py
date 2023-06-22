@@ -280,8 +280,9 @@ def harmonize_fields_names(spectrum):
         expected_fields = ["SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","COMPOUNDNAME","SPECTRUMID","ADDUCT","MSLEVEL",
                            "INSTRUMENTTYPE","IONMODE","COLLISIONENERGY","PARENTMASS","PRECURSORMZ","CHARGE","NUM PEAKS","PREDICTED","RETENTIONTIME","FILENAME"]
 
-        spectrum = re.sub("COMPOUND_NAME","COMPOUNDNAME",spectrum,flags=re.I)
-        spectrum = re.sub("PRECURSOR_MZ", "PRECURSORMZ", spectrum, flags=re.I)
+        spectrum = re.sub("COMPOUND_NAME:","NAME:",spectrum,flags=re.I)
+        spectrum = re.sub("PRECURSOR_MZ:", "PRECURSORMZ:", spectrum, flags=re.I)
+        spectrum = re.sub("ADDUCT:", "PRECURSORTYPE:", spectrum, flags=re.I)
         spectrum = re.sub("INCHIKEY: \n", "INCHIKEY: None\n", spectrum)
         spectrum = re.sub("((^|\n)(.*?):) \n", "\n",spectrum)
         spectrum = re.sub("\n{2,}", "\n", spectrum)
