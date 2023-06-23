@@ -199,3 +199,4 @@ targetgas,targetgas
 targetgaspres,targetgaspressure
 targetgaspressure,targetgaspressure
 title,title
+submittecomputed_mass_erroname,compound_name

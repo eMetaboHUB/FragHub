@@ -9,7 +9,7 @@ def split_pos_neg(CONCATENATE_LIST):
         # NEG
         elif re.search("CHARGE: \-[0-9]\n",spectrum, flags=re.I) or re.search("PRECURSORTYPE: (.*)\-\n",spectrum, flags=re.I) or re.search("IONMODE: n(.*)\n",spectrum, flags=re.I):
             NEG.append(spectrum)
-        else:
-            print(spectrum)
 
     return POS, NEG
+
+# def split_LC_GC(POS,NEG):

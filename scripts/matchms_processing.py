@@ -1,3 +1,5 @@
+import re
+
 from matchms.logging_functions import set_matchms_logger_level
 from matchms.importing import load_from_msp
 from matchms.exporting import *

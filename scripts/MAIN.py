@@ -65,12 +65,14 @@ if __name__ == "__main__":
     clean_msp_path = os.path.join(output_path,"CLEAN_MSP")
     CONCATENATE_LIST = concatenate_clean_msp(clean_msp_path)
 
-    print("CONCATENATE_LIST: ",len(CONCATENATE_LIST))
-
     print("SPLITTING POS / NEG")
     POS, NEG = split_pos_neg(CONCATENATE_LIST)
 
-    # STEP 5: Remove duplicates spectrum when same peak_list for the same inchikey.
+    # STEP 5: Split LC / GC
+    # LC_POS,LC_NEG,GC_POS,GC_NEG = split_LC_GC(POS,NEG)
+
+
+    # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
     print("REMOVING DUPLICATAS")
     POS, NEG = remove_duplicatas(POS, NEG)
 
