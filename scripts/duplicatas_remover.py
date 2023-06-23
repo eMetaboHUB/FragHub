@@ -27,7 +27,7 @@ def remove_duplicatas_public(POS, NEG):
     compteur = 0
     print("POS")
     time.sleep(0.01)
-    for spectrum in list(tqdm(POS, total=len(POS))):
+    for spectrum in list(tqdm(POS, total=len(POS), unit="spectrums", colour="green")):
         if compteur not in POS_index_to_delete:
             POS_FILTERED.append(spectrum)
         compteur += 1
@@ -45,7 +45,7 @@ def remove_duplicatas_public(POS, NEG):
     compteur = 0
     print("NEG")
     time.sleep(0.01)
-    for spectrum in list(tqdm(NEG, total=len(NEG))):
+    for spectrum in list(tqdm(NEG, total=len(NEG), unit="spectrums", colour="green")):
         if compteur not in NEG_index_to_delete:
             NEG_FILTERED.append(spectrum)
         compteur += 1
