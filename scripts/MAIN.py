@@ -1,6 +1,6 @@
-from tqdm.notebook import tqdm as tqdm
 from duplicatas_remover import *
 from matchms_processing import *
+from rdkit import RDLogger
 from msp_utilities import *
 from converters import *
 from splitter import *
@@ -8,7 +8,8 @@ import logging
 import sys
 import os
 
-logger = logging.getLogger("matchms")
+RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
+logger = logging.getLogger("matchms") # Disable matchms log messages
 logger.disabled = True
 
 import time
@@ -53,7 +54,7 @@ if __name__ == "__main__":
             correct_uncomplete_charge(msp_path)
 
             # STEP 3: Execute matchms (Multithreaded)
-            print("MATCHMS PROCESSING ON: ",file_name)
+            print("-- MATCHMS PROCESSING ON: ",file_name," --")
             spectrum_list = list(load_from_msp(msp_path))
             results = matchms_processing(spectrum_list,file_name)
 
@@ -65,14 +66,20 @@ if __name__ == "__main__":
     clean_msp_path = os.path.join(output_path,"CLEAN_MSP")
     CONCATENATE_LIST = concatenate_clean_msp(clean_msp_path)
 
-    print("CONCATENATE_LIST: ",len(CONCATENATE_LIST))
-
-    print("SPLITTING POS / NEG")
+    print("-- SPLITTING POS / NEG --")
+    time.sleep(0.01)
     POS, NEG = split_pos_neg(CONCATENATE_LIST)
 
-    # STEP 5: Remove duplicates spectrum when same peak_list for the same inchikey.
-    print("REMOVING DUPLICATAS")
-    POS, NEG = remove_duplicatas(POS, NEG)
+    # STEP 5: Split LC / GC
+    # LC_POS,LC_NEG,GC_POS,GC_NEG = split_LC_GC(POS,NEG)
+
+
+    # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
+    print("-- REMOVING DUPLICATAS --")
+    POS, NEG = remove_duplicatas_public(POS, NEG)
+
+    # print("REMOVING DUPLICATAS")
+    # POS, NEG = remove_duplicatas_lrsv(POS, NEG)
 
     POS_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS))
     NEG_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG))
@@ -82,10 +89,10 @@ if __name__ == "__main__":
     with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_clean.msp"), "w", encoding="UTF-8") as neg:
         neg.write(NEG_FULL)
 
-    print("CONVERTING MSP TO CSV")
+    print("-- CONVERTING MSP TO CSV --")
     msp_to_csv(clean_msp_path)
 
-    print("--- %s seconds ---" % (time.time() - start_time))
+    print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
 
 
 

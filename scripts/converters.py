@@ -1,8 +1,10 @@
 from bs4 import BeautifulSoup as bs
 import concurrent.futures
+from tqdm import tqdm
 import pandas as pd
 import json
 import lxml
+import time
 import os
 import re
 
@@ -38,7 +40,7 @@ def json_to_msp(json_spectrum):
 
 def JSON_convert_processing(FINAL_JSON):
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = executor.map(json_to_msp, FINAL_JSON)
+        results = list(tqdm(executor.map(json_to_msp, FINAL_JSON), total=len(FINAL_JSON), unit="spectrums", colour="green"))
 
     final = [res for res in results if res is not None]
 
@@ -251,7 +253,7 @@ def xml_to_msp(xml_content):
 
 def XML_convert_processing(FINAL_XML):
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = executor.map(xml_to_msp, FINAL_XML)
+        results = list(tqdm(executor.map(xml_to_msp, FINAL_XML), total=len(FINAL_XML), unit="spectrums", colour="green"))
 
     final = [res for res in results if res is not None]
 
@@ -268,7 +270,7 @@ def convert_to_msp(input_path):
         if files.endswith(".json"):
             json_to_do = True
     if json_to_do == True:
-        print("CONVERTING JSON TO MSP")
+        print("-- CONVERTING JSON TO MSP --")
         # Concatenate all JSON to a list
         FINAL_JSON = concatenate_json(json_path)
         # Convert all JSON spectrum to MSP spectrum (Multithreaded)
@@ -284,7 +286,7 @@ def convert_to_msp(input_path):
         if files.endswith(".xml"):
             xml_to_do = True
     if xml_to_do == True:
-        print("CONVERTING XML TO MSP")
+        print("-- CONVERTING XML TO MSP --")
         # Concatenate all XML to a list
         FINAL_XML = concatenate_xml(xml_path)
         # Convert all XML spectrum to MSP spectrum (Multithreaded)
@@ -307,7 +309,9 @@ def msp_to_csv(clean_msp_path):
 
             spectrum_list = msp_file.split("\n\n")  # une liste de spectres
 
-            for spectrum in spectrum_list:
+            print("POS")
+            time.sleep(0.01)
+            for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green")):
                 if spectrum != "\n":
                     fields = re.findall(r"(.+?):(.*)\n", spectrum)
                     if first == True:
@@ -338,7 +342,9 @@ def msp_to_csv(clean_msp_path):
 
             spectrum_list = msp_file.split("\n\n")  # une liste de spectres
 
-            for spectrum in spectrum_list:
+            print("NEG")
+            time.sleep(0.01)
+            for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green")):
                 if spectrum != "\n":
                     fields = re.findall(r"(.+?):(.*)", spectrum)
                     if first == True:

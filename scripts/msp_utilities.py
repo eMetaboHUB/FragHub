@@ -257,15 +257,14 @@ def harmonize_fields_names(spectrum):
         for field in fields_names:
             spectrum = spectrum.replace(field,re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~|\+","",field))
 
-        fields_names = [re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\:|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~|\+","",field) for field in fields_names]
+        fields_names = [re.sub("\!|\(|\)|\[|\]|\{|\}|\;|\'|\\|\,|\<|\>|\.|\/|\?|\@|\#|\$|\%|\^|\&|\*|\~|\+","",field) for field in fields_names]
 
         for field in fields_names:
             if field not in expected_fields: # Si champ dans le spectre pas voulu, on le supprime
-                spectrum = re.sub(rf"{field}:.*\n","",spectrum)
+                spectrum = re.sub(rf"(^|\n){field}:.*\n","\n",spectrum)
         for field in expected_fields:
             if field not in fields_names: # Si un champ voulu est manquant, on le rajoute
                 spectrum = field+": None\n"+spectrum
-
         return spectrum
 
 def harmonize_adduct(spectrum):
