@@ -54,7 +54,7 @@ if __name__ == "__main__":
             correct_uncomplete_charge(msp_path)
 
             # STEP 3: Execute matchms (Multithreaded)
-            print("MATCHMS PROCESSING ON: ",file_name)
+            print("-- MATCHMS PROCESSING ON: ",file_name," --")
             spectrum_list = list(load_from_msp(msp_path))
             results = matchms_processing(spectrum_list,file_name)
 
@@ -66,6 +66,8 @@ if __name__ == "__main__":
     clean_msp_path = os.path.join(output_path,"CLEAN_MSP")
     CONCATENATE_LIST = concatenate_clean_msp(clean_msp_path)
 
+    print("-- SPLITTING POS / NEG --")
+    time.sleep(0.01)
     POS, NEG = split_pos_neg(CONCATENATE_LIST)
 
     # STEP 5: Split LC / GC
@@ -73,8 +75,11 @@ if __name__ == "__main__":
 
 
     # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
-    print("REMOVING DUPLICATAS")
-    POS, NEG = remove_duplicatas(POS, NEG)
+    print("-- REMOVING DUPLICATAS --")
+    POS, NEG = remove_duplicatas_public(POS, NEG)
+
+    # print("REMOVING DUPLICATAS")
+    # POS, NEG = remove_duplicatas_lrsv(POS, NEG)
 
     POS_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS))
     NEG_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG))
@@ -84,7 +89,7 @@ if __name__ == "__main__":
     with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_clean.msp"), "w", encoding="UTF-8") as neg:
         neg.write(NEG_FULL)
 
-    print("CONVERTING MSP TO CSV")
+    print("-- CONVERTING MSP TO CSV --")
     msp_to_csv(clean_msp_path)
 
     print("--- %s seconds ---" % (time.time() - start_time))

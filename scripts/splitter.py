@@ -1,7 +1,6 @@
 from tqdm import tqdm
 import re
 def split_pos_neg(CONCATENATE_LIST):
-    print("SPLITTING POS / NEG")
     POS = []
     NEG = []
     for spectrum in list(tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST))):

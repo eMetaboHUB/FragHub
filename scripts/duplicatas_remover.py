@@ -1,3 +1,5 @@
+from tqdm import tqdm
+import time
 import re
 
 def find_indices(l, value):
@@ -11,7 +13,7 @@ def find_indices(l, value):
     else:
         return []
 
-def remove_duplicatas(POS, NEG):
+def remove_duplicatas_public(POS, NEG):
     # POS
     POS_list = []
     POS_index_to_delete = []
@@ -23,7 +25,9 @@ def remove_duplicatas(POS, NEG):
 
     POS_FILTERED = []
     compteur = 0
-    for spectrum in POS:
+    print("POS")
+    time.sleep(0.01)
+    for spectrum in list(tqdm(POS, total=len(POS))):
         if compteur not in POS_index_to_delete:
             POS_FILTERED.append(spectrum)
         compteur += 1
@@ -39,7 +43,9 @@ def remove_duplicatas(POS, NEG):
 
     NEG_FILTERED = []
     compteur = 0
-    for spectrum in NEG:
+    print("NEG")
+    time.sleep(0.01)
+    for spectrum in list(tqdm(NEG, total=len(NEG))):
         if compteur not in NEG_index_to_delete:
             NEG_FILTERED.append(spectrum)
         compteur += 1
