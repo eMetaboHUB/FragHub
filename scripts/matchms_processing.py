@@ -3,7 +3,7 @@ import re
 from matchms.logging_functions import set_matchms_logger_level
 from matchms.importing import load_from_msp
 from matchms.exporting import *
-from tqdm.notebook import tqdm as tqdm
+from tqdm import tqdm
 import matchms.filtering as msfilters
 import matchms.metadata_utils
 from msp_utilities import *
@@ -66,7 +66,7 @@ def multithreaded_matchms(spectrum,file_name):
 
 def matchms_processing(spectrum_list,file_name):
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = executor.map(multithreaded_matchms, spectrum_list, [file_name for i in range(len(spectrum_list))])
+        results = list(tqdm(executor.map(multithreaded_matchms, spectrum_list, [file_name for i in range(len(spectrum_list))]), total=len(spectrum_list)))
 
     final = [res for res in results if res is not None]
 

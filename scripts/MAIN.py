@@ -1,5 +1,6 @@
 from duplicatas_remover import *
 from matchms_processing import *
+from rdkit import RDLogger
 from msp_utilities import *
 from converters import *
 from splitter import *
@@ -7,7 +8,8 @@ import logging
 import sys
 import os
 
-logger = logging.getLogger("matchms")
+RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
+logger = logging.getLogger("matchms") # Disable matchms log messages
 logger.disabled = True
 
 import time
@@ -64,7 +66,6 @@ if __name__ == "__main__":
     clean_msp_path = os.path.join(output_path,"CLEAN_MSP")
     CONCATENATE_LIST = concatenate_clean_msp(clean_msp_path)
 
-    print("SPLITTING POS / NEG")
     POS, NEG = split_pos_neg(CONCATENATE_LIST)
 
     # STEP 5: Split LC / GC
