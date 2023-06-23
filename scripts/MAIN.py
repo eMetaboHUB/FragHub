@@ -75,11 +75,11 @@ if __name__ == "__main__":
 
 
     # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
-    # print("-- REMOVING DUPLICATAS --")
-    # POS, NEG = remove_duplicatas_public(POS, NEG)
+    print("-- REMOVING DUPLICATAS --")
+    POS, NEG = remove_duplicatas_public(POS, NEG)
 
-    print("REMOVING DUPLICATAS")
-    POS, NEG = remove_duplicatas_lrsv(POS, NEG)
+    # print("REMOVING DUPLICATAS")
+    # POS, NEG = remove_duplicatas_lrsv(POS, NEG)
 
     POS_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS))
     NEG_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG))
