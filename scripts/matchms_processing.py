@@ -1,17 +1,16 @@
-import re
-
 from matchms.logging_functions import set_matchms_logger_level
 from matchms.importing import load_from_msp
-from matchms.exporting import *
-from tqdm import tqdm
 import matchms.filtering as msfilters
+from matchms.exporting import *
 import matchms.metadata_utils
 from msp_utilities import *
 import concurrent.futures
 import matchms.Fragments
 import matchms.Metadata
 import matchms.hashing
+from tqdm import tqdm
 import os
+import re
 
 def matchms_spectrum_to_str_msp(spectrum,file_name):
     if spectrum is not None:

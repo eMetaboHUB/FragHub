@@ -92,7 +92,7 @@ if __name__ == "__main__":
     print("-- CONVERTING MSP TO CSV --")
     msp_to_csv(clean_msp_path)
 
-    print("--- %s seconds ---" % (time.time() - start_time))
+    print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
 
 
 
