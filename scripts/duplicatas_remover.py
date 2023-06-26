@@ -26,9 +26,8 @@ def remove_duplicatas_public(POS_LC,POS_GC,NEG_LC,NEG_GC):
 
     POS_LC_FILTERED = []
     compteur = 0
-    print("POS_LC")
-    time.sleep(0.01)
-    for spectrum in list(tqdm(POS_LC, total=len(POS_LC), unit="spectrums", colour="green")):
+
+    for spectrum in list(tqdm(POS_LC, total=len(POS_LC), unit="spectrums", colour="green", desc="\tPOS_LC")):
         if compteur not in POS_index_to_delete:
             POS_LC_FILTERED.append(spectrum)
         compteur += 1
@@ -44,9 +43,8 @@ def remove_duplicatas_public(POS_LC,POS_GC,NEG_LC,NEG_GC):
 
     POS_GC_FILTERED = []
     compteur = 0
-    print("POS_GC")
-    time.sleep(0.01)
-    for spectrum in list(tqdm(POS_GC, total=len(POS_GC), unit="spectrums", colour="green")):
+
+    for spectrum in list(tqdm(POS_GC, total=len(POS_GC), unit="spectrums", colour="green", desc="\tPOS_GC")):
         if compteur not in POS_index_to_delete:
             POS_GC_FILTERED.append(spectrum)
         compteur += 1
@@ -63,9 +61,8 @@ def remove_duplicatas_public(POS_LC,POS_GC,NEG_LC,NEG_GC):
 
     NEG_LC_FILTERED = []
     compteur = 0
-    print("NEG_LC")
-    time.sleep(0.01)
-    for spectrum in list(tqdm(NEG_LC, total=len(NEG_LC), unit="spectrums", colour="green")):
+
+    for spectrum in list(tqdm(NEG_LC, total=len(NEG_LC), unit="spectrums", colour="green", desc="\tNEG_LC")):
         if compteur not in NEG_index_to_delete:
             NEG_LC_FILTERED.append(spectrum)
         compteur += 1
@@ -82,9 +79,8 @@ def remove_duplicatas_public(POS_LC,POS_GC,NEG_LC,NEG_GC):
 
     NEG_GC_FILTERED = []
     compteur = 0
-    print("NEG_GC")
-    time.sleep(0.01)
-    for spectrum in list(tqdm(NEG_GC, total=len(NEG_GC), unit="spectrums", colour="green")):
+
+    for spectrum in list(tqdm(NEG_GC, total=len(NEG_GC), unit="spectrums", colour="green", desc="\tNEG_GC")):
         if compteur not in NEG_index_to_delete:
             NEG_GC_FILTERED.append(spectrum)
         compteur += 1
@@ -116,9 +112,8 @@ def remove_duplicatas_lrsv(POS_LC,POS_GC,NEG_LC,NEG_GC):
 
     POS_LC_FILTERED = []
     compteur = 0
-    print("POS_LC")
-    time.sleep(0.01)
-    for spectrum in list(tqdm(POS_LC, total=len(POS_LC), unit="spectrums", colour="green")):
+
+    for spectrum in list(tqdm(POS_LC, total=len(POS_LC), unit="spectrums", colour="green", desc="\tPOS_LC")):
         if compteur not in POS_index_to_delete:
             POS_LC_FILTERED.append(spectrum)
         compteur += 1
@@ -135,9 +130,8 @@ def remove_duplicatas_lrsv(POS_LC,POS_GC,NEG_LC,NEG_GC):
 
     POS_GC_FILTERED = []
     compteur = 0
-    print("POS_GC")
-    time.sleep(0.01)
-    for spectrum in list(tqdm(POS_GC, total=len(POS_GC), unit="spectrums", colour="green")):
+
+    for spectrum in list(tqdm(POS_GC, total=len(POS_GC), unit="spectrums", colour="green", desc="\tPOS_GC")):
         if compteur not in POS_index_to_delete:
             POS_GC_FILTERED.append(spectrum)
         compteur += 1
@@ -155,9 +149,8 @@ def remove_duplicatas_lrsv(POS_LC,POS_GC,NEG_LC,NEG_GC):
 
     NEG_LC_FILTERED = []
     compteur = 0
-    print("NEG_LC")
-    time.sleep(0.01)
-    for spectrum in list(tqdm(NEG_LC, total=len(NEG_LC), unit="spectrums", colour="green")):
+
+    for spectrum in list(tqdm(NEG_LC, total=len(NEG_LC), unit="spectrums", colour="green", desc="\tNEG_LC")):
         if compteur not in NEG_index_to_delete:
             NEG_LC_FILTERED.append(spectrum)
         compteur += 1
@@ -175,9 +168,8 @@ def remove_duplicatas_lrsv(POS_LC,POS_GC,NEG_LC,NEG_GC):
 
     NEG_GC_FILTERED = []
     compteur = 0
-    print("NEG_GC")
-    time.sleep(0.01)
-    for spectrum in list(tqdm(NEG_GC, total=len(NEG_GC), unit="spectrums", colour="green")):
+
+    for spectrum in list(tqdm(NEG_GC, total=len(NEG_GC), unit="spectrums", colour="green", desc="\tNEG_GC")):
         if compteur not in NEG_index_to_delete:
             NEG_GC_FILTERED.append(spectrum)
         compteur += 1

@@ -187,9 +187,7 @@ def msp_to_csv():
     if len(spectrum_list) == 0:
         empty = True
 
-    print("POS_LC")
-    time.sleep(0.01)
-    for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green")):
+    for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green", desc="\tPOS_LC")):
         if spectrum != "\n":
             fields = re.findall(r"(.+?):(.*)\n", spectrum)
             if first == True:
@@ -223,9 +221,7 @@ def msp_to_csv():
     if len(spectrum_list) == 0:
         empty = True
 
-    print("POS_GC")
-    time.sleep(0.01)
-    for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green")):
+    for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green", desc="\tPOS_GC")):
         if spectrum != "\n":
             fields = re.findall(r"(.+?):(.*)\n", spectrum)
             if first == True:
@@ -261,9 +257,7 @@ def msp_to_csv():
     if len(spectrum_list) == 0:
         empty = True
 
-    print("NEG_LC")
-    time.sleep(0.01)
-    for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green")):
+    for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green", desc="\tNEG_LC")):
         if spectrum != "\n":
             fields = re.findall(r"(.+?):(.*)", spectrum)
             if first == True:
@@ -298,9 +292,7 @@ def msp_to_csv():
     if len(spectrum_list) == 0:
         empty = True
 
-    print("NEG_GC")
-    time.sleep(0.01)
-    for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green")):
+    for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green", desc="\tNEG_GC")):
         if spectrum != "\n":
             fields = re.findall(r"(.+?):(.*)", spectrum)
             if first == True:

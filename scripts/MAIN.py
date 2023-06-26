@@ -77,13 +77,13 @@ if __name__ == "__main__":
 
 
     # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
-    print("-- REMOVING DUPLICATAS --")
-    time.sleep(0.01)
-    POS_LC_FILTERED,POS_GC_FILTERED,NEG_LC_FILTERED,NEG_GC_FILTERED = remove_duplicatas_public(POS_LC,POS_GC,NEG_LC,NEG_GC)
-
-    # print("REMOVING DUPLICATAS")
+    # print("-- REMOVING DUPLICATAS --")
     # time.sleep(0.01)
-    # POS_LC_FILTERED,POS_GC_FILTERED,NEG_LC_FILTERED,NEG_GC_FILTERED = remove_duplicatas_lrsv(POS_LC,POS_GC,NEG_LC,NEG_GC)
+    # POS_LC_FILTERED,POS_GC_FILTERED,NEG_LC_FILTERED,NEG_GC_FILTERED = remove_duplicatas_public(POS_LC,POS_GC,NEG_LC,NEG_GC)
+
+    print("REMOVING DUPLICATAS")
+    time.sleep(0.01)
+    POS_LC_FILTERED,POS_GC_FILTERED,NEG_LC_FILTERED,NEG_GC_FILTERED = remove_duplicatas_lrsv(POS_LC,POS_GC,NEG_LC,NEG_GC)
 
     POS_LC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS_LC_FILTERED))
     POS_GC_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(POS_GC_FILTERED))
