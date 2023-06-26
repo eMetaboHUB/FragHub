@@ -1,4 +1,6 @@
 import concurrent.futures
+import sys
+
 from tqdm import tqdm
 import pandas as pd
 import json
@@ -169,84 +171,155 @@ def convert_to_msp(input_path):
 
     return FINAL_JSON,FINAL_XML
 
-def msp_to_csv(clean_msp_path):
-    # POS
-    POS_DIR = os.path.join(clean_msp_path, "FINAL_POS")
+def msp_to_csv():
+    # ========================================================================= POS_LC =========================================================================
+    POS_LC_DIR = "../OUTPUT/CLEAN_MSP/FINAL_POS/POS_LC_clean.msp"
 
-    dictionary = {"PEAKS_LIST": []}
-
+    dictionary = {}
     first = True
 
-    for files in os.listdir(POS_DIR):
-        if files.endswith(".msp"):
-            with open(os.path.join(POS_DIR, files), "r", encoding="UTF-8") as msp_file_buffer:
-                msp_file = msp_file_buffer.read()
+    with open(POS_LC_DIR, "r", encoding="UTF-8") as msp_file_buffer:
+        msp_file = msp_file_buffer.read()
 
-            spectrum_list = msp_file.split("\n\n")  # une liste de spectres
+    spectrum_list = msp_file.split("\n\n")  # une liste de spectres
 
-            empty = False
-            if len(spectrum_list) == 0:
-                empty = True
+    empty = False
+    if len(spectrum_list) == 0:
+        empty = True
 
-            print("POS")
-            time.sleep(0.01)
-            for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green")):
-                if spectrum != "\n":
-                    fields = re.findall(r"(.+?):(.*)\n", spectrum)
-                    if first == True:
-                        for element in fields:
-                            dictionary[element[0]] = []
-                        first = False
+    print("POS_LC")
+    time.sleep(0.01)
+    for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green")):
+        if spectrum != "\n":
+            fields = re.findall(r"(.+?):(.*)\n", spectrum)
+            if first == True:
+                for element in fields:
+                    dictionary[element[0]] = []
+                dictionary["PEAKS_LIST"] = []
+                first = False
+            if first == False:
+                for element in fields:
+                    dictionary[element[0]].append(element[1])
 
-                    if first == False:
-                        for element in fields:
-                            dictionary[element[0]].append(element[1])
-
-                    if re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)",spectrum):
-                        dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
+            if re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)",spectrum):
+                dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
 
     if empty == False:
         POS_df = pd.DataFrame.from_dict(dictionary)
-        POS_df.to_csv("../OUTPUT/CSV/FINAL_POS/POS_clean.csv", sep=";", encoding="UTF-8", index=False)
+        POS_df.to_csv("../OUTPUT/CSV/FINAL_POS/POS_LC_clean.csv", sep=";", encoding="UTF-8", index=False)
 
-    # NEG
-    NEG_DIR = os.path.join(clean_msp_path, "FINAL_NEG")
+    # ========================================================================= POS_GC =========================================================================
+    POS_GC_DIR = "../OUTPUT/CLEAN_MSP/FINAL_POS/POS_GC_clean.msp"
 
-    dictionary = {"PEAKS_LIST": []}
-
+    dictionary = {}
     first = True
 
-    for files in os.listdir(NEG_DIR):
-        if files.endswith(".msp"):
-            with open(os.path.join(NEG_DIR, files), "r", encoding="UTF-8") as msp_file_buffer:
-                msp_file = msp_file_buffer.read()
+    with open(POS_GC_DIR, "r", encoding="UTF-8") as msp_file_buffer:
+        msp_file = msp_file_buffer.read()
 
-            spectrum_list = msp_file.split("\n\n")  # une liste de spectres
+    spectrum_list = msp_file.split("\n\n")  # une liste de spectres
 
-            empty = False
-            if len(spectrum_list) == 0:
-                empty = True
+    empty = False
+    if len(spectrum_list) == 0:
+        empty = True
 
-            print("NEG")
-            time.sleep(0.01)
-            for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green")):
-                if spectrum != "\n":
-                    fields = re.findall(r"(.+?):(.*)", spectrum)
-                    if first == True:
-                        for element in fields:
-                            dictionary[element[0]] = []
-                        first = False
+    print("POS_GC")
+    time.sleep(0.01)
+    for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green")):
+        if spectrum != "\n":
+            fields = re.findall(r"(.+?):(.*)\n", spectrum)
+            if first == True:
+                for element in fields:
+                    dictionary[element[0]] = []
+                dictionary["PEAKS_LIST"] = []
+                first = False
 
-                    if first == False:
-                        for element in fields:
-                            dictionary[element[0]].append(element[1])
+            if first == False:
+                for element in fields:
+                    dictionary[element[0]].append(element[1])
 
-                    if re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum):
-                        dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
+            if re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum):
+                dictionary["PEAKS_LIST"].append(
+                    re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
+
+    if empty == False:
+        POS_df = pd.DataFrame.from_dict(dictionary)
+        POS_df.to_csv("../OUTPUT/CSV/FINAL_POS/POS_GC_clean.csv", sep=";", encoding="UTF-8", index=False)
+
+    #  ========================================================================= NEG_LC =========================================================================
+    NEG_LC_DIR = "../OUTPUT/CLEAN_MSP/FINAL_NEG/NEG_LC_clean.msp"
+
+    dictionary = {}
+    first = True
+
+    with open(NEG_LC_DIR, "r", encoding="UTF-8") as msp_file_buffer:
+        msp_file = msp_file_buffer.read()
+
+    spectrum_list = msp_file.split("\n\n")  # une liste de spectres
+
+    empty = False
+    if len(spectrum_list) == 0:
+        empty = True
+
+    print("NEG_LC")
+    time.sleep(0.01)
+    for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green")):
+        if spectrum != "\n":
+            fields = re.findall(r"(.+?):(.*)", spectrum)
+            if first == True:
+                for element in fields:
+                    dictionary[element[0]] = []
+                dictionary["PEAKS_LIST"] = []
+                first = False
+
+            if first == False:
+                for element in fields:
+                    dictionary[element[0]].append(element[1])
+
+            if re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum):
+                dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
 
     if empty == False:
         NEG_df = pd.DataFrame.from_dict(dictionary)
-        NEG_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_clean.csv", sep=";", encoding="UTF-8", index=False)
+        NEG_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_LC_clean.csv", sep=";", encoding="UTF-8", index=False)
+
+    #  ========================================================================= NEG_GC =========================================================================
+    NEG_GC_DIR = "../OUTPUT/CLEAN_MSP/FINAL_NEG/NEG_GC_clean.msp"
+
+    dictionary = {}
+    first = True
+
+    with open(NEG_GC_DIR, "r", encoding="UTF-8") as msp_file_buffer:
+        msp_file = msp_file_buffer.read()
+
+    spectrum_list = msp_file.split("\n\n")  # une liste de spectres
+
+    empty = False
+    if len(spectrum_list) == 0:
+        empty = True
+
+    print("NEG_GC")
+    time.sleep(0.01)
+    for spectrum in list(tqdm(spectrum_list, total=len(spectrum_list), unit="spectrums", colour="green")):
+        if spectrum != "\n":
+            fields = re.findall(r"(.+?):(.*)", spectrum)
+            if first == True:
+                for element in fields:
+                    dictionary[element[0]] = []
+                dictionary["PEAKS_LIST"] = []
+                first = False
+
+            if first == False:
+                for element in fields:
+                    dictionary[element[0]].append(element[1])
+
+            if re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum):
+                dictionary["PEAKS_LIST"].append(
+                    re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2).split("\n"))
+
+    if empty == False:
+        NEG_df = pd.DataFrame.from_dict(dictionary)
+        NEG_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_GC_clean.csv", sep=";", encoding="UTF-8", index=False)
 
 
 
