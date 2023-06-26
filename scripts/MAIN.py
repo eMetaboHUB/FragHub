@@ -71,26 +71,36 @@ if __name__ == "__main__":
     POS, NEG = split_pos_neg(CONCATENATE_LIST)
 
     # STEP 5: Split LC / GC
-    # LC_POS,LC_NEG,GC_POS,GC_NEG = split_LC_GC(POS,NEG)
+    print("-- SPLITTING LC / GC --")
+    time.sleep(0.01)
+    POS_LC,POS_GC,NEG_LC,NEG_GC = split_LC_GC(POS,NEG)
 
 
     # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
-    print("-- REMOVING DUPLICATAS --")
-    POS, NEG = remove_duplicatas_public(POS, NEG)
+    # print("-- REMOVING DUPLICATAS --")
+    # time.sleep(0.01)
+    # POS_LC_FILTERED,POS_GC_FILTERED,NEG_LC_FILTERED,NEG_GC_FILTERED = remove_duplicatas_public(POS_LC,POS_GC,NEG_LC,NEG_GC)
 
-    # print("REMOVING DUPLICATAS")
-    # POS, NEG = remove_duplicatas_lrsv(POS, NEG)
+    print("REMOVING DUPLICATAS")
+    time.sleep(0.01)
+    POS_LC_FILTERED,POS_GC_FILTERED,NEG_LC_FILTERED,NEG_GC_FILTERED = remove_duplicatas_lrsv(POS_LC,POS_GC,NEG_LC,NEG_GC)
 
-    POS_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS))
-    NEG_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG))
+    POS_LC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS_LC_FILTERED))
+    POS_GC_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(POS_GC_FILTERED))
+    NEG_LC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG_LC_FILTERED))
+    NEG_GC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG_GC_FILTERED))
 
-    with open(os.path.join(clean_msp_path,"FINAL_POS/POS_clean.msp"),"w",encoding="UTF-8") as pos:
-        pos.write(POS_FULL)
-    with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_clean.msp"), "w", encoding="UTF-8") as neg:
-        neg.write(NEG_FULL)
+    with open(os.path.join(clean_msp_path,"FINAL_POS/POS_LC_clean.msp"),"w",encoding="UTF-8") as pos:
+        pos.write(POS_LC_FULL)
+    with open(os.path.join(clean_msp_path,"FINAL_POS/POS_GC_clean.msp"),"w",encoding="UTF-8") as pos:
+        pos.write(POS_GC_FULL)
+    with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_LC_clean.msp"), "w", encoding="UTF-8") as neg:
+        neg.write(NEG_LC_FULL)
+    with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_GC_clean.msp"), "w", encoding="UTF-8") as neg:
+        neg.write(NEG_GC_FULL)
 
     print("-- CONVERTING MSP TO CSV --")
-    msp_to_csv(clean_msp_path)
+    msp_to_csv()
 
     print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
 
