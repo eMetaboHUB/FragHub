@@ -83,7 +83,7 @@ if __name__ == "__main__":
 
     print("REMOVING DUPLICATAS")
     time.sleep(0.01)
-    POS_LC_FILTERED,POS_GC_FILTERED,NEG_LC_FILTERED,NEG_GC_FILTERED = remove_duplicatas_lrsv(POS_LC,POS_GC,NEG_LC,NEG_GC)
+    POS_LC,POS_LC_df,POS_GC,POS_GC_df,NEG_LC,NEG_LC_df,NEG_GC,NEG_GC_df = remove_duplicatas_lrsv(POS_LC,POS_GC,NEG_LC,NEG_GC)
 
     print("-- WRITING MSP --")
 
