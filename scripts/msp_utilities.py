@@ -40,7 +40,37 @@ def harmonize_fields_names(spectrum):
         for field in expected_fields:
             if field not in fields_names: # Si un champ voulu est manquant, on le rajoute
                 spectrum = field+": None\n"+spectrum
-        return spectrum
+
+        # Sort fields
+        SPECTRUM = ""
+
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(FILENAME: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(PREDICTED: (.*)\n))",spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(SPECTRUMID: (.*)\n))",spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(RESOLUTION: (.*)\n))",spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(SYNON: (.*)\n))",spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(CHARGE: (.*)\n))",spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(PARENTMASS: (.*)\n))",spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(IONIZATION: (.*)\n))",spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(MSLEVEL: (.*)\n))",spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(FRAGMENTATIONMODE: (.*)\n))",spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(NAME: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(PRECURSORMZ: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(PRECURSORTYPE: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(INSTRUMENTTYPE: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(INSTRUMENT: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(SMILES: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(INCHI: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(INCHIKEY: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(COLLISIONENERGY: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(FORMULA: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(RETENTIONTIME: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(IONMODE: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(COMMENT: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(NUM PEAKS: (.*)\n))",spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)",spectrum).group(2)
+
+        return SPECTRUM
 
 def harmonize_adduct(spectrum):
     if spectrum != None:

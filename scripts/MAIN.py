@@ -16,7 +16,7 @@ import time
 
 if __name__ == "__main__":
     start_time = time.time()
-    
+
     input_path = r"..\INPUT"
     output_path = r"..\OUTPUT"
 
@@ -77,18 +77,20 @@ if __name__ == "__main__":
 
 
     # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
-    # print("-- REMOVING DUPLICATAS --")
+    # print("-- REMOVING DUPLICATAS (public) --")
     # time.sleep(0.01)
-    # POS_LC_FILTERED,POS_GC_FILTERED,NEG_LC_FILTERED,NEG_GC_FILTERED = remove_duplicatas_public(POS_LC,POS_GC,NEG_LC,NEG_GC)
+    # POS_LC,POS_LC_df,POS_GC,POS_GC_df,NEG_LC,NEG_LC_df,NEG_GC,NEG_GC_df = remove_duplicatas_public(POS_LC,POS_GC,NEG_LC,NEG_GC)
 
-    print("REMOVING DUPLICATAS")
+    print("-- REMOVING DUPLICATAS (lrsv) --")
     time.sleep(0.01)
-    POS_LC_FILTERED,POS_GC_FILTERED,NEG_LC_FILTERED,NEG_GC_FILTERED = remove_duplicatas_lrsv(POS_LC,POS_GC,NEG_LC,NEG_GC)
+    POS_LC,POS_LC_df,POS_GC,POS_GC_df,NEG_LC,NEG_LC_df,NEG_GC,NEG_GC_df = remove_duplicatas_lrsv(POS_LC,POS_GC,NEG_LC,NEG_GC)
 
-    POS_LC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS_LC_FILTERED))
-    POS_GC_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(POS_GC_FILTERED))
-    NEG_LC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG_LC_FILTERED))
-    NEG_GC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG_GC_FILTERED))
+    print("-- WRITING MSP --")
+
+    POS_LC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS_LC))
+    POS_GC_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(POS_GC))
+    NEG_LC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG_LC))
+    NEG_GC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG_GC))
 
     with open(os.path.join(clean_msp_path,"FINAL_POS/POS_LC_clean.msp"),"w",encoding="UTF-8") as pos:
         pos.write(POS_LC_FULL)
@@ -99,8 +101,12 @@ if __name__ == "__main__":
     with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_GC_clean.msp"), "w", encoding="UTF-8") as neg:
         neg.write(NEG_GC_FULL)
 
-    print("-- CONVERTING MSP TO CSV --")
-    msp_to_csv()
+    print("-- WRITING CSV --")
+
+    POS_LC_df.to_csv("../OUTPUT/CSV/FINAL_POS/POS_LC_clean.csv", sep=";", encoding="UTF-8", index=False)
+    POS_GC_df.to_csv("../OUTPUT/CSV/FINAL_POS/POS_GC_clean.csv", sep=";", encoding="UTF-8", index=False)
+    NEG_LC_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_LC_clean.csv", sep=";", encoding="UTF-8", index=False)
+    NEG_GC_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_GC_clean.csv", sep=";", encoding="UTF-8", index=False)
 
     print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
 
