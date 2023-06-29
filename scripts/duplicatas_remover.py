@@ -3,7 +3,7 @@ import pandas as pd
 import time
 import re
 
-def remove_duplicatas_public(POS_LC,POS_GC,NEG_LC,NEG_GC):
+def remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC):
     # ========================================================================= POS_LC =========================================================================
     dictionary = {}
     POS_LC_df = pd.DataFrame()
