@@ -66,12 +66,12 @@ if __name__ == "__main__":
     clean_msp_path = os.path.join(output_path,"CLEAN_MSP")
     CONCATENATE_LIST = concatenate_clean_msp(clean_msp_path)
 
-    print("-- SPLITTING POS / NEG --")
+    print("-- SPLITTING [POS / NEG] --")
     time.sleep(0.01)
     POS, NEG = split_pos_neg(CONCATENATE_LIST)
 
     # STEP 5: Split LC / GC
-    print("-- SPLITTING LC / GC --")
+    print("-- SPLITTING [LC / GC] --")
     time.sleep(0.01)
     POS_LC,POS_GC,NEG_LC,NEG_GC = split_LC_GC(POS,NEG)
 
