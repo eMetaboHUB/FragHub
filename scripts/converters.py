@@ -36,7 +36,7 @@ def json_to_msp(json_spectrum):
 
 def JSON_convert_processing(FINAL_JSON):
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = tqdm(executor.map(json_to_msp, FINAL_JSON), total=len(FINAL_JSON), unit="spectrums", colour="green", desc="\tconverting")
+        results = list(tqdm(executor.map(json_to_msp, FINAL_JSON), total=len(FINAL_JSON), unit="spectrums", colour="green", desc="\tconverting"))
 
     final = [res for res in results if res is not None]
 
@@ -126,7 +126,7 @@ def xml_to_msp(xml_content):
 
 def XML_convert_processing(FINAL_XML):
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = tqdm(executor.map(xml_to_msp, FINAL_XML), total=len(FINAL_XML), unit="spectrums", colour="green", desc="\tconverting")
+        results = list(tqdm(executor.map(xml_to_msp, FINAL_XML), total=len(FINAL_XML), unit="spectrums", colour="green", desc="\tconverting"))
 
     final = [res for res in results if res is not None]
 
