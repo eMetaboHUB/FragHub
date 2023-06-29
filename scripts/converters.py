@@ -6,7 +6,7 @@ import re
 
 def concatenate_json(json_path):
     JSON_LIST = []
-    for files in os.listdir(json_path):
+    for files in tqdm(os.listdir(json_path), total=len(os.listdir(json_path)), unit="spectrums", colour="green", desc="\tconcatenate"):
         if files.endswith(".json"):
             file_name = os.path.basename(os.path.join(json_path, files)).replace(".json", "")
             with  open(os.path.join(json_path, files), "r", encoding="UTF-8") as f:
@@ -36,7 +36,7 @@ def json_to_msp(json_spectrum):
 
 def JSON_convert_processing(FINAL_JSON):
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(json_to_msp, FINAL_JSON), total=len(FINAL_JSON), unit="spectrums", colour="green"))
+        results = tqdm(executor.map(json_to_msp, FINAL_JSON), total=len(FINAL_JSON), unit="spectrums", colour="green", desc="\tconverting")
 
     final = [res for res in results if res is not None]
 
@@ -44,7 +44,7 @@ def JSON_convert_processing(FINAL_JSON):
 
 def concatenate_xml(xml_path):
     FINAL_XML = []
-    for files in os.listdir(xml_path):
+    for files in tqdm(os.listdir(xml_path), total=len(os.listdir(xml_path)), unit="spectrums", colour="green", desc="\tconcatenate"):
         if files.endswith(".xml"):
             file_name = os.path.basename(os.path.join(xml_path, files).replace(".xml", ""))
             with open(os.path.join(xml_path, files), "r", encoding="UTF-8") as xml_file:
@@ -126,7 +126,7 @@ def xml_to_msp(xml_content):
 
 def XML_convert_processing(FINAL_XML):
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(xml_to_msp, FINAL_XML), total=len(FINAL_XML), unit="spectrums", colour="green"))
+        results = tqdm(executor.map(xml_to_msp, FINAL_XML), total=len(FINAL_XML), unit="spectrums", colour="green", desc="\tconverting")
 
     final = [res for res in results if res is not None]
 
