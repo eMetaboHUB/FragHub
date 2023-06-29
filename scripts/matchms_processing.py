@@ -63,7 +63,7 @@ def multithreaded_matchms(spectrum,file_name):
 
 def matchms_processing(spectrum_list,file_name):
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(multithreaded_matchms, spectrum_list, [file_name for i in range(len(spectrum_list))]), total=len(spectrum_list), unit="spectrums", colour="green"))
+        results = list(tqdm(executor.map(multithreaded_matchms, spectrum_list, [file_name for i in range(len(spectrum_list))]), total=len(spectrum_list), unit="spectrums", colour="green", desc="\tprocessing"))
 
     final = [res for res in results if res is not None]
 
