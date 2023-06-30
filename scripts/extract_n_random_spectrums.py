@@ -17,8 +17,6 @@ for dir in os.listdir(paths):
 
                 random_n_list = random.sample(spectrum_list, n)
 
-                # final_random_n_list = [re.sub("charge: -\n","CHARGE: -1\n",spectrum, flags=re.I) for spectrum in random_n_list]
-
                 with open(os.path.join("../../SOUS_DB","SOUS_"+files.replace(".msp","")+".msp"),"w",encoding="UTF-8") as msp_buffer:
                     msp_buffer.write("\n\n".join(random_n_list))
 
