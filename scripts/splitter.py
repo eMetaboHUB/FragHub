@@ -3,7 +3,7 @@ import re
 def split_pos_neg(CONCATENATE_LIST):
     POS = []
     NEG = []
-    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit="spectrums", colour="green"):
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit="spectrums", colour="green", desc="\tprocessing"):
         #POS
         if re.search("CHARGE: [0-9]\n",spectrum, flags=re.I) or re.search("PRECURSORTYPE: (.*)\+\n",spectrum, flags=re.I) or re.search("IONMODE: p(.*)\n",spectrum, flags=re.I):
             POS.append(spectrum)
