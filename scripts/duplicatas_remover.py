@@ -31,7 +31,8 @@ def remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC):
         # Creating Dataframe
         POS_LC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        POS_LC_df = POS_LC_df.drop_duplicates(subset=['INCHIKEY', 'PEAKS_LIST'])
+        tqdm.pandas(desc="\tPOS_LC",colour="green")
+        POS_LC_df = POS_LC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
         # Re convert to MSP
         POS_LC = []
         for index,row in POS_LC_df.iterrows():
@@ -90,7 +91,8 @@ def remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC):
         # Creating Dataframe
         POS_GC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        POS_GC_df = POS_GC_df.drop_duplicates(subset=['INCHIKEY', 'PEAKS_LIST'])
+        tqdm.pandas(desc="\tPOS_GC", colour="green")
+        POS_GC_df = POS_GC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
         # Re convert to MSP
         POS_GC = []
         for index, row in POS_GC_df.iterrows():
@@ -149,7 +151,8 @@ def remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC):
         # Creating Dataframe
         NEG_LC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        NEG_LC_df = NEG_LC_df.drop_duplicates(subset=['INCHIKEY', 'PEAKS_LIST'])
+        tqdm.pandas(desc="\tNEG_LC", colour="green")
+        NEG_LC_df = NEG_LC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
         # Re convert to MSP
         NEG_LC = []
         for index, row in NEG_LC_df.iterrows():
@@ -208,7 +211,8 @@ def remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC):
         # Creating Dataframe
         NEG_GC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        NEG_GC_df = NEG_GC_df.drop_duplicates(subset=['INCHIKEY', 'PEAKS_LIST'])
+        tqdm.pandas(desc="\tNEG_GC", colour="green")
+        NEG_GC_df = NEG_GC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
         # Re convert to MSP
         NEG_GC = []
         for index, row in NEG_GC_df.iterrows():
