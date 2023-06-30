@@ -71,6 +71,7 @@ if __name__ == "__main__":
     POS, NEG = split_pos_neg(CONCATENATE_LIST)
 
     # STEP 5: Split LC / GC
+    time.sleep(0.01)
     print("-- SPLITTING [LC / GC] --")
     time.sleep(0.01)
     POS_LC,POS_GC,NEG_LC,NEG_GC = split_LC_GC(POS,NEG)
