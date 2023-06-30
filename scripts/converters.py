@@ -1,4 +1,6 @@
 import concurrent.futures
+import time
+
 from tqdm import tqdm
 import json
 import os
@@ -143,6 +145,7 @@ def convert_to_msp(input_path):
         if files.endswith(".json"):
             json_to_do = True
     if json_to_do == True:
+        time.sleep(0.01)
         print("-- CONVERTING JSON TO MSP --")
         # Concatenate all JSON to a list
         FINAL_JSON = concatenate_json(json_path)
@@ -159,6 +162,7 @@ def convert_to_msp(input_path):
         if files.endswith(".xml"):
             xml_to_do = True
     if xml_to_do == True:
+        time.sleep(0.01)
         print("-- CONVERTING XML TO MSP --")
         # Concatenate all XML to a list
         FINAL_XML = concatenate_xml(xml_path)
