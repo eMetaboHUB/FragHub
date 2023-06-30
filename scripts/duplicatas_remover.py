@@ -31,7 +31,7 @@ def remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC):
         # Creating Dataframe
         POS_LC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        tqdm.pandas(desc="\t\tPOS_LC",colour="green")
+        tqdm.pandas(desc="\t\tPOS_LC",colour="green",unit=" row")
         POS_LC_df = POS_LC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
         # Re convert to MSP
         POS_LC = []
@@ -91,7 +91,7 @@ def remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC):
         # Creating Dataframe
         POS_GC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        tqdm.pandas(desc="\t\tPOS_GC", colour="green")
+        tqdm.pandas(desc="\t\tPOS_GC", colour="green",unit=" row")
         POS_GC_df = POS_GC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
         # Re convert to MSP
         POS_GC = []
@@ -151,7 +151,7 @@ def remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC):
         # Creating Dataframe
         NEG_LC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        tqdm.pandas(desc="\t\tNEG_LC", colour="green")
+        tqdm.pandas(desc="\t\tNEG_LC", colour="green",unit=" row")
         NEG_LC_df = NEG_LC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
         # Re convert to MSP
         NEG_LC = []
@@ -211,7 +211,7 @@ def remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC):
         # Creating Dataframe
         NEG_GC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        tqdm.pandas(desc="\t\tNEG_GC", colour="green")
+        tqdm.pandas(desc="\t\tNEG_GC", colour="green",unit=" row")
         NEG_GC_df = NEG_GC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
         # Re convert to MSP
         NEG_GC = []
