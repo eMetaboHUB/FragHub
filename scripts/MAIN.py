@@ -66,6 +66,10 @@ if __name__ == "__main__":
     clean_msp_path = os.path.join(output_path,"CLEAN_MSP")
     CONCATENATE_LIST = concatenate_clean_msp(clean_msp_path)
 
+    print("-- NAMES COMPLETION --")
+    time.sleep(0.01)
+    CONCATENATE_LIST = names_completion(CONCATENATE_LIST)
+
     print("-- SPLITTING [POS / NEG] --")
     time.sleep(0.01)
     POS, NEG = split_pos_neg(CONCATENATE_LIST)

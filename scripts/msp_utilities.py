@@ -1,3 +1,4 @@
+from tqdm import tqdm
 import re
 import os
 
@@ -262,3 +263,31 @@ def correct_uncomplete_charge(msp_path):
 
     with open(msp_path, "w", encoding="UTF-8") as msp_buffer:
         msp_buffer.write(content)
+
+def names_completion(CONCATENATE_LIST):
+    inchikey_names = {}
+
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t processing"):
+        if re.search("INCHIKEY: (.*)\n", spectrum):
+            inchikey = re.search("INCHIKEY: (.*)\n", spectrum).group(1)
+        if re.search("\nNAME: (.*)\n", spectrum):
+            name = re.search("\nNAME: (.*)\n", spectrum).group(1)
+
+        # If InChIKey and name are valid, add them to the dictionary
+        if inchikey and name != "None":
+            inchikey_names[inchikey] = name
+
+    # Update missing names with corresponding names in dictionary list
+    updated_spetcrum_list = []
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t   updating"):
+        if re.search("INCHIKEY: (.*)\n", spectrum):
+            inchikey = re.search("INCHIKEY: (.*)\n", spectrum).group(1)
+        if re.search("\nNAME: (.*)\n", spectrum):
+            name = re.search("\nNAME: (.*)\n", spectrum).group(1)
+        if name == "None":
+            if inchikey in inchikey_names.keys():
+                spectrum = re.sub("\nNAME: (.*)\n", f"\nNAME: {inchikey_names[inchikey]}\n", spectrum)
+
+        updated_spetcrum_list.append(spectrum)
+
+    return updated_spetcrum_list
