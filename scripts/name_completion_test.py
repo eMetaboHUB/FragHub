@@ -1,5 +1,5 @@
 from tqdm import tqdm
-import csv
+import pandas as pd
 import os
 import re
 
@@ -42,11 +42,33 @@ def complete_names(filename):
     with open(os.path.join("../names_completion/out", os.path.basename(filename).replace(".msp", "_2.msp")), 'w', encoding="UTF-8") as file:
         file.write("\n\n".join(updated_spetcrum_list))
 
+    dictionary = {}
+    first = True
+    empty = False
+    if len(updated_spetcrum_list) == 0:
+        empty = True
+
+    for spectrum in updated_spetcrum_list:
+        if spectrum != "\n":
+            fields = re.findall(r"(.+?):(.*)\n", spectrum)
+            if first == True:
+                for element in fields:
+                    dictionary[element[0]] = []
+                dictionary["PEAKS_LIST"] = []
+                first = False
+            if first == False:
+                for element in fields:
+                    dictionary[element[0]].append(element[1])
+
+            if re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum):
+                dictionary["PEAKS_LIST"].append(
+                    re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2))
+
     # Écritdes spectres mis à jour dans un fichier CSV
-    with open(os.path.join("../names_completion/out", os.path.basename(filename).replace(".msp", "_2.csv")), 'w', newline='', encoding="UTF-8") as csvfile:
-        writer = csv.writer(csvfile, delimiter='\t')
-        writer.writerow(["SPECTRUM"])
-        writer.writerows([[spectrum] for spectrum in updated_spetcrum_list])
+    if empty == False:
+        # Creating Dataframe
+       df = pd.DataFrame.from_dict(dictionary)
+       df.to_csv(os.path.join("../names_completion/out", os.path.basename(filename).replace(".msp", "_2.csv")), sep=";", encoding="UTF-8", index=False)
 
     print("Complétion des noms terminée.")
 
