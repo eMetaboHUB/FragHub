@@ -266,6 +266,8 @@ def correct_uncomplete_charge(msp_path):
 
 def names_completion(CONCATENATE_LIST):
     inchikey_names = {}
+    inchikey = "None"
+    name = "None"
 
     for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t processing"):
         if re.search("INCHIKEY: (.*)\n", spectrum):
