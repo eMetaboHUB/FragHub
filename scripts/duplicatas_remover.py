@@ -22,7 +22,7 @@ def remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC):
                 first = False
             if first == False:
                 for element in fields:
-                    dictionary[element[0]].append(element[1])
+                    dictionary[element[0]].append(element[1].strip(" "))
 
             if re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum):
                 dictionary["PEAKS_LIST"].append(re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum).group(2))
@@ -81,7 +81,7 @@ def remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC):
                 first = False
             if first == False:
                 for element in fields:
-                    dictionary[element[0]].append(element[1])
+                    dictionary[element[0]].append(element[1].strip(" "))
 
             if re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum):
                 dictionary["PEAKS_LIST"].append(
@@ -141,7 +141,7 @@ def remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC):
                 first = False
             if first == False:
                 for element in fields:
-                    dictionary[element[0]].append(element[1])
+                    dictionary[element[0]].append(element[1].strip(" "))
 
             if re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum):
                 dictionary["PEAKS_LIST"].append(
@@ -201,7 +201,7 @@ def remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC):
                 first = False
             if first == False:
                 for element in fields:
-                    dictionary[element[0]].append(element[1])
+                    dictionary[element[0]].append(element[1].strip(" "))
 
             if re.search("(NUM PEAKS: [0-9]*)\n([\s\S]*)", spectrum):
                 dictionary["PEAKS_LIST"].append(
