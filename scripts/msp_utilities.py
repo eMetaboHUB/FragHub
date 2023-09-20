@@ -293,3 +293,47 @@ def names_completion(CONCATENATE_LIST):
         updated_spetcrum_list.append(spectrum)
 
     return updated_spetcrum_list
+
+def inchi_smiles_completion(CONCATENATE_LIST):
+    inchikey_inchi = {}
+    inchikey_smiles = {}
+
+    inchikey = "None"
+    inchi = "None"
+    smiles = "None"
+
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t processing"):
+        if re.search("INCHIKEY: (.*)\n", spectrum):
+            inchikey = re.search("INCHIKEY: (.*)\n", spectrum).group(1)
+        if re.search("\nINCHI: (.*)\n", spectrum):
+            inchi = re.search("\nINCHI: (.*)\n", spectrum).group(1)
+        if re.search("\nSMILES: (.*)\n", spectrum):
+            smiles = re.search("\nSMILES: (.*)\n", spectrum).group(1)
+
+        if inchikey and inchi != "None":
+            inchikey_inchi[inchikey] = inchi
+
+        if inchikey and smiles != "None":
+            inchikey_smiles[inchikey] = smiles
+
+    # Update missing inchi/smiles with corresponding inchikey in dictionary list
+    updated_spetcrum_list = []
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t   updating"):
+        if re.search("INCHIKEY: (.*)\n", spectrum):
+            inchikey = re.search("INCHIKEY: (.*)\n", spectrum).group(1)
+        # INCHI
+        if re.search("\nINCHI: (.*)\n", spectrum):
+            inchi = re.search("\nINCHI: (.*)\n", spectrum).group(1)
+        if inchi == "None":
+            if inchikey in inchikey_inchi.keys():
+                spectrum = re.sub("\nINCHI: (.*)\n", rf"\nINCHI: {inchikey_inchi[inchikey]}\n", spectrum)
+        # SMILES
+        if re.search("\nSMILES: (.*)\n", spectrum):
+            smiles = re.search("\nSMILES: (.*)\n", spectrum).group(1)
+        if smiles == "None":
+            if inchikey in inchikey_smiles.keys():
+                spectrum = re.sub("\nSMILES: (.*)\n", rf"\nSMILES: {inchikey_smiles[inchikey]}\n", spectrum)
+
+        updated_spetcrum_list.append(spectrum)
+
+    return updated_spetcrum_list
