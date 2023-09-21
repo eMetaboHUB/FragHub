@@ -95,10 +95,11 @@ def xml_to_msp(xml_content):
         specrta_dict["database-id"] = re.search("<database-id>(.*)</database-id>", xml_content).group(1)
 
     # Correcting 0 charge
-    if specrta_dict["ionization-mode"][0] == "Positive":
-        specrta_dict["charge"] = "1"
-    elif specrta_dict["ionization-mode"][0] == "Negative":
-        specrta_dict["charge"] = "-1"
+    if re.search("<ionization-mode>(.*)</ionization-mode>", xml_content):
+        if specrta_dict["ionization-mode"][0] == "Positive":
+            specrta_dict["charge"] = "1"
+        elif specrta_dict["ionization-mode"][0] == "Negative":
+            specrta_dict["charge"] = "-1"
 
     peak_list = [re.findall("<mass-charge>(.*)</mass-charge>",xml_content),re.findall("<intensity>(.*)</intensity>",xml_content)]
 
