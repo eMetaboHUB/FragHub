@@ -84,11 +84,17 @@ if __name__ == "__main__":
     time.sleep(0.01)
     POS_LC,POS_GC,NEG_LC,NEG_GC = split_LC_GC(POS,NEG)
 
+    # STEP 5: EXP / In-Silico
+    time.sleep(0.01)
+    print("-- SPLITTING EXP / In-Silico --")
+    time.sleep(0.01)
+    POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico = exp_in_silico_splitter(POS_LC,POS_GC,NEG_LC,NEG_GC)
+
 
     # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
     print("-- REMOVING DUPLICATAS --")
     time.sleep(0.01)
-    POS_LC,POS_LC_df,POS_GC,POS_GC_df,NEG_LC,NEG_LC_df,NEG_GC,NEG_GC_df = remove_duplicatas(POS_LC,POS_GC,NEG_LC,NEG_GC)
+    POS_LC,POS_LC_df,POS_GC,POS_GC_df,NEG_LC,NEG_LC_df,NEG_GC,NEG_GC_df = remove_duplicatas(POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico)
 
     print("-- WRITING MSP --")
 
@@ -105,6 +111,15 @@ if __name__ == "__main__":
         neg.write(NEG_LC_FULL)
     with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_GC_clean.msp"), "w", encoding="UTF-8") as neg:
         neg.write(NEG_GC_FULL)
+
+    with open(os.path.join(clean_msp_path,"FINAL_POS/POS_LC_In_Silico_clean.msp"),"w",encoding="UTF-8") as pos:
+        pos.write(POS_LC_In_Silico)
+    with open(os.path.join(clean_msp_path,"FINAL_POS/POS_GC_In_Silico_clean.msp"),"w",encoding="UTF-8") as pos:
+        pos.write(POS_GC_In_Silico)
+    with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_LC_In_Silico_clean.msp"), "w", encoding="UTF-8") as neg:
+        neg.write(NEG_LC_In_Silico)
+    with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_GC_In_Silico_clean.msp"), "w", encoding="UTF-8") as neg:
+        neg.write(NEG_GC_In_Silico)
 
     print("-- WRITING CSV --")
 
