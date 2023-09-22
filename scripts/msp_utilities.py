@@ -326,13 +326,15 @@ def inchi_smiles_completion(CONCATENATE_LIST):
             inchi = re.search("\nINCHI: (.*)\n", spectrum).group(1)
         if inchi == "None":
             if inchikey in inchikey_inchi.keys():
-                spectrum = re.sub("\nINCHI: (.*)\n", rf"\nINCHI: {inchikey_inchi[inchikey]}\n", spectrum)
+                spectrum = re.sub("\nINCHI: (.*)\n", rf"\nINCHI: {re.escape(inchikey_inchi[inchikey])}\n", spectrum)
+                spectrum = re.sub(r"\\\\",r"\\",spectrum)
         # SMILES
         if re.search("\nSMILES: (.*)\n", spectrum):
             smiles = re.search("\nSMILES: (.*)\n", spectrum).group(1)
         if smiles == "None":
             if inchikey in inchikey_smiles.keys():
-                spectrum = re.sub("\nSMILES: (.*)\n", rf"\nSMILES: {inchikey_smiles[inchikey]}\n", spectrum)
+                spectrum = re.sub("\nSMILES: (.*)\n", rf"\nSMILES: {re.escape(inchikey_smiles[inchikey])}\n", spectrum)
+                spectrum = re.sub(r"\\\\", r"\\", spectrum)
 
         updated_spetcrum_list.append(spectrum)
 
