@@ -1,3 +1,4 @@
+from tqdm.auto import tqdm
 from tqdm import tqdm
 import pandas as pd
 import time
@@ -31,11 +32,12 @@ def remove_dupli_POS_LC(POS_LC):
         POS_LC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
         # Créer la barre de progression
+        total_rows = len(POS_LC_df)
         t = tqdm(total=len(POS_LC_df), desc="\t\t  POS_LC", colour="green", unit=" row")
 
         # Supprimer les doublons et mettre à jour la barre de progression
         POS_LC_df = POS_LC_df.loc[~POS_LC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
-        t.update(len(POS_LC_df))
+        t.update(total_rows)
 
         # Fermer la barre de progression
         t.close()
@@ -70,11 +72,12 @@ def remove_dupli_POS_LC_In_Silico(POS_LC_In_Silico):
         POS_LC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
         # Créer la barre de progression
+        total_rows = len(POS_LC_df)
         t = tqdm(total=len(POS_LC_df), desc="POS_LC_In_Silico", colour="green", unit=" row")
 
         # Supprimer les doublons et mettre à jour la barre de progression
         POS_LC_df = POS_LC_df.loc[~POS_LC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
-        t.update(len(POS_LC_df))
+        t.update(total_rows)
 
         # Fermer la barre de progression
         t.close()
@@ -110,11 +113,12 @@ def remove_dupli_POS_GC(POS_GC):
         POS_GC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
         # Créer la barre de progression
+        total_rows = len(POS_GC_df)
         t = tqdm(total=len(POS_GC_df), desc="\t\t  POS_GC", colour="green", unit=" row")
 
         # Supprimer les doublons et mettre à jour la barre de progression
         POS_GC_df = POS_GC_df.loc[~POS_GC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
-        t.update(len(POS_GC_df))
+        t.update(total_rows)
 
         # Fermer la barre de progression
         t.close()
@@ -150,11 +154,12 @@ def remove_dupli_POS_GC_In_Silico(POS_GC_In_Silico):
         POS_GC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
         # Créer la barre de progression
+        total_rows = len(POS_GC_df)
         t = tqdm(total=len(POS_GC_df), desc="POS_GC_In_Silico", colour="green", unit=" row")
 
         # Supprimer les doublons et mettre à jour la barre de progression
         POS_GC_df = POS_GC_df.loc[~POS_GC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
-        t.update(len(POS_GC_df))
+        t.update(total_rows)
 
         # Fermer la barre de progression
         t.close()
@@ -190,11 +195,12 @@ def remove_dupli_NEG_LC(NEG_LC):
         NEG_LC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
         # Créer la barre de progression
+        total_rows = len(NEG_LC_df)
         t = tqdm(total=len(NEG_LC_df), desc="\t\t  NEG_LC", colour="green", unit=" row")
 
         # Supprimer les doublons et mettre à jour la barre de progression
         NEG_LC_df = NEG_LC_df.loc[~NEG_LC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
-        t.update(len(NEG_LC_df))
+        t.update(total_rows)
 
         # Fermer la barre de progression
         t.close()
@@ -230,11 +236,12 @@ def remove_dupli_NEG_LC_In_Silico(NEG_LC_In_Silico):
         NEG_LC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
         # Créer la barre de progression
+        total_rows = len(NEG_LC_df)
         t = tqdm(total=len(NEG_LC_df), desc="NEG_LC_In_Silico", colour="green", unit=" row")
 
         # Supprimer les doublons et mettre à jour la barre de progression
         NEG_LC_df = NEG_LC_df.loc[~NEG_LC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
-        t.update(len(NEG_LC_df))
+        t.update(total_rows)
 
         # Fermer la barre de progression
         t.close()
@@ -271,11 +278,12 @@ def remove_dupli_NEG_GC(NEG_GC):
         NEG_GC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
         # Créer la barre de progression
+        total_rows = len(NEG_GC_df)
         t = tqdm(total=len(NEG_GC_df), desc="\t\t  NEG_GC", colour="green", unit=" row")
 
         # Supprimer les doublons et mettre à jour la barre de progression
         NEG_GC_df = NEG_GC_df.loc[~NEG_GC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
-        t.update(len(NEG_GC_df))
+        t.update(total_rows)
 
         # Fermer la barre de progression
         t.close()
@@ -311,11 +319,12 @@ def remove_dupli_NEG_GC_In_Silico(NEG_GC_In_Silico):
         NEG_GC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
         # Créer la barre de progression
+        total_rows = len(NEG_GC_df)
         t = tqdm(total=len(NEG_GC_df), desc="NEG_GC_In_Silico", colour="green", unit=" row")
 
         # Supprimer les doublons et mettre à jour la barre de progression
         NEG_GC_df = NEG_GC_df.loc[~NEG_GC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
-        t.update(len(NEG_GC_df))
+        t.update(total_rows)
 
         # Fermer la barre de progression
         t.close()
