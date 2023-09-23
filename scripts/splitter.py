@@ -3,7 +3,7 @@ import re
 def split_pos_neg(CONCATENATE_LIST):
     POS = []
     NEG = []
-    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t processing"):
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t  processing"):
         #POS
         if re.search("CHARGE: [0-9]\n",spectrum, flags=re.I) or re.search("PRECURSORTYPE: (.*)\+\n",spectrum, flags=re.I) or re.search("IONMODE: p(.*)\n",spectrum, flags=re.I):
             POS.append(spectrum)
@@ -38,7 +38,7 @@ def split_LC_GC(POS,NEG):
     # POS
     POS_LC = []
     POS_GC = []
-    for spectrums in tqdm(POS, total=len(POS), unit=" spectrums", colour="green", desc="\t\t    POS"):
+    for spectrums in tqdm(POS, total=len(POS), unit=" spectrums", colour="green", desc="\t\t     POS"):
         if re.search("(INSTRUMENTTYPE: )GC(?![a-zA-Z0-9])",spectrums,flags=re.I) or re.search("(INSTRUMENTTYPE: )EI(?![a-zA-Z0-9])",spectrums,flags=re.I):
             POS_GC.append(spectrums)
         else:
@@ -47,7 +47,7 @@ def split_LC_GC(POS,NEG):
     # NEG
     NEG_LC = []
     NEG_GC = []
-    for spectrums in tqdm(NEG, total=len(NEG), unit=" spectrums", colour="green", desc="\t\t    NEG"):
+    for spectrums in tqdm(NEG, total=len(NEG), unit=" spectrums", colour="green", desc="\t\t     NEG"):
         if re.search("(INSTRUMENTTYPE: )GC(?![a-zA-Z0-9])", spectrums, flags=re.I) or re.search("(INSTRUMENTTYPE: )EI(?![a-zA-Z0-9])", spectrums, flags=re.I):
             NEG_GC.append(spectrums)
         else:
@@ -69,28 +69,28 @@ def exp_in_silico_splitter(POS_LC,POS_GC,NEG_LC,NEG_GC):
     NEG_GC_In_Silico_temp = []
 
     # ======================== POS_LC ========================
-    for spectrums in tqdm(POS_LC, total=len(POS_LC), unit=" spectrums", colour="green", desc="\t\t    POS_LC"):
+    for spectrums in tqdm(POS_LC, total=len(POS_LC), unit=" spectrums", colour="green", desc="\t      POS_LC"):
         if re.search("PREDICTED: true",spectrums):
             POS_LC_In_Silico_temp.append(spectrums)
         else:
             POS_LC_temp.append(spectrums)
 
     # ======================== POS_GC ========================
-    for spectrums in tqdm(POS_GC, total=len(POS_GC), unit=" spectrums", colour="green", desc="\t\t    POS_GC"):
+    for spectrums in tqdm(POS_GC, total=len(POS_GC), unit=" spectrums", colour="green", desc="\t      POS_GC"):
         if re.search("PREDICTED: true", spectrums):
             POS_GC_In_Silico_temp.append(spectrums)
         else:
             POS_GC_temp.append(spectrums)
 
     # ======================== NEG_LC ========================
-    for spectrums in tqdm(NEG_LC, total=len(NEG_LC), unit=" spectrums", colour="green", desc="\t\t    NEG_LC"):
+    for spectrums in tqdm(NEG_LC, total=len(NEG_LC), unit=" spectrums", colour="green", desc="\t      NEG_LC"):
         if re.search("PREDICTED: true", spectrums):
             NEG_LC_In_Silico_temp.append(spectrums)
         else:
             NEG_LC_temp.append(spectrums)
 
     # ======================== NEG_GC ========================
-    for spectrums in tqdm(NEG_GC, total=len(NEG_GC), unit=" spectrums", colour="green", desc="\t\t    NEG_GC"):
+    for spectrums in tqdm(NEG_GC, total=len(NEG_GC), unit=" spectrums", colour="green", desc="\t      NEG_GC"):
         if re.search("PREDICTED: true", spectrums):
             NEG_GC_In_Silico_temp.append(spectrums)
         else:

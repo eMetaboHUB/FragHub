@@ -269,7 +269,7 @@ def names_completion(CONCATENATE_LIST):
     inchikey = "None"
     name = "None"
 
-    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t processing"):
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t  processing"):
         if re.search("INCHIKEY: (.*)\n", spectrum):
             inchikey = re.search("INCHIKEY: (.*)\n", spectrum).group(1)
         if re.search("\nNAME: (.*)\n", spectrum):
@@ -281,7 +281,7 @@ def names_completion(CONCATENATE_LIST):
 
     # Update missing names with corresponding names in dictionary list
     updated_spetcrum_list = []
-    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t   updating"):
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t    updating"):
         if re.search("INCHIKEY: (.*)\n", spectrum):
             inchikey = re.search("INCHIKEY: (.*)\n", spectrum).group(1)
         if re.search("\nNAME: (.*)\n", spectrum):
@@ -302,7 +302,7 @@ def inchi_smiles_completion(CONCATENATE_LIST):
     inchi = "None"
     smiles = "None"
 
-    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t processing"):
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t  processing"):
         if re.search("INCHIKEY: (.*)\n", spectrum):
             inchikey = re.search("INCHIKEY: (.*)\n", spectrum).group(1)
         if re.search("\nINCHI: (.*)\n", spectrum):
@@ -318,7 +318,7 @@ def inchi_smiles_completion(CONCATENATE_LIST):
 
     # Update missing inchi/smiles with corresponding inchikey in dictionary list
     updated_spetcrum_list = []
-    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t   updating"):
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t    updating"):
         if re.search("INCHIKEY: (.*)\n", spectrum):
             inchikey = re.search("INCHIKEY: (.*)\n", spectrum).group(1)
         # INCHI

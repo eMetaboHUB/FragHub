@@ -94,7 +94,7 @@ if __name__ == "__main__":
     # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
     print("-- REMOVING DUPLICATAS --")
     time.sleep(0.01)
-    POS_LC,POS_LC_df,POS_GC,POS_GC_df,NEG_LC,NEG_LC_df,NEG_GC,NEG_GC_df = remove_duplicatas(POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico)
+    POS_LC,POS_LC_df,POS_LC_df_insilico,POS_LC_In_Silico,POS_GC,POS_GC_df,POS_GC_df_insilico,POS_GC_In_Silico,NEG_LC,NEG_LC_df,NEG_LC_df_insilico,NEG_LC_In_Silico,NEG_GC,NEG_GC_df,NEG_GC_df_insilico,NEG_GC_In_Silico = remove_duplicatas(POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico)
 
     print("-- WRITING MSP --")
 
@@ -102,6 +102,11 @@ if __name__ == "__main__":
     POS_GC_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(POS_GC))
     NEG_LC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG_LC))
     NEG_GC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG_GC))
+
+    POS_LC_In_Silico_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(POS_LC_In_Silico))
+    POS_GC_In_Silico_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(POS_GC_In_Silico))
+    NEG_LC_In_Silico_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(NEG_LC_In_Silico))
+    NEG_GC_In_Silico_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(NEG_GC_In_Silico))
 
     with open(os.path.join(clean_msp_path,"FINAL_POS/POS_LC_clean.msp"),"w",encoding="UTF-8") as pos:
         pos.write(POS_LC_FULL)
@@ -113,13 +118,13 @@ if __name__ == "__main__":
         neg.write(NEG_GC_FULL)
 
     with open(os.path.join(clean_msp_path,"FINAL_POS/POS_LC_In_Silico_clean.msp"),"w",encoding="UTF-8") as pos:
-        pos.write(POS_LC_In_Silico)
+        pos.write(POS_LC_In_Silico_FULL)
     with open(os.path.join(clean_msp_path,"FINAL_POS/POS_GC_In_Silico_clean.msp"),"w",encoding="UTF-8") as pos:
-        pos.write(POS_GC_In_Silico)
+        pos.write(POS_GC_In_Silico_FULL)
     with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_LC_In_Silico_clean.msp"), "w", encoding="UTF-8") as neg:
-        neg.write(NEG_LC_In_Silico)
+        neg.write(NEG_LC_In_Silico_FULL)
     with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_GC_In_Silico_clean.msp"), "w", encoding="UTF-8") as neg:
-        neg.write(NEG_GC_In_Silico)
+        neg.write(NEG_GC_In_Silico_FULL)
 
     print("-- WRITING CSV --")
 
@@ -127,5 +132,10 @@ if __name__ == "__main__":
     POS_GC_df.to_csv("../OUTPUT/CSV/FINAL_POS/POS_GC_clean.csv", sep=";", encoding="UTF-8", index=False)
     NEG_LC_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_LC_clean.csv", sep=";", encoding="UTF-8", index=False)
     NEG_GC_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_GC_clean.csv", sep=";", encoding="UTF-8", index=False)
+
+    POS_LC_df_insilico.to_csv("../OUTPUT/CSV/FINAL_POS/POS_LC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
+    POS_GC_df_insilico.to_csv("../OUTPUT/CSV/FINAL_POS/POS_GC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
+    NEG_LC_df_insilico.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_LC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
+    NEG_GC_df_insilico.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_GC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
 
     print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))

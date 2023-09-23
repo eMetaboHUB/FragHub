@@ -30,8 +30,15 @@ def remove_dupli_POS_LC(POS_LC):
         # Creating Dataframe
         POS_LC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        tqdm.pandas(desc="\t\t POS_LC", colour="green", unit=" row")
-        POS_LC_df = POS_LC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
+        # Créer la barre de progression
+        t = tqdm(total=len(POS_LC_df), desc="\t\t  POS_LC", colour="green", unit=" row")
+
+        # Supprimer les doublons et mettre à jour la barre de progression
+        POS_LC_df = POS_LC_df.loc[~POS_LC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
+        t.update(len(POS_LC_df))
+
+        # Fermer la barre de progression
+        t.close()
 
     return  POS_LC_df
 
@@ -62,8 +69,15 @@ def remove_dupli_POS_LC_In_Silico(POS_LC_In_Silico):
         # Creating Dataframe
         POS_LC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        tqdm.pandas(desc="\t\t POS_LC_In_Silico", colour="green", unit=" row")
-        POS_LC_df = POS_LC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
+        # Créer la barre de progression
+        t = tqdm(total=len(POS_LC_df), desc="POS_LC_In_Silico", colour="green", unit=" row")
+
+        # Supprimer les doublons et mettre à jour la barre de progression
+        POS_LC_df = POS_LC_df.loc[~POS_LC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
+        t.update(len(POS_LC_df))
+
+        # Fermer la barre de progression
+        t.close()
 
     return POS_LC_df
 
@@ -95,8 +109,15 @@ def remove_dupli_POS_GC(POS_GC):
         # Creating Dataframe
         POS_GC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        tqdm.pandas(desc="\t\t POS_GC", colour="green", unit=" row")
-        POS_GC_df = POS_GC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
+        # Créer la barre de progression
+        t = tqdm(total=len(POS_GC_df), desc="\t\t  POS_GC", colour="green", unit=" row")
+
+        # Supprimer les doublons et mettre à jour la barre de progression
+        POS_GC_df = POS_GC_df.loc[~POS_GC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
+        t.update(len(POS_GC_df))
+
+        # Fermer la barre de progression
+        t.close()
 
     return POS_GC_df
 
@@ -128,8 +149,15 @@ def remove_dupli_POS_GC_In_Silico(POS_GC_In_Silico):
         # Creating Dataframe
         POS_GC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        tqdm.pandas(desc="\t\t POS_GC_In_Silico", colour="green", unit=" row")
-        POS_GC_df = POS_GC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
+        # Créer la barre de progression
+        t = tqdm(total=len(POS_GC_df), desc="POS_GC_In_Silico", colour="green", unit=" row")
+
+        # Supprimer les doublons et mettre à jour la barre de progression
+        POS_GC_df = POS_GC_df.loc[~POS_GC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
+        t.update(len(POS_GC_df))
+
+        # Fermer la barre de progression
+        t.close()
 
     return POS_GC_df
 
@@ -161,8 +189,15 @@ def remove_dupli_NEG_LC(NEG_LC):
         # Creating Dataframe
         NEG_LC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        tqdm.pandas(desc="\t\t NEG_LC", colour="green", unit=" row")
-        NEG_LC_df = NEG_LC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
+        # Créer la barre de progression
+        t = tqdm(total=len(NEG_LC_df), desc="\t\t  NEG_LC", colour="green", unit=" row")
+
+        # Supprimer les doublons et mettre à jour la barre de progression
+        NEG_LC_df = NEG_LC_df.loc[~NEG_LC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
+        t.update(len(NEG_LC_df))
+
+        # Fermer la barre de progression
+        t.close()
 
     return NEG_LC_df
 
@@ -194,8 +229,15 @@ def remove_dupli_NEG_LC_In_Silico(NEG_LC_In_Silico):
         # Creating Dataframe
         NEG_LC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        tqdm.pandas(desc="\t\t NEG_LC_In_Silico", colour="green", unit=" row")
-        NEG_LC_df = NEG_LC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
+        # Créer la barre de progression
+        t = tqdm(total=len(NEG_LC_df), desc="NEG_LC_In_Silico", colour="green", unit=" row")
+
+        # Supprimer les doublons et mettre à jour la barre de progression
+        NEG_LC_df = NEG_LC_df.loc[~NEG_LC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
+        t.update(len(NEG_LC_df))
+
+        # Fermer la barre de progression
+        t.close()
 
     return NEG_LC_df
 
@@ -228,8 +270,15 @@ def remove_dupli_NEG_GC(NEG_GC):
         # Creating Dataframe
         NEG_GC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        tqdm.pandas(desc="\t\t NEG_GC", colour="green", unit=" row")
-        NEG_GC_df = NEG_GC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
+        # Créer la barre de progression
+        t = tqdm(total=len(NEG_GC_df), desc="\t\t  NEG_GC", colour="green", unit=" row")
+
+        # Supprimer les doublons et mettre à jour la barre de progression
+        NEG_GC_df = NEG_GC_df.loc[~NEG_GC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
+        t.update(len(NEG_GC_df))
+
+        # Fermer la barre de progression
+        t.close()
 
     return NEG_GC_df
 
@@ -261,15 +310,22 @@ def remove_dupli_NEG_GC_In_Silico(NEG_GC_In_Silico):
         # Creating Dataframe
         NEG_GC_df = pd.DataFrame.from_dict(dictionary)
         # Removing duplicatas
-        tqdm.pandas(desc="\t\t NEG_GC_In_Silico", colour="green", unit=" row")
-        NEG_GC_df = NEG_GC_df.groupby(['INCHIKEY', 'PEAKS_LIST']).progress_apply(lambda x: x.drop_duplicates())
+        # Créer la barre de progression
+        t = tqdm(total=len(NEG_GC_df), desc="NEG_GC_In_Silico", colour="green", unit=" row")
+
+        # Supprimer les doublons et mettre à jour la barre de progression
+        NEG_GC_df = NEG_GC_df.loc[~NEG_GC_df.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
+        t.update(len(NEG_GC_df))
+
+        # Fermer la barre de progression
+        t.close()
 
     return NEG_GC_df
 
 
 def re_write_MSP_POS_LC(POS_LC_df):
     POS_LC = []
-    for index,row in tqdm(POS_LC_df.iterrows(), total=len(POS_LC_df), desc="\t\t POS_LC", colour="green", unit=" row"):
+    for index,row in tqdm(POS_LC_df.iterrows(), total=len(POS_LC_df), desc="\t\t  POS_LC", colour="green", unit=" row"):
         SPECTRUM = ""
         SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
         SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
@@ -302,7 +358,7 @@ def re_write_MSP_POS_LC(POS_LC_df):
 
 def re_write_MSP_POS_LC_In_Silico(POS_LC_df_insilico):
     POS_LC = []
-    for index, row in tqdm(POS_LC_df_insilico.iterrows(), total=len(POS_LC_df_insilico), desc="\t\t POS_LC_In_Silico", colour="green", unit=" row"):
+    for index, row in tqdm(POS_LC_df_insilico.iterrows(), total=len(POS_LC_df_insilico), desc="POS_LC_In_Silico", colour="green", unit=" row"):
         SPECTRUM = ""
         SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
         SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
@@ -336,7 +392,7 @@ def re_write_MSP_POS_LC_In_Silico(POS_LC_df_insilico):
 
 def re_write_MSP_POS_GC(POS_GC_df):
     POS_GC = []
-    for index, row in tqdm(POS_GC_df.iterrows(), total=len(POS_GC_df), desc="\t\t POS_GC", colour="green", unit=" row"):
+    for index, row in tqdm(POS_GC_df.iterrows(), total=len(POS_GC_df), desc="\t\t  POS_GC", colour="green", unit=" row"):
         SPECTRUM = ""
         SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
         SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
@@ -369,7 +425,7 @@ def re_write_MSP_POS_GC(POS_GC_df):
 
 def re_write_MSP_POS_GC_In_Silico(POS_GC_df_insilico):
     POS_GC = []
-    for index, row in tqdm(POS_GC_df_insilico.iterrows(), total=len(POS_GC_df_insilico), desc="\t\t POS_GC_In_Silico", colour="green", unit=" row"):
+    for index, row in tqdm(POS_GC_df_insilico.iterrows(), total=len(POS_GC_df_insilico), desc="POS_GC_In_Silico", colour="green", unit=" row"):
         SPECTRUM = ""
         SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
         SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
@@ -402,7 +458,7 @@ def re_write_MSP_POS_GC_In_Silico(POS_GC_df_insilico):
 
 def re_write_MSP_NEG_LC(NEG_LC_df):
     NEG_LC = []
-    for index, row in tqdm(NEG_LC_df.iterrows(), total=len(NEG_LC_df), desc="\t\t NEG_LC", colour="green", unit=" row"):
+    for index, row in tqdm(NEG_LC_df.iterrows(), total=len(NEG_LC_df), desc="\t\t  NEG_LC", colour="green", unit=" row"):
         SPECTRUM = ""
         SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
         SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
@@ -435,7 +491,7 @@ def re_write_MSP_NEG_LC(NEG_LC_df):
 
 def re_write_MSP_NEG_LC_In_Silico(NEG_LC_df_insilico):
     NEG_LC = []
-    for index, row in tqdm(NEG_LC_df_insilico.iterrows(), total=len(NEG_LC_df_insilico), desc="\t\t NEG_LC_In_Silico", colour="green", unit=" row"):
+    for index, row in tqdm(NEG_LC_df_insilico.iterrows(), total=len(NEG_LC_df_insilico), desc="NEG_LC_In_Silico", colour="green", unit=" row"):
         SPECTRUM = ""
         SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
         SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
@@ -469,7 +525,7 @@ def re_write_MSP_NEG_LC_In_Silico(NEG_LC_df_insilico):
 
 def re_write_MSP_NEG_GC(NEG_GC_df):
     NEG_GC = []
-    for index, row in tqdm(NEG_GC_df.iterrows(), total=len(NEG_GC_df), desc="\t\t NEG_GC", colour="green", unit=" row"):
+    for index, row in tqdm(NEG_GC_df.iterrows(), total=len(NEG_GC_df), desc="\t\t  NEG_GC", colour="green", unit=" row"):
         SPECTRUM = ""
         SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
         SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
@@ -502,7 +558,7 @@ def re_write_MSP_NEG_GC(NEG_GC_df):
 
 def re_write_MSP_NEG_GC_In_Silico(NEG_GC_df_insilico):
     NEG_GC = []
-    for index, row in tqdm(NEG_GC_df_insilico.iterrows(), total=len(NEG_GC_df_insilico), desc="\t\t NEG_GC_in_Silico", colour="green", unit=" row"):
+    for index, row in tqdm(NEG_GC_df_insilico.iterrows(), total=len(NEG_GC_df_insilico), desc="NEG_GC_in_Silico", colour="green", unit=" row"):
         SPECTRUM = ""
         SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
         SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
@@ -575,4 +631,4 @@ def remove_duplicatas(POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG
     NEG_GC_In_Silico = re_write_MSP_NEG_GC_In_Silico(NEG_GC_df_insilico)
 
 
-    return POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico
+    return POS_LC,POS_LC_df,POS_LC_df_insilico,POS_LC_In_Silico,POS_GC,POS_GC_df,POS_GC_df_insilico,POS_GC_In_Silico,NEG_LC,NEG_LC_df,NEG_LC_df_insilico,NEG_LC_In_Silico,NEG_GC,NEG_GC_df,NEG_GC_df_insilico,NEG_GC_In_Silico
