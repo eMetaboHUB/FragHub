@@ -188,7 +188,7 @@ def predicted_correction(spectrum):
     if spectrum != None:
         if not re.search("FILENAME: MSMS_Public.*",spectrum):
             temp_spectrum = re.sub("PREDICTED: (.*)\n", "", spectrum)
-            if re.search("in-silico|insilico|predicted|theoretical",temp_spectrum,flags=re.I):
+            if re.search("in-silico|insilico|predicted|theoretical|Annotation level-3",temp_spectrum,flags=re.I):
                 spectrum = re.sub("PREDICTED: .*\n","PREDICTED: true\n",spectrum)
             else:
                 spectrum = re.sub("PREDICTED: .*\n", "PREDICTED: false\n", spectrum)
