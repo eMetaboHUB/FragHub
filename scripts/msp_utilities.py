@@ -347,3 +347,11 @@ def inchi_smiles_completion(CONCATENATE_LIST):
         updated_spetcrum_list.append(spectrum)
 
     return updated_spetcrum_list
+
+def remove_no_smiles_inchi(CONCATENATE_LIST):
+    CONCATENATE_LIST_temp = []
+    for spectrums in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t  processing"):
+        if not re.search("SMILES: None\n",spectrums) or not re.search("INCHI: None\n",spectrums):
+            CONCATENATE_LIST_temp.append(spectrums)
+
+    return CONCATENATE_LIST_temp
