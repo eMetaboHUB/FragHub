@@ -186,12 +186,20 @@ def harmonize_empties(spectrum):
 
 def predicted_correction(spectrum):
     if spectrum != None:
-        temp_spectrum = re.sub("FILENAME: (.*)\n", "", spectrum)
-        temp_spectrum = re.sub("PREDICTED: (.*)\n", "", temp_spectrum)
-        if re.search("in-silico|insilico|predicted|theoretical|INSTRUMENT: None",temp_spectrum,flags=re.I):
-            spectrum = re.sub("PREDICTED: .*\n","PREDICTED: true\n",spectrum)
+        if not re.search("FILENAME: MSMS_Public.*",spectrum):
+            temp_spectrum = re.sub("PREDICTED: (.*)\n", "", spectrum)
+            if re.search("in-silico|insilico|predicted|theoretical",temp_spectrum,flags=re.I):
+                spectrum = re.sub("PREDICTED: .*\n","PREDICTED: true\n",spectrum)
+            else:
+                spectrum = re.sub("PREDICTED: .*\n", "PREDICTED: false\n", spectrum)
         else:
-            spectrum = re.sub("PREDICTED: .*\n", "PREDICTED: false\n", spectrum)
+            temp_spectrum = re.sub("FILENAME: (.*)\n", "", spectrum)
+            temp_spectrum = re.sub("PREDICTED: (.*)\n", "", temp_spectrum)
+            if re.search("in-silico|insilico|predicted|theoretical|Annotation level-3", temp_spectrum, flags=re.I):
+                spectrum = re.sub("PREDICTED: .*\n", "PREDICTED: true\n", spectrum)
+            else:
+                spectrum = re.sub("PREDICTED: .*\n", "PREDICTED: false\n", spectrum)
+
     return spectrum
 
 def remove_no_inchikey(spectrum):

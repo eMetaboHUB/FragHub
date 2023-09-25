@@ -33,41 +33,41 @@ if __name__ == "__main__":
     #
     # del FINAL_JSON
     # del FINAL_XML
-    #
-    # # STEP 2: split spectrums into a list AND matchms clean
-    # msp_dir = os.path.join(input_path, "MSP")
-    #
-    # # Check if there is msp file to process
-    # msp_to_process = False
-    # for files in os.listdir(msp_dir):
-    #     if files.endswith(".msp"):
-    #         msp_to_process = True
-    #         break
-    #
-    # # If there is no msp to process: stop python execution
-    # if msp_to_process == False:
-    #     sys.exit("There is no msp file to process into \"./INPUT/MSP\". Exiting code !")
-    #
-    # # Creating list of spectrums
-    # for files in os.listdir(msp_dir):
-    #     if files.endswith(".msp"):
-    #         msp_path = os.path.join(msp_dir, files)
-    #         file_name = os.path.basename(msp_path.replace(".msp", ""))
-    #
-    #         correct_uncomplete_charge(msp_path)
-    #
-    #         # STEP 3: Execute matchms (Multithreaded)
-    #         print("-- MATCHMS PROCESSING ON: ",file_name," --")
-    #         spectrum_list = list(load_from_msp(msp_path))
-    #         results = matchms_processing(spectrum_list,file_name)
-    #
-    #         del spectrum_list
-    #
-    #         # Write matchms clean msp into new msp file
-    #         with open(os.path.join(r"..\OUTPUT\CLEAN_MSP",file_name+"_clean"+".msp"), "w", encoding="UTF-8") as clean:
-    #             clean.write("\n\n".join(results))
-    #
-    #         del results
+
+    # STEP 2: split spectrums into a list AND matchms clean
+    msp_dir = os.path.join(input_path, "MSP")
+
+    # Check if there is msp file to process
+    msp_to_process = False
+    for files in os.listdir(msp_dir):
+        if files.endswith(".msp"):
+            msp_to_process = True
+            break
+
+    # If there is no msp to process: stop python execution
+    if msp_to_process == False:
+        sys.exit("There is no msp file to process into \"./INPUT/MSP\". Exiting code !")
+
+    # Creating list of spectrums
+    for files in os.listdir(msp_dir):
+        if files.endswith(".msp"):
+            msp_path = os.path.join(msp_dir, files)
+            file_name = os.path.basename(msp_path.replace(".msp", ""))
+
+            correct_uncomplete_charge(msp_path)
+
+            # STEP 3: Execute matchms (Multithreaded)
+            print("-- MATCHMS PROCESSING ON: ",file_name," --")
+            spectrum_list = list(load_from_msp(msp_path))
+            results = matchms_processing(spectrum_list,file_name)
+
+            del spectrum_list
+
+            # Write matchms clean msp into new msp file
+            with open(os.path.join(r"..\OUTPUT\CLEAN_MSP",file_name+"_clean"+".msp"), "w", encoding="UTF-8") as clean:
+                clean.write("\n\n".join(results))
+
+            del results
 
     # # STEP 4: (All msp files were cleaned) --> Split POS and NEG spectrums
     clean_msp_path = os.path.join(output_path,"CLEAN_MSP")
