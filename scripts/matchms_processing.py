@@ -3,7 +3,7 @@ from matchms.importing import load_from_msp
 import matchms.filtering as msfilters
 from matchms.exporting import *
 import matchms.metadata_utils
-from msp_utilities import *
+from standardizers import *
 import concurrent.futures
 import matchms.Fragments
 import matchms.Metadata
