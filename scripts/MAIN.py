@@ -5,6 +5,7 @@ from msp_utilities import *
 from converters import *
 from splitter import *
 import logging
+import time
 import sys
 import os
 
@@ -12,7 +13,6 @@ RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
 logger = logging.getLogger("matchms") # Disable matchms log messages
 logger.disabled = True
 
-import time
 
 if __name__ == "__main__":
     start_time = time.time()
