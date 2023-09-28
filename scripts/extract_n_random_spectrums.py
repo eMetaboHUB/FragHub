@@ -4,7 +4,7 @@ import os
 
 paths = "../../ORIGINALS_msp_DB/"
 
-n = 1000
+n = 100
 
 for dir in os.listdir(paths):
     dir_path = os.path.join(paths,dir)

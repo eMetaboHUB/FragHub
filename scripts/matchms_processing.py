@@ -3,7 +3,7 @@ from matchms.importing import load_from_msp
 import matchms.filtering as msfilters
 from matchms.exporting import *
 import matchms.metadata_utils
-from msp_utilities import *
+from standardizers import *
 import concurrent.futures
 import matchms.Fragments
 import matchms.Metadata
@@ -39,9 +39,9 @@ def multithreaded_matchms(spectrum,file_name):
     spectrum = msfilters.add_retention.add_retention_time(spectrum)
     spectrum = matchms.metadata_utils.clean_adduct(spectrum)
     spectrum = msfilters.repair_inchi_inchikey_smiles(spectrum)
-    spectrum = msfilters.derive_inchi_from_smiles(spectrum)
-    spectrum = msfilters.derive_smiles_from_inchi(spectrum)
-    spectrum = msfilters.derive_inchikey_from_inchi(spectrum)
+    spectrum = msfilters.derive_inchi_from_smiles(spectrum) # SMILE ==> INCHI
+    spectrum = msfilters.derive_smiles_from_inchi(spectrum) # INCHI ==> SMILE
+    spectrum = msfilters.derive_inchikey_from_inchi(spectrum) # INCHI ==> INCHIKEY
     spectrum = msfilters.harmonize_undefined_smiles(spectrum)
     spectrum = msfilters.harmonize_undefined_inchi(spectrum)
     spectrum = msfilters.harmonize_undefined_inchikey(spectrum)
@@ -63,7 +63,7 @@ def multithreaded_matchms(spectrum,file_name):
 
 def matchms_processing(spectrum_list,file_name):
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(multithreaded_matchms, spectrum_list, [file_name for i in range(len(spectrum_list))]), total=len(spectrum_list), unit=" spectrums", colour="green", desc="\t processing"))
+        results = list(tqdm(executor.map(multithreaded_matchms, spectrum_list, [file_name for i in range(len(spectrum_list))]), total=len(spectrum_list), unit=" spectrums", colour="green", desc="\t  processing"))
 
     final = [res for res in results if res is not None]
 

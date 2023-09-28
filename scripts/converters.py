@@ -8,7 +8,7 @@ import re
 
 def concatenate_json(json_path):
     JSON_LIST = []
-    for files in tqdm(os.listdir(json_path), total=len(os.listdir(json_path)), unit=" spectrums", colour="green", desc="\tconcatenate"):
+    for files in tqdm(os.listdir(json_path), total=len(os.listdir(json_path)), unit=" spectrums", colour="green", desc="\t concatenate"):
         if files.endswith(".json"):
             file_name = os.path.basename(os.path.join(json_path, files)).replace(".json", "")
             with  open(os.path.join(json_path, files), "r", encoding="UTF-8") as f:
@@ -38,7 +38,7 @@ def json_to_msp(json_spectrum):
 
 def JSON_convert_processing(FINAL_JSON):
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(json_to_msp, FINAL_JSON), total=len(FINAL_JSON), unit=" spectrums", colour="green", desc="\t converting"))
+        results = list(tqdm(executor.map(json_to_msp, FINAL_JSON), total=len(FINAL_JSON), unit=" spectrums", colour="green", desc="\t  converting"))
 
     final = [res for res in results if res is not None]
 
@@ -46,7 +46,7 @@ def JSON_convert_processing(FINAL_JSON):
 
 def concatenate_xml(xml_path):
     FINAL_XML = []
-    for files in tqdm(os.listdir(xml_path), total=len(os.listdir(xml_path)), unit=" spectrums", colour="green", desc="\tconcatenate"):
+    for files in tqdm(os.listdir(xml_path), total=len(os.listdir(xml_path)), unit=" spectrums", colour="green", desc="\t concatenate"):
         if files.endswith(".xml"):
             file_name = os.path.basename(os.path.join(xml_path, files).replace(".xml", ""))
             with open(os.path.join(xml_path, files), "r", encoding="UTF-8") as xml_file:
@@ -95,10 +95,11 @@ def xml_to_msp(xml_content):
         specrta_dict["database-id"] = re.search("<database-id>(.*)</database-id>", xml_content).group(1)
 
     # Correcting 0 charge
-    if specrta_dict["ionization-mode"][0] == "Positive":
-        specrta_dict["charge"] = "1"
-    elif specrta_dict["ionization-mode"][0] == "Negative":
-        specrta_dict["charge"] = "-1"
+    if re.search("<ionization-mode>(.*)</ionization-mode>", xml_content):
+        if specrta_dict["ionization-mode"][0] == "Positive":
+            specrta_dict["charge"] = "1"
+        elif specrta_dict["ionization-mode"][0] == "Negative":
+            specrta_dict["charge"] = "-1"
 
     peak_list = [re.findall("<mass-charge>(.*)</mass-charge>",xml_content),re.findall("<intensity>(.*)</intensity>",xml_content)]
 
@@ -128,7 +129,7 @@ def xml_to_msp(xml_content):
 
 def XML_convert_processing(FINAL_XML):
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(xml_to_msp, FINAL_XML), total=len(FINAL_XML), unit=" spectrums", colour="green", desc="\t converting"))
+        results = list(tqdm(executor.map(xml_to_msp, FINAL_XML), total=len(FINAL_XML), unit=" spectrums", colour="green", desc="\t  converting"))
 
     final = [res for res in results if res is not None]
 
