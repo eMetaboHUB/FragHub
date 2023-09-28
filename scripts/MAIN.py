@@ -13,7 +13,6 @@ RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
 logger = logging.getLogger("matchms") # Disable matchms log messages
 logger.disabled = True
 
-# test
 if __name__ == "__main__":
     start_time = time.time()
 
