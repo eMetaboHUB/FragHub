@@ -8,7 +8,7 @@ import logging
 import time
 import sys
 import os
-#  test
+
 RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
 logger = logging.getLogger("matchms") # Disable matchms log messages
 logger.disabled = True
