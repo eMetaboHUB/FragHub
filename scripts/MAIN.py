@@ -131,50 +131,50 @@ if __name__ == "__main__":
     NEG_GC_In_Silico_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(NEG_GC_In_Silico))
     del NEG_GC_In_Silico
 
-    with open(os.path.join(clean_msp_path,"FINAL_POS/POS_LC_clean.msp"),"w",encoding="UTF-8") as pos:
+    with open(os.path.join(clean_msp_path,"POS/POS_LC_clean.msp"),"w",encoding="UTF-8") as pos:
         pos.write(POS_LC_FULL)
     del POS_LC_FULL
-    with open(os.path.join(clean_msp_path,"FINAL_POS/POS_GC_clean.msp"),"w",encoding="UTF-8") as pos:
+    with open(os.path.join(clean_msp_path,"POS/POS_GC_clean.msp"),"w",encoding="UTF-8") as pos:
         pos.write(POS_GC_FULL)
     del POS_GC_FULL
-    with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_LC_clean.msp"), "w", encoding="UTF-8") as neg:
+    with open(os.path.join(clean_msp_path, "NEG/NEG_LC_clean.msp"), "w", encoding="UTF-8") as neg:
         neg.write(NEG_LC_FULL)
     del NEG_LC_FULL
-    with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_GC_clean.msp"), "w", encoding="UTF-8") as neg:
+    with open(os.path.join(clean_msp_path, "NEG/NEG_GC_clean.msp"), "w", encoding="UTF-8") as neg:
         neg.write(NEG_GC_FULL)
     del NEG_GC_FULL
 
-    with open(os.path.join(clean_msp_path,"FINAL_POS/POS_LC_In_Silico_clean.msp"),"w",encoding="UTF-8") as pos:
+    with open(os.path.join(clean_msp_path,"POS/POS_LC_In_Silico_clean.msp"),"w",encoding="UTF-8") as pos:
         pos.write(POS_LC_In_Silico_FULL)
     del POS_LC_In_Silico_FULL
-    with open(os.path.join(clean_msp_path,"FINAL_POS/POS_GC_In_Silico_clean.msp"),"w",encoding="UTF-8") as pos:
+    with open(os.path.join(clean_msp_path,"POS/POS_GC_In_Silico_clean.msp"),"w",encoding="UTF-8") as pos:
         pos.write(POS_GC_In_Silico_FULL)
     del POS_GC_In_Silico_FULL
-    with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_LC_In_Silico_clean.msp"), "w", encoding="UTF-8") as neg:
+    with open(os.path.join(clean_msp_path, "NEG/NEG_LC_In_Silico_clean.msp"), "w", encoding="UTF-8") as neg:
         neg.write(NEG_LC_In_Silico_FULL)
     del NEG_LC_In_Silico_FULL
-    with open(os.path.join(clean_msp_path, "FINAL_NEG/NEG_GC_In_Silico_clean.msp"), "w", encoding="UTF-8") as neg:
+    with open(os.path.join(clean_msp_path, "NEG/NEG_GC_In_Silico_clean.msp"), "w", encoding="UTF-8") as neg:
         neg.write(NEG_GC_In_Silico_FULL)
     del NEG_GC_In_Silico_FULL
 
     print("-- WRITING CSV --")
 
-    POS_LC_df.to_csv("../OUTPUT/CSV/FINAL_POS/POS_LC_clean.csv", sep=";", encoding="UTF-8", index=False)
+    POS_LC_df.to_csv("../OUTPUT/CSV/POS/POS_LC_clean.csv", sep=";", encoding="UTF-8", index=False)
     del POS_LC_df
-    POS_GC_df.to_csv("../OUTPUT/CSV/FINAL_POS/POS_GC_clean.csv", sep=";", encoding="UTF-8", index=False)
+    POS_GC_df.to_csv("../OUTPUT/CSV/POS/POS_GC_clean.csv", sep=";", encoding="UTF-8", index=False)
     del POS_GC_df
-    NEG_LC_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_LC_clean.csv", sep=";", encoding="UTF-8", index=False)
+    NEG_LC_df.to_csv("../OUTPUT/CSV/NEG/NEG_LC_clean.csv", sep=";", encoding="UTF-8", index=False)
     del NEG_LC_df
-    NEG_GC_df.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_GC_clean.csv", sep=";", encoding="UTF-8", index=False)
+    NEG_GC_df.to_csv("../OUTPUT/CSV/NEG/NEG_GC_clean.csv", sep=";", encoding="UTF-8", index=False)
     del NEG_GC_df
 
-    POS_LC_df_insilico.to_csv("../OUTPUT/CSV/FINAL_POS/POS_LC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
+    POS_LC_df_insilico.to_csv("../OUTPUT/CSV/POS/POS_LC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
     del POS_LC_df_insilico
-    POS_GC_df_insilico.to_csv("../OUTPUT/CSV/FINAL_POS/POS_GC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
+    POS_GC_df_insilico.to_csv("../OUTPUT/CSV/POS/POS_GC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
     del POS_GC_df_insilico
-    NEG_LC_df_insilico.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_LC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
+    NEG_LC_df_insilico.to_csv("../OUTPUT/CSV/NEG/NEG_LC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
     del NEG_LC_df_insilico
-    NEG_GC_df_insilico.to_csv("../OUTPUT/CSV/FINAL_NEG/NEG_GC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
+    NEG_GC_df_insilico.to_csv("../OUTPUT/CSV/NEG/NEG_GC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
     del NEG_GC_df_insilico
 
     print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
