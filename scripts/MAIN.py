@@ -84,6 +84,10 @@ if __name__ == "__main__":
     time.sleep(0.01)
     CONCATENATE_LIST = remove_no_smiles_inchi(CONCATENATE_LIST)
 
+    print("-- GENERATING FragBank UNIQUE ID --")
+    time.sleep(0.01)
+    CONCATENATE_LIST = unique_id_generator(CONCATENATE_LIST)
+
     print("-- SPLITTING [POS / NEG] --")
     time.sleep(0.01)
     POS, NEG = split_pos_neg(CONCATENATE_LIST)

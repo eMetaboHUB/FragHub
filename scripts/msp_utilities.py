@@ -1,4 +1,5 @@
 from tqdm import tqdm
+import uuid
 import re
 import os
 
@@ -106,3 +107,13 @@ def remove_no_smiles_inchi(CONCATENATE_LIST):
             CONCATENATE_LIST_temp.append(spectrums)
 
     return CONCATENATE_LIST_temp
+
+def unique_id_generator(CONCATENATE_LIST):
+    temp_list = []
+    for spectrums in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t  processing"):
+        if re.search("(PREDICTED:(.*)\n)",spectrums):
+            predicted_line = re.search("(PREDICTED:(.*)\n)",spectrums).group(1)
+            FRAGBANKID = "FRAGBANKID: "+str(uuid.uuid4())+"\n"
+            temp_list.append(re.sub("(PREDICTED:(.*)\n)",rf"{predicted_line}{FRAGBANKID}",spectrums))
+
+    return temp_list
