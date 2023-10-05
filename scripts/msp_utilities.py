@@ -1,3 +1,5 @@
+import pubchempy as pcp
+from rdkit import Chem
 from tqdm import tqdm
 import uuid
 import re
@@ -117,3 +119,64 @@ def unique_id_generator(CONCATENATE_LIST):
             temp_list.append(re.sub("(PREDICTED:(.*)\n)",rf"{predicted_line}{FRAGBANKID}",spectrums))
 
     return temp_list
+
+def generate_dict_inchikey_smiles_inchi(CONCATENATE_LIST):
+    # généré un dictionnaire des inchikey,smiles,inchi des DB
+    INCHIKEY = ""
+    INCHI = ""
+    SMILES = ""
+
+    INCHIKEY_DICT = {}
+    sub_dict = {"INCHI": "", "SMILES": ""}
+
+    for spectrum in CONCATENATE_LIST:
+        if re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n",spectrum): # on à l'inchi
+            INCHIKEY = re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n",spectrum).group(1)
+            # Recherchez la substance correspondant à l'InChIKey dans PubChem
+            if INCHIKEY not in INCHIKEY_DICT.keys():
+                try:
+                    compound = pcp.get_compounds(INCHIKEY, 'inchikey')[0]
+                    INCHI = compound.inchi
+                    SMILES = compound.canonical_smiles
+
+                    INCHIKEY_DICT[INCHIKEY] = sub_dict
+                    INCHIKEY_DICT[INCHIKEY]["INCHI"] = INCHI
+                    INCHIKEY_DICT[INCHIKEY]["SMILES"] = SMILES
+                except IndexError:
+                    continue
+
+        elif re.search("INCHI: (.*)\n",spectrum): # on à l'inchi
+            if "=" in re.search("INCHI: (.*)\n",spectrum).group(1):
+                INCHI = re.search("INCHI: (.*)\n",spectrum).group(1)
+                INCHIKEY = Chem.MolToInchiKey(Chem.MolFromInchi(INCHI))
+                SMILES = Chem.MolToSmiles(Chem.MolFromInchi(INCHI))
+
+                if INCHIKEY not in INCHIKEY_DICT.keys():
+                    INCHIKEY_DICT[INCHIKEY] = sub_dict
+                    INCHIKEY_DICT[INCHIKEY]["INCHI"] = INCHI
+                    INCHIKEY_DICT[INCHIKEY]["SMILES"] = SMILES
+
+        elif re.search("SMILES: (.*)\n",spectrum):
+            if "C" in re.search("SMILES: (.*)\n", spectrum).group(1):
+                SMILES = re.search("SMILES: (.*)\n", spectrum).group(1)
+                INCHI = Chem.MolToInchi(Chem.MolFromSmiles(SMILES))
+                INCHIKEY = Chem.MolToInchiKey(Chem.MolFromInchi(INCHI))
+
+                if INCHIKEY not in INCHIKEY_DICT.keys():
+                    INCHIKEY_DICT[INCHIKEY] = sub_dict
+                    INCHIKEY_DICT[INCHIKEY]["INCHI"] = INCHI
+                    INCHIKEY_DICT[INCHIKEY]["SMILES"] = SMILES
+
+    return INCHIKEY_DICT
+
+
+
+
+def mols_derivator(CONCATENATE_LIST):
+    INCHIKEY_DICT = generate_dict_inchikey_smiles_inchi(CONCATENATE_LIST)
+
+    # temp_list = []
+    # for spectrums in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green",desc="\t  processing"):
+
+
+

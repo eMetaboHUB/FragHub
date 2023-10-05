@@ -76,6 +76,10 @@ if __name__ == "__main__":
     time.sleep(0.01)
     CONCATENATE_LIST = names_completion(CONCATENATE_LIST)
 
+    print("-- MOLS HARMONIZATION --")
+    time.sleep(0.01)
+    CONCATENATE_LIST = mols_derivator(CONCATENATE_LIST)
+
     print("-- INCHI/SMILES COMPLETION --")
     time.sleep(0.01)
     CONCATENATE_LIST = inchi_smiles_completion(CONCATENATE_LIST)
