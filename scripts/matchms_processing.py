@@ -39,12 +39,12 @@ def multithreaded_matchms(spectrum,file_name):
     spectrum = msfilters.add_retention.add_retention_time(spectrum)
     spectrum = matchms.metadata_utils.clean_adduct(spectrum)
     spectrum = msfilters.repair_inchi_inchikey_smiles(spectrum)
-    spectrum = msfilters.derive_inchi_from_smiles(spectrum) # SMILE ==> INCHI
-    spectrum = msfilters.derive_smiles_from_inchi(spectrum) # INCHI ==> SMILE
-    spectrum = msfilters.derive_inchikey_from_inchi(spectrum) # INCHI ==> INCHIKEY
-    spectrum = msfilters.harmonize_undefined_smiles(spectrum)
-    spectrum = msfilters.harmonize_undefined_inchi(spectrum)
-    spectrum = msfilters.harmonize_undefined_inchikey(spectrum)
+    spectrum = msfilters.derive_inchi_from_smiles(spectrum) # A degager
+    spectrum = msfilters.derive_smiles_from_inchi(spectrum) # A degager
+    spectrum = msfilters.derive_inchikey_from_inchi(spectrum) # A degager
+    spectrum = msfilters.harmonize_undefined_smiles(spectrum) # A degager
+    spectrum = msfilters.harmonize_undefined_inchi(spectrum) # A degager
+    spectrum = msfilters.harmonize_undefined_inchikey(spectrum) # A degager
 
     # normalize_and_filter_peaks
     spectrum = msfilters.normalize_intensities(spectrum)
