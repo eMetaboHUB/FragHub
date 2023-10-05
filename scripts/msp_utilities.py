@@ -129,7 +129,7 @@ def generate_dict_inchikey_smiles_inchi(CONCATENATE_LIST):
     INCHIKEY_DICT = {}
     sub_dict = {"INCHI": "", "SMILES": ""}
 
-    for spectrum in CONCATENATE_LIST:
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green",desc="\t  generating"):
         if re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n",spectrum): # on à l'inchi
             INCHIKEY = re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n",spectrum).group(1)
             # Recherchez la substance correspondant à l'InChIKey dans PubChem
