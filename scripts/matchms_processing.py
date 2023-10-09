@@ -36,7 +36,7 @@ def multithreaded_matchms(spectrum,file_name):
     # apply_metadata_filters
     spectrum = msfilters.default_filters(spectrum)
     spectrum = msfilters.add_parent_mass(spectrum, estimate_from_adduct=True)
-    # spectrum = msfilters.add_precursor_mz(spectrum) # ne fait convertir le champ déjà existant en float, ne calcule rien
+    # spectrum = msfilters.add_precursor_mz(spectrum) # ne fait que convertir le champ déjà existant en float, ne calcule rien
     spectrum = msfilters.add_retention.add_retention_time(spectrum)
     spectrum = matchms.metadata_utils.clean_adduct(spectrum)
     spectrum = msfilters.repair_inchi_inchikey_smiles(spectrum) # example: si inchi dans champ inchikey
