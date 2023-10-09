@@ -78,15 +78,15 @@ if __name__ == "__main__":
 
     print("-- MOLS HARMONIZATION --")
     time.sleep(0.01)
-    CONCATENATE_LIST = mols_derivator(CONCATENATE_LIST)
+    CONCATENATE_LIST = mols_derivator(CONCATENATE_LIST) # REMOVE NO SMILES/INCHI désormais inclut dans cette fonction
 
-    print("-- INCHI/SMILES COMPLETION --")
-    time.sleep(0.01)
-    CONCATENATE_LIST = inchi_smiles_completion(CONCATENATE_LIST)
+    # print("-- INCHI/SMILES COMPLETION --")
+    # time.sleep(0.01)
+    # CONCATENATE_LIST = inchi_smiles_completion(CONCATENATE_LIST)
 
-    print("-- REMOVE NO SMILES/INCHI --")
-    time.sleep(0.01)
-    CONCATENATE_LIST = remove_no_smiles_inchi(CONCATENATE_LIST)
+    # print("-- REMOVE NO SMILES/INCHI --")
+    # time.sleep(0.01)
+    # CONCATENATE_LIST = remove_no_smiles_inchi(CONCATENATE_LIST)
 
     print("-- GENERATING FragBank UNIQUE ID --")
     time.sleep(0.01)
