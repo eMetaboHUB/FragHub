@@ -204,7 +204,8 @@ def generate_dict_inchikey_smiles_inchi(CONCATENATE_LIST):
     for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green",desc="\t  generating"):
         if cas_1(spectrum) or cas_2(spectrum) or cas_3(spectrum) or cas_7(spectrum):
             INCHI = re.search("INCHI: (.*)\n", spectrum).group(1)
-            INCHIKEY = Chem.MolToInchiKey(Chem.MolFromInchi(INCHI))
+            INCHI = re.sub("inchi=","InChI=",INCHI,flags=re.IGNORECASE)
+            INCHIKEY = Chem.MolToInchiKey(Chem.MolFromInchi(INCHI)) # sanitize=True, removeHs=True
             SMILES = Chem.MolToSmiles(Chem.MolFromInchi(INCHI))
 
             if INCHI not in INCHI_DICT.keys():
