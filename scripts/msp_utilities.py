@@ -203,9 +203,20 @@ def spectrum_have_a_name(spectrum):
 
     return name
 
+def modif_INCHI_DICT(spectrum,INCHIKEY,INCHI,SMILES):
+    with INCHI_DICT_LOCK:
+        global INCHI_DICT
+
+        if INCHI not in INCHI_DICT.keys():
+            sub_dict = {"INCHIKEY": "", "SMILES": "", "NAME": ""}
+            INCHI_DICT[INCHI] = sub_dict
+            INCHI_DICT[INCHI]["INCHIKEY"] = INCHIKEY
+            INCHI_DICT[INCHI]["SMILES"] = SMILES
+            if spectrum_have_a_name(spectrum):
+                INCHI_DICT[INCHI]["NAME"] = re.search("\nNAME: (.*)\n", spectrum).group(1)
+
 def generate_dict_inchikey_smiles_inchi(spectrum):
     # généré un dictionnaire des inchikey,smiles,inchi des DB
-    global INCHI_DICT
 
     INCHIKEY = ""
     INCHI = ""
@@ -229,14 +240,7 @@ def generate_dict_inchikey_smiles_inchi(spectrum):
             else:
                 return None
 
-        with INCHI_DICT_LOCK:
-            if INCHI not in INCHI_DICT.keys():
-                sub_dict = {"INCHIKEY": "", "SMILES": "","NAME": ""}
-                INCHI_DICT[INCHI] = sub_dict
-                INCHI_DICT[INCHI]["INCHIKEY"] = INCHIKEY
-                INCHI_DICT[INCHI]["SMILES"] = SMILES
-                if spectrum_have_a_name(spectrum):
-                    INCHI_DICT[INCHI]["NAME"] = re.search("\nNAME: (.*)\n",spectrum).group(1)
+        modif_INCHI_DICT(spectrum,INCHIKEY,INCHI,SMILES)
 
     elif cas_5(spectrum):
         try:
@@ -248,13 +252,7 @@ def generate_dict_inchikey_smiles_inchi(spectrum):
                 INCHI = compound.inchi # ATTENTION !!! Deux InChiKey identiques peuvent avoir des InChi différents (Bien que cela soit rare).
                 SMILES = compound.canonical_smiles
 
-                with INCHI_DICT_LOCK:
-                    if INCHI not in INCHI_DICT.keys():
-                        INCHI_DICT[INCHI] = sub_dict
-                        INCHI_DICT[INCHI]["INCHIKEY"] = INCHIKEY
-                        INCHI_DICT[INCHI]["SMILES"] = SMILES
-                        if spectrum_have_a_name(spectrum):
-                            INCHI_DICT[INCHI]["NAME"] = re.search("\nNAME: (.*)\n", spectrum).group(1)
+                modif_INCHI_DICT(spectrum,INCHIKEY,INCHI,SMILES)
 
         except IndexError:
             return None
@@ -268,33 +266,19 @@ def generate_dict_inchikey_smiles_inchi(spectrum):
         except: # SMILE:  !!! PAS TOTALEMENT FIABLE !!!
             return None
 
-        with INCHI_DICT_LOCK:
-            if INCHI not in INCHI_DICT.keys() and INCHI != None:
-                sub_dict = {"INCHIKEY": "", "SMILES": "","NAME": ""}
-                INCHI_DICT[INCHI] = sub_dict
-                INCHI_DICT[INCHI]["INCHIKEY"] = INCHIKEY
-                INCHI_DICT[INCHI]["SMILES"] = SMILES
-                if spectrum_have_a_name(spectrum):
-                    INCHI_DICT[INCHI]["NAME"] = re.search("\nNAME: (.*)\n",spectrum).group(1)
+        modif_INCHI_DICT(spectrum,INCHIKEY,INCHI,SMILES)
 
     elif cas_8(spectrum): # Aucune smiles, inchi ou inchikey ==> on essaye avec le nom sur pubchem
         if spectrum_have_a_name(spectrum):
             try:
                 NAME = re.search("\nNAME: (.*)\n",spectrum).group(1)
 
-                sub_dict = {"INCHIKEY": "", "SMILES": "","NAME": ""}
                 compound = pcp.get_compounds(NAME, 'name')[0]
                 INCHI = compound.inchi  # ATTENTION !!! Deux InChiKey identiques peuvent avoir des InChi différents (Bien que cela soit rare).
                 INCHIKEY = compound.inchikey
                 SMILES = compound.canonical_smiles
 
-                with INCHI_DICT_LOCK:
-                    if INCHI not in INCHI_DICT.keys():
-                        INCHI_DICT[INCHI] = sub_dict
-                        INCHI_DICT[INCHI]["INCHIKEY"] = INCHIKEY
-                        INCHI_DICT[INCHI]["SMILES"] = SMILES
-                        if spectrum_have_a_name(spectrum):
-                            INCHI_DICT[INCHI]["NAME"] = re.search("\nNAME: (.*)\n", spectrum).group(1)
+                modif_INCHI_DICT(spectrum,INCHIKEY,INCHI,SMILES)
 
             except IndexError:
                 return None
