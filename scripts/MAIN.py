@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
     print("-- MOLS HARMONIZATION --")
     time.sleep(0.01)
-    CONCATENATE_LIST = mols_derivator(CONCATENATE_LIST) # REMOVE NO SMILES/INCHI désormais inclut dans cette fonction
+    CONCATENATE_LIST = mols_derivator_processing(CONCATENATE_LIST) # REMOVE NO SMILES/INCHI désormais inclut dans cette fonction
 
     # print("-- INCHI/SMILES COMPLETION --")
     # time.sleep(0.01)
