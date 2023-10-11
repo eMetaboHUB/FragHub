@@ -1,6 +1,13 @@
+import concurrent.futures
+import pubchempy as pcp
+from rdkit import Chem
 from tqdm import tqdm
+import threading
+import uuid
 import re
 import os
+
+INCHI_DICT_LOCK = threading.Lock()
 
 def concatenate_clean_msp(clean_msp_path):
     CONCATENATE_LIST = []
@@ -24,30 +31,30 @@ def correct_uncomplete_charge(msp_path):
         msp_buffer.write(content)
 
 def names_completion(CONCATENATE_LIST):
-    inchikey_names = {}
-    inchikey = "None"
+    inchi_names = {}
+    inchi = "None"
     name = "None"
 
     for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t  processing"):
-        if re.search("INCHIKEY: (.*)\n", spectrum):
-            inchikey = re.search("INCHIKEY: (.*)\n", spectrum).group(1)
+        if re.search("INCHI: (.*)\n", spectrum):
+            inchi = re.search("INCHI: (.*)\n", spectrum).group(1)
         if re.search("\nNAME: (.*)\n", spectrum):
             name = re.search("\nNAME: (.*)\n", spectrum).group(1)
 
         # If InChIKey and name are valid, add them to the dictionary
-        if inchikey and name != "None":
-            inchikey_names[inchikey] = name
+        if inchi and name != "None":
+            inchi_names[inchi] = name
 
     # Update missing names with corresponding names in dictionary list
     updated_spetcrum_list = []
     for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t    updating"):
-        if re.search("INCHIKEY: (.*)\n", spectrum):
-            inchikey = re.search("INCHIKEY: (.*)\n", spectrum).group(1)
+        if re.search("INCHI: (.*)\n", spectrum):
+            inchi = re.search("INCHI: (.*)\n", spectrum).group(1)
         if re.search("\nNAME: (.*)\n", spectrum):
             name = re.search("\nNAME: (.*)\n", spectrum).group(1)
         if name == "None":
-            if inchikey in inchikey_names.keys():
-                spectrum = re.sub("\nNAME: (.*)\n", f"\nNAME: {inchikey_names[inchikey]}\n", spectrum)
+            if inchi in inchi_names.keys():
+                spectrum = re.sub("\nNAME: (.*)\n", f"\nNAME: {inchi_names[inchi]}\n", spectrum)
 
         updated_spetcrum_list.append(spectrum)
 
@@ -106,3 +113,274 @@ def remove_no_smiles_inchi(CONCATENATE_LIST):
             CONCATENATE_LIST_temp.append(spectrums)
 
     return CONCATENATE_LIST_temp
+
+def unique_id_generator(CONCATENATE_LIST):
+    temp_list = []
+    for spectrums in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t  processing"):
+        if re.search("(PREDICTED:(.*)\n)",spectrums):
+            predicted_line = re.search("(PREDICTED:(.*)\n)",spectrums).group(1)
+            FRAGBANKID = "FRAGBANKID: "+str(uuid.uuid4())+"\n"
+            temp_list.append(re.sub("(PREDICTED:(.*)\n)",rf"{predicted_line}{FRAGBANKID}",spectrums))
+
+    return temp_list
+
+def cas_1(spectrum):
+    cas = False
+    if re.search("INCHI: (.*)\n", spectrum):
+        if "=" in re.search("INCHI: (.*)\n", spectrum).group(1):
+            if not re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n", spectrum) and ("C" not in re.search("SMILES: (.*)\n",spectrum).group(1)):
+                cas = True
+
+    return cas
+
+def cas_2(spectrum):
+    cas = False
+    if re.search("INCHI: (.*)\n", spectrum):
+        if "=" in re.search("INCHI: (.*)\n", spectrum).group(1):
+            if not re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n", spectrum) and ("C" in re.search("SMILES: (.*)\n", spectrum).group(1)):
+                cas = True
+
+    return cas
+
+def cas_3(spectrum):
+    cas = False
+    if re.search("INCHI: (.*)\n", spectrum):
+        if "=" in re.search("INCHI: (.*)\n", spectrum).group(1):
+            if re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n", spectrum) and ("C" not in re.search("SMILES: (.*)\n", spectrum).group(1)):
+                cas = True
+
+    return cas
+
+def cas_4(spectrum):
+    cas = False
+    if re.search("INCHI: (.*)\n", spectrum):
+        if "=" not in re.search("INCHI: (.*)\n", spectrum).group(1):
+            if not re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n", spectrum) and ( "C" in re.search("SMILES: (.*)\n", spectrum).group(1)):
+                cas = True
+
+    return cas
+
+def cas_5(spectrum):
+    cas = False
+    if re.search("INCHI: (.*)\n", spectrum):
+        if "=" not in re.search("INCHI: (.*)\n", spectrum).group(1):
+            if re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n", spectrum) and ("C" not in re.search("SMILES: (.*)\n", spectrum).group(1)):
+                cas = True
+
+    return cas
+
+def cas_6(spectrum):
+    cas = False
+    if re.search("INCHI: (.*)\n", spectrum):
+        if "=" not in re.search("INCHI: (.*)\n", spectrum).group(1):
+            if re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n", spectrum) and ("C" in re.search("SMILES: (.*)\n", spectrum).group(1)):
+                cas = True
+
+    return cas
+
+def cas_7(spectrum):
+    cas = False
+    if re.search("INCHI: (.*)\n", spectrum):
+        if "=" in re.search("INCHI: (.*)\n", spectrum).group(1):
+            if re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n", spectrum) and ("C" in re.search("SMILES: (.*)\n", spectrum).group(1)):
+                cas = True
+
+    return cas
+
+def cas_8(spectrum):
+    cas = False
+    if re.search("INCHI: (.*)\n", spectrum):
+        if "=" not in re.search("INCHI: (.*)\n", spectrum).group(1):
+            if not re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n", spectrum) and ("C" not in re.search("SMILES: (.*)\n", spectrum).group(1)):
+                cas = True
+
+    return cas
+
+def spectrum_have_a_name(spectrum):
+    name = True
+    if re.search("\nNAME: None\n",spectrum):
+        name = False
+
+    return name
+
+def generate_dict_inchikey_smiles_inchi(CONCATENATE_LIST):
+    # généré un dictionnaire des inchikey,smiles,inchi des DB
+    INCHI_DICT = {}
+
+    INCHIKEY = ""
+    INCHI = ""
+    SMILES = ""
+
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green",desc="\t  generating"):
+        if cas_1(spectrum) or cas_2(spectrum) or cas_3(spectrum) or cas_7(spectrum):
+            INCHI = re.search("INCHI: (.*)\n", spectrum).group(1)
+            INCHI = re.sub("inchi=","InChI=",INCHI,flags=re.IGNORECASE)
+            try:
+                INCHIKEY = Chem.MolToInchiKey(Chem.MolFromInchi(INCHI)) # sanitize=True, removeHs=True
+                SMILES = Chem.MolToSmiles(Chem.MolFromInchi(INCHI))
+            except: # Si InChI non parsé par RDkit, on essaye avec le SMILE:  !!! PAS TOTALEMENT FIABLE !!!
+                if cas_2(spectrum) or cas_7(spectrum):
+                    try:
+                        SMILES = re.search("SMILES: (.*)\n", spectrum).group(1)
+
+                        INCHI = Chem.MolToInchi(Chem.MolFromSmiles(SMILES))
+                        INCHIKEY = Chem.MolToInchiKey(Chem.MolFromInchi(INCHI))
+                    except:
+                        return None
+                else:
+                    return None
+
+            if INCHI not in INCHI_DICT:
+                sub_dict = {"INCHIKEY": "", "SMILES": "","NAME": ""}
+                INCHI_DICT[INCHI] = sub_dict
+                INCHI_DICT[INCHI]["INCHIKEY"] = INCHIKEY
+                INCHI_DICT[INCHI]["SMILES"] = SMILES
+                if spectrum_have_a_name(spectrum):
+                    INCHI_DICT[INCHI]["NAME"] = re.search("\nNAME: (.*)\n",spectrum).group(1)
+
+        elif cas_5(spectrum):
+            try:
+                if re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n", spectrum):
+                    INCHIKEY = re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n", spectrum).group(1)
+
+                    sub_dict = {"INCHIKEY": "", "SMILES": "","NAME": ""}
+                    compound = pcp.get_compounds(INCHIKEY, 'inchikey')[0]
+                    INCHI = compound.inchi # ATTENTION !!! Deux InChiKey identiques peuvent avoir des InChi différents (Bien que cela soit rare).
+                    SMILES = compound.canonical_smiles
+
+                    if INCHI not in INCHI_DICT:
+                        INCHI_DICT[INCHI] = sub_dict
+                        INCHI_DICT[INCHI]["INCHIKEY"] = INCHIKEY
+                        INCHI_DICT[INCHI]["SMILES"] = SMILES
+                        if spectrum_have_a_name(spectrum):
+                            INCHI_DICT[INCHI]["NAME"] = re.search("\nNAME: (.*)\n", spectrum).group(1)
+
+            except IndexError:
+                return None
+
+        elif cas_4(spectrum) or cas_6(spectrum):
+            SMILES = re.search("SMILES: (.*)\n", spectrum).group(1)
+            INCHI = None
+            try:
+                INCHI = Chem.MolToInchi(Chem.MolFromSmiles(SMILES))
+                INCHIKEY = Chem.MolToInchiKey(Chem.MolFromInchi(INCHI))
+            except: # SMILE:  !!! PAS TOTALEMENT FIABLE !!!
+                return None
+
+            if INCHI not in INCHI_DICT and INCHI != None:
+                sub_dict = {"INCHIKEY": "", "SMILES": "","NAME": ""}
+                INCHI_DICT[INCHI] = sub_dict
+                INCHI_DICT[INCHI]["INCHIKEY"] = INCHIKEY
+                INCHI_DICT[INCHI]["SMILES"] = SMILES
+                if spectrum_have_a_name(spectrum):
+                    INCHI_DICT[INCHI]["NAME"] = re.search("\nNAME: (.*)\n",spectrum).group(1)
+
+        elif cas_8(spectrum): # Aucune smiles, inchi ou inchikey ==> on essaye avec le nom sur pubchem
+            if spectrum_have_a_name(spectrum):
+                try:
+                    NAME = re.search("\nNAME: (.*)\n",spectrum).group(1)
+
+                    sub_dict = {"INCHIKEY": "", "SMILES": "","NAME": ""}
+                    compound = pcp.get_compounds(NAME, 'name')[0]
+                    INCHI = compound.inchi  # ATTENTION !!! Deux InChiKey identiques peuvent avoir des InChi différents (Bien que cela soit rare).
+                    INCHIKEY = compound.inchikey
+                    SMILES = compound.canonical_smiles
+
+                    if INCHI not in INCHI_DICT:
+                        INCHI_DICT[INCHI] = sub_dict
+                        INCHI_DICT[INCHI]["INCHIKEY"] = INCHIKEY
+                        INCHI_DICT[INCHI]["SMILES"] = SMILES
+                        if spectrum_have_a_name(spectrum):
+                            INCHI_DICT[INCHI]["NAME"] = re.search("\nNAME: (.*)\n", spectrum).group(1)
+
+                except IndexError:
+                    return None
+
+    return INCHI_DICT
+
+
+# def generate_dict_inchikey_smiles_inchi_processing(CONCATENATE_LIST):
+#     with concurrent.futures.ThreadPoolExecutor() as executor:
+#         tqdm(executor.map(generate_dict_inchikey_smiles_inchi, CONCATENATE_LIST), total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t  generating")
+
+
+
+def mols_derivator(CONCATENATE_LIST):
+    INCHI_DICT = generate_dict_inchikey_smiles_inchi(CONCATENATE_LIST)
+
+    # for key,value in INCHIKEY_DICT.items():
+    #     print(key, " ",value)
+
+    temp_list = []
+    for spectrums in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t  processing"):
+        if cas_1(spectrums) or cas_2(spectrums) or cas_3(spectrums) or cas_7(spectrums):
+            INCHI = re.search("INCHI: (.*)\n", spectrums).group(1)
+
+            spectrums = re.sub("INCHIKEY: (.*)\n", rf"INCHIKEY: {INCHI_DICT[INCHI]['INCHIKEY']}\n",spectrums)
+            spectrums = re.sub("SMILES: (.*)\n", rf"SMILES: {INCHI_DICT[INCHI]['SMILES']}\n", spectrums)
+
+            temp_list.append(spectrums)
+
+        elif cas_5(spectrums): # ATTENTION !!! Deux InChiKey identiques peuvent avoir des InChi différents (Bien que cela soit rare).
+            INCHIKEY = re.search("INCHIKEY: ([A-Z]{14}-[A-Z]{10}-N)\n", spectrums).group(1)
+            # retrouver l'inchi
+            INCHI = None
+            for key in INCHI_DICT.keys():
+                if INCHI_DICT[key]["INCHIKEY"] == INCHIKEY:
+                    INCHI = key
+                    break
+
+            if INCHI != None:
+                spectrums = re.sub("INCHI: (.*)\n", rf"INCHI: {INCHI}\n", spectrums)
+                spectrums = re.sub("SMILES: (.*)\n", rf"SMILES: {INCHI_DICT[INCHI]['SMILES']}\n", spectrums)
+
+                temp_list.append(spectrums)
+
+        elif cas_4(spectrums) or cas_6(spectrums): # SMILE:  !!! PAS TOTALEMENT FIABLE !!!
+            SMILES = re.search("SMILES: (.*)\n", spectrums).group(1)
+            # retrouver l'inchi
+            INCHI = None
+            for key in INCHI_DICT.keys():
+                if INCHI_DICT[key]["SMILES"] == SMILES:
+                    INCHI = key
+                    break
+
+            if INCHI != None:
+                spectrums = re.sub("INCHI: (.*)\n", rf"INCHI: {INCHI}\n", spectrums)
+                spectrums = re.sub("INCHIKEY: (.*)\n", rf"INCHIKEY: {INCHI_DICT[INCHI]['INCHIKEY']}\n", spectrums)
+
+                temp_list.append(spectrums)
+
+        elif cas_8(spectrums):
+            if spectrum_have_a_name(spectrums):
+                NAME = re.search("\nNAME: (.*)\n",spectrums).group(1)
+                # retrouver l'inchi
+                INCHI = None
+                for key in INCHI_DICT.keys():
+                    if INCHI_DICT[key]["NAME"] == NAME:
+                        INCHI = key
+                        break
+
+                if INCHI != None:
+                    spectrums = re.sub("INCHI: (.*)\n", rf"INCHI: {INCHI}\n", spectrums)
+                    spectrums = re.sub("INCHIKEY: (.*)\n", rf"INCHIKEY: {INCHI_DICT[INCHI]['INCHIKEY']}\n", spectrums)
+                    spectrums = re.sub("SMILES: (.*)\n", rf"SMILES: {INCHI_DICT[INCHI]['SMILES']}\n", spectrums)
+
+                    temp_list.append(spectrums)
+
+    return temp_list
+
+# def mols_derivator_processing(CONCATENATE_LIST):
+#     global INCHI_DICT
+#     INCHI_DICT = {}
+#
+#     generate_dict_inchikey_smiles_inchi_processing(CONCATENATE_LIST)
+#
+#     with concurrent.futures.ThreadPoolExecutor() as executor:
+#         results = list(tqdm(executor.map(mols_derivator, CONCATENATE_LIST), total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t  processing"))
+#
+#     final = [res for res in results if res is not None]
+#
+#     return final # returns the list of different worker executions.
+
+
