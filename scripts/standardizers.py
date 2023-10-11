@@ -48,20 +48,20 @@ def harmonize_adduct(spectrum):
 
 def remove_no_mass(spectrum):
     if spectrum != None:
-        if re.search("PRECURSORMZ: \n|PRECURSORMZ: None\n",spectrum):
+        if re.search("PARENTMASS: \n|PARENTMASS: None\n",spectrum):
             return None
         else:
             return spectrum
 
 def correct_ionmode(spectrum):
     if spectrum != None:
-        if re.search("IONMODE: n/a",spectrum):
+        if re.search("\nIONMODE: n/a",spectrum):
             if re.search("PRECURSORTYPE: (.*)\-\n",spectrum):
-                spectrum = re.sub("IONMODE: n/a","IONMODE: negative",spectrum)
+                spectrum = re.sub("\nIONMODE: n/a","\nIONMODE: negative",spectrum)
                 spectrum = re.sub("CHARGE: (.*)\n", "CHARGE: -1\n", spectrum)
                 return spectrum
             elif re.search("PRECURSORTYPE: (.*)\+\n",spectrum):
-                spectrum = re.sub("IONMODE: n/a","IONMODE: positive",spectrum)
+                spectrum = re.sub("\nIONMODE: n/a","\nIONMODE: positive",spectrum)
                 spectrum = re.sub("CHARGE: (.*)\n", "CHARGE: 1\n", spectrum)
                 return spectrum
         else:
@@ -176,10 +176,11 @@ def harmonize_db_informations(spectrum):
     return spectrum
 
 def harmonize_fields_values(spectrum):
-    spectrum = remove_no_inchikey(spectrum)
+    # spectrum = remove_no_inchikey(spectrum)
     spectrum = remove_no_mass(spectrum)
     spectrum = harmonize_adduct(spectrum)
     spectrum = correct_ionmode(spectrum)
+    # print("harmonize_fields_values",spectrum)
     spectrum = harmonize_retention_time(spectrum)
     spectrum = harmonize_ms_level(spectrum)
     # spectrum = harmonize_collisionenergy(spectrum)
