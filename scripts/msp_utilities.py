@@ -230,7 +230,7 @@ def generate_dict_inchikey_smiles_inchi(CONCATENATE_LIST):
                 else:
                     return None
 
-            if INCHI not in INCHI_DICT.keys():
+            if INCHI not in INCHI_DICT:
                 sub_dict = {"INCHIKEY": "", "SMILES": "","NAME": ""}
                 INCHI_DICT[INCHI] = sub_dict
                 INCHI_DICT[INCHI]["INCHIKEY"] = INCHIKEY
@@ -248,7 +248,7 @@ def generate_dict_inchikey_smiles_inchi(CONCATENATE_LIST):
                     INCHI = compound.inchi # ATTENTION !!! Deux InChiKey identiques peuvent avoir des InChi différents (Bien que cela soit rare).
                     SMILES = compound.canonical_smiles
 
-                    if INCHI not in INCHI_DICT.keys():
+                    if INCHI not in INCHI_DICT:
                         INCHI_DICT[INCHI] = sub_dict
                         INCHI_DICT[INCHI]["INCHIKEY"] = INCHIKEY
                         INCHI_DICT[INCHI]["SMILES"] = SMILES
@@ -267,7 +267,7 @@ def generate_dict_inchikey_smiles_inchi(CONCATENATE_LIST):
             except: # SMILE:  !!! PAS TOTALEMENT FIABLE !!!
                 return None
 
-            if INCHI not in INCHI_DICT.keys() and INCHI != None:
+            if INCHI not in INCHI_DICT and INCHI != None:
                 sub_dict = {"INCHIKEY": "", "SMILES": "","NAME": ""}
                 INCHI_DICT[INCHI] = sub_dict
                 INCHI_DICT[INCHI]["INCHIKEY"] = INCHIKEY
@@ -286,7 +286,7 @@ def generate_dict_inchikey_smiles_inchi(CONCATENATE_LIST):
                     INCHIKEY = compound.inchikey
                     SMILES = compound.canonical_smiles
 
-                    if INCHI not in INCHI_DICT.keys():
+                    if INCHI not in INCHI_DICT:
                         INCHI_DICT[INCHI] = sub_dict
                         INCHI_DICT[INCHI]["INCHIKEY"] = INCHIKEY
                         INCHI_DICT[INCHI]["SMILES"] = SMILES
