@@ -48,7 +48,7 @@ def harmonize_adduct(spectrum):
 
 def remove_no_mass(spectrum):
     if spectrum != None:
-        if re.search("PARENTMASS: \n|PARENTMASS: None\n",spectrum):
+        if re.search("PRECURSORMZ: None\n",spectrum) and re.search("PARENTMASS: None\n",spectrum):
             return None
         else:
             return spectrum
@@ -177,7 +177,7 @@ def harmonize_db_informations(spectrum):
 
 def harmonize_fields_values(spectrum):
     # spectrum = remove_no_inchikey(spectrum)
-    spectrum = remove_no_mass(spectrum)
+    # spectrum = remove_no_mass(spectrum)
     spectrum = harmonize_adduct(spectrum)
     spectrum = correct_ionmode(spectrum)
     # print("harmonize_fields_values",spectrum)
@@ -194,7 +194,7 @@ def harmonize_fields_values(spectrum):
 
 def harmonize_fields_names(spectrum):
     if spectrum is not None:
-        expected_fields = ["SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","NAME","SPECTRUMID","PRECURSORTYPE","MSLEVEL",
+        expected_fields = ["FRAGBANKID","SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","NAME","SPECTRUMID","PRECURSORTYPE","MSLEVEL",
                            "INSTRUMENTTYPE","IONMODE","COLLISIONENERGY","PARENTMASS","PRECURSORMZ","CHARGE","NUM PEAKS","PREDICTED","RETENTIONTIME","FILENAME"]
 
         spectrum = re.sub("COMPOUND_NAME:","NAME:",spectrum,flags=re.I)
@@ -223,6 +223,7 @@ def harmonize_fields_names(spectrum):
         # Sort fields
         SPECTRUM = ""
 
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(FRAGBANKID: (.*)\n))", spectrum).group(3)
         SPECTRUM = SPECTRUM + re.search("((^|\n)(FILENAME: (.*)\n))", spectrum).group(3)
         SPECTRUM = SPECTRUM + re.search("((^|\n)(PREDICTED: (.*)\n))",spectrum).group(3)
         SPECTRUM = SPECTRUM + re.search("((^|\n)(SPECTRUMID: (.*)\n))",spectrum).group(3)
