@@ -1,99 +1,88 @@
 from tqdm import tqdm
 import re
-def split_pos_neg(CONCATENATE_LIST):
-    POS = []
-    NEG = []
-    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t  processing"):
-        #POS
-        if re.search("CHARGE: [0-9]\n",spectrum, flags=re.I) or re.search("PRECURSORTYPE: (.*)\+\n",spectrum, flags=re.I) or re.search("IONMODE: p(.*)\n",spectrum, flags=re.I):
-            POS.append(spectrum)
-        # NEG
-        elif re.search("CHARGE: \-[0-9]\n",spectrum, flags=re.I) or re.search("PRECURSORTYPE: (.*)\-\n",spectrum, flags=re.I) or re.search("IONMODE: n(.*)\n",spectrum, flags=re.I):
-            NEG.append(spectrum)
+
+def split_pos_neg(CONCATENATE_DF):
+    # Créer une barre de progression pour la première étape
+    with tqdm(total=len(CONCATENATE_DF), unit=" spectrums", colour="green", desc="\t  POS") as pbar:
+        # Séparer les lignes en fonction de la valeur de la colonne "IONMODE"
+        POS = CONCATENATE_DF[CONCATENATE_DF['IONMODE'] == 'positive']
+
+        # Mettre à jour la barre de progression
+        pbar.update(len(POS))
+
+    # Créer une barre de progression pour la deuxième étape
+    with tqdm(total=len(CONCATENATE_DF), unit=" spectrums", colour="green", desc="\t  NEG") as pbar:
+        NEG = CONCATENATE_DF[CONCATENATE_DF['IONMODE'] == 'negative']
+
+        # Mettre à jour la barre de progression
+        pbar.update(len(NEG))
 
     return POS, NEG
 
-# def split_LC_GC(POS,NEG):
-#     # POS
-#     POS_LC = []
-#     POS_GC = []
-#     for spectrums in tqdm(POS, total=len(POS), unit=" spectrums", colour="green", desc="\t\t    POS"):
-#         if re.search("(?<![a-zA-Z0-9])GC(?![a-zA-Z0-9])",spectrums,flags=re.I) or re.search("(?<![a-zA-Z0-9])EI(?![a-zA-Z0-9])",spectrums,flags=re.I):
-#             POS_GC.append(spectrums)
-#         else:
-#             POS_LC.append(spectrums)
-#
-#     # NEG
-#     NEG_LC = []
-#     NEG_GC = []
-#     for spectrums in tqdm(NEG, total=len(NEG), unit=" spectrums", colour="green", desc="\t\t    NEG"):
-#         if re.search("(?<![a-zA-Z0-9])GC(?![a-zA-Z0-9])", spectrums, flags=re.I) or re.search("(?<![a-zA-Z0-9])EI(?![a-zA-Z0-9])", spectrums, flags=re.I):
-#             NEG_GC.append(spectrums)
-#         else:
-#             NEG_LC.append(spectrums)
-#
-#     return POS_LC,POS_GC,NEG_LC,NEG_GC
-
 def split_LC_GC(POS,NEG):
-    # POS
-    POS_LC = []
-    POS_GC = []
-    for spectrums in tqdm(POS, total=len(POS), unit=" spectrums", colour="green", desc="\t\t     POS"):
-        if re.search("(INSTRUMENTTYPE: )GC(?![a-zA-Z0-9])",spectrums,flags=re.I) or re.search("(INSTRUMENTTYPE: )EI(?![a-zA-Z0-9])",spectrums,flags=re.I):
-            POS_GC.append(spectrums)
-        else:
-            POS_LC.append(spectrums)
+    # Séparer les lignes en fonction de la colonne "INSTRUMENTTYPE" pour POS
 
-    # NEG
-    NEG_LC = []
-    NEG_GC = []
-    for spectrums in tqdm(NEG, total=len(NEG), unit=" spectrums", colour="green", desc="\t\t     NEG"):
-        if re.search("(INSTRUMENTTYPE: )GC(?![a-zA-Z0-9])", spectrums, flags=re.I) or re.search("(INSTRUMENTTYPE: )EI(?![a-zA-Z0-9])", spectrums, flags=re.I):
-            NEG_GC.append(spectrums)
-        else:
-            NEG_LC.append(spectrums)
+    with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="\t  POS_GC") as pbar:
+        POS_GC = POS[POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
 
-    return POS_LC,POS_GC,NEG_LC,NEG_GC
+        # Mettre à jour la barre de progression
+        pbar.update(len(POS_GC))
+
+
+    with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="\t  POS_LC") as pbar:
+        POS_LC = POS[~POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
+
+        # Mettre à jour la barre de progression
+        pbar.update(len(POS_LC))
+
+    # Séparer les lignes en fonction de la colonne "INSTRUMENTTYPE" pour NEG
+    with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="\t  NEG_GC") as pbar:
+        NEG_GC = NEG[NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
+
+        # Mettre à jour la barre de progression
+        pbar.update(len(NEG_GC))
+
+    with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="\t  NEG_LC") as pbar:
+        NEG_LC = NEG[~NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
+
+        # Mettre à jour la barre de progression
+        pbar.update(len(NEG_LC))
+
+    return POS_LC, POS_GC, NEG_LC, NEG_GC
 
 def exp_in_silico_splitter(POS_LC,POS_GC,NEG_LC,NEG_GC):
-    POS_LC_temp = []
-    POS_LC_In_Silico_temp = []
+    # Barres de progression pour chaque étape de séparation
+    with tqdm(total=len(POS_LC), unit=" spectrums", colour="green", desc="\t  POS_LC_In_Silico") as pbar:
+        POS_LC_In_Silico_temp = POS_LC[POS_LC['PREDICTED'] == "true"]
+        pbar.update(len(POS_LC_In_Silico_temp))
 
-    POS_GC_temp = []
-    POS_GC_In_Silico_temp = []
+    with tqdm(total=len(POS_GC), unit=" spectrums", colour="green", desc="\t  POS_GC_In_Silico") as pbar:
+        POS_GC_In_Silico_temp = POS_GC[POS_GC['PREDICTED'] == "true"]
+        pbar.update(len(POS_GC_In_Silico_temp))
 
-    NEG_LC_temp = []
-    NEG_LC_In_Silico_temp = []
+    with tqdm(total=len(NEG_LC), unit=" spectrums", colour="green", desc="\t  NEG_LC_In_Silico") as pbar:
+        NEG_LC_In_Silico_temp = NEG_LC[NEG_LC['PREDICTED'] == "true"]
+        pbar.update(len(NEG_LC_In_Silico_temp))
 
-    NEG_GC_temp = []
-    NEG_GC_In_Silico_temp = []
+    with tqdm(total=len(NEG_GC), unit=" spectrums", colour="green", desc="\t  NEG_GC_In_Silico") as pbar:
+        NEG_GC_In_Silico_temp = NEG_GC[NEG_GC['PREDICTED'] == "true"]
+        pbar.update(len(NEG_GC_In_Silico_temp))
 
-    # ======================== POS_LC ========================
-    for spectrums in tqdm(POS_LC, total=len(POS_LC), unit=" spectrums", colour="green", desc="\t      POS_LC"):
-        if re.search("PREDICTED: true",spectrums):
-            POS_LC_In_Silico_temp.append(spectrums)
-        else:
-            POS_LC_temp.append(spectrums)
+    # Séparation pour les lignes contenant "False"
+    with tqdm(total=len(POS_LC), unit=" spectrums", colour="green", desc="\t  POS_LC_Exp") as pbar:
+        POS_LC_temp = POS_LC[POS_LC['PREDICTED'] == "false"]
+        pbar.update(len(POS_LC_temp))
 
-    # ======================== POS_GC ========================
-    for spectrums in tqdm(POS_GC, total=len(POS_GC), unit=" spectrums", colour="green", desc="\t      POS_GC"):
-        if re.search("PREDICTED: true", spectrums):
-            POS_GC_In_Silico_temp.append(spectrums)
-        else:
-            POS_GC_temp.append(spectrums)
+    with tqdm(total=len(POS_GC), unit=" spectrums", colour="green", desc="\t  POS_GC_Exp") as pbar:
+        POS_GC_temp = POS_GC[POS_GC['PREDICTED'] == "false"]
+        pbar.update(len(POS_GC_temp))
 
-    # ======================== NEG_LC ========================
-    for spectrums in tqdm(NEG_LC, total=len(NEG_LC), unit=" spectrums", colour="green", desc="\t      NEG_LC"):
-        if re.search("PREDICTED: true", spectrums):
-            NEG_LC_In_Silico_temp.append(spectrums)
-        else:
-            NEG_LC_temp.append(spectrums)
+    with tqdm(total=len(NEG_LC), unit=" spectrums", colour="green", desc="\t  NEG_LC_Exp") as pbar:
+        NEG_LC_temp = NEG_LC[NEG_LC['PREDICTED'] == "false"]
+        pbar.update(len(NEG_LC_temp))
 
-    # ======================== NEG_GC ========================
-    for spectrums in tqdm(NEG_GC, total=len(NEG_GC), unit=" spectrums", colour="green", desc="\t      NEG_GC"):
-        if re.search("PREDICTED: true", spectrums):
-            NEG_GC_In_Silico_temp.append(spectrums)
-        else:
-            NEG_GC_temp.append(spectrums)
+    with tqdm(total=len(NEG_GC), unit=" spectrums", colour="green", desc="\t  NEG_GC_Exp") as pbar:
+        NEG_GC_temp = NEG_GC[NEG_GC['PREDICTED'] == "false"]
+        pbar.update(len(NEG_GC_temp))
 
     return POS_LC_temp,POS_LC_In_Silico_temp,POS_GC_temp,POS_GC_In_Silico_temp,NEG_LC_temp,NEG_LC_In_Silico_temp,NEG_GC_temp,NEG_GC_In_Silico_temp
