@@ -6,7 +6,8 @@
 
 To install all dependencies, double click on "Install.bat".<br>
 NB: Make sure that python is in the path variables.<br>
-Copie the 'known_key_conversions.csv' into the folder 'data' of matchms installation. Replace it.
+Copie the 'known_key_conversions.csv' into the folder 'data' of matchms installation. Replace it.<br>
+Install the CDK python wrapper at https://github.com/hcji/pycdk
 
 ## USE
 
