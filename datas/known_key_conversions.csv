@@ -200,3 +200,6 @@ targetgaspres,targetgaspressure
 targetgaspressure,targetgaspressure
 title,title
 submittecomputed_mass_erroname,compound_name
+computed_smiles,smiles
+computed_inchi,inchi
+computed_inchikey,inchikey
