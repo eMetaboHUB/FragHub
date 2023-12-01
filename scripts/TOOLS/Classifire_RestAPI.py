@@ -1,6 +1,7 @@
 from requests import get
-import json
+from tqdm import tqdm
 import pandas as pd
+import json
 import time
 
 
@@ -41,13 +42,19 @@ def getClassyfireFromInChIKey(InChIKey):
     r = get_urlRequest("http://classyfire.wishartlab.com/entities/%s.json?"%(InChIKey))
     if r ==False or r==None:
         return {"Classyfire_kingdom":None, "Classyfire_Superclass":None, "Classyfire_class":None, "Classyfire_Subclass":None, "direct_parent":None}
-    res ={
-        "Classyfire_kingdom":readlvlname(r["kingdom"]), 
-        "Classyfire_Superclass":readlvlname(r["superclass"]), 
-        "Classyfire_class":readlvlname(r["class"]), 
-        "Classyfire_Subclass":readlvlname(r["subclass"]),
-        "direct_parent":readlvlname(r["direct_parent"])
-    }
+    res ={}
+
+    if "kingdom" in r:
+        res["Classyfire_kingdom"] = readlvlname(r["kingdom"])
+    if "superclass" in r:
+        res["Classyfire_Superclass"] = readlvlname(r["superclass"])
+    if "class" in r:
+        res["Classyfire_class"] = readlvlname(r["class"])
+    if "subclass" in r:
+        res["Classyfire_Subclass"] = readlvlname(r["subclass"])
+    if "direct_parent" in r:
+        res["direct_parent"] = readlvlname(r["direct_parent"])
+
     return res
 
 def addClassyfire(dfcpd,InChIKey_col_name):
@@ -65,17 +72,16 @@ res=[]
 #pathfinalfile="/home/solweig/Thèse/chemomaps/pharmakon/input/Classyfire/testres.json"
 
 
-dfcpd = pd.read_csv("/home/solweig/Thèse/chemomaps/mspConvert/mspData/inchikeyUniq.csv",sep =";")
+dfcpd = pd.read_excel(r"C:\Users\Axel\Documents\Présentations\MSP\datas diagram\MSP_inchikeys_classyfire.xlsx")
 InChIKey_col_name = "INCHIKEY"
-pathfinalfile="/home/solweig/Thèse/chemomaps/mspConvert/mspData/inchikeyUniq.csv"
+pathfinalfile=r"C:\Users\Axel\Documents\Présentations\MSP\datas diagram\MSP_inchikeys_classyfire_complete.xlsx"
 lenghtdf = len(dfcpd)
 print(lenghtdf)
-for ind in range(lenghtdf):
+for ind in tqdm(range(lenghtdf), total=lenghtdf, colour="green"):
     r=getClassyfireFromInChIKey(dfcpd[InChIKey_col_name][ind])
     
     res.append(r)
-    if ind%50==0:
-        print(ind,"/",lenghtdf)
+
 with open(pathfinalfile,"w") as jsonFile:
     json.dump(res,jsonFile,indent=4)
     jsonFile.close
