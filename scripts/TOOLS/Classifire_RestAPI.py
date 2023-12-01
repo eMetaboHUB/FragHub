@@ -76,7 +76,7 @@ dfcpd = pd.read_excel(r"C:\Users\Axel\Documents\Présentations\MSP\datas diagram
 InChIKey_col_name = "INCHIKEY"
 pathfinalfile=r"C:\Users\Axel\Documents\Présentations\MSP\datas diagram\MSP_inchikeys_classyfire_complete.xlsx"
 lenghtdf = len(dfcpd)
-print(lenghtdf)
+# print(lenghtdf)
 for ind in tqdm(range(lenghtdf), total=lenghtdf, colour="green"):
     r=getClassyfireFromInChIKey(dfcpd[InChIKey_col_name][ind])
     
