@@ -23,7 +23,6 @@ concatenated_df["FILENAME"] = concatenated_df["FILENAME"].replace(r'.*MassBank.*
 concatenated_df["FILENAME"] = concatenated_df["FILENAME"].replace(r'.*ALL_GNPS.*', 'GNPS', regex=True)
 concatenated_df["FILENAME"] = concatenated_df["FILENAME"].replace(r'.*HMDB.*', 'HMDB', regex=True)
 
-# concatenated_df.to_csv(r'C:\Users\Axel\Documents\Présentations\MSP\datas diagram\Oct2023\concats.csv',sep=";",encoding="UTF-8", index=False)
 
 # Utilisez pivot_table pour réorganiser les données
 concatenated_df = concatenated_df.pivot_table(index='INCHIKEY', columns='FILENAME', aggfunc='first', fill_value='')
