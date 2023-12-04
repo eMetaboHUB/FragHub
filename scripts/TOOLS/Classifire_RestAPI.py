@@ -23,7 +23,7 @@ def checkRequest(r):
 def get_urlRequest(url):
     r = get(url)
     if r.status_code == 429:
-        time.sleep(30)
+        time.sleep(60)
         r = get_urlRequest(url)
     elif r.status_code == 200:
         Classyfire = r.json()
