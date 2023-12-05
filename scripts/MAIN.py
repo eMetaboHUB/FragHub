@@ -47,8 +47,8 @@ if __name__ == "__main__":
     if msp_to_process == False:
         sys.exit("There is no msp file to process into \"./INPUT/MSP\". Exiting code !")
 
-    # generating FRAGBANKID
-    print("-- GENERATING FragBank UNIQUE ID --")
+    # generating FRAGHUBID
+    print("-- GENERATING FragHub UNIQUE ID --")
     time.sleep(0.01)
     unique_id_generator()
 

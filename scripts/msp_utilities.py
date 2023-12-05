@@ -209,11 +209,11 @@ def unique_id_generator():
             with open(os.path.join(INPUT_path,files),"r",encoding="UTF-8") as buffer:
                 content = buffer.read()
 
-            if not re.search("FRAGBANKID: (.*)\n",content):
+            if not re.search("FRAGHUBID: (.*)\n",content):
                 content = content.split("\n\n")
 
                 for spectrums in tqdm(content, total=len(content), unit=" spectrums", colour="green", desc="\t  processing"):
-                    spectrums = "FRAGBANKID: "+str(uuid.uuid4())+"\n"+spectrums
+                    spectrums = "FRAGHUBID: "+str(uuid.uuid4())+"\n"+spectrums
                     spectrums = re.sub("\n{2,}","\n",spectrums)
                     temp_list.append(spectrums)
 
