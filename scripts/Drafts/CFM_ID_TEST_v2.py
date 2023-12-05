@@ -17,7 +17,7 @@ def cfm_id_test(smile):
 
 
 def charging_datas():
-    dataframe = pd.read_csv(r"C:\Users\Axel\Documents\PYTHON\MSP_V3\FragBank\cmf_id_test\report.csv",sep=',', quotechar="\"", encoding="UTF-8")
+    dataframe = pd.read_csv(r"C:\Users\Axel\Documents\PYTHON\MSP_V3\FragHub\cmf_id_test\report.csv",sep=',', quotechar="\"", encoding="UTF-8")
     liste_smiles = dataframe['SMILES'].tolist()
 
     return liste_smiles[0:10]

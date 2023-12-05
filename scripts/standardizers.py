@@ -194,7 +194,7 @@ def harmonize_fields_values(spectrum):
 
 def harmonize_fields_names(spectrum):
     if spectrum is not None:
-        expected_fields = ["FRAGBANKID","SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","NAME","SPECTRUMID","PRECURSORTYPE","MSLEVEL",
+        expected_fields = ["FRAGHUBID","SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","NAME","SPECTRUMID","PRECURSORTYPE","MSLEVEL",
                            "INSTRUMENTTYPE","IONMODE","COLLISIONENERGY","PARENTMASS","PRECURSORMZ","CHARGE","NUM PEAKS","PREDICTED","RETENTIONTIME","FILENAME"]
 
         spectrum = re.sub("COMPOUND_NAME:","NAME:",spectrum,flags=re.I)
@@ -223,7 +223,7 @@ def harmonize_fields_names(spectrum):
         # Sort fields
         SPECTRUM = ""
 
-        SPECTRUM = SPECTRUM + re.search("((^|\n)(FRAGBANKID: (.*)\n))", spectrum).group(3)
+        SPECTRUM = SPECTRUM + re.search("((^|\n)(FRAGHUBID: (.*)\n))", spectrum).group(3)
         SPECTRUM = SPECTRUM + re.search("((^|\n)(FILENAME: (.*)\n))", spectrum).group(3)
         SPECTRUM = SPECTRUM + re.search("((^|\n)(PREDICTED: (.*)\n))",spectrum).group(3)
         SPECTRUM = SPECTRUM + re.search("((^|\n)(SPECTRUMID: (.*)\n))",spectrum).group(3)
