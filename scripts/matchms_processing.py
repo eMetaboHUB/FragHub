@@ -1,7 +1,4 @@
-from matchms.logging_functions import set_matchms_logger_level
-from matchms.importing import load_from_msp
 import matchms.filtering as msfilters
-from matchms.exporting import *
 import matchms.metadata_utils
 from standardizers import *
 import concurrent.futures
@@ -9,8 +6,7 @@ import matchms.Fragments
 import matchms.Metadata
 import matchms.hashing
 from tqdm import tqdm
-import os
-import re
+
 
 def matchms_spectrum_to_str_msp(spectrum,file_name):
     if spectrum is not None:
@@ -40,12 +36,6 @@ def multithreaded_matchms(spectrum,file_name):
     spectrum = msfilters.add_retention.add_retention_time(spectrum)
     spectrum = matchms.metadata_utils.clean_adduct(spectrum)
     spectrum = msfilters.repair_inchi_inchikey_smiles(spectrum) # example: si inchi dans champ inchikey
-    # spectrum = msfilters.derive_inchi_from_smiles(spectrum) # A degager
-    # spectrum = msfilters.derive_smiles_from_inchi(spectrum) # A degager
-    # spectrum = msfilters.derive_inchikey_from_inchi(spectrum) # A degager
-    # spectrum = msfilters.harmonize_undefined_smiles(spectrum) # A degager # juste met undefined si il trouve na ou N/A, etc.
-    # spectrum = msfilters.harmonize_undefined_inchi(spectrum) # A degager # juste met undefined si il trouve na ou N/A, etc.
-    # spectrum = msfilters.harmonize_undefined_inchikey(spectrum) # A degager # juste met undefined si il trouve na ou N/A, etc.
 
     # normalize_and_filter_peaks
     spectrum = msfilters.normalize_intensities(spectrum)
