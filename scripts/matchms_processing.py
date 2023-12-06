@@ -6,6 +6,7 @@ import matchms.Fragments
 import matchms.Metadata
 import matchms.hashing
 from tqdm import tqdm
+from filters import *
 
 
 def matchms_spectrum_to_str_msp(spectrum,file_name):
