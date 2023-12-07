@@ -3,11 +3,8 @@ import re
 
 def split_pos_neg(CONCATENATE_DF):
     """
-    Split the given DataFrame, CONCATENATE_DF, into two separate DataFrames based on the value of the 'IONMODE' column.
-
-    :param CONCATENATE_DF: The DataFrame to be split.
-    :return: Two DataFrames, POS and NEG, containing the rows with 'IONMODE' values of 'positive' and 'negative' respectively.
-
+    :param CONCATENATE_DF: DataFrame containing data to be split based on the value of the 'IONMODE' column.
+    :return: Tuple containing two DataFrames - 'POS' and 'NEG', representing the subsets of CONCATENATE_DF where the value of 'IONMODE' is 'positive' and 'negative' respectively.
     """
     # Créer une barre de progression pour la première étape
     with tqdm(total=len(CONCATENATE_DF), unit=" spectrums", colour="green", desc="\t  POS") as pbar:
@@ -28,11 +25,9 @@ def split_pos_neg(CONCATENATE_DF):
 
 def split_LC_GC(POS,NEG):
     """
-    Split the input data into LC and GC based on the "INSTRUMENTTYPE" column.
-
-    :param POS: Positive data.
-    :param NEG: Negative data.
-    :return: Tuple containing POS_LC, POS_GC, NEG_LC, and NEG_GC.
+    :param POS: DataFrame containing positive spectrums
+    :param NEG: DataFrame containing negative spectrums
+    :return: Four DataFrames containing positive LC spectrums, positive GC spectrums, negative LC spectrums, and negative GC spectrums
     """
     # Séparer les lignes en fonction de la colonne "INSTRUMENTTYPE" pour POS
 
@@ -66,19 +61,13 @@ def split_LC_GC(POS,NEG):
 
 def exp_in_silico_splitter(POS_LC,POS_GC,NEG_LC,NEG_GC):
     """
-    :param POS_LC: The input DataFrame for positive LC spectrums.
-    :param POS_GC: The input DataFrame for positive GC spectrums.
-    :param NEG_LC: The input DataFrame for negative LC spectrums.
-    :param NEG_GC: The input DataFrame for negative GC spectrums.
-    :return: A tuple containing the following DataFrames:
-        - POS_LC_temp: The separated DataFrame for positive LC spectrums with 'PREDICTED' column value "false".
-        - POS_LC_In_Silico_temp: The separated DataFrame for positive LC spectrums with 'PREDICTED' column value "true".
-        - POS_GC_temp: The separated DataFrame for positive GC spectrums with 'PREDICTED' column value "false".
-        - POS_GC_In_Silico_temp: The separated DataFrame for positive GC spectrums with 'PREDICTED' column value "true".
-        - NEG_LC_temp: The separated DataFrame for negative LC spectrums with 'PREDICTED' column value "false".
-        - NEG_LC_In_Silico_temp: The separated DataFrame for negative LC spectrums with 'PREDICTED' column value "true".
-        - NEG_GC_temp: The separated DataFrame for negative GC spectrums with 'PREDICTED' column value "false".
-        - NEG_GC_In_Silico_temp: The separated DataFrame for negative GC spectrums with 'PREDICTED' column value "true".
+    :param POS_LC: The data frame containing the positive LC data
+    :param POS_GC: The data frame containing the positive GC data
+    :param NEG_LC: The data frame containing the negative LC data
+    :param NEG_GC: The data frame containing the negative GC data
+    :return: A tuple containing separate data frames for positive LC in silico, positive GC in silico,
+        negative LC in silico, negative GC in silico, positive LC experimental, positive GC experimental,
+        negative LC experimental, and negative GC experimental.
     """
     # Barres de progression pour chaque étape de séparation
     with tqdm(total=len(POS_LC), unit=" spectrums", colour="green", desc="\t  POS_LC_In_Silico") as pbar:
