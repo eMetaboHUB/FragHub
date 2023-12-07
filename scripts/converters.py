@@ -1,6 +1,7 @@
 import concurrent.futures
 from tqdm import tqdm
 import pandas as pd
+import numpy as np
 import chardet
 import time
 import json
@@ -232,15 +233,30 @@ def csv_to_msp(dataframe):
     :param dataframe: A pandas DataFrame object.
     :return: A string with formatted rows for each entry in the DataFrame.
     """
+
     def format_row(row):
         """
-        Formats a single row of the DataFrame.
+        :param row: The row of a DataFrame to format.
+        :return: The formatted row as a string, with each column and value represented as `<column>: <value>` or just `<value>` if the value is a peak list.
 
-        :param row: The row to be formatted.
-        :return: The formatted row as a string.
         """
-        # formats a single row of the DataFrame
-        return '\n'.join([f'{col}: {val}' for col, val in zip(row.index, row.values)])
+        return '\n'.join([f'{col}: {val}' if col != 'PEAK_LIST' else f'{val}' for col, val in zip(row.index, row.values)])
+
+    def is_peak(val):
+        """
+        :param val: The value to be checked if it represents a peak. The value can be a string, integer, or float.
+        :return: Returns True if the value represents a peak, otherwise False. A value represents a peak if it matches the pattern '(\d+\.?\d*)\s+(\d+\.?\d*)', where the first group represents
+        * the peak's x-coordinate and the second group represents the peak's y-coordinate.
+        """
+        return bool(re.search(r'(\d+\.?\d*)\s+(\d+\.?\d*)', str(val)))
+
+    peak_mask = dataframe.applymap(is_peak)
+    # Identify columns where at least one element matches the regex
+    peak_columns = peak_mask.all()
+
+    for col in peak_columns.index:
+        if peak_columns[col]:
+            dataframe.rename(columns={col: 'PEAK_LIST'}, inplace=True)
 
     # apply format_row to each row of the DataFrame
     formatted_rows = dataframe.apply(format_row, axis=1)
