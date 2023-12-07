@@ -40,6 +40,7 @@ if __name__ == "__main__":
 
     del FINAL_JSON
     del FINAL_XML
+    del FINAL_CSV
 
     # STEP 2: split spectrums into a list AND matchms clean
     msp_dir = os.path.join(input_path, "MSP")
