@@ -84,11 +84,25 @@ def concatenate_xml(xml_path):
     return FINAL_XML
 
 def detect_encoding(file_path):
+    """
+    Detects the encoding of a file.
+
+    :param file_path: The path to the file.
+    :return: The encoding of the file.
+    """
     with open(file_path, 'rb') as f:
         result = chardet.detect(f.read())
     return result['encoding']
 
 def try_separators(file_path, encoding):
+    """
+    Tries different separators to parse a CSV file.
+
+    :param file_path: The path to the input CSV file.
+    :param encoding: The encoding of the CSV file.
+    :return: A tuple containing the parsed DataFrame and the successful separator.
+    :raises ValueError: If the input file could not be parsed with any of the attempted separators.
+    """
     separators = [',', ';', '\t', '|']
     for sep in separators:
         try:
@@ -100,8 +114,10 @@ def try_separators(file_path, encoding):
 
 def concatenate_csv(csv_path):
     """
-    :param csv_path: The directory path where the CSV files are located.
-    :return: The concatenated CSV content in a list.
+    Concatenates all CSV files in a given directory.
+
+    :param csv_path: The path to the directory containing the CSV files.
+    :return: A list of dataframes representing the concatenated CSV files.
     """
     FINAL_CSV = []
     for files in tqdm(os.listdir(csv_path), total=len(os.listdir(csv_path)), unit=" spectrums", colour="green", desc="\t concatenate"):
