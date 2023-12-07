@@ -321,4 +321,4 @@ def convert_to_msp(input_path):
         # Convert all CSV spectrum to MSP spectrum (Multithreaded)
         FINAL_CSV = CSV_convert_processing(FINAL_CSV)
 
-    return FINAL_JSON,FINAL_XML
+    return FINAL_JSON,FINAL_XML,FINAL_CSV
