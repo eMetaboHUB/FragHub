@@ -7,6 +7,12 @@ import os
 import re
 
 def concatenate_json(json_path):
+    """
+    Concatenates multiple JSON files into a single list of dictionaries.
+
+    :param json_path: The directory path containing the JSON files.
+    :return: A list of dictionaries containing the concatenated JSON data.
+    """
     JSON_LIST = []
     for files in tqdm(os.listdir(json_path), total=len(os.listdir(json_path)), unit=" spectrums", colour="green", desc="\t concatenate"):
         if files.endswith(".json"):
@@ -24,6 +30,20 @@ def concatenate_json(json_path):
     return JSON_LIST
 
 def json_to_msp(json_spectrum):
+    """
+    Convert a JSON spectrum to an MSP (Mass Spectral Peak) string.
+
+    :param json_spectrum: A dictionary representing the JSON spectrum.
+                          It should contain the following keys:
+                            - "filename" (str): The name of the file.
+                            - Any other key-value pairs representing metadata.
+                            - "peaks" (list): A list of tuples representing peaks.
+                              Each tuple should contain two values:
+                                - The peak's m/z value (float)
+                                - The peak's intensity (float)
+
+    :return: An MSP string representation of the spectrum.
+    """
     SPECTRUM = ""  # Creating empty spectrum string
     SPECTRUM = SPECTRUM + "FILENAME: " + json_spectrum["filename"] + "\n"
     for key, value in json_spectrum.items():
@@ -37,6 +57,12 @@ def json_to_msp(json_spectrum):
     return SPECTRUM
 
 def JSON_convert_processing(FINAL_JSON):
+    """
+    Convert JSON objects to MSP format using multiple threads.
+
+    :param FINAL_JSON: A list of JSON objects to be converted.
+    :return: A list containing the results of the conversion.
+    """
     with concurrent.futures.ThreadPoolExecutor() as executor:
         results = list(tqdm(executor.map(json_to_msp, FINAL_JSON), total=len(FINAL_JSON), unit=" spectrums", colour="green", desc="\t  converting"))
 
@@ -45,6 +71,12 @@ def JSON_convert_processing(FINAL_JSON):
     return final # returns the list of different worker executions.
 
 def concatenate_xml(xml_path):
+    """
+    Concatenates the content of XML files in a given directory.
+
+    :param xml_path: The path to the directory containing XML files.
+    :return: A list containing the concatenated XML content from all files.
+    """
     FINAL_XML = []
     for files in tqdm(os.listdir(xml_path), total=len(os.listdir(xml_path)), unit=" spectrums", colour="green", desc="\t concatenate"):
         if files.endswith(".xml"):
@@ -59,6 +91,13 @@ def concatenate_xml(xml_path):
     return FINAL_XML
 
 def xml_to_msp(xml_content):
+    """
+    Convert XML content to MSP format.
+
+    :param xml_content: The XML content to be converted.
+    :return: The converted MSP format.
+
+    """
     specrta_dict = {}
 
     if re.search("<filename>(.*)</filename>", xml_content):
@@ -128,6 +167,10 @@ def xml_to_msp(xml_content):
     return SPECTRUM
 
 def XML_convert_processing(FINAL_XML):
+    """
+    :param FINAL_XML: List of XML elements to be converted to MSP format.
+    :return: List of converted XML elements in MSP format.
+    """
     with concurrent.futures.ThreadPoolExecutor() as executor:
         results = list(tqdm(executor.map(xml_to_msp, FINAL_XML), total=len(FINAL_XML), unit=" spectrums", colour="green", desc="\t  converting"))
 
@@ -137,6 +180,12 @@ def XML_convert_processing(FINAL_XML):
 
 
 def convert_to_msp(input_path):
+    """
+    Convert JSON and XML files to MSP format.
+
+    :param input_path: The path to the directory containing JSON and XML files.
+    :return: A tuple containing the final JSON and XML converted to MSP format.
+    """
     # JSON
     FINAL_JSON = []
     json_to_do = False
