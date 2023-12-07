@@ -3,12 +3,15 @@ import re
 
 def remove_no_inchikey(spectrum):
     """
-    Remove No Inchikey
+    .. function:: remove_no_inchikey(spectrum)
 
-    This method removes the spectra that do not have an Inchikey value.
+        This method removes spectra with no InChIKey.
 
-    :param spectrum: The input spectrum
-    :return: The spectrum without the spectra with no Inchikey value
+        :param spectrum: The input spectrum.
+        :type spectrum: any
+
+        :return: The spectrum with InChIKey if it exists, or None if no InChIKey is found.
+        :rtype: any or None
 
     """
     if spectrum != None:
@@ -19,8 +22,8 @@ def remove_no_inchikey(spectrum):
 
 def harmonize_adduct(spectrum):
     """
-    :param spectrum: the spectrum containing the precursor information
-    :return: the spectrum with the harmonized precursor adduct
+    :param spectrum: The spectrum string
+    :return: The modified spectrum string with harmonized adduct
     """
     if spectrum != None:
         if re.search("((^|\n)(PRECURSORTYPE:)) (.*)\n",spectrum):
@@ -61,10 +64,10 @@ def harmonize_adduct(spectrum):
 
 def remove_no_mass(spectrum):
     """
-    Remove spectra with no mass information from the given spectrum.
+    Removes spectra with no mass information from the input spectrum.
 
-    :param spectrum: The spectrum to remove spectra with no mass information from.
-    :return: The spectrum with no mass spectra removed.
+    :param spectrum: The input spectrum.
+    :return: The modified spectrum with no mass information.
     """
     if spectrum != None:
         if re.search("PRECURSORMZ: None\n",spectrum) and re.search("PARENTMASS: None\n",spectrum):
@@ -74,12 +77,7 @@ def remove_no_mass(spectrum):
 
 def correct_ionmode(spectrum):
     """
-    Corrects the ion mode of the given spectrum.
 
-    :param spectrum: The spectrum to correct the ion mode.
-    :type spectrum: str
-    :return: The corrected spectrum.
-    :rtype: str
     """
     if spectrum != None:
         if re.search("\nIONMODE: n/a",spectrum):
@@ -96,12 +94,12 @@ def correct_ionmode(spectrum):
 
 def harmonize_retention_time(spectrum):
     """
-    :param spectrum: A string representation of a spectrum.
-    :return: A modified version of the spectrum with the retention time harmonized.
+    Harmonize the retention time of a spectrum.
 
-    The function `harmonize_retention_time` takes a spectrum as input and modifies it by harmonizing the retention time. If the input spectrum is not None, the function checks if the retention
-    * time is set to 0. If so, it replaces the 0 with `None`. If the retention time is already present in the spectrum (in the format "RETENTIONTIME: value"), the function checks if the
-    * value is a valid float. If it is, the spectrum is returned unchanged. If the value is not a valid float, it is replaced with `None` and the modified spectrum is returned.
+    :param spectrum: The input spectrum.
+    :type spectrum: str
+    :return: The spectrum with harmonized retention time.
+    :rtype: str
     """
     if spectrum != None:
         if re.search("RETENTIONTIME: 0\n",spectrum):
@@ -118,13 +116,13 @@ def harmonize_retention_time(spectrum):
 
 def harmonize_ms_level(spectrum):
     """
-    :param spectrum: The original string representation of the spectrum with MSLEVEL information.
-    :return: The harmonized string representation of the spectrum with updated MSLEVEL information.
+    :param spectrum: A string representing the input spectrum
+    :return: The spectrum with harmonized MS level
 
-    This method takes a spectrum string and performs a series of substitutions on the MSLEVEL information in the string.
-    The substitutions change the MSLEVEL values to a standard format, ensuring consistency in the representation.
+    This method takes a spectrum string as input and replaces the MS level values in the spectrum with harmonized values. The harmonization is done by replacing specific MS level patterns
+    * with their corresponding values.
 
-    Here is an overview of the substitutions made:
+    The MS level patterns that are replaced are:
     - "MSLEVEL: MS" is replaced with "MSLEVEL: 1"
     - "MSLEVEL: MS1" is replaced with "MSLEVEL: 1"
     - "MSLEVEL: MS2" is replaced with "MSLEVEL: 2"
@@ -133,7 +131,7 @@ def harmonize_ms_level(spectrum):
     - "MSLEVEL: 2-MS4 Composite" is replaced with "MSLEVEL: 4"
     - "MSLEVEL: 2-MS5 Composite" is replaced with "MSLEVEL: 5"
 
-    The original spectrum string is not modified, and the updated string with harmonized MSLEVEL information is returned.
+    The harmonized spectrum is then returned as output.
     """
     if spectrum != None:
         spectrum = re.sub("MSLEVEL: MS\n", "MSLEVEL: 1\n", spectrum, flags=re.I)
@@ -173,12 +171,10 @@ def harmonize_ms_level(spectrum):
 
 def harmonize_syns(spectrum):
     """
-    Replaces "$:00in-source" with "None" in the given spectrum.
+    Replace "$:00in-source" with "None" in the given spectrum.
 
-    :param spectrum: The spectrum to be harmonized.
-    :type spectrum: str
-    :return: The harmonized spectrum.
-    :rtype: str
+    :param spectrum: The input spectrum string.
+    :return: The spectrum string with "$:00in-source" replaced by "None".
     """
     if spectrum != None:
         if re.search("\$:00in-source",spectrum):
@@ -188,10 +184,10 @@ def harmonize_syns(spectrum):
 
 def harmonize_formula(spectrum):
     """
-    Harmonizes the formula in the given spectrum.
+    Method to harmonize the formula in the given spectrum.
 
-    :param spectrum: The spectrum to harmonize.
-    :return: The harmonized spectrum.
+    :param spectrum: The spectrum string.
+    :return: The harmonized spectrum string.
     """
     if spectrum != None:
         if re.search("FORMULA: \[(.*)\](\+|-)\n",spectrum):
@@ -207,9 +203,8 @@ def harmonize_formula(spectrum):
 
 def harmonize_empties(spectrum):
     """
-    :param spectrum: The spectrum to be harmonized by replacing empty values with None.
-    :return: The harmonized spectrum.
-
+    :param spectrum: The input spectrum string that may contain empty values represented by ": \n".
+    :return: The spectrum string with all empty values replaced by ": None\n".
     """
     if spectrum != None:
         if re.search(": \n",spectrum):
@@ -218,17 +213,18 @@ def harmonize_empties(spectrum):
 
 def predicted_correction(spectrum):
     """
-    :param spectrum: The spectrum to be checked for predicted correction.
-    :return: The spectrum with the predicted correction flag updated.
+    :param spectrum: The input spectrum string.
+    :return: The corrected spectrum string.
 
-    This method takes in a spectrum and checks if it has a predicted correction flag. If the spectrum is not None and does not match the pattern "FILENAME: MSMS_Public.*", the method removes
-    * any existing predicted correction value and checks if the spectrum contains keywords such as "in-silico", "insilico", "predicted", "theoretical", or "Annotation level-3" (ignoring
-    * case). If any of these keywords are found, the predicted correction flag is set to true; otherwise, it is set to false.
+    This method checks if the spectrum is predicted or not and corrects the spectrum string accordingly. If the spectrum is not None, it first checks if the spectrum contains the string
+    * "FILENAME: MSMS_Public". If it doesn't, it removes the line starting with "PREDICTED: " from the spectrum string. Then it checks if the spectrum contains any of the following keywords
+    *: "in-silico", "insilico", "predicted", "theoretical", "Annotation level-3" (case-insensitive). If it does, it replaces the line starting with "PREDICTED: " with "PREDICTED: true".
+    * Otherwise, it replaces the line with "PREDICTED: false".
 
-    If the spectrum matches the pattern "FILENAME: MSMS_Public.*", the method removes both the file name and predicted correction value from the spectrum. It then follows the same logic
-    * as described above to update the predicted correction flag.
+    If the spectrum contains "FILENAME: MSMS_Public", it removes the line starting with "FILENAME: " and "PREDICTED: " from the spectrum string, and performs the same check for keywords
+    *.
 
-    Finally, the method returns the updated spectrum with the predicted correction flag.
+    Finally, it returns the corrected spectrum string.
     """
     if spectrum != None:
         if not re.search("FILENAME: MSMS_Public.*",spectrum):
@@ -249,15 +245,10 @@ def predicted_correction(spectrum):
 
 def harmonize_db_informations(spectrum):
     """
-    :param spectrum: A string representing the spectrum information.
-    :return: The harmonized spectrum information.
+    Harmonizes the database information in the given spectrum.
 
-    This method takes a spectrum string and harmonizes the database information in it. It checks for two patterns: GNPS CAS and MSMS CAS. If the pattern is found, it extracts the spectrum
-    * ID and adds it to the spectrum string.
-
-    Example usage:
-    spectrum = "SPECTRUMID: None\nDB#=12345, origin=GNPS"
-    harmonize_db_informations(spectrum)  # returns "SPECTRUMID: 12345\nDB#=12345, origin=GNPS"
+    :param spectrum: The spectrum with database information.
+    :return: The modified spectrum.
     """
     if spectrum != None:
         # GNPS CAS
@@ -277,8 +268,11 @@ def harmonize_db_informations(spectrum):
 
 def harmonize_fields_values(spectrum):
     """
-    :param spectrum: The original spectrum data that needs to be harmonized.
-    :return: The harmonized spectrum data.
+    :param spectrum: the spectrum data to be harmonized
+    :return: the harmonized spectrum data
+
+    This method takes a spectrum data as input and performs a series of operations to harmonize the values of various fields in the spectrum. The input spectrum is modified in-place and
+    * the modified spectrum is returned.
     """
     # spectrum = remove_no_inchikey(spectrum)
     # spectrum = remove_no_mass(spectrum)
@@ -298,8 +292,8 @@ def harmonize_fields_values(spectrum):
 
 def harmonize_fields_names(spectrum):
     """
-    :param spectrum: The input spectrum string.
-    :return: The harmonized spectrum string with standardized field names and sorted fields.
+    :param spectrum: the spectrum to be harmonized
+    :return: the harmonized spectrum with fields in a specific order and modified field names
     """
     if spectrum is not None:
         expected_fields = ["FRAGHUBID","SYNON","INCHIKEY","INSTRUMENT","FORMULA","SMILES","INCHI","COMMENT","IONIZATION","RESOLUTION","FRAGMENTATIONMODE","NAME","SPECTRUMID","PRECURSORTYPE","MSLEVEL",
