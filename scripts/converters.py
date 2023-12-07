@@ -1,6 +1,7 @@
 import concurrent.futures
 from tqdm import tqdm
 import pandas as pd
+import chardet
 import time
 import json
 import os
@@ -82,16 +83,34 @@ def concatenate_xml(xml_path):
 
     return FINAL_XML
 
+def detect_encoding(file_path):
+    with open(file_path, 'rb') as f:
+        result = chardet.detect(f.read())
+    return result['encoding']
+
+def try_separators(file_path, encoding):
+    separators = [',', ';', '\t', '|']
+    for sep in separators:
+        try:
+            df = pd.read_csv(file_path, sep=sep, encoding=encoding)
+            return df, sep
+        except pd.errors.ParserError:
+            continue
+    raise ValueError(f'Input file at {file_path} could not be parsed with the attempted separators.')
+
 def concatenate_csv(csv_path):
     """
-    :param xml_path: The directory path where the XML files are located.
-    :return: The concatenated XML content in a list.
+    :param csv_path: The directory path where the CSV files are located.
+    :return: The concatenated CSV content in a list.
     """
     FINAL_CSV = []
     for files in tqdm(os.listdir(csv_path), total=len(os.listdir(csv_path)), unit=" spectrums", colour="green", desc="\t concatenate"):
         if files.endswith(".csv"):
-            file_name = os.path.basename(os.path.join(csv_path, files).replace(".csv", ""))
-            csv_df = pd.read_csv(os.path.join(csv_path, files), sep=";", encoding="UTF-8")
+            file_path = os.path.join(csv_path, files)
+            file_name = os.path.basename(file_path.replace(".csv", ""))
+            encoding = detect_encoding(file_path)
+            csv_df, _ = try_separators(file_path, encoding)
+
             # Add filename column to dataframe
             csv_df['filename'] = file_name
 
