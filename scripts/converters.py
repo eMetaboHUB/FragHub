@@ -1,7 +1,9 @@
 import concurrent.futures
-import time
-
 from tqdm import tqdm
+import pandas as pd
+import numpy as np
+import chardet
+import time
 import json
 import os
 import re
@@ -81,6 +83,57 @@ def concatenate_xml(xml_path):
             FINAL_XML.extend([xml_content])
 
     return FINAL_XML
+
+def detect_encoding(file_path):
+    """
+    Detects the encoding of a file.
+
+    :param file_path: The path to the file.
+    :return: The encoding of the file.
+    """
+    with open(file_path, 'rb') as f:
+        result = chardet.detect(f.read())
+    return result['encoding']
+
+def try_separators(file_path, encoding):
+    """
+    Tries different separators to parse a CSV file.
+
+    :param file_path: The path to the input CSV file.
+    :param encoding: The encoding of the CSV file.
+    :return: A tuple containing the parsed DataFrame and the successful separator.
+    :raises ValueError: If the input file could not be parsed with any of the attempted separators.
+    """
+    separators = [',', ';', '\t', '|']
+    for sep in separators:
+        try:
+            df = pd.read_csv(file_path, sep=sep, encoding=encoding)
+            return df
+        except pd.errors.ParserError:
+            continue
+    raise ValueError(f'Input file at {file_path} could not be parsed with the attempted separators.')
+
+def concatenate_csv(csv_path):
+    """
+    Concatenates all CSV files in a given directory.
+
+    :param csv_path: The path to the directory containing the CSV files.
+    :return: A list of dataframes representing the concatenated CSV files.
+    """
+    FINAL_CSV = []
+    for files in tqdm(os.listdir(csv_path), total=len(os.listdir(csv_path)), unit=" spectrums", colour="green", desc="\t concatenate"):
+        if files.endswith(".csv"):
+            file_path = os.path.join(csv_path, files)
+            file_name = os.path.basename(file_path.replace(".csv", ""))
+            encoding = detect_encoding(file_path)
+            csv_df = try_separators(file_path, encoding)
+
+            # Add filename column to dataframe
+            csv_df.insert(0, 'filename', file_name)
+
+            FINAL_CSV.extend([csv_df])
+
+    return FINAL_CSV
 
 def xml_to_msp(xml_content):
     """
@@ -171,6 +224,63 @@ def XML_convert_processing(FINAL_XML):
 
     return final # returns the list of different worker executions.
 
+def csv_to_msp(dataframe):
+    """
+    Converts a DataFrame to a formatted string with the following format for each row:
+    {column_name}: {value}
+    The rows are concatenated with newline characters.
+
+    :param dataframe: A pandas DataFrame object.
+    :return: A string with formatted rows for each entry in the DataFrame.
+    """
+
+    def format_row(row):
+        """
+        :param row: The row of a DataFrame to format.
+        :return: The formatted row as a string, with each column and value represented as `<column>: <value>` or just `<value>` if the value is a peak list.
+
+        """
+        return '\n'.join([f'{col}: {val}' if col != 'PEAK_LIST' else f'{val}' for col, val in zip(row.index, row.values)])
+
+    def is_peak(val):
+        """
+        :param val: The value to be checked if it represents a peak. The value can be a string, integer, or float.
+        :return: Returns True if the value represents a peak, otherwise False. A value represents a peak if it matches the pattern '(\d+\.?\d*)\s+(\d+\.?\d*)', where the first group represents
+        * the peak's x-coordinate and the second group represents the peak's y-coordinate.
+        """
+        return bool(re.search(r'(\d+\.?\d*)\s+(\d+\.?\d*)', str(val)))
+
+    peak_mask = dataframe.applymap(is_peak)
+    # Identify columns where at least one element matches the regex
+    peak_columns = peak_mask.all()
+
+    for col in peak_columns.index:
+        if peak_columns[col]:
+            dataframe.rename(columns={col: 'PEAK_LIST'}, inplace=True)
+
+    # apply format_row to each row of the DataFrame
+    formatted_rows = dataframe.apply(format_row, axis=1)
+
+    # Join all formatted rows with '\n\n' in between each
+    SPECTRUM = '\n\n'.join(formatted_rows.tolist())
+
+    return SPECTRUM
+
+
+def CSV_convert_processing(FINAL_CSV):
+    """
+    Process CSV conversion using multithreading.
+
+    :param FINAL_CSV: The list of CSV files to be converted.
+    :return: The list of successfully converted CSV files.
+    """
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        results = list(tqdm(executor.map(csv_to_msp, FINAL_CSV), total=len(FINAL_CSV), unit=" spectrums", colour="green", desc="\t  converting"))
+
+    final = [res for res in results if res is not None]
+
+    return final # returns the list of different worker executions.
+
 
 def convert_to_msp(input_path):
     """
@@ -195,11 +305,10 @@ def convert_to_msp(input_path):
         # Convert all JSON spectrum to MSP spectrum (Multithreaded)
         FINAL_JSON = JSON_convert_processing(FINAL_JSON)
 
-
     # XML
     FINAL_XML = []
     xml_to_do = False
-    xml_path = os.path.join(input_path,"XML")
+    xml_path = os.path.join(input_path, "XML")
     # check if there is a xml file into the directory
     for files in os.listdir(xml_path):
         if files.endswith(".xml"):
@@ -212,4 +321,20 @@ def convert_to_msp(input_path):
         # Convert all XML spectrum to MSP spectrum (Multithreaded)
         FINAL_XML = XML_convert_processing(FINAL_XML)
 
-    return FINAL_JSON,FINAL_XML
+    # CSV
+    FINAL_CSV = []
+    csv_to_do = False
+    csv_path = os.path.join(input_path, "CSV")
+    # check if there is a csv file into the directory
+    for files in os.listdir(csv_path):
+        if files.endswith(".csv"):
+            csv_to_do = True
+    if csv_to_do == True:
+        time.sleep(0.02)
+        print("-- CONVERTING CSV TO MSP --")
+        # Concatenate all CSV to a list
+        FINAL_CSV = concatenate_csv(csv_path)
+        # Convert all CSV spectrum to MSP spectrum (Multithreaded)
+        FINAL_CSV = CSV_convert_processing(FINAL_CSV)
+
+    return FINAL_JSON,FINAL_XML,FINAL_CSV
