@@ -11,27 +11,31 @@ from filters import *
 
 def matchms_spectrum_to_str_msp(spectrum,file_name):
     """
-    :param spectrum: The spectrum to be converted to a string in the MSP format.
-    :param file_name: The name of the file from which the spectrum originated.
-    :return: The spectrum in string format following the MSP format.
+    :param spectrum: The input spectrum to be converted to MSP format.
+    :param file_name: The name of the file for the spectrum.
+    :return: The spectrum converted to MSP format as a string.
 
-    This method takes a spectrum object and converts it into a string formatted according to the MSP (Mass Spectral Peak) format. The spectrum object should have the following attributes
-    *:
+    This method takes a spectrum object and a file name, and converts the spectrum object to MSP format. The MSP format is a tab-separated text format commonly used for representing mass
+    * spectrometry data. The method first checks if the spectrum object is not None. If it is not None, it checks if the "filename" key is present in the metadata of the spectrum object
+    *. If it is not present, it adds the file name to the output MSP string. Then, it iterates through the metadata items of the spectrum object and adds them to the output MSP string, excluding
+    * keys that start with "num peaks", "num_peaks", or "peak_comments". After adding the metadata, it adds the number of peaks in the spectrum to the output MSP string. Finally, it iter
+    *ates through the mz and intensity values of the peaks in the spectrum and adds them to the output MSP string in tab-separated format.
 
-    - `metadata`: A dictionary containing metadata information for the spectrum.
-    - `peaks`: A list-like object containing the mass-to-charge ratio (m/z) values and intensities of the peaks in the spectrum.
+    Example usage:
+    spectrum = ...
+    file_name = "example.msp"
+    msp_string = matchms_spectrum_to_str_msp(spectrum, file_name)
+    print(msp_string)
 
-    The method checks if the spectrum object is not None, and if the key "filename" is not present in the metadata. If the key is not present, it adds a line to the string indicating the
-    * file name.
-
-    Next, the method iterates through the metadata items and excludes any items with keys that start with "num peaks", "num_peaks", or "peak_comments". It appends the remaining metadata
-    * items to the string.
-
-    After that, the method appends the number of peaks in the spectrum to the string.
-
-    Finally, the method appends each m/z value and intensity pair from the spectrum peaks to the string, with the values formatted and aligned for readability.
-
-    The resulting string in the MSP format is returned.
+    Output:
+    FILENAME: example.msp
+    METADATA_KEY1: value1
+    METADATA_KEY2: value2
+    ...
+    NUM PEAKS: 100
+    mz1         intensity1
+    mz2         intensity2
+    ...
     """
     if spectrum is not None:
         if "filename" not in  spectrum.metadata.keys():
@@ -53,30 +57,49 @@ def matchms_spectrum_to_str_msp(spectrum,file_name):
 
 def multithreaded_matchms(spectrum,file_name):
     """
-    :param spectrum: The spectrum object to be processed.
-    :param file_name: The name of the file containing the spectrum.
-    :return: The processed spectrum object.
 
-    This method applies a series of filters and transformations to the input spectrum object to preprocess it. The processed spectrum is then returned.
+    This method `multithreaded_matchms` takes two parameters: `spectrum` and `file_name`.
 
-    The processing steps include:
-    - Applying metadata filters using the msfilters.default_filters() function.
-    - Adding parent mass information using msfilters.add_parent_mass() function.
-    - Adding precursor m/z information using msfilters.add_precursor_mz() function.
-    - Adding retention time information using msfilters.add_retention_time() function.
-    - Cleaning adduct information using matchms.metadata_utils.clean_adduct() function.
-    - Repairing InChi, InChiKey, and SMILES information using msfilters.repair_inchi_inchikey_smiles() function.
-    - Normalizing intensities using msfilters.normalize_intensities() function.
-    - Selecting peaks based on relative intensity using msfilters.select_by_relative_intensity() function.
-    - Selecting peaks based on m/z range using msfilters.select_by_mz() function.
-    - Reducing the number of peaks to a maximum number using msfilters.reduce_to_number_of_peaks() function.
-    - Requiring a minimum number of peaks using msfilters.require_minimum_number_of_peaks() function.
-    - Requiring a minimum number of high peaks based on intensity using msfilters.require_minimum_of_high_peaks() function.
-    - Converting the spectrum object to string MSP format using the matchms_spectrum_to_str_msp() function.
-    - Harmonizing the field names of the spectrum object using the harmonize_fields_names() function.
-    - Harmonizing the field values of the spectrum object using the harmonize_fields_values() function.
+    :param spectrum: The spectrum object on which various metadata filters and peak filters will be applied.
+    :param file_name: The name of the file associated with the spectrum.
 
-    The processed spectrum object is then returned.
+    :return: The processed spectrum object with applied metadata and peak filters.
+
+    The method proceeds with the following steps:
+
+    1. Applies default metadata filters using `msfilters.default_filters`.
+
+    2. Adds parent mass information to the spectrum using `msfilters.add_parent_mass`, estimating from the adduct if available.
+
+    3. Converts the existing precursor mz field to a float using `msfilters.add_precursor_mz`.
+
+    4. Adds retention time information to the spectrum using `msfilters.add_retention.add_retention_time`.
+
+    5. Cleans the adduct information in the spectrum using `matchms.metadata_utils.clean_adduct`.
+
+    6. Repairs the inchi, inchikey, and smiles fields in the spectrum using `msfilters.repair_inchi_inchikey_smiles`. For example, if the inchi field is present, it will be used to update
+    * the inchikey field.
+
+    7. Normalizes the intensities of the spectrum using `msfilters.normalize_intensities`.
+
+    8. Selects peaks based on their relative intensity using `msfilters.select_by_relative_intensity`, with a threshold of 0.01 and a maximum intensity of 1.
+
+    9. Selects peaks within a specified m/z range using `msfilters.select_by_mz`, with a minimum m/z value of 50 and a maximum m/z value of 2000.0.
+
+    10. Reduces the number of peaks in the spectrum to a maximum of 500 using `msfilters.reduce_to_number_of_peaks`.
+
+    11. Requires a minimum number of peaks in the spectrum using `msfilters.require_minimum_number_of_peaks`, with a minimum number of 3.
+
+    12. Requires a minimum number of high peaks in the spectrum using `msfilters.require_minimum_of_high_peaks`, with a minimum number of peaks of 2 and an intensity percentage of 5.0.
+
+    13. Converts the spectrum object to a string in MSP format using `matchms_spectrum_to_str_msp`.
+
+    14. Harmonizes the field names in the spectrum using `harmonize_fields_names`.
+
+    15. Harmonizes the field values in the spectrum using `harmonize_fields_values`.
+
+    16. Returns the processed and filtered spectrum object.
+
     """
     # apply_metadata_filters
     spectrum = msfilters.default_filters(spectrum)
@@ -104,14 +127,11 @@ def multithreaded_matchms(spectrum,file_name):
 
 def matchms_processing(spectrum_list,file_name):
     """
-    Perform multithreaded processing of spectrum_list using matchms.
+    Process the given spectrum list using multithreading.
 
-    :param spectrum_list: List of spectra to process.
-    :type spectrum_list: list
-    :param file_name: Name of the file being processed.
-    :type file_name: str
-    :return: List of different worker executions.
-    :rtype: list
+    :param spectrum_list: The list of spectra to process.
+    :param file_name: The name of the file being processed.
+    :return: The list of different worker executions.
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
         results = list(tqdm(executor.map(multithreaded_matchms, spectrum_list, [file_name for i in range(len(spectrum_list))]), total=len(spectrum_list), unit=" spectrums", colour="green", desc="\t  processing"))
