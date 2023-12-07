@@ -1,7 +1,7 @@
 import concurrent.futures
-import time
-
 from tqdm import tqdm
+import pandas as pd
+import time
 import json
 import os
 import re
@@ -81,6 +81,23 @@ def concatenate_xml(xml_path):
             FINAL_XML.extend([xml_content])
 
     return FINAL_XML
+
+def concatenate_csv(csv_path):
+    """
+    :param xml_path: The directory path where the XML files are located.
+    :return: The concatenated XML content in a list.
+    """
+    FINAL_CSV = []
+    for files in tqdm(os.listdir(csv_path), total=len(os.listdir(csv_path)), unit=" spectrums", colour="green", desc="\t concatenate"):
+        if files.endswith(".csv"):
+            file_name = os.path.basename(os.path.join(csv_path, files).replace(".csv", ""))
+            csv_df = pd.read_csv(os.path.join(csv_path, files), sep=";", encoding="UTF-8")
+            # Add filename column to dataframe
+            csv_df['filename'] = file_name
+
+            FINAL_CSV.extend([csv_df])
+
+    return FINAL_CSV
 
 def xml_to_msp(xml_content):
     """
@@ -195,11 +212,10 @@ def convert_to_msp(input_path):
         # Convert all JSON spectrum to MSP spectrum (Multithreaded)
         FINAL_JSON = JSON_convert_processing(FINAL_JSON)
 
-
     # XML
     FINAL_XML = []
     xml_to_do = False
-    xml_path = os.path.join(input_path,"XML")
+    xml_path = os.path.join(input_path, "XML")
     # check if there is a xml file into the directory
     for files in os.listdir(xml_path):
         if files.endswith(".xml"):
@@ -211,5 +227,21 @@ def convert_to_msp(input_path):
         FINAL_XML = concatenate_xml(xml_path)
         # Convert all XML spectrum to MSP spectrum (Multithreaded)
         FINAL_XML = XML_convert_processing(FINAL_XML)
+
+    # CSV
+    FINAL_CSV = []
+    csv_to_do = False
+    csv_path = os.path.join(input_path, "CSV")
+    # check if there is a csv file into the directory
+    for files in os.listdir(csv_path):
+        if files.endswith(".csv"):
+            csv_to_do = True
+    if csv_to_do == True:
+        time.sleep(0.02)
+        print("-- CONVERTING CSV TO MSP --")
+        # Concatenate all CSV to a list
+        FINAL_CSV = concatenate_csv(csv_path)
+        # Convert all CSV spectrum to MSP spectrum (Multithreaded)
+        FINAL_CSV = CSV_convert_processing(FINAL_CSV)
 
     return FINAL_JSON,FINAL_XML
