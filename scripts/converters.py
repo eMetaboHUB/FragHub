@@ -128,7 +128,7 @@ def concatenate_csv(csv_path):
             csv_df = try_separators(file_path, encoding)
 
             # Add filename column to dataframe
-            csv_df['filename'] = file_name
+            csv_df.insert(0, 'filename', file_name)
 
             FINAL_CSV.extend([csv_df])
 
