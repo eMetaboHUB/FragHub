@@ -34,7 +34,7 @@ if __name__ == "__main__":
     if FINAL_CSV != []:
         compteur = 1
         for elements in FINAL_CSV:
-            with open(os.path.join(f"../INPUT/MSP/CSV_converted_{compteur}"+".msp"), "a", encoding="UTF-8") as temp:
+            with open(os.path.join(f"../INPUT/MSP/CSV_converted_{compteur}"+".msp"), "w", encoding="UTF-8") as temp:
                 temp.write(elements)
             compteur += 1
 
