@@ -107,7 +107,7 @@ def try_separators(file_path, encoding):
     for sep in separators:
         try:
             df = pd.read_csv(file_path, sep=sep, encoding=encoding)
-            return df, sep
+            return df
         except pd.errors.ParserError:
             continue
     raise ValueError(f'Input file at {file_path} could not be parsed with the attempted separators.')
@@ -125,7 +125,7 @@ def concatenate_csv(csv_path):
             file_path = os.path.join(csv_path, files)
             file_name = os.path.basename(file_path.replace(".csv", ""))
             encoding = detect_encoding(file_path)
-            csv_df, _ = try_separators(file_path, encoding)
+            csv_df = try_separators(file_path, encoding)
 
             # Add filename column to dataframe
             csv_df['filename'] = file_name
@@ -218,6 +218,48 @@ def XML_convert_processing(FINAL_XML):
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
         results = list(tqdm(executor.map(xml_to_msp, FINAL_XML), total=len(FINAL_XML), unit=" spectrums", colour="green", desc="\t  converting"))
+
+    final = [res for res in results if res is not None]
+
+    return final # returns the list of different worker executions.
+
+def csv_to_msp(dataframe):
+    """
+    Converts a DataFrame to a formatted string with the following format for each row:
+    {column_name}: {value}
+    The rows are concatenated with newline characters.
+
+    :param dataframe: A pandas DataFrame object.
+    :return: A string with formatted rows for each entry in the DataFrame.
+    """
+    def format_row(row):
+        """
+        Formats a single row of the DataFrame.
+
+        :param row: The row to be formatted.
+        :return: The formatted row as a string.
+        """
+        # formats a single row of the DataFrame
+        return '\n'.join([f'{col}: {val}' for col, val in zip(row.index, row.values)])
+
+    # apply format_row to each row of the DataFrame
+    formatted_rows = dataframe.apply(format_row, axis=1)
+
+    # Join all formatted rows with '\n\n' in between each
+    SPECTRUM = '\n\n'.join(formatted_rows.tolist())
+
+    return SPECTRUM
+
+
+def CSV_convert_processing(FINAL_CSV):
+    """
+    Process CSV conversion using multithreading.
+
+    :param FINAL_CSV: The list of CSV files to be converted.
+    :return: The list of successfully converted CSV files.
+    """
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        results = list(tqdm(executor.map(csv_to_msp, FINAL_CSV), total=len(FINAL_CSV), unit=" spectrums", colour="green", desc="\t  converting"))
 
     final = [res for res in results if res is not None]
 
