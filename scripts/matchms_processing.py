@@ -115,7 +115,7 @@ def multithreaded_matchms(spectrum,file_name):
     spectrum = msfilters.select_by_mz(spectrum, mz_from=50, mz_to=2000.0)
     spectrum = msfilters.reduce_to_number_of_peaks(spectrum, n_max=500)
     spectrum = msfilters.require_minimum_number_of_peaks(spectrum, n_required=3)
-    spectrum = msfilters.require_minimum_of_high_peaks(no_peaks=2 ,intensity_percent=5.0)
+    spectrum = msfilters.require_minimum_of_high_peaks(spectrum, no_peaks=2 ,intensity_percent=5.0)
 
     spectrum = matchms_spectrum_to_str_msp(spectrum,file_name)
 
