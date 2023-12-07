@@ -1,3 +1,4 @@
+from matchms.importing import load_from_msp
 from duplicatas_remover import *
 from matchms_processing import *
 from rdkit import RDLogger
@@ -92,18 +93,6 @@ if __name__ == "__main__":
     print("-- NAMES COMPLETION --")
     time.sleep(0.01)
     CONCATENATE_DF = names_completion(CONCATENATE_DF)
-
-    # print("-- INCHI/SMILES COMPLETION --")
-    # time.sleep(0.01)
-    # CONCATENATE_LIST = inchi_smiles_completion(CONCATENATE_LIST)
-
-    # print("-- REMOVE NO SMILES/INCHI --")
-    # time.sleep(0.01)
-    # CONCATENATE_LIST = remove_no_smiles_inchi(CONCATENATE_LIST)
-
-    # print("-- GENERATING FragBank UNIQUE ID --")
-    # time.sleep(0.01)
-    # CONCATENATE_LIST = unique_id_generator(CONCATENATE_LIST)
 
     print("-- SPLITTING [POS / NEG] --")
     time.sleep(0.01)
