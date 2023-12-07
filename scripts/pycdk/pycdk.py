@@ -85,11 +85,11 @@ def getMolExactMass(mol):
     ExactMass = function.getMajorIsotopeMass(formula)
     return ExactMass
 
-def getMonoIsotopicMass(mol):
-    function = cdk.tools.manipulator.AtomContainerManipulator
-    formula = function.
-    MonoIsotopicMass = function.getMajorIsotopeMass(formula)
-    return MonoIsotopicMass
+# def getMonoIsotopicMass(mol):
+#     function = cdk.tools.manipulator.AtomContainerManipulator
+#     formula = function.
+#     MonoIsotopicMass = function.getMajorIsotopeMass(formula)
+#     return MonoIsotopicMass
 
 def getMolNaturalMass(mol):
     function = cdk.tools.manipulator.AtomContainerManipulator
