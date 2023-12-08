@@ -40,8 +40,10 @@ def readlvlname(reslvl):
 
 def getClassyfireFromInChIKey(InChIKey):
     r = get_urlRequest("http://classyfire.wishartlab.com/entities/%s.json?"%(InChIKey))
+    print(r)
     if r ==False or r==None:
         return {"Classyfire_kingdom":None, "Classyfire_Superclass":None, "Classyfire_class":None, "Classyfire_Subclass":None, "direct_parent":None}
+
     res ={}
 
     if "kingdom" in r:
@@ -72,9 +74,9 @@ res=[]
 #pathfinalfile="/home/solweig/Thèse/chemomaps/pharmakon/input/Classyfire/testres.json"
 
 
-dfcpd = pd.read_excel(r"C:\Users\Axel\Documents\Présentations\MSP\datas diagram\MSP_inchikeys_classyfire.xlsx")
+dfcpd = pd.read_excel(r"C:\Users\Axel\Documents\Présentations\FragBank\Publication\Diagrammes\Sunburst\MSP_inchikeys_classyfire.xlsx")
 InChIKey_col_name = "INCHIKEY"
-pathfinalfile=r"C:\Users\Axel\Documents\Présentations\MSP\datas diagram\MSP_inchikeys_classyfire_complete.xlsx"
+pathfinalfile=r"C:\Users\Axel\Documents\Présentations\FragBank\Publication\Diagrammes\Sunburst\MSP_inchikeys_classyfire_complete.xlsx"
 lenghtdf = len(dfcpd)
 # print(lenghtdf)
 for ind in tqdm(range(lenghtdf), total=lenghtdf, colour="green"):
