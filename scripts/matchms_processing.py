@@ -123,6 +123,8 @@ def multithreaded_matchms(spectrum,file_name):
 
     spectrum = harmonize_fields_values(spectrum)
 
+    spectrum = remove_peaks_above_precursor_mz(spectrum)
+
     return spectrum
 
 def matchms_processing(spectrum_list,file_name):
