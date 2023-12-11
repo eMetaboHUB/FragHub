@@ -6,7 +6,10 @@ def remove_peaks_above_precursor_mz(spectrum):
     if spectrum != None:
         Precursor_MZ = None
         if re.search(r"PRECURSORMZ: (.*)",spectrum):
-            Precursor_MZ = float(re.search(r"PRECURSORMZ: (.*)",spectrum).group(1)) + 5.0
+            try:
+                Precursor_MZ = float(re.search(r"PRECURSORMZ: (.*)",spectrum).group(1)) + 5.0
+            except:
+                return None
 
         peak_list = None
         if re.search(r"(NUM PEAKS: \d*\n)(((\d+\.?\d*)\s+(\d+\.?\d*)\n)*)",spectrum):
@@ -28,14 +31,18 @@ def remove_peaks_above_precursor_mz(spectrum):
 
             peaks_df = peaks_df[peaks_df['MZ'] < Precursor_MZ]
 
-            # Réécriture de la liste de pics
-            peak_list_string = peaks_df.to_string(header=False, index=False)
-            peak_list_string = "\n".join(["\t".join(line.split()) for line in peak_list_string.split("\n")])
+            if not peaks_df.empty:
+                # Réécriture de la liste de pics
+                peak_list_string = peaks_df.to_string(header=False, index=False)
+                peak_list_string = "\n".join(["\t".join(line.split()) for line in peak_list_string.split("\n")])
 
-            spectrum = re.sub(r"(NUM PEAKS: \d*\n)(((\d+\.?\d*)\s+(\d+\.?\d*)\n)*)", f"NUM PEAKS: {len(peaks_df)}\n{peak_list_string}\n", spectrum)
+                spectrum = re.sub(r"(NUM PEAKS: \d*\n)(((\d+\.?\d*)\s+(\d+\.?\d*)\n)*)", f"NUM PEAKS: {len(peaks_df)}\n{peak_list_string}\n", spectrum)
 
-            return spectrum
-
+                return spectrum
+            else:
+                return None
+    else:
+        return None
 
 
 

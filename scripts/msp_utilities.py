@@ -82,35 +82,27 @@ def correct_uncomplete_charge(msp_path):
     with open(msp_path, "w", encoding="UTF-8") as msp_buffer:
         msp_buffer.write(content)
 
-def update_names(group):
-    """
-    :param group: A pandas DataFrame representing a group of data.
-    :return: The updated group DataFrame with missing names in the 'NAME' column filled in with the non-empty name value found in the group.
-
-    """
-    if group['NAME'].notnull().any():
-        non_empty_name = group.loc[group['NAME'].notnull(), 'NAME'].iloc[0]
-        group['NAME'] = non_empty_name
-    return group
-
 def names_completion(CONCATENATE_DF):
     """
-    Completes the names in the given DataFrame by replacing any 'None' values.
+    Perform name completion for a given DataFrame.
 
-    :param CONCATENATE_DF: The input DataFrame containing the 'NAME' column.
-    :type CONCATENATE_DF: pd.DataFrame
-    :return: The updated DataFrame with completed names.
-    :rtype: pd.DataFrame
+    :param CONCATENATE_DF: The DataFrame containing the 'NAME' column to perform name completion on.
+    :return: The modified DataFrame with name completion applied.
+
     """
+    # Définir le nom de la barre de progression
+    tqdm.pandas(total=len(CONCATENATE_DF), desc="\t  processing", colour="green", unit=" row")
+
+    # Remplacer 'None' par une chaîne vide
     CONCATENATE_DF['NAME'] = CONCATENATE_DF['NAME'].replace('None', '')
 
-    grouped = CONCATENATE_DF.groupby('INCHI')
-    updated_df = grouped.apply(update_names)
+    # Appliquer la transformation par groupe avec une barre de progression
+    CONCATENATE_DF['NAME'] = CONCATENATE_DF.groupby('INCHI')['NAME'].progress_transform(lambda group: group.fillna(group.dropna().iloc[0] if group.dropna().size > 0 else ''))
 
-    # Remplacer les valeurs vides par 'None' dans la colonne "NAME"
-    updated_df['NAME'] = updated_df['NAME'].replace('', 'None')
+    # Remplacer les chaînes vides par 'None'
+    CONCATENATE_DF['NAME'] = CONCATENATE_DF['NAME'].replace('', 'None')
 
-    return updated_df
+    return CONCATENATE_DF
 
 def inchi_smiles_completion(CONCATENATE_LIST):
     """
