@@ -187,43 +187,67 @@ def remove_dupli_NEG_GC_In_Silico(NEG_GC_In_Silico):
 
     return NEG_GC_In_Silico
 
+def format_comments(DF_row):
+    """
+    Format comments based on the given row of a DataFrame.
+
+    :param DF_row: A row of a DataFrame.
+    :type DF_row: pandas.Series
+    :return: A formatted string containing information from the row.
+    :rtype: str
+    """
+    return f'FILENAME={DF_row["FILENAME"]}; PREDICTED={DF_row["PREDICTED"]}; FRAGHUBID={DF_row["FRAGHUBID"]}; SPECTRUMID={DF_row["SPECTRUMID"]}; RESOLUTION={DF_row["RESOLUTION"]}; SYNON={DF_row["SYNON"]}; CHARGE={DF_row["CHARGE"]}; IONIZATION={DF_row["IONIZATION"]}; MSLEVEL={DF_row["MSLEVEL"]}; FRAGMENTATIONMODE={DF_row["FRAGMENTATIONMODE"]}; EXACTMASS={DF_row["EXACTMASS"]}; AVERAGEMASS={DF_row["AVERAGEMASS"]}'
 
 def re_write_MSP_POS_LC(POS_LC_df):
     """
-    Re-writes the MSP_POS_LC DataFrame to a list of strings.
+    :param POS_LC_df: Pandas DataFrame representing POS_LC data.
+    :return: List of rewritten POS_LC data.
 
-    :param POS_LC_df: DataFrame containing the MSP_POS_LC data.
-    :return: A list of strings representing the re-written POS_LC data.
+    This method takes a DataFrame of POS_LC data and iterates through each row. It extracts the necessary information from each row and rewrites it into a new format. The rewritten data
+    * is stored in a list and returned.
+
+    The input DataFrame, POS_LC_df, is expected to have the following columns:
+    - NAME: Name of the POS_LC
+    - PRECURSORMZ: Precursor m/z value
+    - PRECURSORTYPE: Precursor ion type
+    - FORMULA: Chemical formula
+    - INCHIKEY: InChIKey
+    - INCHI: InChI
+    - SMILES: SMILES representation
+    - RETENTIONTIME: Retention time
+    - IONMODE: Ionization mode
+    - INSTRUMENTTYPE: Instrument type
+    - INSTRUMENT: Instrument name
+    - COLLISIONENERGY: Collision energy
+    - COMMENT: Additional comments
+    - NUM PEAKS: Number of peaks
+    - PEAKS_LIST: List of peak data
+
+    The method uses a for loop to iterate through each row. Within the loop, it extracts the relevant information from each column and constructs a string representation of the POS_LC data
+    *. The string representation is appended to the POS_LC list.
+
+    Finally, the list of rewritten POS_LC data is returned.
     """
+
     POS_LC = []
     for index,row in tqdm(POS_LC_df.iterrows(), total=len(POS_LC_df), desc="\t\t  POS_LC", colour="green", unit=" row"):
+        COMMENTS = format_comments(row)
+
         SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGHUBID: " + row["FRAGHUBID"] + "\n"
-        SPECTRUM = SPECTRUM + "SPECTRUMID: " + row["SPECTRUMID"] + "\n"
-        SPECTRUM = SPECTRUM + "RESOLUTION: " + row["RESOLUTION"] + "\n"
-        SPECTRUM = SPECTRUM + "SYNON: " + row["SYNON"] + "\n"
-        SPECTRUM = SPECTRUM + "CHARGE: " + row["CHARGE"] + "\n"
-        # SPECTRUM = SPECTRUM + "PARENTMASS: " + row["PARENTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "IONIZATION: " + row["IONIZATION"] + "\n"
-        SPECTRUM = SPECTRUM + "MSLEVEL: " + row["MSLEVEL"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGMENTATIONMODE: " + row["FRAGMENTATIONMODE"] + "\n"
         SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "EXACTMASS: " + row["EXACTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "AVERAGEMASS: " + row["AVERAGEMASS"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
         SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
+        # Ontology ???
+        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
+        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
+        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
         SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
         SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + row["COMMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
+        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
         SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
         SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
         POS_LC.append(SPECTRUM)
@@ -232,60 +256,30 @@ def re_write_MSP_POS_LC(POS_LC_df):
 
 def re_write_MSP_POS_LC_In_Silico(POS_LC_df_insilico):
     """
-    re_write_MSP_POS_LC_In_Silico
+    Re-writes the POS_LC_in_Silico dataframe to a list of strings in the format of an MSP file.
 
-    :param POS_LC_df_insilico: pandas DataFrame containing the POS_LC insilico data
-    :return: list of modified POS_LC insilico data
-
-    This method takes in a pandas DataFrame containing POS_LC insilico data and modifies it by concatenating specific columns into a single string, then appends the resulting string to a
-    * list. The resulting list is then returned.
-
-    Example usage:
-    ---------------
-    import pandas as pd
-
-    # Create a sample DataFrame
-    data = {
-        "FILENAME": ["file1", "file2"],
-        "PREDICTED": ["predicted1", "predicted2"],
-        "FRAGHUBID": ["id1", "id2"],
-        # Add other columns here
-    }
-
-    df = pd.DataFrame(data)
-
-    # Call the method and store the result
-    modified_data = re_write_MSP_POS_LC_In_Silico(df)
+    :param POS_LC_df_insilico: The input dataframe containing the POS_LC_in_Silico data.
+    :return: A list of strings representing the re-written MSP data.
     """
     POS_LC = []
     for index, row in tqdm(POS_LC_df_insilico.iterrows(), total=len(POS_LC_df_insilico), desc="POS_LC_In_Silico", colour="green", unit=" row"):
+        COMMENTS = format_comments(row)
+
         SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGHUBID: " + row["FRAGHUBID"] + "\n"
-        SPECTRUM = SPECTRUM + "SPECTRUMID: " + row["SPECTRUMID"] + "\n"
-        SPECTRUM = SPECTRUM + "RESOLUTION: " + row["RESOLUTION"] + "\n"
-        SPECTRUM = SPECTRUM + "SYNON: " + row["SYNON"] + "\n"
-        SPECTRUM = SPECTRUM + "CHARGE: " + row["CHARGE"] + "\n"
-        # SPECTRUM = SPECTRUM + "PARENTMASS: " + row["PARENTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "IONIZATION: " + row["IONIZATION"] + "\n"
-        SPECTRUM = SPECTRUM + "MSLEVEL: " + row["MSLEVEL"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGMENTATIONMODE: " + row["FRAGMENTATIONMODE"] + "\n"
         SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "EXACTMASS: " + row["EXACTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "AVERAGEMASS: " + row["AVERAGEMASS"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
         SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
+        # Ontology ???
+        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
+        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
+        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
         SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
         SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + row["COMMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
+        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
         SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
         SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
         POS_LC.append(SPECTRUM)
@@ -295,41 +289,32 @@ def re_write_MSP_POS_LC_In_Silico(POS_LC_df_insilico):
 
 def re_write_MSP_POS_GC(POS_GC_df):
     """
-    :param POS_GC_df: DataFrame containing POS_GC data
-    :return: List of POS_GC strings
+    :param POS_GC_df: a pandas DataFrame containing data for POS_GC
+    :return: a list of strings where each string represents a POS_GC spectrum
 
-    This method takes a DataFrame `POS_GC_df` as input and iterates over each row in the DataFrame. For each row, it constructs a POS_GC string and appends it to a list. The constructed
-    * POS_GC strings include various information from the row's columns, separated by newline characters. The resulting list of POS_GC strings is returned as the output of the method.
+    The function takes a pandas DataFrame POS_GC_df as input and iterates over its rows.
+    For each row, it formats the data into a string representation of a POS_GC spectrum and appends it to a list POS_GC.
+    Finally, it returns the list POS_GC.
     """
     POS_GC = []
     for index, row in tqdm(POS_GC_df.iterrows(), total=len(POS_GC_df), desc="\t\t  POS_GC", colour="green", unit=" row"):
+        COMMENTS = format_comments(row)
+
         SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGHUBID: " + row["FRAGHUBID"] + "\n"
-        SPECTRUM = SPECTRUM + "SPECTRUMID: " + row["SPECTRUMID"] + "\n"
-        SPECTRUM = SPECTRUM + "RESOLUTION: " + row["RESOLUTION"] + "\n"
-        SPECTRUM = SPECTRUM + "SYNON: " + row["SYNON"] + "\n"
-        SPECTRUM = SPECTRUM + "CHARGE: " + row["CHARGE"] + "\n"
-        # SPECTRUM = SPECTRUM + "PARENTMASS: " + row["PARENTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "IONIZATION: " + row["IONIZATION"] + "\n"
-        SPECTRUM = SPECTRUM + "MSLEVEL: " + row["MSLEVEL"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGMENTATIONMODE: " + row["FRAGMENTATIONMODE"] + "\n"
         SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "EXACTMASS: " + row["EXACTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "AVERAGEMASS: " + row["AVERAGEMASS"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
         SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
+        # Ontology ???
+        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
+        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
+        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
         SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
         SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + row["COMMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
+        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
         SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
         SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
         POS_GC.append(SPECTRUM)
@@ -338,41 +323,28 @@ def re_write_MSP_POS_GC(POS_GC_df):
 
 def re_write_MSP_POS_GC_In_Silico(POS_GC_df_insilico):
     """
-    :param POS_GC_df_insilico: DataFrame containing the POS_GC data.
-    :return: List of strings containing the transformed POS_GC data.
-
-    This method takes a DataFrame POS_GC_df_insilico as input and transforms it into a list of strings representing the POS_GC data. Each row in the DataFrame is processed to create a string
-    * representation in the SPECTRUM format. The resulting strings are appended to a list called POS_GC, which is then returned.
+    :param POS_GC_df_insilico: DataFrame containing in silico data for POS_GC.
+    :return: List of formatted spectra.
     """
     POS_GC = []
     for index, row in tqdm(POS_GC_df_insilico.iterrows(), total=len(POS_GC_df_insilico), desc="POS_GC_In_Silico", colour="green", unit=" row"):
+        COMMENTS = format_comments(row)
+
         SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGHUBID: " + row["FRAGHUBID"] + "\n"
-        SPECTRUM = SPECTRUM + "SPECTRUMID: " + row["SPECTRUMID"] + "\n"
-        SPECTRUM = SPECTRUM + "RESOLUTION: " + row["RESOLUTION"] + "\n"
-        SPECTRUM = SPECTRUM + "SYNON: " + row["SYNON"] + "\n"
-        SPECTRUM = SPECTRUM + "CHARGE: " + row["CHARGE"] + "\n"
-        # SPECTRUM = SPECTRUM + "PARENTMASS: " + row["PARENTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "IONIZATION: " + row["IONIZATION"] + "\n"
-        SPECTRUM = SPECTRUM + "MSLEVEL: " + row["MSLEVEL"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGMENTATIONMODE: " + row["FRAGMENTATIONMODE"] + "\n"
         SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "EXACTMASS: " + row["EXACTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "AVERAGEMASS: " + row["AVERAGEMASS"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
         SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
+        # Ontology ???
+        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
+        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
+        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
         SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
         SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + row["COMMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
+        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
         SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
         SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
         POS_GC.append(SPECTRUM)
@@ -381,45 +353,32 @@ def re_write_MSP_POS_GC_In_Silico(POS_GC_df_insilico):
 
 def re_write_MSP_NEG_LC(NEG_LC_df):
     """
-    :param NEG_LC_df: pandas DataFrame containing the data for NEG_LC
-    :return: List of strings representing the re-written SPECTRUM data
+    Re-write the data from NEG_LC_df DataFrame into a list of spectra.
 
-    The `re_write_MSP_NEG_LC` function takes a pandas DataFrame `NEG_LC_df` as input and returns a list of strings `NEG_LC` representing the re-written SPECTRUM data.
-
-    The function iterates over each row in `NEG_LC_df` using the `iterrows()` method. For each row, it constructs a string `SPECTRUM` by concatenating various columns of the row with relevant
-    * labels. The constructed `SPECTRUM` string is then appended to the `NEG_LC` list.
-
-    Finally, the function returns the `NEG_LC` list containing all the re-written SPECTRUM data.
+    :param NEG_LC_df: The DataFrame containing the data to be re-written.
+    :type NEG_LC_df: pandas.DataFrame
+    :return: The list of re-written spectra.
+    :rtype: list
     """
     NEG_LC = []
     for index, row in tqdm(NEG_LC_df.iterrows(), total=len(NEG_LC_df), desc="\t\t  NEG_LC", colour="green", unit=" row"):
+        COMMENTS = format_comments(row)
+
         SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGHUBID: " + row["FRAGHUBID"] + "\n"
-        SPECTRUM = SPECTRUM + "SPECTRUMID: " + row["SPECTRUMID"] + "\n"
-        SPECTRUM = SPECTRUM + "RESOLUTION: " + row["RESOLUTION"] + "\n"
-        SPECTRUM = SPECTRUM + "SYNON: " + row["SYNON"] + "\n"
-        SPECTRUM = SPECTRUM + "CHARGE: " + row["CHARGE"] + "\n"
-        # SPECTRUM = SPECTRUM + "PARENTMASS: " + row["PARENTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "IONIZATION: " + row["IONIZATION"] + "\n"
-        SPECTRUM = SPECTRUM + "MSLEVEL: " + row["MSLEVEL"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGMENTATIONMODE: " + row["FRAGMENTATIONMODE"] + "\n"
         SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "EXACTMASS: " + row["EXACTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "AVERAGEMASS: " + row["AVERAGEMASS"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
         SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
+        # Ontology ???
+        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
+        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
+        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
         SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
         SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + row["COMMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
+        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
         SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
         SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
         NEG_LC.append(SPECTRUM)
@@ -428,91 +387,47 @@ def re_write_MSP_NEG_LC(NEG_LC_df):
 
 def re_write_MSP_NEG_LC_In_Silico(NEG_LC_df_insilico):
     """
-    :param NEG_LC_df_insilico: A pandas DataFrame containing in silico negative LC data.
-    :return: A list of formatted spectra.
+    :param NEG_LC_df_insilico: pd.DataFrame
+        The input DataFrame containing the in silico negative liquid chromatography (NEG_LC) data.
+        This DataFrame should have the following columns:
+        - "NAME": The name of the compound.
+        - "PRECURSORMZ": The precursor m/z value.
+        - "PRECURSORTYPE": The precursor type.
+        - "FORMULA": The chemical formula of the compound.
+        - "INCHIKEY": The InChIKey of the compound.
+        - "INCHI": The InChI of the compound.
+        - "SMILES": The SMILES representation of the compound.
+        - "RETENTIONTIME": The retention time of the compound.
+        - "IONMODE": The ion mode of the compound.
+        - "INSTRUMENTTYPE": The type of instrument used.
+        - "INSTRUMENT": The name of the instrument.
+        - "COLLISIONENERGY": The collision energy value.
+        - "NUM PEAKS": The number of peaks in the spectrum.
+        - "PEAKS_LIST": A string representation of the peaks list.
 
-    The re_write_MSP_NEG_LC_In_Silico method takes a DataFrame of in silico negative LC data and returns a list of formatted spectra.
+    :return: list
+        A list of spectra in the format specified by the given DataFrame.
 
-    Each row in the input DataFrame represents a single spectrum and contains various columns representing different attributes of the spectrum. The method iterates over each row of the
-    * DataFrame and formats the spectrum information into a string, following a specific pattern. The formatted string is then added to a list.
-
-    The formatted string for each spectrum includes the following information:
-    - FILENAME
-    - PREDICTED
-    - FRAGHUBID
-    - SPECTRUMID
-    - RESOLUTION
-    - SYNON
-    - CHARGE
-    - IONIZATION
-    - MSLEVEL
-    - FRAGMENTATIONMODE
-    - NAME
-    - PRECURSORMZ
-    - EXACTMASS
-    - AVERAGEMASS
-    - PRECURSORTYPE
-    - INSTRUMENTTYPE
-    - INSTRUMENT
-    - SMILES
-    - INCHI
-    - INCHIKEY
-    - COLLISIONENERGY
-    - FORMULA
-    - RETENTIONTIME
-    - IONMODE
-    - COMMENT
-    - NUM PEAKS
-    - PEAKS_LIST
-
-    The list of formatted spectra is then returned.
-
-    Example usage:
-    ```
-    import pandas as pd
-
-    # Create a DataFrame containing the in silico negative LC data
-    NEG_LC_df_insilico = pd.DataFrame({
-        "FILENAME": ["spectrum1", "spectrum2"],
-        "PREDICTED": ["predicted1", "predicted2"],
-        "FRAGHUBID": ["fraghubid1", "fraghubid2"],
-        ...
-        "PEAKS_LIST": ["peaks_list1", "peaks_list2"]
-    })
-
-    # Call the re_write_MSP_NEG_LC_In_Silico method
-    formatted_spectra = re_write_MSP_NEG_LC_In_Silico(NEG_LC_df_insilico)
-    ```
     """
     NEG_LC = []
     for index, row in tqdm(NEG_LC_df_insilico.iterrows(), total=len(NEG_LC_df_insilico), desc="NEG_LC_In_Silico", colour="green", unit=" row"):
+        COMMENTS = format_comments(row)
+
         SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGHUBID: " + row["FRAGHUBID"] + "\n"
-        SPECTRUM = SPECTRUM + "SPECTRUMID: " + row["SPECTRUMID"] + "\n"
-        SPECTRUM = SPECTRUM + "RESOLUTION: " + row["RESOLUTION"] + "\n"
-        SPECTRUM = SPECTRUM + "SYNON: " + row["SYNON"] + "\n"
-        SPECTRUM = SPECTRUM + "CHARGE: " + row["CHARGE"] + "\n"
-        # SPECTRUM = SPECTRUM + "PARENTMASS: " + row["PARENTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "IONIZATION: " + row["IONIZATION"] + "\n"
-        SPECTRUM = SPECTRUM + "MSLEVEL: " + row["MSLEVEL"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGMENTATIONMODE: " + row["FRAGMENTATIONMODE"] + "\n"
         SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "EXACTMASS: " + row["EXACTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "AVERAGEMASS: " + row["AVERAGEMASS"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
         SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
+        # Ontology ???
+        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
+        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
+        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
         SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
         SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + row["COMMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
+        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
         SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
         SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
         NEG_LC.append(SPECTRUM)
@@ -522,43 +437,52 @@ def re_write_MSP_NEG_LC_In_Silico(NEG_LC_df_insilico):
 
 def re_write_MSP_NEG_GC(NEG_GC_df):
     """
-    :param NEG_GC_df: pandas dataframe containing the negative global compounds (NEG_GC) data
-    :return: list of strings representing the rewritten NEG_GC data
+    :param NEG_GC_df: pandas DataFrame containing the data to be processed
+    :return: list of formatted spectra
 
-    This method takes a pandas dataframe containing the negative global compounds (NEG_GC) data and rewrites it in a specific format. It iterates through each row of the dataframe, concaten
-    *ates the row values into a string called SPECTRUM, and appends it to the NEG_GC list. Finally, it returns the updated NEG_GC list.
+    The re_write_MSP_NEG_GC method takes a pandas DataFrame, NEG_GC_df, as input. It iterates over each row of the DataFrame and formats the data into a spectrum string. The formatted spectra
+    * are then added to a list, NEG_GC, which is returned as the result.
 
-    Note: The tqdm function is used to provide a progress bar for the iteration process.
+    The output spectrum string format is as follows:
+    NAME: [NAME]
+    PRECURSORMZ: [PRECURSORMZ]
+    PRECURSORTYPE: [PRECURSORTYPE]
+    FORMULA: [FORMULA]
+    INCHIKEY: [INCHIKEY]
+    INCHI: [INCHI]
+    SMILES: [SMILES]
+    RETENTIONTIME: [RETENTIONTIME]
+    IONMODE: [IONMODE]
+    INSTRUMENTTYPE: [INSTRUMENTTYPE]
+    INSTRUMENT: [INSTRUMENT]
+    COLLISIONENERGY: [COLLISIONENERGY]
+    COMMENT: [COMMENTS]
+    NUM PEAKS: [NUM PEAKS]
+    [PEAKS_LIST]
+
+    Example Usage:
+        df = pd.DataFrame(...)
+        result = re_write_MSP_NEG_GC(df)
     """
     NEG_GC = []
     for index, row in tqdm(NEG_GC_df.iterrows(), total=len(NEG_GC_df), desc="\t\t  NEG_GC", colour="green", unit=" row"):
+        COMMENTS = format_comments(row)
+
         SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGHUBID: " + row["FRAGHUBID"] + "\n"
-        SPECTRUM = SPECTRUM + "SPECTRUMID: " + row["SPECTRUMID"] + "\n"
-        SPECTRUM = SPECTRUM + "RESOLUTION: " + row["RESOLUTION"] + "\n"
-        SPECTRUM = SPECTRUM + "SYNON: " + row["SYNON"] + "\n"
-        SPECTRUM = SPECTRUM + "CHARGE: " + row["CHARGE"] + "\n"
-        # SPECTRUM = SPECTRUM + "PARENTMASS: " + row["PARENTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "IONIZATION: " + row["IONIZATION"] + "\n"
-        SPECTRUM = SPECTRUM + "MSLEVEL: " + row["MSLEVEL"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGMENTATIONMODE: " + row["FRAGMENTATIONMODE"] + "\n"
         SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "EXACTMASS: " + row["EXACTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "AVERAGEMASS: " + row["AVERAGEMASS"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
         SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
+        # Ontology ???
+        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
+        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
+        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
         SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
         SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + row["COMMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
+        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
         SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
         SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
         NEG_GC.append(SPECTRUM)
@@ -567,46 +491,30 @@ def re_write_MSP_NEG_GC(NEG_GC_df):
 
 def re_write_MSP_NEG_GC_In_Silico(NEG_GC_df_insilico):
     """
-    :param NEG_GC_df_insilico: DataFrame containing in silico negative GC spectra data
-    :return: List of formatted spectra strings
+    This method takes a DataFrame as input and converts it into a list of spectra in the MSP format.
 
-    This method takes a DataFrame containing in silico negative GC spectra data and generates a formatted spectrum string for each row in the DataFrame. The formatted spectrum strings are
-    * appended to a list and returned.
-
-    The method iterates over each row in the DataFrame using the `iterrows()` method. For each row, it creates a new spectrum string `SPECTRUM` and appends various properties from the row
-    * to the string using concatenation. Once all properties are appended, the spectrum string is added to the `NEG_GC` list.
-
-    Finally, the method returns the `NEG_GC` list containing all the formatted spectra strings.
+    :param NEG_GC_df_insilico: A DataFrame containing the input data.
+    :return: A list of spectra in the MSP format.
     """
     NEG_GC = []
     for index, row in tqdm(NEG_GC_df_insilico.iterrows(), total=len(NEG_GC_df_insilico), desc="NEG_GC_in_Silico", colour="green", unit=" row"):
+        COMMENTS = format_comments(row)
+
         SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "FILENAME: " + row["FILENAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PREDICTED: " + row["PREDICTED"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGHUBID: " + row["FRAGHUBID"] + "\n"
-        SPECTRUM = SPECTRUM + "SPECTRUMID: " + row["SPECTRUMID"] + "\n"
-        SPECTRUM = SPECTRUM + "RESOLUTION: " + row["RESOLUTION"] + "\n"
-        SPECTRUM = SPECTRUM + "SYNON: " + row["SYNON"] + "\n"
-        SPECTRUM = SPECTRUM + "CHARGE: " + row["CHARGE"] + "\n"
-        # SPECTRUM = SPECTRUM + "PARENTMASS: " + row["PARENTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "IONIZATION: " + row["IONIZATION"] + "\n"
-        SPECTRUM = SPECTRUM + "MSLEVEL: " + row["MSLEVEL"] + "\n"
-        SPECTRUM = SPECTRUM + "FRAGMENTATIONMODE: " + row["FRAGMENTATIONMODE"] + "\n"
         SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "EXACTMASS: " + row["EXACTMASS"] + "\n"
-        SPECTRUM = SPECTRUM + "AVERAGEMASS: " + row["AVERAGEMASS"] + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
         SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
+        # Ontology ???
+        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
+        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
+        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
         SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
         SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + row["COMMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
+        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
+        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
         SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
         SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
         NEG_GC.append(SPECTRUM)
