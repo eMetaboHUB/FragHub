@@ -71,7 +71,7 @@ if __name__ == "__main__":
             correct_uncomplete_charge(msp_path)
 
             # STEP 3: Execute matchms (Multithreaded)
-            print("-- MATCHMS PROCESSING ON: ",file_name," --")
+            print("-- CLEANING: ",file_name," --")
             spectrum_list = list(load_from_msp(msp_path))
             results = matchms_processing(spectrum_list,file_name)
 
