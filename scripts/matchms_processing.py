@@ -1,5 +1,4 @@
 import matchms.filtering as msfilters
-import matchms.metadata_utils
 from standardizers import *
 import concurrent.futures
 import matchms.Fragments
@@ -44,7 +43,8 @@ def matchms_spectrum_to_str_msp(spectrum,file_name):
             SPECTRUM = ""
         for key, value in spectrum.metadata.items():
             if not (key.lower().startswith("num peaks") or key.lower().startswith("num_peaks") or key.lower().startswith("peak_comments")):
-                SPECTRUM += f"{key.upper()}: {value}\n"
+                KEY = re.sub(r'^[\W_]+|[\W_]+$', '', key.upper())
+                SPECTRUM += f"{KEY}: {value}\n"
 
         SPECTRUM += f"NUM PEAKS: {len(spectrum.peaks)}\n"
 
@@ -105,8 +105,8 @@ def multithreaded_matchms(spectrum,file_name):
     spectrum = msfilters.default_filters(spectrum)
     spectrum = msfilters.add_parent_mass(spectrum, estimate_from_adduct=True)
     spectrum = msfilters.add_precursor_mz(spectrum) # ne fait que convertir le champ déjà existant en float, ne calcule rien
-    spectrum = msfilters.add_retention.add_retention_time(spectrum)
-    spectrum = matchms.metadata_utils.clean_adduct(spectrum)
+    spectrum = msfilters.add_retention_time(spectrum)
+    spectrum = msfilters.clean_adduct(spectrum)
     spectrum = msfilters.repair_inchi_inchikey_smiles(spectrum) # example: si inchi dans champ inchikey
 
     # normalize_and_filter_peaks
@@ -115,9 +115,10 @@ def multithreaded_matchms(spectrum,file_name):
     spectrum = msfilters.select_by_mz(spectrum, mz_from=50, mz_to=2000.0)
     spectrum = msfilters.reduce_to_number_of_peaks(spectrum, n_max=500)
     spectrum = msfilters.require_minimum_number_of_peaks(spectrum, n_required=3)
-    spectrum = msfilters.require_minimum_of_high_peaks(spectrum, no_peaks=2 ,intensity_percent=5.0)
+    spectrum = msfilters.require_minimum_number_of_high_peaks(spectrum, no_peaks=2 ,intensity_percent=5.0)
 
     spectrum = matchms_spectrum_to_str_msp(spectrum,file_name)
+    print(spectrum)
 
     spectrum = harmonize_fields_names(spectrum)
 
