@@ -118,7 +118,6 @@ def multithreaded_matchms(spectrum,file_name):
     spectrum = msfilters.require_minimum_number_of_high_peaks(spectrum, no_peaks=2 ,intensity_percent=5.0)
 
     spectrum = matchms_spectrum_to_str_msp(spectrum,file_name)
-    print(spectrum)
 
     spectrum = harmonize_fields_names(spectrum)
 
