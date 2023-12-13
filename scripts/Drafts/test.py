@@ -15,10 +15,15 @@ spectrum_path_list = [spectrums for spectrums in spectrum_path_list if spectrums
 for path in spectrum_path_list:
     spectrum_list = load_spectrum_list(path)
     print("spectrums loaded")
-    spectrum_list = [spectrums for spectrums in spectrum_list if spectrums != None]
-    spectrum_list = msp_parsing_processing(spectrum_list)
+    break
 
-# print(spectrum_list)
+# for spectrum in spectrum_list:
+#     print("__",spectrum)
+#     print("\n\n")
+
+spectrum_list = msp_parsing_processing(spectrum_list)
+
+
 
 compteur = 1
 for spectrum in spectrum_list:
