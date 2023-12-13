@@ -172,8 +172,6 @@ def msp_parser(spectrum):
     """
     time.sleep(0.000000001) # Needed to ensure progress bar display update (1ns)
 
-    metadata,peak_list = None,None
-
     metadata,peak_list = parse_metadata_and_peak_list(spectrum)
 
     if metadata.empty or peak_list.empty:
