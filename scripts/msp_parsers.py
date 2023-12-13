@@ -1,5 +1,10 @@
+import concurrent.futures
+import time
+
+from tqdm import tqdm
 import pandas as pd
 import re
+import os
 
 
 def load_spectrum_list(msp_file_path):
@@ -9,9 +14,21 @@ def load_spectrum_list(msp_file_path):
     :param msp_file_path: The file path of the MSP file to be loaded.
     :return: A list of spectra. Each spectrum is represented as a string.
     """
-    with open(msp_file_path, 'r') as file:
-        content = file.read()
-    spectrum_list = content.split("\n\n")
+    spectrum_list = []
+    buffer = []
+
+    with open(msp_file_path, 'r', encoding="UTF-8") as file:
+        for line in file:
+            if line.strip() == '':
+                if buffer:  # Only add the buffer to the list if it's not empty
+                    spectrum_list.append('\n'.join(buffer))
+                    buffer = []
+            else:
+                buffer.append(line.strip())
+
+    # Add the last spectrum to the list
+    if buffer:
+        spectrum_list.append('\n'.join(buffer))
 
     return spectrum_list
 
@@ -34,11 +51,12 @@ def extract_metadata_and_peak_list(spectrum):
     print(metadata)  # Output: "Metadata: 123"
     print(peak_list)  # Output: "1 2\n3 4\n5 6"
     """
+    # print(spectrum)
     if re.search("([\s\S]*:.[0-9]*\n)(((-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)",spectrum):
         match = re.search("([\s\S]*:.[0-9]*\n)(((-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)", spectrum)
         metadata, peak_list = match.group(1), match.group(2)
 
-        return metadata, peak_list
+        return metadata,peak_list
 
 def check_for_metadata_in_comments(metadata_matches):
     """
@@ -142,22 +160,36 @@ def parse_metadata_and_peak_list(spectrum):
 
     return metadata_DF, peak_list_DF
 
-def msp_parser(msp_file_path):
+def msp_parser(spectrum):
     """
-    Parses an MSP file located at the specified `msp_file_path` and returns a list of parsed spectra.
+    Parse the given spectrum to extract metadata and peak list.
 
-    :param msp_file_path: The file path of the MSP file to be parsed.
-    :return: A list of parsed spectra, where each spectrum is represented by a dictionary of metadata and peak list.
+    :param spectrum: The spectrum data to be parsed.
+    :return: The parsed metadata with peak list.
     """
-    spectrum_list = load_spectrum_list(msp_file_path)
+    time.sleep(0.000000001) # Needed to ensure progress bar display update (1ns)
+    metadata,peak_list = parse_metadata_and_peak_list(spectrum)
 
-    spectrum_list_out = []
+    metadata['peak_list'] = [peak_list.copy()]
 
-    for spectrum in spectrum_list:
-        metadata,peak_list = parse_metadata_and_peak_list(spectrum)
+    return metadata
 
-        metadata['peak_list'] = [peak_list.copy()]
+def msp_parsing_processing(spectrum_list):
+    """
+    :param spectrum_list: A list of spectrum data to be processed.
+    :return: A list containing the results of processing the spectrum data.
 
-        spectrum_list_out.append(metadata)
+    This method takes in a list of spectrum data and processes it using multiple threads for improved performance. The spectrum data is passed to the `msp_parser` function, which carries
+    * out the actual processing. The `ThreadPoolExecutor` from the `concurrent.futures` module is used to concurrently execute the `msp_parser` function on each spectrum in the provided
+    * list.
 
-    return spectrum_list_out
+    The function returns a list containing the results of processing the spectrum data. Any `None` results are filtered out before returning the final list.
+    """
+
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        results = list(tqdm(executor.map(msp_parser, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="\t  processing"))
+
+    final = [res for res in results if res is not None]
+
+    return final # returns the list of different worker executions.
