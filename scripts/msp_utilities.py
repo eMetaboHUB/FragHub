@@ -185,6 +185,7 @@ def unique_id_generator():
 
             if not re.search("FRAGHUBID: (.*)\n",content):
                 content = content.split("\n\n")
+                content = [spectrum for spectrum in content if len(spectrum) > 10]
 
                 for spectrums in tqdm(content, total=len(content), unit=" spectrums", colour="green", desc="\t  processing"):
                     spectrums = "FRAGHUBID: "+str(uuid.uuid4())+"\n"+spectrums
