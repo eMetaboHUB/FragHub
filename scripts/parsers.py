@@ -71,6 +71,8 @@ def check_for_metadata_in_comments(metadata_matches):
                         new_metadata_matches.append(non_empty_tuple)
             else:
                 new_metadata_matches.append(match)
+        else:
+            new_metadata_matches.append(match)
 
     return new_metadata_matches if new_metadata_matches else False
 
@@ -95,7 +97,6 @@ def metadata_to_df(metadata):
         metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0])] = [match[1]]
 
     df = pd.DataFrame.from_dict(metadata_dict)
-    df.columns = ['metadata_key', 'metadata_value']
 
     return df
 
