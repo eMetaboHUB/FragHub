@@ -51,12 +51,13 @@ def extract_metadata_and_peak_list(spectrum):
     print(metadata)  # Output: "Metadata: 123"
     print(peak_list)  # Output: "1 2\n3 4\n5 6"
     """
-    # print(spectrum)
+    metadata,peak_list = None,None
+
     if re.search("([\s\S]*:.[0-9]*\n)(((-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)",spectrum):
         match = re.search("([\s\S]*:.[0-9]*\n)(((-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)", spectrum)
         metadata, peak_list = match.group(1), match.group(2)
 
-        return metadata,peak_list
+    return metadata,peak_list
 
 def check_for_metadata_in_comments(metadata_matches):
     """
@@ -143,10 +144,12 @@ def structure_metadata_and_peak_list(metadata, peak_list):
     :return: Tuple containing the structured metadata and peak list as DataFrames.
     :rtype: tuple
     """
-    metadata_DF = metadata_to_df(metadata)
-    peak_list_DF = peak_list_to_df(peak_list)
-
-    return metadata_DF, peak_list_DF
+    if metadata == None or peak_list == None:
+        return pd.DataFrame(),pd.DataFrame()
+    else:
+        metadata_DF = metadata_to_df(metadata)
+        peak_list_DF = peak_list_to_df(peak_list)
+        return metadata_DF, peak_list_DF
 
 def parse_metadata_and_peak_list(spectrum):
     """
@@ -168,11 +171,16 @@ def msp_parser(spectrum):
     :return: The parsed metadata with peak list.
     """
     time.sleep(0.000000001) # Needed to ensure progress bar display update (1ns)
+
+    metadata,peak_list = None,None
+
     metadata,peak_list = parse_metadata_and_peak_list(spectrum)
 
-    metadata['peak_list'] = [peak_list.copy()]
-
-    return metadata
+    if metadata.empty or peak_list.empty:
+        return None
+    else:
+        metadata['peak_list'] = [peak_list.copy()]
+        return metadata
 
 def msp_parsing_processing(spectrum_list):
     """
