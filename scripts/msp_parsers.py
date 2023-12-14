@@ -134,6 +134,7 @@ def peak_list_to_df(peak_list):
     """
     peaks_match = re.findall("(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)", peak_list)
     if peaks_match:
+        peaks_match = [(float(i), float(j)) for i, j in peaks_match]
         peak_list_DF = pd.DataFrame(peaks_match, columns=["mz", "intensity"])
         return peak_list_DF
     else:
