@@ -1,11 +1,13 @@
 from FragHub.scripts.msp_parsers import *
+from FragHub.scripts.data_preparer import *
 import time
+import os
 
 start_time = time.time()
 
 # generating filepath list
 spectrum_path_list = []
-MSP_path = os.path.abspath(r"../../INPUT/MSP")
+MSP_path = os.path.abspath(r"../INPUT/MSP")
 for files in os.listdir(MSP_path):
     if files.endswith(".msp"):
         spectrum_path_list.append(os.path.join(MSP_path,files))
@@ -22,6 +24,8 @@ for path in spectrum_path_list:
 #     print("\n\n")
 
 spectrum_list = msp_parsing_processing(spectrum_list)
+
+# spectrum_list = data_preparer_processing(spectrum_list)
 
 
 
