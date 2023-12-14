@@ -2,7 +2,12 @@ import concurrent.futures
 from tqdm import tqdm
 import pandas as pd
 import time
+import os
 import re
+
+global keys_dict
+Key_dataframe = pd.read_csv(os.path.abspath("../datas/key_to_convert.csv"),sep=";", encoding="UTF-8") # Remplacez 'your_file.csv' par le chemin de votre fichier
+keys_dict = dict(zip(Key_dataframe['known_synonym'], Key_dataframe['fraghub_default'].str.upper()))
 
 
 def load_spectrum_list(msp_file_path):
@@ -96,6 +101,13 @@ def check_for_metadata_in_comments(metadata_matches):
 
     return new_metadata_matches if new_metadata_matches else False
 
+def convert_keys(df):
+    global keys_dict
+
+    df.columns = [keys_dict.get(item, item) for item in df.columns]
+
+    return df
+
 def metadata_to_df(metadata):
     """
     Convert metadata string to DataFrame.
@@ -118,6 +130,8 @@ def metadata_to_df(metadata):
             metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0]).lower()] = [match[1]]
 
         df = pd.DataFrame.from_dict(metadata_dict)
+
+        df = convert_keys(df)
 
         return df
     else:
