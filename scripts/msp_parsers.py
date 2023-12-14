@@ -117,7 +117,7 @@ def metadata_to_df(metadata):
             metadata_matches = temp
 
         for match in metadata_matches:
-            metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0])] = [match[1]]
+            metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0]).lower()] = [match[1]]
 
         df = pd.DataFrame.from_dict(metadata_dict)
 
