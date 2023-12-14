@@ -53,8 +53,9 @@ def extract_metadata_and_peak_list(spectrum):
     """
     metadata,peak_list = None,None
 
-    if re.search("([\s\S]*:.[0-9]*\n)(((-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)",spectrum):
-        match = re.search("([\s\S]*:.[0-9]*\n)(((-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)", spectrum)
+    match = re.search("([\s\S]*:.[0-9]*\n)(((-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)", spectrum)
+
+    if match:
         metadata, peak_list = match.group(1), match.group(2)
 
     return metadata,peak_list
@@ -83,11 +84,13 @@ def check_for_metadata_in_comments(metadata_matches):
         if re.search("comment.*", match[0], flags=re.IGNORECASE):
             if "=" in match[1]:
                 sub_fields_matches = re.findall('(\S+)=\"([^\"]*)\"|\"(\w+)=([^\"]*)\"|\"([^\"]*)=([^\"]*)\"|(\S+)=(\d+(?:\.\d*)?)|(\S+?)=(.*?)(;|\n|$)', match[1])
-                # ICI
-                for sub_fields_match in sub_fields_matches:
-                    non_empty_tuple = tuple(group for group in sub_fields_match if group)
-                    if non_empty_tuple:
-                        new_metadata_matches.append(non_empty_tuple)
+                if sub_fields_matches:
+                    for sub_fields_match in sub_fields_matches:
+                        non_empty_tuple = tuple(group for group in sub_fields_match if group)
+                        if non_empty_tuple:
+                            new_metadata_matches.append(non_empty_tuple)
+                else:
+                    return False
             else:
                 new_metadata_matches.append(match)
         else:
@@ -108,16 +111,19 @@ def metadata_to_df(metadata):
 
     metadata_matches = re.findall("([\s\S]*?):([\s\S]*?)(\n|$)",metadata)
 
-    temp = check_for_metadata_in_comments(metadata_matches)
-    if temp != False:
-        metadata_matches = temp
+    if metadata_matches:
+        temp = check_for_metadata_in_comments(metadata_matches)
+        if temp != False:
+            metadata_matches = temp
 
-    for match in metadata_matches:
-        metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0])] = [match[1]]
+        for match in metadata_matches:
+            metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0])] = [match[1]]
 
-    df = pd.DataFrame.from_dict(metadata_dict)
+        df = pd.DataFrame.from_dict(metadata_dict)
 
-    return df
+        return df
+    else:
+        return pd.DataFrame()
 
 def peak_list_to_df(peak_list):
     """
@@ -129,9 +135,12 @@ def peak_list_to_df(peak_list):
     * peak intensities.
     """
     peaks_match = re.findall("(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)", peak_list)
-    peak_list_DF = pd.DataFrame(peaks_match, columns=["mz", "intensity"])
+    if peaks_match:
+        peak_list_DF = pd.DataFrame(peaks_match, columns=["mz", "intensity"])
 
-    return peak_list_DF
+        return peak_list_DF
+    else:
+        return pd.DataFrame()
 
 def structure_metadata_and_peak_list(metadata, peak_list):
     """
