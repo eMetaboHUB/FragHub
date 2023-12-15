@@ -24,7 +24,7 @@ def reduce_peak_list(peak_dataframe):
         # Re-classez ensuite par 'mz' si vous le souhaitez
         peak_dataframe = peak_dataframe.sort_values('mz')
 
-        return peak_dataframe
+    return peak_dataframe
 
 def check_minimum_peak_requiered(peak_dataframe):
     """
