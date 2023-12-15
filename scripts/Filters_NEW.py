@@ -66,14 +66,33 @@ def keep_mz_in_range(peak_dataframe):
 
     return peak_dataframe
 
+def check_minimum_of_high_peaks_requiered(peak_dataframe, intensity_percent, no_peaks):
+    """
+    Check if the number of high peaks in a peak dataframe meets the minimum requirement.
+
+    :param peak_dataframe: DataFrame object containing peak data.
+    :param intensity_percent: Intensity percentage threshold for considering peaks as high peaks.
+    :param no_peaks: Minimum number of high peaks required.
+
+    :return: DataFrame object containing the high peaks if the number of high peaks meets the minimum requirement,
+             None otherwise.
+    """
+    percent_of_max = peak_dataframe['intensity']/peak_dataframe['intensity'].max() * 100
+    filtered_df = peak_dataframe[percent_of_max >= intensity_percent]
+    if len(filtered_df) < no_peaks:
+        return None
+    else:
+        return filtered_df
+
 def apply_filters(peak_dataframe, precursormz):
     """
-    Apply filters to the peak_dataframe based on the precursormz.
 
-    :param peak_dataframe: A DataFrame containing peak information.
-    :param precursormz: The precursor m/z value used to filter peaks.
+    Apply filters on a peak dataframe based on the given parameters.
 
-    :return: A filtered peak_dataframe after applying the necessary filters.
+    :param peak_dataframe: A dataframe containing peak information.
+    :param precursormz: The precursor m/z value.
+    :return: The filtered peak dataframe.
+
     """
     peak_dataframe = check_minimum_peak_requiered(peak_dataframe)
     if peak_dataframe is None:
@@ -83,5 +102,8 @@ def apply_filters(peak_dataframe, precursormz):
         peak_dataframe = reduce_peak_list(peak_dataframe)
         peak_dataframe = normalize_intensity(peak_dataframe)
         peak_dataframe = keep_mz_in_range(peak_dataframe)
+        peak_dataframe = check_minimum_of_high_peaks_requiered(peak_dataframe, intensity_percent=5.0, no_peaks=2)
+        if peak_dataframe is None:
+            return None
 
         return peak_dataframe
