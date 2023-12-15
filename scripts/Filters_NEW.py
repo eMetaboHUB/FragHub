@@ -55,6 +55,17 @@ def normalize_intensity(peak_dataframe):
 
     return peak_dataframe
 
+def keep_mz_in_range(peak_dataframe):
+    """
+    Filter the peak dataframe to keep only the rows where the 'mz' column value is within the range of 50 and 2000.
+
+    :param peak_dataframe: A pandas DataFrame containing peaks information.
+    :return: A filtered pandas DataFrame with the 'mz' values within the specified range.
+    """
+    peak_dataframe = peak_dataframe.loc[(peak_dataframe['mz'] >= 50) & (peak_dataframe['mz'] <= 2000)]
+
+    return peak_dataframe
+
 def apply_filters(peak_dataframe, precursormz):
     """
     Apply filters to the peak_dataframe based on the precursormz.
@@ -71,5 +82,6 @@ def apply_filters(peak_dataframe, precursormz):
         peak_dataframe = remove_peak_above_precursormz(peak_dataframe, precursormz)
         peak_dataframe = reduce_peak_list(peak_dataframe)
         peak_dataframe = normalize_intensity(peak_dataframe)
+        peak_dataframe = keep_mz_in_range(peak_dataframe)
 
         return peak_dataframe
