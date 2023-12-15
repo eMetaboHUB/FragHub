@@ -151,6 +151,7 @@ def peak_list_to_df(peak_list,precursormz):
     if peaks_match:
         peaks_match = [(float(i), float(j)) for i, j in peaks_match]
         peak_list_DF = pd.DataFrame(peaks_match, columns=["mz", "intensity"])
+        peak_list_DF = peak_list_DF.sort_values('mz', ascending=True) # Sort mz (just in case)
         peak_list_DF = apply_filters(peak_list_DF, precursormz)
         # ICI normaliser les peak en %
         return peak_list_DF
