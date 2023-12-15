@@ -137,7 +137,7 @@ def metadata_to_df(metadata):
     else:
         return pd.DataFrame()
 
-def peak_list_to_df(peak_list):
+def peak_list_to_df(peak_list,precursormz):
     """
     Converts a peak list string into a pandas DataFrame.
 
@@ -150,6 +150,8 @@ def peak_list_to_df(peak_list):
     if peaks_match:
         peaks_match = [(float(i), float(j)) for i, j in peaks_match]
         peak_list_DF = pd.DataFrame(peaks_match, columns=["mz", "intensity"])
+        peak_list_DF = peak_list_DF[peak_list_DF['mz'] < float(precursormz)+5.0] # Removing peaks with mz > precursormz + 5 Da
+        # ICI normaliser les peak en %
         return peak_list_DF
     else:
         return pd.DataFrame()
@@ -169,7 +171,8 @@ def structure_metadata_and_peak_list(metadata, peak_list):
         return pd.DataFrame(),pd.DataFrame()
     else:
         metadata_DF = metadata_to_df(metadata)
-        peak_list_DF = peak_list_to_df(peak_list)
+        if metadata_DF["PRECURSORMZ"].values:
+            peak_list_DF = peak_list_to_df(peak_list,metadata_DF["PRECURSORMZ"].values)
         return metadata_DF, peak_list_DF
 
 def parse_metadata_and_peak_list(spectrum):
