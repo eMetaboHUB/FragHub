@@ -41,6 +41,20 @@ def check_minimum_peak_requiered(peak_dataframe):
     else:
         return peak_dataframe
 
+def normalize_intensity(peak_dataframe):
+    """
+    Method to normalize the intensity values in a peak dataframe.
+
+    :param peak_dataframe: pandas DataFrame containing peak data with 'intensity' column
+    :return: pandas DataFrame with normalized intensity values
+
+    This method uses the formula (value - min) / (max - min) to normalize the intensity values
+    in the peak dataframe. The 'intensity' column is modified in-place.
+    """
+    peak_dataframe['intensity'] = peak_dataframe['intensity'] = peak_dataframe['intensity']/peak_dataframe['intensity'].max()
+
+    return peak_dataframe
+
 def apply_filters(peak_dataframe, precursormz):
     """
     Apply filters to the peak_dataframe based on the precursormz.
@@ -56,5 +70,6 @@ def apply_filters(peak_dataframe, precursormz):
     else:
         peak_dataframe = remove_peak_above_precursormz(peak_dataframe, precursormz)
         peak_dataframe = reduce_peak_list(peak_dataframe)
+        peak_dataframe = normalize_intensity(peak_dataframe)
 
         return peak_dataframe
