@@ -56,7 +56,7 @@ def extract_metadata_and_peak_list(spectrum):
     """
     metadata,peak_list = None,None
 
-    match = re.search("([\s\S]*:.[0-9]*\n)(((-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)", spectrum)
+    match = re.search("([\s\S]*:.[0-9]*\n)(((-?\d+(\.|,)?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+(\.|,)?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)", spectrum)
 
     if match:
         metadata, peak_list = match.group(1), match.group(2)
@@ -86,7 +86,7 @@ def check_for_metadata_in_comments(metadata_matches):
     for match in metadata_matches:
         if re.search("comment.*", match[0], flags=re.IGNORECASE):
             if "=" in match[1]:
-                sub_fields_matches = re.findall('(\S+)=\"([^\"]*)\"|\"(\w+)=([^\"]*)\"|\"([^\"]*)=([^\"]*)\"|(\S+)=(\d+(?:\.\d*)?)|(\S+?)=(.*?)(;|\n|$)', match[1])
+                sub_fields_matches = re.findall('(\S+)=\"([^\"]*)\"|\"(\w+)=([^\"]*)\"|\"([^\"]*)=([^\"]*)\"|(\S+)=(\d+(?:(\.|,)\d*)?)|(\S+?)=(.*?)(;|\n|$)', match[1])
                 if sub_fields_matches:
                     for sub_fields_match in sub_fields_matches:
                         non_empty_tuple = tuple(group for group in sub_fields_match if group)
@@ -146,7 +146,7 @@ def peak_list_to_df(peak_list):
     :return: A pandas DataFrame containing the peak data, with two columns named "mz" and "intensity". The "mz" column contains the m/z values, and the "intensity" column contains the corresponding
     * peak intensities.
     """
-    peaks_match = re.findall("(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)", peak_list)
+    peaks_match = re.findall("(-?\d+(\.|,)?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+(\.|,)?\d*(?:[Ee][+-]?\d+)?)", peak_list)
     if peaks_match:
         peaks_match = [(float(i), float(j)) for i, j in peaks_match]
         peak_list_DF = pd.DataFrame(peaks_match, columns=["mz", "intensity"])
