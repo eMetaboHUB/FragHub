@@ -100,7 +100,7 @@ def check_for_metadata_in_comments(metadata_matches):
                 if sub_fields_matches:
                     for sub_fields_match in sub_fields_matches:
                         non_empty_tuple = tuple(group for group in sub_fields_match if group)
-                        if non_empty_tuple:
+                        if len(non_empty_tuple) == 2:
                             new_metadata_matches.append(non_empty_tuple)
                 else:
                     return False
