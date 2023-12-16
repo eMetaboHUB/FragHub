@@ -180,8 +180,9 @@ def structure_metadata_and_peak_list(metadata, peak_list):
         return pd.DataFrame(),pd.DataFrame()
     else:
         metadata_DF = metadata_to_df(metadata)
-        if metadata_DF["PRECURSORMZ"].values:
-            peak_list_DF = peak_list_to_df(peak_list,metadata_DF["PRECURSORMZ"].values)
+        if "PRECURSORMZ" in metadata_DF.columns:
+            if metadata_DF["PRECURSORMZ"].values:
+                peak_list_DF = peak_list_to_df(peak_list,metadata_DF["PRECURSORMZ"].values)
         return metadata_DF, peak_list_DF
 
 def parse_metadata_and_peak_list(spectrum):
