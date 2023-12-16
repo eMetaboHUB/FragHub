@@ -20,7 +20,6 @@ spectrum_path_list = [spectrums for spectrums in spectrum_path_list if spectrums
 
 for path in spectrum_path_list:
     spectrum_list = load_spectrum_list(path)
-    print("spectrums loaded")
     break
 
 # for spectrum in spectrum_list:
