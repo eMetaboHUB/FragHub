@@ -13,18 +13,27 @@ keys_dict = dict(zip(Key_dataframe['known_synonym'], Key_dataframe['fraghub_defa
 
 def load_spectrum_list(msp_file_path):
     """
-    Load spectrum list from a given MSP file.
+    Load a spectrum list from a given MSP (Mass Spectral Peak) file.
 
-    :param msp_file_path: The file path of the MSP file to be loaded.
-    :return: A list of spectra. Each spectrum is represented as a string.
+    :param msp_file_path: The path to the MSP file.
+    :return: The list of spectra read from the file. Each spectrum is represented as a string.
+
+    Example usage:
+    ```
+    msp_file_path = "path/to/spectrum.msp"
+    spectrum_list = load_spectrum_list(msp_file_path)
+    print(spectrum_list)
+    ```
     """
     spectrum_list = []
     buffer = []
 
+    total_lines = sum(1 for line in open(msp_file_path, 'r', encoding="UTF-8")) # count the total number of lines in the file
+
     with open(msp_file_path, 'r', encoding="UTF-8") as file:
-        for line in file:
+        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="\t     reading"): # wrap this with tqdm
             if line.strip() == '':
-                if buffer:  # Only add the buffer to the list if it's not empty
+                if buffer:
                     spectrum_list.append('\n'.join(buffer))
                     buffer = []
             else:
