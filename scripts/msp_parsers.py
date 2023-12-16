@@ -129,7 +129,7 @@ def metadata_to_df(metadata):
     """
     metadata_dict = {}
 
-    metadata_matches = re.findall("([\s\S]*?):([\s\S]*?)(\n|$)",metadata)
+    metadata_matches = re.findall("([\s\S]*?):(?:\W)?([\s\S]*?)(?:\W)?(\n|$)",metadata)
 
     if metadata_matches:
         temp = check_for_metadata_in_comments(metadata_matches)
@@ -137,7 +137,7 @@ def metadata_to_df(metadata):
             metadata_matches = temp
 
         for match in metadata_matches:
-            metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0]).lower().strip()] = [match[1].strip()]
+            metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0]).lower().strip()] = [match[1]]
 
         df = pd.DataFrame.from_dict(metadata_dict)
 
