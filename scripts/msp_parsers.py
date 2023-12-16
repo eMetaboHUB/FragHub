@@ -129,7 +129,7 @@ def metadata_to_df(metadata):
     """
     metadata_dict = {}
 
-    metadata_matches = re.findall("([\s\S]*?):(?:\W)?([\s\S]*?)(?:\W)?(\n|$)",metadata)
+    metadata_matches = re.findall("([\s\S]*?):(?:\W)?([\s\S]*?)(?:\W)?(?:\n|$)",metadata)
 
     if metadata_matches:
         temp = check_for_metadata_in_comments(metadata_matches)
