@@ -28,14 +28,16 @@ for path in spectrum_path_list:
 
 spectrum_list = msp_parsing_processing(spectrum_list)
 
-# spectrum_list = data_preparer_processing(spectrum_list)
+df = pd.concat(spectrum_list, join='outer')
 
+# df.to_csv(rf"C:\Users\Axel\PycharmProjects\msp_v3\OUTPUT\MSP\TEST\test.csv",index=False, sep=";", quotechar='"', encoding="UTF-8")
 
+df.to_excel(rf"C:\Users\Axel\PycharmProjects\msp_v3\OUTPUT\MSP\TEST\test_msms_pos.xlsx",index=False)
 
-compteur = 1
-for spectrum in spectrum_list:
-    spectrum.to_excel(rf"C:\Users\Axel\PycharmProjects\msp_v3\OUTPUT\MSP\TEST\test_{compteur}.xlsx",index=False)
-    compteur += 1
-    break
+# compteur = 1
+# for spectrum in spectrum_list:
+#     spectrum.to_excel(rf"C:\Users\Axel\PycharmProjects\msp_v3\OUTPUT\MSP\TEST\test_{compteur}.xlsx",index=False)
+#     compteur += 1
+#     break
 
 print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
