@@ -8,9 +8,17 @@ def remove_peak_above_precursormz(peak_dataframe, precursormz):
     :return: filtered pandas DataFrame with peaks below the specified precursor m/z value + 5 Da
 
     """
-    peak_dataframe = peak_dataframe[peak_dataframe['mz'] < float(precursormz) + 5.0]  # Removing peaks with mz > precursormz + 5 Da
+    if not isinstance(precursormz, float):
+        try:
+            precursormz = float(precursormz)
+            peak_dataframe = peak_dataframe[peak_dataframe['mz'] < precursormz + 5.0]  # Removing peaks with mz > precursormz + 5 Da
+            return peak_dataframe
+        except:
+            return pd.DataFrame()
 
-    return peak_dataframe
+
+
+
 
 def reduce_peak_list(peak_dataframe,max_peaks):
     """
@@ -107,6 +115,8 @@ def apply_filters(peak_dataframe, precursormz):
     else:
         if parameters_dict['remove_peak_above_precursormz'] == 1.0:
             peak_dataframe = remove_peak_above_precursormz(peak_dataframe, precursormz)
+            if peak_dataframe.empty:
+                return pd.DataFrame()
         if parameters_dict['reduce_peak_list'] == 1.0:
             peak_dataframe = reduce_peak_list(peak_dataframe,max_peaks)
         if parameters_dict['normalize_intensity'] == 1.0:
