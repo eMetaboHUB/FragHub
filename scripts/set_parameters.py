@@ -14,7 +14,7 @@ func_names = [
 
 def on_done_button_clicked():
     for func in func_names:
-        print(f"{func}: {parameters_dict[func].get()}")
+        parameters_dict[func] = float(parameters_dict[func].get())
 
     for key in [
         'check_minimum_peak_requiered_n_peaks',
@@ -25,9 +25,11 @@ def on_done_button_clicked():
         'check_minimum_of_high_peaks_requiered_no_peaks'
     ]:
         if key in parameters_dict:
-            print(f"{key}: {parameters_dict[key].get()}")
+            parameters_dict[key] = float(parameters_dict[key].get())
 
-    root.quit()
+    parameters_dict['check_minimum_peak_requiered'] = 1.0
+
+    root.destroy()
 
 
 def build_window():
