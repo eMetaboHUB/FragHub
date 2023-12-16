@@ -1,7 +1,11 @@
-from FragHub.scripts.msp_parsers import *
-from FragHub.scripts.data_preparer import *
+from msp_parsers import *
+from data_preparer import *
+from set_parameters import *
 import time
 import os
+
+# Execution de la fonction
+build_window()
 
 start_time = time.time()
 
@@ -31,7 +35,7 @@ spectrum_list = msp_parsing_processing(spectrum_list)
 
 compteur = 1
 for spectrum in spectrum_list:
-    spectrum.to_excel(rf"C:\Users\Axel\Documents\PYTHON\MSP_V3\FragHub\OUTPUT\MSP\TEST\test_{compteur}.xlsx",index=False)
+    spectrum.to_excel(rf"C:\Users\Axel\PycharmProjects\msp_v3\OUTPUT\MSP\TEST\test_{compteur}.xlsx",index=False)
     compteur += 1
     break
 
