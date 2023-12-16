@@ -1,3 +1,4 @@
+from set_parameters import parameters_dict
 import pandas as pd
 
 def remove_peak_above_precursormz(peak_dataframe, precursormz):
@@ -19,9 +20,9 @@ def reduce_peak_list(peak_dataframe,max_peaks):
     :param peak_dataframe: The dataframe containing the peak data.
     :return: The reduced peak dataframe.
     """
-    if len(peak_dataframe) > max_peaks:
+    if len(peak_dataframe) > int(max_peaks):
         # Triez le DataFrame par intensité en ordre décroissant et gardez les 500 premières lignes
-        peak_dataframe = peak_dataframe.sort_values('intensity', ascending=False).head(max_peaks)
+        peak_dataframe = peak_dataframe.sort_values('intensity', ascending=False).head(int(max_peaks))
         # Re-classez ensuite par 'mz' si vous le souhaitez
         peak_dataframe = peak_dataframe.sort_values('mz')
 
@@ -34,7 +35,7 @@ def check_minimum_peak_requiered(peak_dataframe,n_peaks):
     :param peak_dataframe: A pandas dataframe representing the peak data.
     :return: A pandas dataframe. If the length of the peak dataframe is less than 3, an empty dataframe is returned. Otherwise, the peak dataframe is returned as is.
     """
-    if len(peak_dataframe) < n_peaks:
+    if len(peak_dataframe) < int(n_peaks):
         return pd.DataFrame()
     else:
         return peak_dataframe
@@ -61,7 +62,7 @@ def keep_mz_in_range(peak_dataframe,mz_from,mz_to):
         :param peak_dataframe: A pandas DataFrame containing peak data.
         :return: A filtered pandas DataFrame with M/Z values within the specified range.
     """
-    peak_dataframe = peak_dataframe.loc[(peak_dataframe['mz'] >= mz_from) & (peak_dataframe['mz'] <= mz_to)]
+    peak_dataframe = peak_dataframe.loc[(peak_dataframe['mz'] >= int(mz_from)) & (peak_dataframe['mz'] <= int(mz_to))]
 
     return peak_dataframe
 
@@ -76,7 +77,7 @@ def check_minimum_of_high_peaks_requiered(peak_dataframe, intensity_percent, no_
     """
     percent_of_max = peak_dataframe['intensity']/peak_dataframe['intensity'].max() * 100
     filtered_df = peak_dataframe[percent_of_max >= intensity_percent]
-    if len(filtered_df) < no_peaks:
+    if len(filtered_df) < int(no_peaks):
         return pd.DataFrame()
     else:
         return filtered_df
@@ -89,8 +90,6 @@ def apply_filters(peak_dataframe, precursormz):
     :param precursormz: The precursor m/z value.
     :return: A modified peak dataframe after applying filters.
     """
-    global parameters_dict
-
     n_peaks = parameters_dict['check_minimum_peak_requiered_n_peaks']
     max_peaks = parameters_dict['reduce_peak_list_max_peaks']
     mz_from = parameters_dict['keep_mz_in_range_from_mz']
