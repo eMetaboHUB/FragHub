@@ -150,10 +150,8 @@ def peak_list_to_df(peak_list,precursormz):
     peaks_match = re.findall("(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)", peak_list)
     if peaks_match:
         peaks_match = [(float(i), float(j)) for i, j in peaks_match]
-        peak_list_DF = pd.DataFrame(peaks_match, columns=["mz", "intensity"])
-        peak_list_DF = peak_list_DF.sort_values('mz', ascending=True) # Sort mz (just in case)
+        peak_list_DF = pd.DataFrame(peaks_match, columns=["mz", "intensity"]).reset_index(drop=True).sort_values('mz', ascending=True) # Sort mz (just in case)
         peak_list_DF = apply_filters(peak_list_DF, precursormz)
-        # ICI normaliser les peak en %
         return peak_list_DF
     else:
         return pd.DataFrame()
@@ -217,8 +215,6 @@ def msp_parsing_processing(spectrum_list):
 
     The function returns a list containing the results of processing the spectrum data. Any `None` results are filtered out before returning the final list.
     """
-
-
     with concurrent.futures.ThreadPoolExecutor() as executor:
         results = list(tqdm(executor.map(msp_parser, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="\t  processing"))
 
