@@ -145,6 +145,8 @@ def metadata_to_df(metadata):
 
         df = convert_keys(df)
 
+        df = df.loc[:, ~df.columns.duplicated()]
+
         return df
     else:
         return pd.DataFrame()
@@ -225,7 +227,7 @@ def msp_parser(spectrum):
     if metadata.empty or len(peak_list) == 0:
         return None
     else:
-        metadata['peak_list'] = [peak_list.copy()]
+        metadata['peak_list'] = [peak_list.tolist()]
         return metadata
 
 def msp_parsing_processing(spectrum_list):
