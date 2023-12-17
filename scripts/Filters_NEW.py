@@ -1,104 +1,101 @@
 from set_parameters import parameters_dict
 import pandas as pd
+import numpy as np
 
-def remove_peak_above_precursormz(peak_dataframe, precursormz):
+def remove_peak_above_precursormz(peak_array, precursormz):
     """
-    :param peak_dataframe: pandas DataFrame containing peak data
+    :param peak_array: numpy array containing peak data
     :param precursormz: float representing the precursor m/z value
-    :return: filtered pandas DataFrame with peaks below the specified precursor m/z value + 5 Da
-
+    :return: filtered numpy array with peaks below the specified precursor m/z value + 5 Da
     """
     if not isinstance(precursormz, float):
         try:
             precursormz = float(precursormz)
-            peak_dataframe = peak_dataframe[peak_dataframe['mz'] < precursormz + 5.0]  # Removing peaks with mz > precursormz + 5 Da
-            return peak_dataframe
+            peak_array = peak_array[peak_array[:,0] < precursormz + 5.0]  # Removing peaks with mz > precursormz + 5 Da
+            return peak_array
         except:
-            return pd.DataFrame()
+            return np.empty((0,2))
 
+    return peak_array
 
-
-
-
-def reduce_peak_list(peak_dataframe,max_peaks):
+def reduce_peak_list(peak_array, max_peaks):
     """
     Reduce the peak list to a specified number of maximum peaks.
 
-    :param peak_dataframe: The dataframe of peak data.
+    :param peak_array: The numpy array of peak data.
     :param max_peaks: The maximum number of peaks to retain.
-    :return: The reduced peak dataframe.
+    :return: The reduced peak numpy array.
     """
-    if len(peak_dataframe) > int(max_peaks):
-        # Triez le DataFrame par intensité en ordre décroissant et gardez les 500 premières lignes
-        peak_dataframe = peak_dataframe.sort_values('intensity', ascending=False).head(int(max_peaks))
-        # Re-classez ensuite par 'mz' si vous le souhaitez
-        peak_dataframe = peak_dataframe.sort_values('mz')
+    if len(peak_array) > int(max_peaks):
+        # Sort the array by intensity in descending order and keep the top rows
+        peak_array = peak_array[peak_array[:,1].argsort()[::-1][:int(max_peaks)]]
+        # Then, re-sort by 'mz'
+        peak_array = peak_array[peak_array[:,0].argsort()]
 
-    return peak_dataframe
+    return peak_array
 
-def check_minimum_peak_requiered(peak_dataframe,n_peaks):
+def check_minimum_peak_requiered(peak_array, n_peaks):
     """
-    :param peak_dataframe: A pandas DataFrame representing the peaks
+    :param peak_array: A numpy array representing the peaks
     :param n_peaks: An integer representing the minimum number of peaks required
-    :return: A pandas DataFrame representing the peaks if the number of peaks is not less than n_peaks.
-             Otherwise, an empty DataFrame is returned.
+    :return: A numpy array representing the peaks if the number of peaks is not less than n_peaks.
+             Otherwise, an empty array is returned.
     """
-    if len(peak_dataframe) < int(n_peaks):
-        return pd.DataFrame()
+    if len(peak_array) < int(n_peaks):
+        return np.empty((0,2))
     else:
-        return peak_dataframe
+        return peak_array
 
-def normalize_intensity(peak_dataframe):
+def normalize_intensity(peak_array):
     """
-    Normalize the intensity values of a DataFrame.
+    Normalize the intensity values of a numpy array.
 
-    :param peak_dataframe: A pandas DataFrame containing peak data.
-    :type peak_dataframe: pandas.DataFrame
-    :return: The input DataFrame with normalized intensity values.
-    :rtype: pandas.DataFrame
+    :param peak_array: A numpy array containing peak data.
+                       The array is assumed to have two columns,
+                       with the second column containing the intensities.
+    :type peak_array: numpy.ndarray
+    :return: The input numpy array with normalized intensity values.
+    :rtype: numpy.ndarray
     """
-    peak_dataframe.loc[:, 'intensity'] = peak_dataframe['intensity']/peak_dataframe['intensity'].max()
+    peak_array[:, 1] = peak_array[:, 1] / peak_array[:, 1].max()
 
-    return peak_dataframe
+    return peak_array
 
-def keep_mz_in_range(peak_dataframe,mz_from,mz_to):
+def keep_mz_in_range(peak_array, mz_from, mz_to):
     """
+    :param peak_array: A numpy array containing peak data. The array must have two columns with the first column for 'mz'.
+    :param mz_from: The lower bound of the m/z range. Peaks with m/z values less than this threshold will be excluded from the filtered array.
+    :param mz_to: The upper bound of the m/z range. Peaks with m/z values greater than this threshold will be excluded from the filtered array.
 
-    :param peak_dataframe: A pandas DataFrame containing peak data. Each row represents a peak, and the DataFrame must have a column named 'mz' containing the mass-to-charge ratio (m/z)
-    * values of the peaks.
-
-    :param mz_from: The lower bound of the m/z range. Peaks with m/z values less than this threshold will be excluded from the filtered DataFrame.
-
-    :param mz_to: The upper bound of the m/z range. Peaks with m/z values greater than this threshold will be excluded from the filtered DataFrame.
-
-    :return: A new pandas DataFrame containing only the peaks within the specified m/z range.
-
+    :return: A new numpy array containing only the peaks within the specified m/z range.
     """
-    peak_dataframe = peak_dataframe.loc[(peak_dataframe['mz'] >= int(mz_from)) & (peak_dataframe['mz'] <= int(mz_to))]
+    mz_range = (peak_array[:,0] >= int(mz_from)) & (peak_array[:,0] <= int(mz_to))
+    return peak_array[mz_range]
 
-    return peak_dataframe
-
-def check_minimum_of_high_peaks_requiered(peak_dataframe, intensity_percent, no_peaks):
+def check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peaks):
     """
-    :param peak_dataframe: A pandas DataFrame containing peak data. The DataFrame must have columns named 'intensity' and 'intensity_percent'.
-    :param intensity_percent: The minimum percentage threshold of the maximum intensity required for a peak to be considered high.
+    :param peak_array: A numpy array containing peak data. The array must have two columns with the first column for 'intensity'.
+    :param intensity_percent: The minimum percentage of the maximum intensity required for a peak to be considered high.
     :param no_peaks: The minimum number of high peaks required.
 
-    :return: If the number of high peaks in peak_dataframe is less than no_peaks, an empty pandas DataFrame is returned. Otherwise, a filtered DataFrame containing the high peaks is returned
-    *.
+    :return: If the number of high peaks in peak_array is less than no_peaks, an empty numpy array is returned. Otherwise, a filtered array containing the high peaks is returned.
     """
-    percent_of_max = peak_dataframe['intensity']/peak_dataframe['intensity'].max() * 100
-    filtered_df = peak_dataframe[percent_of_max >= intensity_percent]
-    if len(filtered_df) < int(no_peaks):
-        return pd.DataFrame()
-    else:
-        return filtered_df
+    if peak_array.size == 0:
+        return peak_array
 
-def apply_filters(peak_dataframe, precursormz):
+    percent_of_max = (peak_array[:,1] / peak_array[:,1].max()) * 100
+    filtered_array = peak_array[percent_of_max >= intensity_percent]
+
+    if len(filtered_array) < int(no_peaks):
+        return np.empty((0,2))
+    else:
+        return filtered_array
+
+def apply_filters(peak_array, precursormz):
     """
-    :param peak_dataframe: the input dataframe containing peak information
+    :param peak_array: the input numpy array containing peak information
     :param precursormz: the precursor m/z value
-    :return: a filtered dataframe containing peak information
+    :return: a filtered numpy array containing peak information
 
     """
     n_peaks = parameters_dict['check_minimum_peak_requiered_n_peaks']
@@ -108,24 +105,28 @@ def apply_filters(peak_dataframe, precursormz):
     intensity_percent = parameters_dict['check_minimum_of_high_peaks_requiered_intensity_percent']
     no_peaks = parameters_dict['check_minimum_of_high_peaks_requiered_no_peaks']
 
+    peak_array = check_minimum_peak_requiered(peak_array, n_peaks)
+    if len(peak_array) == 0:
+        return np.array([])
 
-    peak_dataframe = check_minimum_peak_requiered(peak_dataframe,n_peaks)
-    if peak_dataframe.empty:
-        return pd.DataFrame()
-    else:
-        if parameters_dict['remove_peak_above_precursormz'] == 1.0:
-            peak_dataframe = remove_peak_above_precursormz(peak_dataframe, precursormz)
-            if peak_dataframe.empty:
-                return pd.DataFrame()
-        if parameters_dict['reduce_peak_list'] == 1.0:
-            peak_dataframe = reduce_peak_list(peak_dataframe,max_peaks)
-        if parameters_dict['normalize_intensity'] == 1.0:
-            peak_dataframe = normalize_intensity(peak_dataframe)
-        if parameters_dict['keep_mz_in_range'] == 1.0:
-            peak_dataframe = keep_mz_in_range(peak_dataframe,mz_from,mz_to)
-        if parameters_dict['check_minimum_of_high_peaks_requiered'] == 1.0:
-            peak_dataframe = check_minimum_of_high_peaks_requiered(peak_dataframe, intensity_percent, no_peaks)
-        if peak_dataframe.empty:
-            return pd.DataFrame()
+    if parameters_dict['remove_peak_above_precursormz'] == 1.0:
+        peak_array = remove_peak_above_precursormz(peak_array, precursormz)
+        if len(peak_array) == 0:
+            return np.array([])
 
-        return peak_dataframe
+    if parameters_dict['reduce_peak_list'] == 1.0:
+        peak_array = reduce_peak_list(peak_array, max_peaks)
+
+    if parameters_dict['normalize_intensity'] == 1.0:
+        peak_array = normalize_intensity(peak_array)
+
+    if parameters_dict['keep_mz_in_range'] == 1.0:
+        peak_array = keep_mz_in_range(peak_array, mz_from, mz_to)
+
+    if parameters_dict['check_minimum_of_high_peaks_requiered'] == 1.0:
+        peak_array = check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peaks)
+
+    if len(peak_array) == 0:
+        return np.array([])
+
+    return peak_array
