@@ -227,8 +227,11 @@ def structure_metadata_and_peak_list(metadata, peak_list):
         metadata_dict = metadata_to_dict(metadata)
         if "PRECURSORMZ" in metadata_dict:
             if metadata_dict["PRECURSORMZ"]:
-                peak_list_DF = peak_list_to_df(peak_list,float(metadata_dict["PRECURSORMZ"].replace(",",".")))
-                return metadata_dict, peak_list_DF
+                try:
+                    peak_list_DF = peak_list_to_df(peak_list,float(metadata_dict["PRECURSORMZ"].replace(",",".")))
+                    return metadata_dict, peak_list_DF
+                except:
+                    return {},np.array([])
             else:
                 return {},np.array([])
         else:
