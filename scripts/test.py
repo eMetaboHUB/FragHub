@@ -59,23 +59,26 @@ df = pd.DataFrame(spectrum_list)
 
 df = df[ordered_columns]
 
-print("writting soon")
 
-chunk_size = 5000  # Taille de chaque fraction
-num_chunks = int(np.ceil(df.shape[0] / chunk_size))  # Calculer le nombre de fractions
+df.to_excel(rf"C:\Users\Axel\PycharmProjects\msp_v3\OUTPUT\MSP\TEST\test_mona_exp.xlsx",index=False)
 
-with tqdm(total=num_chunks, unit=" row", colour="green", desc="\t    writting") as pbar:
-    for start in range(0, df.shape[0], chunk_size):
-        df_slice = df[start:start + chunk_size]
-        if start == 0:
-            # Écrire les en-têtes pour la première fraction
-            df_slice.to_csv(rf"C:\Users\Axel\PycharmProjects\msp_v3\OUTPUT\MSP\TEST\test_mona_exp.csv", mode='w', sep=";", quotechar='"', encoding="UTF-8", index=False)
-        else:
-            # Append dans le fichier sans écrire les en-têtes pour les autres fractions
-            df_slice.to_csv(rf"C:\Users\Axel\PycharmProjects\msp_v3\OUTPUT\MSP\TEST\test_mona_exp.csv", mode='a', header=False, index=False, sep=";", quotechar='"', encoding="UTF-8")
-
-        # Mettre à jour la barre de progression
-        pbar.update()
+# print("writting soon")
+#
+# chunk_size = 5000  # Taille de chaque fraction
+# num_chunks = int(np.ceil(df.shape[0] / chunk_size))  # Calculer le nombre de fractions
+#
+# with tqdm(total=num_chunks, unit=" row", colour="green", desc="\t    writting") as pbar:
+#     for start in range(0, df.shape[0], chunk_size):
+#         df_slice = df[start:start + chunk_size]
+#         if start == 0:
+#             # Écrire les en-têtes pour la première fraction
+#             df_slice.to_csv(rf"C:\Users\Axel\PycharmProjects\msp_v3\OUTPUT\MSP\TEST\test_mona_exp.csv", mode='w', sep=";", quotechar='"', encoding="UTF-8", index=False)
+#         else:
+#             # Append dans le fichier sans écrire les en-têtes pour les autres fractions
+#             df_slice.to_csv(rf"C:\Users\Axel\PycharmProjects\msp_v3\OUTPUT\MSP\TEST\test_mona_exp.csv", mode='a', header=False, index=False, sep=";", quotechar='"', encoding="UTF-8")
+#
+#         # Mettre à jour la barre de progression
+#         pbar.update()
 
 # compteur = 1
 # for spectrum in spectrum_list:
