@@ -114,9 +114,55 @@ def check_for_metadata_in_comments(metadata_matches):
 
 
 def convert_keys(metadata_dict):
+    """
+    :param metadata_dict: A dictionary containing metadata information.
+    :return: A new dictionary with converted keys.
+
+    This method takes a dictionary, `metadata_dict`, as input and returns a new dictionary with the keys converted to uppercase using the `keys_dict` mapping, if available. Only keys from
+    * the `keys_list` are considered for conversion. If a key is not found in `keys_dict`, it is returned as is.
+
+    Example usage:
+    ```
+    metadata = {
+        "filename": "example",
+        "predicted": True,
+        "fraghubid": "12345",
+        ...
+    }
+
+    converted_metadata = convert_keys(metadata)
+    ```
+    """
     global keys_dict
 
-    return {keys_dict.get(k, k).upper(): v for k, v in metadata_dict.items()}
+    keys_list = ["filename",
+                 "predicted",
+                 "fraghubid",
+                 "spectrumid",
+                 "resolution",
+                 "synon",
+                 "charge",
+                 "ionization",
+                 "mslevel",
+                 "fragmentationmode",
+                 "name",
+                 "precursormz",
+                 "exactmass",
+                 "averagemass",
+                 "precursortype",
+                 "instrumenttype",
+                 "instrument",
+                 "smiles",
+                 "inchi",
+                 "inchikey",
+                 "collisionenergy",
+                 "formula",
+                 "retentiontime",
+                 "ionmode",
+                 "comment",
+                 "num peaks"]
+
+    return {keys_dict.get(k, k).upper(): v for k, v in metadata_dict.items() if k in keys_list}
 
 def metadata_to_dict(metadata):
     """
