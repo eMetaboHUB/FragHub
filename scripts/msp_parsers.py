@@ -112,14 +112,13 @@ def check_for_metadata_in_comments(metadata_matches):
 
     return new_metadata_matches if new_metadata_matches else False
 
-def convert_keys(df):
+
+def convert_keys(metadata_dict):
     global keys_dict
 
-    df.columns = [keys_dict.get(item, item) for item in df.columns]
+    return {keys_dict.get(k, k).upper(): v for k, v in metadata_dict.items()}
 
-    return df
-
-def metadata_to_df(metadata):
+def metadata_to_dict(metadata):
     """
     Convert metadata string to DataFrame.
 
@@ -141,15 +140,10 @@ def metadata_to_df(metadata):
         for match in metadata_matches:
             metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0]).lower().strip()] = [match[1]]
 
-        df = pd.DataFrame.from_dict(metadata_dict)
+        metadata_dict = convert_keys(metadata_dict)
+        return metadata_dict
 
-        df = convert_keys(df)
-
-        df = df.loc[:, ~df.columns.duplicated()]
-
-        return df
-    else:
-        return pd.DataFrame()
+    return metadata_dict
 
 def peak_list_to_df(peak_list, precursormz):
     """
@@ -191,15 +185,15 @@ def structure_metadata_and_peak_list(metadata, peak_list):
     :rtype: tuple
     """
     if metadata == None or peak_list == None:
-        return pd.DataFrame(),np.array([])
+        return {},np.array([])
     else:
-        metadata_DF = metadata_to_df(metadata)
-        if "PRECURSORMZ" in metadata_DF.columns:
-            if metadata_DF["PRECURSORMZ"].values:
-                peak_list_DF = peak_list_to_df(peak_list,metadata_DF["PRECURSORMZ"].values)
-            return metadata_DF, peak_list_DF
+        metadata_dict = metadata_to_dict(metadata)
+        if "PRECURSORMZ" in metadata_dict:
+            if metadata_dict["PRECURSORMZ"][0]:
+                peak_list_DF = peak_list_to_df(peak_list,float(metadata_dict["PRECURSORMZ"][0].replace(",",".")))
+            return metadata_dict, peak_list_DF
         else:
-            return pd.DataFrame(),np.array([])
+            return {},np.array([])
 
 def parse_metadata_and_peak_list(spectrum):
     """
@@ -224,10 +218,10 @@ def msp_parser(spectrum):
 
     metadata,peak_list = parse_metadata_and_peak_list(spectrum)
 
-    if metadata.empty or len(peak_list) == 0:
+    if metadata == {} or len(peak_list) == 0:
         return None
     else:
-        metadata['peak_list'] = [peak_list.tolist()]
+        metadata['peak_list'] = [peak_list]
         return metadata
 
 def msp_parsing_processing(spectrum_list):
