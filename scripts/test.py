@@ -5,6 +5,34 @@ import numpy as np
 import time
 import os
 
+ordered_columns = ["FILENAME",
+                   "PREDICTED",
+                   "FRAGHUBID",
+                   "SPECTRUMID",
+                   "RESOLUTION",
+                   "SYNON",
+                   "CHARGE",
+                   "IONIZATION",
+                   "MSLEVEL",
+                   "FRAGMENTATIONMODE",
+                   "NAME",
+                   "PRECURSORMZ",
+                   "EXACTMASS",
+                   "AVERAGEMASS",
+                   "PRECURSORTYPE",
+                   "INSTRUMENTTYPE",
+                   "INSTRUMENT",
+                   "SMILES",
+                   "INCHI",
+                   "INCHIKEY",
+                   "COLLISIONENERGY",
+                   "FORMULA",
+                   "RETENTIONTIME",
+                   "IONMODE",
+                   "COMMENT",
+                   "NUM PEAKS",
+                   "peak_list"]
+
 # Execution de la fonction
 build_window()
 
@@ -25,11 +53,11 @@ for path in spectrum_path_list:
 
 spectrum_list = msp_parsing_processing(spectrum_list)
 
-print(spectrum_list[0])
+print(len(spectrum_list))
 
-print("concat")
+df = pd.DataFrame(spectrum_list)
 
-df = pd.concat(spectrum_list, join='outer')
+df = df[ordered_columns]
 
 print("writting soon")
 
