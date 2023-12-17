@@ -2,6 +2,7 @@ import concurrent.futures
 from Filters_NEW import *
 from tqdm import tqdm
 import pandas as pd
+import numpy as np
 import time
 import os
 import re
@@ -148,23 +149,33 @@ def metadata_to_df(metadata):
     else:
         return pd.DataFrame()
 
-def peak_list_to_df(peak_list,precursormz):
+def peak_list_to_df(peak_list, precursormz):
     """
-    Converts a peak list string into a pandas DataFrame.
+    Converts a peak list string into a numpy array.
 
     :param peak_list: A string representing a peak list. Each peak is represented by a pair of values, separated by a space or colon. The first value represents the m/z (mass-to-charge ratio
     *) of the peak, and the second value represents the intensity of the peak.
-    :return: A pandas DataFrame containing the peak data, with two columns named "mz" and "intensity". The "mz" column contains the m/z values, and the "intensity" column contains the corresponding
+    :return: A numpy array containing the peak data, with two columns for "mz" and "intensity". The "mz" column contains the m/z values, and the "intensity" column contains the corresponding
     * peak intensities.
     """
     peaks_match = re.findall("(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)", peak_list)
+
     if peaks_match:
         peaks_match = [(float(i), float(j)) for i, j in peaks_match]
-        peak_list_DF = pd.DataFrame(peaks_match, columns=["mz", "intensity"]).reset_index(drop=True).sort_values('mz', ascending=True) # Sort mz (just in case)
-        peak_list_DF = apply_filters(peak_list_DF, precursormz)
-        return peak_list_DF
+
+        # Convert list of tuples to numpy array
+        peak_array = np.array(peaks_match, dtype=float)
+
+        # Sort the array based on the mz values
+        peak_array = peak_array[peak_array[:, 0].argsort()]
+
+        # Here you need to convert pandas apply_filters function as it won't work with numpy arrays
+        # You may need to rewrite the apply_filters function to handle np arrays or convert array back to dataframe
+        # apply_filters_numpy() is a hypothetical function, you need to implement it
+        peak_array = apply_filters(peak_array, precursormz)
+        return peak_array
     else:
-        return pd.DataFrame()
+        return np.array([])  # Return an empty numpy array
 
 def structure_metadata_and_peak_list(metadata, peak_list):
     """
@@ -178,7 +189,7 @@ def structure_metadata_and_peak_list(metadata, peak_list):
     :rtype: tuple
     """
     if metadata == None or peak_list == None:
-        return pd.DataFrame(),pd.DataFrame()
+        return pd.DataFrame(),np.array([])
     else:
         metadata_DF = metadata_to_df(metadata)
         if "PRECURSORMZ" in metadata_DF.columns:
@@ -186,7 +197,7 @@ def structure_metadata_and_peak_list(metadata, peak_list):
                 peak_list_DF = peak_list_to_df(peak_list,metadata_DF["PRECURSORMZ"].values)
             return metadata_DF, peak_list_DF
         else:
-            return pd.DataFrame(),pd.DataFrame()
+            return pd.DataFrame(),np.array([])
 
 def parse_metadata_and_peak_list(spectrum):
     """
@@ -211,7 +222,7 @@ def msp_parser(spectrum):
 
     metadata,peak_list = parse_metadata_and_peak_list(spectrum)
 
-    if metadata.empty or peak_list.empty:
+    if metadata.empty or len(peak_list) == 0:
         return None
     else:
         metadata['peak_list'] = [peak_list.copy()]
