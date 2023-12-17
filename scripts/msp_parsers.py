@@ -96,7 +96,7 @@ def check_for_metadata_in_comments(metadata_matches):
     for match in metadata_matches:
         if re.search("comment.*", match[0], flags=re.IGNORECASE):
             if "=" in match[1]:
-                sub_fields_matches = re.findall('(\S+)=\"([^\"]*)\"|\"(\w+)=([^\"]*)\"|\"([^\"]*)=([^\"]*)\"|(\S+)=(\d+(?:[.,]\d*)?)|(\S+?)=(.*?)(;|\n|$)', match[1])
+                sub_fields_matches = re.findall('(\S+?)=\"([^\"]*)\"|\"(\w+?)=([^\"]*)\"|\"([^\"]*?)=([^\"]*)\"|(\S+?)=(\d+(?:[.,]\d*)?)|(\S+?)=(.*?)(;|\n|$)', match[1])
                 if sub_fields_matches:
                     for sub_fields_match in sub_fields_matches:
                         non_empty_tuple = tuple(group for group in sub_fields_match if group)
@@ -133,6 +133,7 @@ def metadata_to_df(metadata):
 
     if metadata_matches:
         temp = check_for_metadata_in_comments(metadata_matches)
+        temp = [t for t in temp if not re.search("computed", t[0], flags=re.IGNORECASE)]
         if temp != False:
             metadata_matches = temp
 
