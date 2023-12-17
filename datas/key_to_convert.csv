@@ -215,6 +215,6 @@ ionmode;ionmode
 instrumenttype;instrumenttype
 instrument;instrument
 collisionenergy;collisionenergy
-db;db
+db;spectrumid
 origin;origin
 num peaks;num peaks
