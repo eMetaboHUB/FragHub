@@ -12,32 +12,32 @@ Key_dataframe = pd.read_csv(os.path.abspath("../datas/key_to_convert.csv"),sep="
 keys_dict = dict(zip(Key_dataframe['known_synonym'], Key_dataframe['fraghub_default'].str.upper()))
 
 global keys_list
-keys_list = ["filename",
-             "predicted",
-             "fraghubid",
-             "spectrumid",
-             "resolution",
-             "synon",
-             "charge",
-             "ionization",
-             "mslevel",
-             "fragmentationmode",
-             "name",
-             "precursormz",
-             "exactmass",
-             "averagemass",
-             "precursortype",
-             "instrumenttype",
-             "instrument",
-             "smiles",
-             "inchi",
-             "inchikey",
-             "collisionenergy",
-             "formula",
-             "retentiontime",
-             "ionmode",
-             "comment",
-             "num peaks"]
+keys_list = ['FILENAME',
+             'PREDICTED',
+             'FRAGHUBID',
+             'SPECTRUMID',
+             'RESOLUTION',
+             'SYNON',
+             'CHARGE',
+             'IONIZATION',
+             'MSLEVEL',
+             'FRAGMENTATIONMODE',
+             'NAME',
+             'PRECURSORMZ',
+             'EXACTMASS',
+             'AVERAGEMASS',
+             'PRECURSORTYPE',
+             'INSTRUMENTTYPE',
+             'INSTRUMENT',
+             'SMILES',
+             'INCHI',
+             'INCHIKEY',
+             'COLLISIONENERGY',
+             'FORMULA',
+             'RETENTIONTIME',
+             'IONMODE',
+             'COMMENT',
+             'NUM PEAKS']
 
 def load_spectrum_list(msp_file_path):
     """
@@ -142,27 +142,18 @@ def check_for_metadata_in_comments(metadata_matches):
 
 def convert_keys(metadata_dict):
     """
+    Convert keys in metadata_dict based on the provided keys_dict and keys_list.
+
     :param metadata_dict: A dictionary containing metadata information.
-    :return: A new dictionary with converted keys.
-
-    This method takes a dictionary, `metadata_dict`, as input and returns a new dictionary with the keys converted to uppercase using the `keys_dict` mapping, if available. Only keys from
-    * the `keys_list` are considered for conversion. If a key is not found in `keys_dict`, it is returned as is.
-
-    Example usage:
-    ```
-    metadata = {
-        "filename": "example",
-        "predicted": True,
-        "fraghubid": "12345",
-        ...
-    }
-
-    converted_metadata = convert_keys(metadata)
-    ```
+    :return: A dictionary with converted keys based on the provided keys_dict and keys_list.
     """
-    global keys_dict
 
-    return {keys_dict.get(k, k).upper(): metadata_dict.get(k, False) for k in keys_list}
+    converted = {keys_dict[key]: val for key, val in metadata_dict.items() if
+                 key in keys_dict and keys_dict[key] in keys_list}
+
+    converted.update({key: "" for key in keys_list if key not in converted})
+
+    return converted
 
 def metadata_to_dict(metadata):
     """
