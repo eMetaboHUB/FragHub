@@ -25,6 +25,8 @@ for path in spectrum_path_list:
 
 spectrum_list = msp_parsing_processing(spectrum_list)
 
+print(spectrum_list[0])
+
 print("concat")
 
 df = pd.concat(spectrum_list, join='outer')
