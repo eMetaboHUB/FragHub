@@ -60,7 +60,7 @@ df = pd.DataFrame(spectrum_list)
 df = df[ordered_columns]
 
 
-df.to_excel(rf"C:\Users\Axel\PycharmProjects\msp_v3\OUTPUT\MSP\TEST\test_mona_exp.xlsx",index=False)
+df.to_excel(rf"C:\Users\Axel\PycharmProjects\msp_v3\OUTPUT\MSP\TEST\test_msms_hmdb.xlsx",index=False)
 
 # print("writting soon")
 #
