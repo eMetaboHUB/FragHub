@@ -11,6 +11,33 @@ global keys_dict
 Key_dataframe = pd.read_csv(os.path.abspath("../datas/key_to_convert.csv"),sep=";", encoding="UTF-8") # Remplacez 'your_file.csv' par le chemin de votre fichier
 keys_dict = dict(zip(Key_dataframe['known_synonym'], Key_dataframe['fraghub_default'].str.upper()))
 
+global keys_list
+keys_list = ["filename",
+             "predicted",
+             "fraghubid",
+             "spectrumid",
+             "resolution",
+             "synon",
+             "charge",
+             "ionization",
+             "mslevel",
+             "fragmentationmode",
+             "name",
+             "precursormz",
+             "exactmass",
+             "averagemass",
+             "precursortype",
+             "instrumenttype",
+             "instrument",
+             "smiles",
+             "inchi",
+             "inchikey",
+             "collisionenergy",
+             "formula",
+             "retentiontime",
+             "ionmode",
+             "comment",
+             "num peaks"]
 
 def load_spectrum_list(msp_file_path):
     """
@@ -135,34 +162,7 @@ def convert_keys(metadata_dict):
     """
     global keys_dict
 
-    keys_list = ["filename",
-                 "predicted",
-                 "fraghubid",
-                 "spectrumid",
-                 "resolution",
-                 "synon",
-                 "charge",
-                 "ionization",
-                 "mslevel",
-                 "fragmentationmode",
-                 "name",
-                 "precursormz",
-                 "exactmass",
-                 "averagemass",
-                 "precursortype",
-                 "instrumenttype",
-                 "instrument",
-                 "smiles",
-                 "inchi",
-                 "inchikey",
-                 "collisionenergy",
-                 "formula",
-                 "retentiontime",
-                 "ionmode",
-                 "comment",
-                 "num peaks"]
-
-    return {keys_dict.get(k, k).upper(): v for k, v in metadata_dict.items() if k in keys_list}
+    return {keys_dict.get(k, k).upper(): metadata_dict.get(k, False) for k in keys_list}
 
 def metadata_to_dict(metadata):
     """
@@ -184,7 +184,7 @@ def metadata_to_dict(metadata):
             metadata_matches = temp
 
         for match in metadata_matches:
-            metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0]).lower().strip()] = [match[1]]
+            metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0]).lower().strip()] = match[1]
 
         metadata_dict = convert_keys(metadata_dict)
         return metadata_dict
@@ -235,9 +235,11 @@ def structure_metadata_and_peak_list(metadata, peak_list):
     else:
         metadata_dict = metadata_to_dict(metadata)
         if "PRECURSORMZ" in metadata_dict:
-            if metadata_dict["PRECURSORMZ"][0]:
-                peak_list_DF = peak_list_to_df(peak_list,float(metadata_dict["PRECURSORMZ"][0].replace(",",".")))
-            return metadata_dict, peak_list_DF
+            if metadata_dict["PRECURSORMZ"]:
+                peak_list_DF = peak_list_to_df(peak_list,float(metadata_dict["PRECURSORMZ"].replace(",",".")))
+                return metadata_dict, peak_list_DF
+            else:
+                return {},np.array([])
         else:
             return {},np.array([])
 
@@ -267,7 +269,7 @@ def msp_parser(spectrum):
     if metadata == {} or len(peak_list) == 0:
         return None
     else:
-        metadata['peak_list'] = [peak_list]
+        metadata['peak_list'] = peak_list
         return metadata
 
 def msp_parsing_processing(spectrum_list):
