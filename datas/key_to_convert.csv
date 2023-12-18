@@ -46,6 +46,7 @@ ac$mass_spectrometry:target_gas_pressure;targetgaspressure
 ac$mass_spectrometry:trap_drive;trapdrivevalue
 accession;spectrumid
 authors;authors
+averagemass;averagemass
 ch$compound_class;compoundclass
 ch$exact_mass;parentmass
 ch$formula;formula
@@ -67,13 +68,16 @@ ch$link:united_nations;unitednationsnumber
 ch$name;name
 ch$nominal_mass;nominalmass
 ch$smiles;smiles
+charge;
 colenergy;collisionenergy
 collision_energy;collisionenergy
 collision_gas;collisiongas
 collision-energy-voltage;collisionenergy
+collisionenergy;collisionenergy
 collisiongas;collisiongas
 column;columnname
 columnname;columnname
+comment;comment
 comment:analysis_id;analysisid
 comment:analysis_name;analysisname
 comment:confidence;confidence
@@ -91,25 +95,36 @@ comment:submituser;submituser
 comments;comment
 compound id;spectrumid
 compound_name;name
-compound_type;compoundclass
 compound_name;name
+compound_type;compoundclass
+computed_inchi;inchi
+computed_inchikey;inchikey
+computed_smiles;smiles
 cone_voltage;insourcevoltage
 copyright;copyright
 database-id;spectrumid
 datacollector;datacollector
 date;recorddate
+db;spectrumid
 db#;spectrumid
-exact_mass;parentmass
-exactmass;parentmass
+exact_mass;exactmass
+exactmass;exactmass
 filename;filename
+formula;formula
+fraghubid;fraghubid
 fragmenation_method;fragmentationmode
+inchi;inchi
 inchiaux;inchiaux
+inchikey;inchikey
+instrument;instrument
 instrument_type;instrumenttype
 instrument-type;instrumenttype
+instrumenttype;instrumenttype
 ion_mode;ionmode
 ion_source;ionization
 ionimethod;ionization
 ionization-mode;ionmode
+ionmode;ionmode
 ionpol;ionmode
 ionpolarity;ionmode
 isolation_width;isolationwindowtargetmz
@@ -123,6 +138,7 @@ mass_range;massrangemz
 massrange;massrangemz
 massrangemz;massrangemz
 maximum_intensity;basepeakintensity
+ms_level;mslevel
 ms$data_processing:charge_deconvoluted;chargedeconvolved
 ms$data_processing:find_peak;dataprocessingfindpeak
 ms$data_processing:software_system_id;softwaresystemid
@@ -139,15 +155,16 @@ ms$focused_ion:isolation_window_upper_offset;isolationwindowupperoffset
 ms$focused_ion:peak_width;peakwidth
 ms$focused_ion:precursor_ion_purity;precursorionpurity
 ms$focused_ion:precursor_m/z;precursormz
-ms$focused_ion:precursor_type;adduct
-ms_level;mslevel
+ms$focused_ion:precursor_type;precursortype
 mslevel;mslevel
 msn_pathway;msnpathway
 mw;nominalmass
 name;name
+num peaks;num peaks
 numpeaks;num peaks
 ontology;compoundclass
 organism;organismname
+origin;origin
 parentmass;parentmass
 peakwidth;peakwidth
 peptide_mods;peptidemodifications
@@ -157,15 +174,17 @@ pk$annotation;peakannotations
 pk$num_peak;numpeaks
 pk$splash;splash
 precursor;precursormz
-precursor type;adduct
+precursor type;precursortype
 precursor_charge;charge
 precursor_mass;precursormz
-precursor_type;adduct
+precursor_mz;precursormz
+precursor_type;precursortype
 precursorcharge;charge
 precursorintensity;precursorintensity
 precursormass;precursormz
-precursor_mz;precursormz
-precursortype;adduct
+precursormz;precursormz
+precursortype;precursortype
+predicted;predicted
 pressure;columnpressure
 publication;publication
 pubmed;pubmed
@@ -174,8 +193,10 @@ reagentgaspressure;reagentgaspressure
 reagention;reagention
 record title;title
 related_cas#;cas
+resolution;resolution
 retention_index;retentionindex
 retentionindex;retentionindex
+retentiontime;retentiontime
 rettime;retentiontime
 ri;retentionindex
 rt;retentiontime
@@ -186,6 +207,7 @@ salt_mix_cas;saltmixcas
 sample_inlet;sampleinlet
 scans;scans
 seq;peptidesequence
+smiles;smiles
 source_instrument;instrumenttype
 sp$lineage;organismlineage
 sp$link;samplelink
@@ -195,26 +217,10 @@ special_fragmentation;fragmentationmode
 spectrum_type;mslevel
 spectrumid;spectrumid
 stdinchi;inchi
+submittecomputed_mass_erroname;name
 submituser;submituser
+synon;synon
 targetgas;targetgas
 targetgaspres;targetgaspressure
 targetgaspressure;targetgaspressure
 title;title
-submittecomputed_mass_erroname;name
-computed_smiles;smiles
-computed_inchi;inchi
-computed_inchikey;inchikey
-fraghubid;fraghubid
-precursormz;precursormz
-formula;formula
-inchikey;inchikey
-inchi;inchi
-smiles;smiles
-retentiontime;retentiontime
-ionmode;ionmode
-instrumenttype;instrumenttype
-instrument;instrument
-collisionenergy;collisionenergy
-db;spectrumid
-origin;origin
-num peaks;num peaks
