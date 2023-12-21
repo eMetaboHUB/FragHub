@@ -1,3 +1,4 @@
+from values_normalizer import *
 import concurrent.futures
 from Filters_NEW import *
 from tqdm import tqdm
@@ -155,6 +156,8 @@ def convert_keys(metadata_dict):
 
     return converted
 
+
+
 def metadata_to_dict(metadata):
     """
     Convert metadata string to DataFrame.
@@ -178,6 +181,8 @@ def metadata_to_dict(metadata):
             metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0]).lower().strip()] = match[1]
 
         metadata_dict = convert_keys(metadata_dict)
+        # !!! ICI FAIRE LA NORMALISATION DES VALEURS !!!
+        metadata_dict = normalize_values(metadata_dict)
         return metadata_dict
 
     return metadata_dict
