@@ -1,5 +1,9 @@
 
 def normalize_values(metadata_dict):
+    """
+    :param metadata_dict: A dictionary containing metadata information.
+    :return: The normalized metadata dictionary.
+    """
     metadata_dict = normalize_empties(metadata_dict)
     
     metadata_dict = normalize_adduct(metadata_dict)
