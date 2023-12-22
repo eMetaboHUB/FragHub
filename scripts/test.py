@@ -60,7 +60,7 @@ df = pd.DataFrame(spectrum_list)
 df = df[ordered_columns]
 
 
-df.to_excel(rf"C:\Users\Axel\Documents\PYTHON\MSP_V3\FragHub\OUTPUT\MSP\TEST\test_gnps_2.xlsx",index=False)
+df.to_excel(rf"C:\Users\Axel\Documents\PYTHON\MSP_V3\FragHub\OUTPUT\MSP\TEST\test_gnps_3.xlsx",index=False)
 
 # print("writting soon")
 #
