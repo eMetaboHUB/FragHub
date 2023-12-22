@@ -29,30 +29,40 @@ def determining_charge(adduct):
     min = 0
     max = 0
 
-    matches = re.findall("((\+|\-|^)\d+)|(\+|\-)",adduct)
+    matches = re.findall(r"((\+|\-|^)\d+)|(\+|\-)",adduct)
 
     # determine signe
     if matches:
         for match in matches:
-            if match == "-":
+            charge = next((item for item in match if item), '')
+            if charge == "-":
                 sum -= 1
                 if min > -1:
                     min = -1
-            elif match == "+":
+            elif charge == "+":
                 sum += 1
                 if max < 1:
                     max = 1
             else:
-                sum += int(match)
-                if int(match) > max:
-                    max = int(match)
-                if int(match) < min:
-                    min = int(match)
+                sum += int(charge)
+                if int(charge) > max:
+                    max = int(charge)
+                if int(charge) < min:
+                    min = int(charge)
+
         # determine charge
         if sum > 0:
-            return str(max)+"+"
+            if max == 1:
+                return "+"
+            else:
+                return str(max)+"+"
         elif sum < 0:
-            return str(abs(min))+"-"
+            if min == -1:
+                return "-"
+            else:
+                return str(abs(min))+"-"
+    else:
+        return None
 
 def normalize_adduct(metadata_dict):
     """
@@ -77,32 +87,52 @@ def normalize_adduct(metadata_dict):
     """
     adduct = metadata_dict["PRECURSORTYPE"]
 
-    match = re.search("(\[([A-Za-z0-9\+\-\(\)]*)\]((?:[0-9]*)?[\+\-\*])*)(?:\/|$)?", adduct)
+
+    try:
+        match = re.search(r"(\[([A-Za-z0-9\+\-\(\)]*)\]((?:[0-9]*)?[\+\-\*])*)(?:\/|$)?", adduct)
+    except:
+        return metadata_dict
+
     if match: # Si deja le format correct, on ne fait rien
         if not match.group(3): # si pas de charge a la fin
             charge = determining_charge(adduct)
-            if "*" in match:
-                metadata_dict["PRECURSORTYPE"] = adduct + charge + "*"
-                return metadata_dict
+            if "*" in match.group():
+                if charge:
+                    metadata_dict["PRECURSORTYPE"] = adduct + charge + "*"
+                    return metadata_dict
+                else:
+                    return metadata_dict
             else:
-                metadata_dict["PRECURSORTYPE"] = adduct + charge
-                return metadata_dict
+                if charge:
+                    metadata_dict["PRECURSORTYPE"] = adduct + charge
+                    return metadata_dict
+                else:
+                    return metadata_dict
         return metadata_dict
     else: # pas le format correct
         match = re.search("([A-Za-z0-9\+\-\(\)\*]*)", adduct)
         if match:
             if not re.search("(\d)?([\+\-\*])$", adduct): # si pas de charge a la fin
                 charge = determining_charge(adduct)
-                if "*" in match:
-                    metadata_dict["PRECURSORTYPE"] = "[" + match.group(1) + "]" + charge + "*"
-                    return metadata_dict
+                if "*" in match.group():
+                    if charge:
+                        metadata_dict["PRECURSORTYPE"] = "[" + match.group() + "]" + charge + "*"
+                        return metadata_dict
+                    else:
+                        return metadata_dict
                 else:
-                    metadata_dict["PRECURSORTYPE"] = "[" + match.group(1) + "]" + charge
-                    return metadata_dict
+                    if charge:
+                        metadata_dict["PRECURSORTYPE"] = "[" + match.group() + "]" + charge
+                        return metadata_dict
+                    else:
+                        return metadata_dict
             else:
                 charge = re.search("(\d)?([\+\-\*])$", adduct)
-                metadata_dict["PRECURSORTYPE"] = "[" + match.group(1) + "]" + charge
-                return metadata_dict
+                if charge:
+                    metadata_dict["PRECURSORTYPE"] = "[" + match.group() + "]" + charge.group()
+                    return metadata_dict
+                else:
+                    return metadata_dict
 
 def normalize_values(metadata_dict):
     """
@@ -113,7 +143,7 @@ def normalize_values(metadata_dict):
 
     # metadata_dict = delete_no_smiles_inchi_inchikey(metadata_dict)
     
-    # metadata_dict = normalize_adduct(metadata_dict)
+    metadata_dict = normalize_adduct(metadata_dict)
     # metadata_dict = normalize_ionmode(metadata_dict)
     # metadata_dict = normalize_retention_time(metadata_dict)
     # metadata_dict = normalize_ms_level(metadata_dict)
