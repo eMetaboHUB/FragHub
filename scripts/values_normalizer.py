@@ -81,6 +81,19 @@ def determining_charge(adduct):
     else:
         return None
 
+
+def delete_no_smiles_inchi_inchikey(metadata_dict):
+    """
+    :param metadata_dict: A dictionary containing metadata information.
+    :return: The same metadata dictionary if both 'SMILES' and 'INCHI' values are not NaN, otherwise returns None.
+
+    """
+    if np.isnan(metadata_dict.get('SMILES')) and np.isnan(metadata_dict.get('INCHI')):
+        return None
+    else:
+        return metadata_dict
+
+
 def normalize_adduct(metadata_dict):
     """
     :param metadata_dict: A dictionary containing metadata information.
@@ -158,15 +171,16 @@ def normalize_values(metadata_dict):
     """
     metadata_dict = normalize_empties(metadata_dict)
 
-    # metadata_dict = delete_no_smiles_inchi_inchikey(metadata_dict)
-    
-    metadata_dict = normalize_adduct(metadata_dict)
-    # metadata_dict = normalize_ionmode(metadata_dict)
-    # metadata_dict = normalize_retention_time(metadata_dict)
-    # metadata_dict = normalize_ms_level(metadata_dict)
-    # metadata_dict = normalize_synonymes(metadata_dict)
-    # metadata_dict = normalize_formula(metadata_dict)
-    # metadata_dict = normalize_predicted(metadata_dict)
-    # metadata_dict = normalize_db_informations(metadata_dict)
+    metadata_dict = delete_no_smiles_inchi_inchikey(metadata_dict)
+
+    if metadata_dict:
+        metadata_dict = normalize_adduct(metadata_dict)
+        # metadata_dict = normalize_ionmode(metadata_dict)
+        # metadata_dict = normalize_retention_time(metadata_dict)
+        # metadata_dict = normalize_ms_level(metadata_dict)
+        # metadata_dict = normalize_synonymes(metadata_dict)
+        # metadata_dict = normalize_formula(metadata_dict)
+        # metadata_dict = normalize_predicted(metadata_dict)
+        # metadata_dict = normalize_db_informations(metadata_dict)
 
     return metadata_dict
