@@ -30,6 +30,43 @@ def normalize_empties(metadata_dict):
 
     return metadata_dict
 
+def repair_mol_descriptors(metadata_dict):
+    smiles = metadata_dict['SMILES']
+    inchi = metadata_dict['INCHI']
+    inchikey = metadata_dict['INCHIKEY']
+
+    smiles_pattern =  re.compile("[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}")
+    inchi_pattern = re.compile("InChI=.*")
+    inchikey_pattern = re.compile("[A-Z]{14}-[A-Z]{10}-N")
+
+    if re.fullmatch(smiles_pattern, smiles) and re.fullmatch(inchi_pattern, inchi) and re.fullmatch(inchikey_pattern, inchikey):
+        return metadata_dict
+
+    # SMILES
+    if re.fullmatch(smiles_pattern, inchi):
+        metadata_dict['SMILES'] = inchi
+        metadata_dict['INCHI'] = np.nan
+    if re.fullmatch(smiles_pattern, inchikey):
+        metadata_dict['SMILES'] = inchikey
+        metadata_dict['INCHIKEY'] = np.nan
+    # INCHI
+    if re.fullmatch(inchi_pattern, smiles):
+        metadata_dict['INCHI'] = smiles
+        metadata_dict['INCHI'] = np.nan
+    if re.fullmatch(inchi_pattern, inchikey):
+        metadata_dict['INCHI'] = inchikey
+        metadata_dict['INCHIKEY'] = np.nan
+    # INCHIKEY
+    if re.fullmatch(inchikey_pattern, smiles):
+        metadata_dict['INCHIKEY'] = smiles
+        metadata_dict['SMILES'] = np.nan
+    if re.fullmatch(inchikey_pattern, inchi):
+        metadata_dict['INCHIKEY'] = inchi
+        metadata_dict['INCHI'] = np.nan
+
+
+
+
 def determining_charge(adduct):
     """
     Calculate the charge of a given adduct.
@@ -84,13 +121,19 @@ def determining_charge(adduct):
 
 def delete_no_smiles_inchi_inchikey(metadata_dict):
     """
-    :param metadata_dict: A dictionary containing metadata information.
-    :return: The same metadata dictionary if both 'SMILES' and 'INCHI' values are not NaN, otherwise returns None.
+    Delete entries from the given metadata dictionary if both 'SMILES' and 'INCHI' keys have NaN values.
 
+    :param metadata_dict: A dictionary containing metadata information.
+    :type metadata_dict: dict
+    :return: The updated metadata dictionary.
+    :rtype: dict
     """
-    if np.isnan(metadata_dict.get('SMILES')) and np.isnan(metadata_dict.get('INCHI')):
-        return None
-    else:
+    try:
+        if np.isnan(metadata_dict.get('SMILES')) and np.isnan(metadata_dict.get('INCHI')):
+            return None
+        else:
+            return metadata_dict
+    except:
         return metadata_dict
 
 
@@ -171,16 +214,18 @@ def normalize_values(metadata_dict):
     """
     metadata_dict = normalize_empties(metadata_dict)
 
+    metadata_dict = repair_mol_descriptors(metadata_dict)
+
     metadata_dict = delete_no_smiles_inchi_inchikey(metadata_dict)
 
-    if metadata_dict:
-        metadata_dict = normalize_adduct(metadata_dict)
-        # metadata_dict = normalize_ionmode(metadata_dict)
-        # metadata_dict = normalize_retention_time(metadata_dict)
-        # metadata_dict = normalize_ms_level(metadata_dict)
-        # metadata_dict = normalize_synonymes(metadata_dict)
-        # metadata_dict = normalize_formula(metadata_dict)
-        # metadata_dict = normalize_predicted(metadata_dict)
-        # metadata_dict = normalize_db_informations(metadata_dict)
+    # if metadata_dict:
+    #     metadata_dict = normalize_adduct(metadata_dict)
+    #     # metadata_dict = normalize_ionmode(metadata_dict)
+    #     # metadata_dict = normalize_retention_time(metadata_dict)
+    #     # metadata_dict = normalize_ms_level(metadata_dict)
+    #     # metadata_dict = normalize_synonymes(metadata_dict)
+    #     # metadata_dict = normalize_formula(metadata_dict)
+    #     # metadata_dict = normalize_predicted(metadata_dict)
+    #     # metadata_dict = normalize_db_informations(metadata_dict)
 
     return metadata_dict
