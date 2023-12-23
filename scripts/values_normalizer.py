@@ -2,6 +2,12 @@ import numpy as np
 import re
 
 def normalize_empties(metadata_dict):
+    """
+    Normalizes empties in a metadata dictionary.
+
+    :param metadata_dict: the dictionary containing metadata
+    :return: the updated metadata dictionary
+    """
     regex_to_replace = [re.compile(re.escape(str(item)), re.I) for item in [0,
                                                                             0.0,
                                                                             "",
@@ -78,23 +84,23 @@ def determining_charge(adduct):
 def normalize_adduct(metadata_dict):
     """
     :param metadata_dict: A dictionary containing metadata information.
-    :return: The updated metadata dictionary.
+    :return: The modified metadata dictionary.
 
-    This method takes a metadata dictionary as input and normalizes the adduct value in the dictionary. It extracts the adduct value from the "PRECURSORTYPE" key of the dictionary and checks
-    * if it is in the correct format. If it is already in the correct format, the method does nothing and returns the original dictionary. If it is not in the correct format, the method
-    * attempts to parse and normalize the adduct value.
+    This method takes a dictionary of metadata information and normalizes the "PRECURSORTYPE" value according to a specific format. The method checks if the value already matches the format
+    *, and if not, it modifies it accordingly.
 
-    The adduct value should be in the format [molecule]charge, where molecule can be alphanumeric with optional +, -, (, and ) characters, and charge can be a numeric value followed by +
-    *, -, or * characters. If the adduct value is not in this format, the method tries to extract the molecule part and the charge part separately.
+    If the value already matches the expected format, the method does nothing and returns the unmodified metadata dictionary. If the value does not match the format, the method attempts
+    * to determine the charge value and add it to the end of the value in the correct format.
 
-    If the molecule part does not end with a charge, the method uses the `determining_charge` function to determine the charge value and appends it to the molecule part. If the molecule
-    * part already contains a * character, it is preserved. The updated adduct value is then stored back in the dictionary under the "PRECURSORTYPE" key.
+    Note: The method relies on an external function called determining_charge() to determine the charge value. This function is not included in this documentation.
 
-    If the molecule part already ends with a charge, the method checks if it also ends with a * character. If it does, the charge part is appended to the molecule part without any modifications
-    *. If it does not end with a * character, the charge part is appended to the molecule part followed by a * character. The updated adduct value is stored back in the dictionary under
-    * the "PRECURSORTYPE" key.
+    Example usage:
+    metadata_dict = {"PRECURSORTYPE": "[M+H]"}
+    normalized_dict = normalize_adduct(metadata_dict)
+    print(normalized_dict)
 
-    Finally, the normalized metadata dictionary is returned.
+    Output:
+    {"PRECURSORTYPE": "[M+H]"}
     """
     adduct = metadata_dict["PRECURSORTYPE"]
 
