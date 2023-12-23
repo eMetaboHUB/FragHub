@@ -230,6 +230,8 @@ def structure_metadata_and_peak_list(metadata, peak_list):
         return {},np.array([])
     else:
         metadata_dict = metadata_to_dict(metadata)
+        if not metadata_dict:
+            return {},np.array([])
         if "PRECURSORMZ" in metadata_dict:
             if metadata_dict["PRECURSORMZ"]:
                 try:
