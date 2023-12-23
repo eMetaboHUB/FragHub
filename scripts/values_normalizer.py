@@ -25,6 +25,17 @@ def normalize_empties(metadata_dict):
     return metadata_dict
 
 def determining_charge(adduct):
+    """
+    Calculate the charge of a given adduct.
+
+    :param adduct: The adduct string to calculate the charge for.
+                   The adduct string should contain a combination of numbers and
+                   '+' or '-' symbols to represent the charge. For example, '+2',
+                   '-1', '+', '-'.
+    :return: Return the calculated charge as a string. The returned string represents
+             the charge and can have one of the following formats: '+', '-', '+X',
+             '-X', where X is a positive integer.
+    """
     sum = 0
     min = 0
     max = 0
