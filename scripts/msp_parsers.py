@@ -178,7 +178,7 @@ def metadata_to_dict(metadata):
             metadata_matches = temp
 
         for match in metadata_matches:
-            metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0]).lower().strip()] = match[1]
+            metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0]).lower().strip()] = re.sub("^\"|\"$","",match[1])
 
         metadata_dict = convert_keys(metadata_dict)
         metadata_dict = normalize_values(metadata_dict)
