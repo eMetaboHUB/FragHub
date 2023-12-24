@@ -46,21 +46,22 @@ def repair_mol_descriptors(metadata_dict):
     inchikey = metadata_dict['INCHIKEY']
 
     smiles_pattern =  re.compile("[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}")
-    inchi_pattern = re.compile("InChI=.*")
+    inchi_pattern = re.compile("InChI=.*", flags=re.IGNORECASE)
     inchikey_pattern = re.compile("[A-Z]{14}-[A-Z]{10}-N")
 
-    if re.search(smiles_pattern, smiles) and re.search(inchi_pattern, inchi, flags=re.IGNORECASE) and re.search(inchikey_pattern, inchikey):
+    if re.search(smiles_pattern, smiles) and re.search(inchi_pattern, inchi) and re.search(inchikey_pattern, inchikey):
         return metadata_dict
 
     # SMILES
     if re.search(smiles_pattern, inchi):
-        metadata_dict['SMILES'] = inchi
-        metadata_dict['INCHI'] = ''
+        if not re.search(inchi_pattern, inchi):
+            metadata_dict['SMILES'] = inchi
+            metadata_dict['INCHI'] = ''
     if re.search(smiles_pattern, inchikey):
         metadata_dict['SMILES'] = inchikey
         metadata_dict['INCHIKEY'] = ''
     # INCHI
-    if re.search(inchi_pattern, smiles, flags=re.IGNORECASE):
+    if re.search(inchi_pattern, smiles):
         metadata_dict['INCHI'] = smiles
         metadata_dict['INCHI'] = ''
     if re.search(inchi_pattern, inchikey):
@@ -221,7 +222,7 @@ def normalize_values(metadata_dict):
     """
     metadata_dict = normalize_empties(metadata_dict)
 
-    # metadata_dict = repair_mol_descriptors(metadata_dict)
+    metadata_dict = repair_mol_descriptors(metadata_dict)
 
     # metadata_dict = delete_no_smiles_inchi_inchikey(metadata_dict)
 
