@@ -8,25 +8,14 @@ def normalize_empties(metadata_dict):
     :param metadata_dict: the dictionary containing metadata
     :return: the updated metadata dictionary
     """
-    regex_to_replace = [re.compile(re.escape(str(item)), re.I) for item in [0,
-                                                                            0.0,
-                                                                            "",
-                                                                            "na",
-                                                                            "n/a",
-                                                                            "nan",
-                                                                            "unknown",
-                                                                            "unknown",
-                                                                            "none",
-                                                                            "?",
-                                                                            "unk",
-                                                                            np.nan]]
+    regex_to_replace = [re.compile(re.escape(str(item)), re.I) for item in [0, 0.0, "", "na", "n/a", "nan", "unknown", "unknow", "none", "?", "unk", np.nan]]
 
     for k, v in metadata_dict.items():
         # For each item to replace
         for regex in regex_to_replace:
             # If the current value matches, replace it
             if regex.fullmatch(str(v)):
-                metadata_dict[k] = np.nan
+                metadata_dict[k] = ''
 
     return metadata_dict
 
@@ -39,30 +28,32 @@ def repair_mol_descriptors(metadata_dict):
     inchi_pattern = re.compile("InChI=.*")
     inchikey_pattern = re.compile("[A-Z]{14}-[A-Z]{10}-N")
 
-    if re.fullmatch(smiles_pattern, smiles) and re.fullmatch(inchi_pattern, inchi) and re.fullmatch(inchikey_pattern, inchikey):
+    if re.search(smiles_pattern, smiles) and re.search(inchi_pattern, inchi, flags=re.IGNORECASE) and re.search(inchikey_pattern, inchikey):
         return metadata_dict
 
     # SMILES
-    if re.fullmatch(smiles_pattern, inchi):
+    if re.search(smiles_pattern, inchi):
         metadata_dict['SMILES'] = inchi
-        metadata_dict['INCHI'] = np.nan
-    if re.fullmatch(smiles_pattern, inchikey):
+        metadata_dict['INCHI'] = ''
+    if re.search(smiles_pattern, inchikey):
         metadata_dict['SMILES'] = inchikey
-        metadata_dict['INCHIKEY'] = np.nan
+        metadata_dict['INCHIKEY'] = ''
     # INCHI
-    if re.fullmatch(inchi_pattern, smiles):
+    if re.search(inchi_pattern, smiles, flags=re.IGNORECASE):
         metadata_dict['INCHI'] = smiles
-        metadata_dict['INCHI'] = np.nan
-    if re.fullmatch(inchi_pattern, inchikey):
+        metadata_dict['INCHI'] = ''
+    if re.search(inchi_pattern, inchikey):
         metadata_dict['INCHI'] = inchikey
-        metadata_dict['INCHIKEY'] = np.nan
+        metadata_dict['INCHIKEY'] = ''
     # INCHIKEY
-    if re.fullmatch(inchikey_pattern, smiles):
+    if re.search(inchikey_pattern, smiles):
         metadata_dict['INCHIKEY'] = smiles
-        metadata_dict['SMILES'] = np.nan
-    if re.fullmatch(inchikey_pattern, inchi):
+        metadata_dict['SMILES'] = ''
+    if re.search(inchikey_pattern, inchi):
         metadata_dict['INCHIKEY'] = inchi
-        metadata_dict['INCHI'] = np.nan
+        metadata_dict['INCHI'] = ''
+
+    return metadata_dict
 
 
 
@@ -128,13 +119,11 @@ def delete_no_smiles_inchi_inchikey(metadata_dict):
     :return: The updated metadata dictionary.
     :rtype: dict
     """
-    try:
-        if np.isnan(metadata_dict.get('SMILES')) and np.isnan(metadata_dict.get('INCHI')):
-            return None
-        else:
-            return metadata_dict
-    except:
+    if not metadata_dict.get('SMILES') and not metadata_dict.get('INCHI'):
+        return None
+    else:
         return metadata_dict
+
 
 
 def normalize_adduct(metadata_dict):
@@ -161,10 +150,7 @@ def normalize_adduct(metadata_dict):
     adduct = metadata_dict["PRECURSORTYPE"]
 
 
-    try:
-        match = re.search(r"(\[([A-Za-z0-9\+\-\(\)]*)\]((?:[0-9]*)?[\+\-\*])*)(?:\/|$)?", adduct)
-    except:
-        return metadata_dict
+    match = re.search(r"(\[([A-Za-z0-9\+\-\(\)]*)\]((?:[0-9]*)?[\+\-\*])*)(?:\/|$)?", adduct)
 
     if match: # Si deja le format correct, on ne fait rien
         if not match.group(3): # si pas de charge a la fin
@@ -214,9 +200,9 @@ def normalize_values(metadata_dict):
     """
     metadata_dict = normalize_empties(metadata_dict)
 
-    metadata_dict = repair_mol_descriptors(metadata_dict)
+    # metadata_dict = repair_mol_descriptors(metadata_dict)
 
-    metadata_dict = delete_no_smiles_inchi_inchikey(metadata_dict)
+    # metadata_dict = delete_no_smiles_inchi_inchikey(metadata_dict)
 
     # if metadata_dict:
     #     metadata_dict = normalize_adduct(metadata_dict)
