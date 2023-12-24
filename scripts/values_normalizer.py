@@ -20,6 +20,27 @@ def normalize_empties(metadata_dict):
     return metadata_dict
 
 def repair_mol_descriptors(metadata_dict):
+    """
+        repair_mol_descriptors(metadata_dict)
+
+        Repairs molecular descriptors in a dictionary containing SMILES, InChI, and InChIKey.
+        Check if molecular descriptors are in the dedicated field.
+
+        :param metadata_dict: A dictionary containing molecular descriptors.
+        :return: The repaired dictionary with updated molecular descriptors.
+
+        Example Usage:
+
+        metadata_dict = {
+            'SMILES': 'CC(=O)O',
+            'INCHI': 'InChI=1S/C2H4O2/c1-2(3)4/h1H3,(H,3,4)'
+            'INCHIKEY': 'QTBSBXVTEAMEQO-UHFFFAOYSA-N'
+        }
+
+        repaired_dict = repair_mol_descriptors(metadata_dict)
+
+        The repaired_dict will contain the repaired molecular descriptors.
+    """
     smiles = metadata_dict['SMILES']
     inchi = metadata_dict['INCHI']
     inchikey = metadata_dict['INCHIKEY']
