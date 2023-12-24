@@ -224,7 +224,7 @@ def normalize_values(metadata_dict):
 
     metadata_dict = repair_mol_descriptors(metadata_dict)
 
-    # metadata_dict = delete_no_smiles_inchi_inchikey(metadata_dict)
+    metadata_dict = delete_no_smiles_inchi_inchikey(metadata_dict)
 
     # if metadata_dict:
     #     metadata_dict = normalize_adduct(metadata_dict)
