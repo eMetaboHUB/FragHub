@@ -61,9 +61,9 @@ def repair_mol_descriptors(metadata_dict):
     inchi = metadata_dict['INCHI']
     inchikey = metadata_dict['INCHIKEY']
 
-    smiles_pattern =  re.compile("[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}")
-    inchi_pattern = re.compile("InChI=.*|\/[0-9A-Z]*\/", flags=re.IGNORECASE)
-    inchikey_pattern = re.compile("[A-Z]{14}-[A-Z]{10}-N")
+    smiles_pattern =  re.compile("[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}", flags=re.IGNORECASE) # Match smiles
+    inchi_pattern = re.compile("InChI=.*|\/[0-9A-Z]*\/", flags=re.IGNORECASE) # Match inchi
+    inchikey_pattern = re.compile("([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
 
     if re.search(smiles_pattern, smiles) and re.search(inchi_pattern, inchi) and re.search(inchikey_pattern, inchikey):
         metadata_dict = repair_inchi(metadata_dict)
@@ -71,12 +71,13 @@ def repair_mol_descriptors(metadata_dict):
 
     # SMILES
     if re.search(smiles_pattern, inchi):
-        if not re.search(inchi_pattern, inchi):
+        if not re.search(inchi_pattern, inchi) and not re.search(inchikey_pattern, inchi):
             metadata_dict['SMILES'] = inchi
             metadata_dict['INCHI'] = ''
     if re.search(smiles_pattern, inchikey):
-        metadata_dict['SMILES'] = inchikey
-        metadata_dict['INCHIKEY'] = ''
+        if not re.search(inchi_pattern, inchikey) and not re.search(inchikey_pattern, inchikey):
+            metadata_dict['SMILES'] = inchikey
+            metadata_dict['INCHIKEY'] = ''
     # INCHI
     if re.search(inchi_pattern, smiles):
         metadata_dict['INCHI'] = smiles
