@@ -1,6 +1,30 @@
 import numpy as np
 import re
 
+global repair_inchi_pattern
+repair_inchi_pattern = re.compile("^(inchi=)?", flags=re.IGNORECASE)
+
+global smiles_pattern
+smiles_pattern = re.compile("[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}", flags=re.IGNORECASE) # Match smiles
+
+global inchi_pattern
+inchi_pattern = re.compile("InChI=.*|\/[0-9A-Z]*\/", flags=re.IGNORECASE) # Match inchi
+
+global inchikey_pattern
+inchikey_pattern = re.compile("([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
+
+global adduct_pattern
+adduct_pattern = re.compile(r"(\[([A-Za-z0-9\+\-\(\)]*)\]((?:[0-9]*)?[\+\-\*])*)(?:\/|$)?")
+
+global charge_pattern
+charge_pattern = re.compile(r"((\+|\-|^)\d+)|(\+|\-)")
+
+global adduct_pattern_2
+adduct_pattern_2 = re.compile("([A-Za-z0-9\+\-\(\)\*]*)")
+
+global ending_by_charge_pattern
+ending_by_charge_pattern = re.compile("(\d)?([\+\-\*])$")
+
 def normalize_empties(metadata_dict):
     """
     Normalizes empties in a metadata dictionary.
@@ -28,7 +52,7 @@ def repair_inchi(metadata_dict):
     inchi = metadata_dict['INCHI']
 
     if inchi:
-        inchi = re.sub("^(inchi=)?","InChI=",inchi, flags=re.IGNORECASE)
+        inchi = re.sub(repair_inchi_pattern,"InChI=",inchi)
         metadata_dict['INCHI'] = inchi
 
         return metadata_dict
@@ -60,10 +84,6 @@ def repair_mol_descriptors(metadata_dict):
     smiles = metadata_dict['SMILES']
     inchi = metadata_dict['INCHI']
     inchikey = metadata_dict['INCHIKEY']
-
-    smiles_pattern =  re.compile("[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}", flags=re.IGNORECASE) # Match smiles
-    inchi_pattern = re.compile("InChI=.*|\/[0-9A-Z]*\/", flags=re.IGNORECASE) # Match inchi
-    inchikey_pattern = re.compile("([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
 
     if re.search(smiles_pattern, smiles) and re.search(inchi_pattern, inchi) and re.search(inchikey_pattern, inchikey):
         metadata_dict = repair_inchi(metadata_dict)
@@ -116,7 +136,7 @@ def determining_charge(adduct):
     min = 0
     max = 0
 
-    matches = re.findall(r"((\+|\-|^)\d+)|(\+|\-)",adduct)
+    matches = re.findall(charge_pattern,adduct)
 
     # determine signe
     if matches:
@@ -192,7 +212,7 @@ def normalize_adduct(metadata_dict):
     adduct = metadata_dict["PRECURSORTYPE"]
 
 
-    match = re.search(r"(\[([A-Za-z0-9\+\-\(\)]*)\]((?:[0-9]*)?[\+\-\*])*)(?:\/|$)?", adduct)
+    match = re.search(adduct_pattern, adduct)
 
     if match: # Si deja le format correct, on ne fait rien
         if not match.group(3): # si pas de charge a la fin
@@ -211,9 +231,9 @@ def normalize_adduct(metadata_dict):
                     return metadata_dict
         return metadata_dict
     else: # pas le format correct
-        match = re.search("([A-Za-z0-9\+\-\(\)\*]*)", adduct)
+        match = re.search(adduct_pattern_2, adduct)
         if match:
-            if not re.search("(\d)?([\+\-\*])$", adduct): # si pas de charge a la fin
+            if not re.search(ending_by_charge_pattern, adduct): # si pas de charge a la fin
                 charge = determining_charge(adduct)
                 if "*" in match.group():
                     if charge:
@@ -228,7 +248,7 @@ def normalize_adduct(metadata_dict):
                     else:
                         return metadata_dict
             else:
-                charge = re.search("(\d)?([\+\-\*])$", adduct)
+                charge = re.search(ending_by_charge_pattern, adduct)
                 if charge:
                     metadata_dict["PRECURSORTYPE"] = "[" + match.group() + "]" + charge.group()
                     return metadata_dict
