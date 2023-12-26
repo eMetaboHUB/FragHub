@@ -25,6 +25,19 @@ adduct_pattern_2 = re.compile("([A-Za-z0-9\+\-\(\)\*]*)")
 global ending_by_charge_pattern
 ending_by_charge_pattern = re.compile("(\d)?([\+\-\*])$")
 
+global ionmode_pos_pattern
+ionmode_pos_pattern = re.compile("^p|^\+|^pos", flags=re.IGNORECASE)
+
+global ionmode_neg_pattern
+ionmode_neg_pattern = re.compile("^n|^\-|^neg", flags=re.IGNORECASE)
+
+global precursortype_pos_pattern
+precursortype_pos_pattern = re.compile("\][\+\*]*$")
+
+global precursortype_neg_pattern
+precursortype_neg_pattern = re.compile("\][\-\*]*$")
+
+
 def normalize_empties(metadata_dict):
     """
     Normalizes empties in a metadata dictionary.
@@ -255,6 +268,25 @@ def normalize_adduct(metadata_dict):
                 else:
                     return metadata_dict
 
+def standardize_modes(ionmode, precursortype, charge):
+    if re.search(ionmode_pos_pattern, ionmode):
+        ionmode = "positive"
+    elif re.search(ionmode_neg_pattern, ionmode):
+        ionmode = "negative"
+
+    return ionmode, precursortype, charge
+
+
+def normalize_ionmode(metadata_dict):
+    ionmode = metadata_dict["IONMODE"]
+    precursortype = metadata_dict["PRECURSORTYPE"]
+    charge = metadata_dict["CHARGE"]
+
+    ionmode,precursortype,charge = standardize_modes(ionmode, precursortype, charge)
+
+
+
+
 def normalize_values(metadata_dict):
     """
     :param metadata_dict: A dictionary containing metadata information.
@@ -266,14 +298,14 @@ def normalize_values(metadata_dict):
 
     metadata_dict = delete_no_smiles_inchi_inchikey(metadata_dict)
 
-    # if metadata_dict:
-    #     metadata_dict = normalize_adduct(metadata_dict)
-    #     # metadata_dict = normalize_ionmode(metadata_dict)
-    #     # metadata_dict = normalize_retention_time(metadata_dict)
-    #     # metadata_dict = normalize_ms_level(metadata_dict)
-    #     # metadata_dict = normalize_synonymes(metadata_dict)
-    #     # metadata_dict = normalize_formula(metadata_dict)
-    #     # metadata_dict = normalize_predicted(metadata_dict)
-    #     # metadata_dict = normalize_db_informations(metadata_dict)
+    if metadata_dict:
+         metadata_dict = normalize_adduct(metadata_dict)
+         # metadata_dict = normalize_ionmode(metadata_dict)
+         # metadata_dict = normalize_retention_time(metadata_dict)
+         # metadata_dict = normalize_ms_level(metadata_dict)
+         # metadata_dict = normalize_synonymes(metadata_dict)
+         # metadata_dict = normalize_formula(metadata_dict)
+         # metadata_dict = normalize_predicted(metadata_dict)
+         # metadata_dict = normalize_db_informations(metadata_dict)
 
     return metadata_dict
