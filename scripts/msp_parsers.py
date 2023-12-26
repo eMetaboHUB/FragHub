@@ -58,6 +58,12 @@ metadata_strip_value_pattern = re.compile("^\"|\"$")
 global peak_list_split_pattern
 peak_list_split_pattern = re.compile("(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
+global computed_pattern
+computed_pattern = re.compile("computed", flags=re.IGNORECASE)
+
+global comment_pattern
+comment_pattern = re.compile('comment.*', flags=re.IGNORECASE)
+
 def load_spectrum_list(msp_file_path):
     """
     Load a spectrum list from a given MSP (Mass Spectral Peak) file.
@@ -141,7 +147,7 @@ def check_for_metadata_in_comments(metadata_matches):
     new_metadata_matches = []
     # Check if comment filed exist
     for match in metadata_matches:
-        if re.search("comment.*", match[0], flags=re.IGNORECASE):
+        if re.search(comment_pattern, match[0]):
             if "=" in match[1]:
                 sub_fields_matches = re.findall(sub_fields_pattern, match[1])
                 if sub_fields_matches:
@@ -191,7 +197,7 @@ def metadata_to_dict(metadata):
 
     if metadata_matches:
         temp = check_for_metadata_in_comments(metadata_matches)
-        temp = [t for t in temp if not re.search("computed", t[0], flags=re.IGNORECASE)]
+        temp = [t for t in temp if not re.search(computed_pattern, t[0])]
         if temp != False:
             metadata_matches = temp
 
@@ -225,9 +231,6 @@ def peak_list_to_df(peak_list, precursormz):
         # Sort the array based on the mz values
         peak_array = peak_array[peak_array[:, 0].argsort()]
 
-        # Here you need to convert pandas apply_filters function as it won't work with numpy arrays
-        # You may need to rewrite the apply_filters function to handle np arrays or convert array back to dataframe
-        # apply_filters_numpy() is a hypothetical function, you need to implement it
         peak_array = apply_filters(peak_array, precursormz)
         return peak_array
     else:
