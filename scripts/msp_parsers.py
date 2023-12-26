@@ -40,6 +40,24 @@ keys_list = ['FILENAME',
              'COMMENT',
              'NUM PEAKS']
 
+global metadata_peak_list_split_pattern
+metadata_peak_list_split_pattern = re.compile("([\s\S]*:.[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
+
+global sub_fields_pattern
+sub_fields_pattern = re.compile("(\S+?)=\"([^\"]*)\"|\"(\w+?)=([^\"]*)\"|\"([^\"]*?)=([^\"]*)\"|(\S+?)=(\d+(?:[.,]\d*)?)|(\S+?)=(.*?)(?:;|\n|$)")
+
+global metadata_pattern
+metadata_pattern = re.compile("([^:\n]*?):\s*([^:\n]*)(?:\n|$)")
+
+global metadata_fields_name_pattern
+metadata_fields_name_pattern = re.compile(r'^[\W_]+|[\W_]+$')
+
+global metadata_strip_value_pattern
+metadata_strip_value_pattern = re.compile("^\"|\"$")
+
+global peak_list_split_pattern
+peak_list_split_pattern = re.compile("(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
+
 def load_spectrum_list(msp_file_path):
     """
     Load a spectrum list from a given MSP (Mass Spectral Peak) file.
@@ -95,7 +113,7 @@ def extract_metadata_and_peak_list(spectrum):
     """
     metadata,peak_list = None,None
 
-    match = re.search("([\s\S]*:.[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)", spectrum)
+    match = re.search(metadata_peak_list_split_pattern, spectrum)
 
     if match:
         metadata, peak_list = match.group(1), match.group(2)
@@ -125,7 +143,7 @@ def check_for_metadata_in_comments(metadata_matches):
     for match in metadata_matches:
         if re.search("comment.*", match[0], flags=re.IGNORECASE):
             if "=" in match[1]:
-                sub_fields_matches = re.findall('(\S+?)=\"([^\"]*)\"|\"(\w+?)=([^\"]*)\"|\"([^\"]*?)=([^\"]*)\"|(\S+?)=(\d+(?:[.,]\d*)?)|(\S+?)=(.*?)(?:;|\n|$)', match[1])
+                sub_fields_matches = re.findall(sub_fields_pattern, match[1])
                 if sub_fields_matches:
                     for sub_fields_match in sub_fields_matches:
                         non_empty_tuple = tuple(group for group in sub_fields_match if group)
@@ -169,7 +187,7 @@ def metadata_to_dict(metadata):
     """
     metadata_dict = {}
 
-    metadata_matches = re.findall("([^:\n]*?):\s*([^:\n]*)(?:\n|$)",metadata)
+    metadata_matches = re.findall(metadata_pattern,metadata)
 
     if metadata_matches:
         temp = check_for_metadata_in_comments(metadata_matches)
@@ -178,7 +196,7 @@ def metadata_to_dict(metadata):
             metadata_matches = temp
 
         for match in metadata_matches:
-            metadata_dict[re.sub(r'^[\W_]+|[\W_]+$', '', match[0]).lower().strip()] = re.sub("^\"|\"$","",match[1])
+            metadata_dict[re.sub(metadata_fields_name_pattern, '', match[0]).lower().strip()] = re.sub(metadata_strip_value_pattern,"",match[1])
 
         metadata_dict = convert_keys(metadata_dict)
         # metadata_dict = normalize_values(metadata_dict)
@@ -196,7 +214,7 @@ def peak_list_to_df(peak_list, precursormz):
     :return: A numpy array containing the peak data, with two columns for "mz" and "intensity". The "mz" column contains the m/z values, and the "intensity" column contains the corresponding
     * peak intensities.
     """
-    peaks_match = re.findall("(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)", peak_list)
+    peaks_match = re.findall(peak_list_split_pattern, peak_list)
 
     if peaks_match:
         peaks_match = [(float(i), float(j)) for i, j in peaks_match]
