@@ -164,7 +164,6 @@ def check_for_metadata_in_comments(metadata_matches):
 
     return new_metadata_matches if new_metadata_matches else False
 
-
 def convert_keys(metadata_dict):
     """
     Convert keys in metadata_dict based on the provided keys_dict and keys_list.
@@ -179,8 +178,6 @@ def convert_keys(metadata_dict):
     converted.update({key: "" for key in keys_list if key not in converted})
 
     return converted
-
-
 
 def metadata_to_dict(metadata):
     """
