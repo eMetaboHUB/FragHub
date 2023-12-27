@@ -205,7 +205,7 @@ def metadata_to_dict(metadata):
             metadata_dict[re.sub(metadata_fields_name_pattern, '', match[0]).lower().strip()] = re.sub(metadata_strip_value_pattern,"",match[1])
 
         metadata_dict = convert_keys(metadata_dict)
-        metadata_dict = normalize_values(metadata_dict)
+        # metadata_dict = normalize_values(metadata_dict)
 
         return metadata_dict
 
@@ -247,7 +247,7 @@ def structure_metadata_and_peak_list(metadata, peak_list):
     :return: Tuple containing the structured metadata and peak list as DataFrames.
     :rtype: tuple
     """
-    if metadata == None or peak_list == None:
+    if not metadata or not peak_list:
         return {},np.array([])
     else:
         metadata_dict = metadata_to_dict(metadata)
