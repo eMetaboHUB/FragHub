@@ -90,6 +90,8 @@ def load_spectrum_list(msp_file_path):
                     spectrum_list.append('\n'.join(buffer))
                     buffer = []
             else:
+                if buffer == []:
+                    buffer.append(f"FILENAME: {os.path.basename(msp_file_path)}") # adding filename to spectrum
                 buffer.append(line.strip())
 
     # Add the last spectrum to the list
