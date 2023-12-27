@@ -308,6 +308,12 @@ def normalize_ms_level(metadata_dict):
     return metadata_dict
 
 def normalize_predicted(metadata_dict):
+    """
+    Normalize the predicted field in the given metadata dictionary.
+
+    :param metadata_dict: A dictionary containing metadata information.
+    :return: The updated metadata dictionary with the normalized predicted field.
+    """
     comment_field = metadata_dict["COMMENT"]
     predicted = metadata_dict["PREDICTED"]
 
