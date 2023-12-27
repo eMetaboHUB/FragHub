@@ -148,6 +148,7 @@ def check_for_metadata_in_comments(metadata_matches):
     # Check if comment filed exist
     for match in metadata_matches:
         if re.search(comment_pattern, match[0]):
+            new_metadata_matches.append(match)
             if "=" in match[1]:
                 sub_fields_matches = re.findall(sub_fields_pattern, match[1])
                 if sub_fields_matches:
