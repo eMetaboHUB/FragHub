@@ -322,8 +322,8 @@ def normalize_values(metadata_dict):
          # metadata_dict = normalize_retention_time(metadata_dict)
          metadata_dict = normalize_ms_level(metadata_dict)
          # metadata_dict = normalize_synonymes(metadata_dict)
-         # metadata_dict = normalize_formula(metadata_dict)
+         # metadata_dict = normalize_formula(metadata_dict) # NOTE: dérivé depuis rdkit ==> plus propre
          # metadata_dict = normalize_predicted(metadata_dict)
-         # metadata_dict = normalize_db_informations(metadata_dict)
+         # metadata_dict = normalize_db_informations(metadata_dict) # NOTE: normalement plus besion, mais à vérifier
 
     return metadata_dict
