@@ -268,21 +268,23 @@ def normalize_adduct(metadata_dict):
                 else:
                     return metadata_dict
 
-def standardize_modes(ionmode, precursortype, charge):
+def normalize_ionmode(metadata_dict):
+    """
+    :param metadata_dict: A dictionary containing metadata information.
+        It should have the key "IONMODE" to represent the ionization mode.
+    :return: The updated metadata dictionary with the "IONMODE" value normalized to either "positive" or "negative".
+    """
+    ionmode = metadata_dict["IONMODE"]
+
     if re.search(ionmode_pos_pattern, ionmode):
         ionmode = "positive"
     elif re.search(ionmode_neg_pattern, ionmode):
         ionmode = "negative"
 
-    return ionmode, precursortype, charge
+    metadata_dict["IONMODE"] = ionmode
 
+    return metadata_dict
 
-def normalize_ionmode(metadata_dict):
-    ionmode = metadata_dict["IONMODE"]
-    precursortype = metadata_dict["PRECURSORTYPE"]
-    charge = metadata_dict["CHARGE"]
-
-    ionmode,precursortype,charge = standardize_modes(ionmode, precursortype, charge)
 
 
 
@@ -300,7 +302,7 @@ def normalize_values(metadata_dict):
 
     if metadata_dict:
          metadata_dict = normalize_adduct(metadata_dict)
-         # metadata_dict = normalize_ionmode(metadata_dict)
+         metadata_dict = normalize_ionmode(metadata_dict)
          # metadata_dict = normalize_retention_time(metadata_dict)
          # metadata_dict = normalize_ms_level(metadata_dict)
          # metadata_dict = normalize_synonymes(metadata_dict)
