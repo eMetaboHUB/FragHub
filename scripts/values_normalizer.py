@@ -324,9 +324,6 @@ def normalize_predicted(metadata_dict):
         metadata_dict["PREDICTED"] = "false"
         return metadata_dict
 
-
-
-
 def normalize_values(metadata_dict):
     """
     :param metadata_dict: A dictionary containing metadata information.
