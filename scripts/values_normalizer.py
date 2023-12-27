@@ -40,6 +40,8 @@ precursortype_neg_pattern = re.compile("\][\-\*]*$")
 global ms_level_pattern
 ms_level_pattern = re.compile("(?:ms)?(\d)", flags=re.IGNORECASE)
 
+global In_Silico_pattern
+In_Silico_pattern = re.compile("in.silico|insilico|predicted|theoretical|Annotation.level.3", flags=re.IGNORECASE)
 
 def normalize_empties(metadata_dict):
     """
@@ -305,7 +307,18 @@ def normalize_ms_level(metadata_dict):
 
     return metadata_dict
 
-# def normalize_predicted(metadata_dict):
+def normalize_predicted(metadata_dict):
+    comment_field = metadata_dict["COMMENT"]
+    predicted = metadata_dict["PREDICTED"]
+
+    if re.search(In_Silico_pattern,comment_field) or predicted == "true":
+        metadata_dict["PREDICTED"] = "true"
+        return metadata_dict
+    else:
+        metadata_dict["PREDICTED"] = "false"
+        return metadata_dict
+
+
 
 
 def normalize_values(metadata_dict):
@@ -326,7 +339,7 @@ def normalize_values(metadata_dict):
          metadata_dict = normalize_ms_level(metadata_dict)
          # metadata_dict = normalize_synonymes(metadata_dict)
          # metadata_dict = normalize_formula(metadata_dict) # NOTE: dérivé depuis rdkit ==> plus propre
-         # metadata_dict = normalize_predicted(metadata_dict)
+         metadata_dict = normalize_predicted(metadata_dict)
          # metadata_dict = normalize_db_informations(metadata_dict) # NOTE: normalement plus besion, mais à vérifier
 
     return metadata_dict
