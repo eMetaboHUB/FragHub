@@ -37,6 +37,9 @@ precursortype_pos_pattern = re.compile("\][\+\*]*$")
 global precursortype_neg_pattern
 precursortype_neg_pattern = re.compile("\][\-\*]*$")
 
+global ms_level_pattern
+ms_level_pattern = re.compile("(?:ms)?(\d)", flags=re.IGNORECASE)
+
 
 def normalize_empties(metadata_dict):
     """
@@ -285,8 +288,21 @@ def normalize_ionmode(metadata_dict):
 
     return metadata_dict
 
+def normalize_ms_level(metadata_dict):
+    """
+    Normalize the MS level value in the given metadata dictionary.
 
+    :param metadata_dict: The dictionary containing metadata information.
+    :type metadata_dict: dict
+    :return: The updated metadata dictionary with the normalized MS level value.
+    :rtype: dict
+    """
+    ms_level = metadata_dict["MSLEVEL"]
+    ms_level = re.search(ms_level_pattern, ms_level)
+    if ms_level:
+        metadata_dict["MSLEVEL"] = ms_level.group(1)
 
+    return metadata_dict
 
 
 def normalize_values(metadata_dict):
@@ -304,7 +320,7 @@ def normalize_values(metadata_dict):
          metadata_dict = normalize_adduct(metadata_dict)
          metadata_dict = normalize_ionmode(metadata_dict)
          # metadata_dict = normalize_retention_time(metadata_dict)
-         # metadata_dict = normalize_ms_level(metadata_dict)
+         metadata_dict = normalize_ms_level(metadata_dict)
          # metadata_dict = normalize_synonymes(metadata_dict)
          # metadata_dict = normalize_formula(metadata_dict)
          # metadata_dict = normalize_predicted(metadata_dict)
