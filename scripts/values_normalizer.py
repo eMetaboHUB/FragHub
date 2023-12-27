@@ -133,7 +133,7 @@ def repair_mol_descriptors(metadata_dict):
 
 
 
-def determining_charge(adduct): # NOTE: ATTENTION: pas certains que ce soit correcte
+def determining_adduct_charge(adduct): # NOTE: ATTENTION: pas certains que ce soit correcte
     """
     Calculate the charge of a given adduct.
 
@@ -229,7 +229,7 @@ def normalize_adduct(metadata_dict):
 
     if match: # Si deja le format correct, on ne fait rien
         if not match.group(3): # si pas de charge a la fin
-            charge = determining_charge(adduct)
+            charge = determining_adduct_charge(adduct)
             if "*" in match.group():
                 if charge:
                     metadata_dict["PRECURSORTYPE"] = adduct + charge + "*"
@@ -247,7 +247,7 @@ def normalize_adduct(metadata_dict):
         match = re.search(adduct_pattern_2, adduct)
         if match:
             if not re.search(ending_by_charge_pattern, adduct): # si pas de charge a la fin
-                charge = determining_charge(adduct)
+                charge = determining_adduct_charge(adduct)
                 if "*" in match.group():
                     if charge:
                         metadata_dict["PRECURSORTYPE"] = "[" + match.group() + "]" + charge + "*"
