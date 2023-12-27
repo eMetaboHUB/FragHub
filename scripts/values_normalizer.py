@@ -133,7 +133,7 @@ def repair_mol_descriptors(metadata_dict):
 
 
 
-def determining_charge(adduct):
+def determining_charge(adduct): # NOTE: ATTENTION: pas certains que ce soit correcte
     """
     Calculate the charge of a given adduct.
 
