@@ -72,7 +72,7 @@ def keep_mz_in_range(peak_array, mz_from, mz_to):
     mz_range = (peak_array[:,0] >= int(mz_from)) & (peak_array[:,0] <= int(mz_to))
     return peak_array[mz_range]
 
-def check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peaks):
+def check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peaks): # NOTE: potentiel probleme avec 3659e269-2355-485c-bfd8-cacc2a488a3e, retourn []
     """
     :param peak_array: A numpy array containing peak data. The array must have two columns with the first column for 'intensity'.
     :param intensity_percent: The minimum percentage of the maximum intensity required for a peak to be considered high.
@@ -123,8 +123,8 @@ def apply_filters(peak_array, precursormz):
     if parameters_dict['keep_mz_in_range'] == 1.0:
         peak_array = keep_mz_in_range(peak_array, mz_from, mz_to)
 
-    if parameters_dict['check_minimum_of_high_peaks_requiered'] == 1.0:
-        peak_array = check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peaks)
+    # if parameters_dict['check_minimum_of_high_peaks_requiered'] == 1.0:
+    #     peak_array = check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peaks)
 
     if len(peak_array) == 0:
         return np.array([])
