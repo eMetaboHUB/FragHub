@@ -298,12 +298,12 @@ def normalize_ms_level(metadata_dict):
     :rtype: dict
     """
     ms_level = metadata_dict["MSLEVEL"]
-    ms_level = re.search(ms_level_pattern, ms_level)
     if ms_level:
-        metadata_dict["MSLEVEL"] = ms_level.group(1)
+        ms_level = re.search(ms_level_pattern, ms_level)
+        if ms_level:
+            metadata_dict["MSLEVEL"] = ms_level.group(1)
 
     return metadata_dict
-
 
 def normalize_values(metadata_dict):
     """
