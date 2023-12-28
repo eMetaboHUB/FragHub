@@ -1,6 +1,9 @@
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
+from rdkit import RDLogger
 from pycdk.pycdk import *
 from rdkit import Chem
+
+RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
 
 def mols_derivator(metadata_dict):
     """
