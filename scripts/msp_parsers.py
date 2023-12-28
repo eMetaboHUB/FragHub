@@ -205,7 +205,7 @@ def metadata_to_dict(metadata):
             metadata_dict[re.sub(metadata_fields_name_pattern, '', match[0]).lower().strip()] = re.sub(metadata_strip_value_pattern,"",match[1])
 
         metadata_dict = convert_keys(metadata_dict)
-        # metadata_dict = normalize_values(metadata_dict)
+        metadata_dict = normalize_values(metadata_dict)
 
         return metadata_dict
 
