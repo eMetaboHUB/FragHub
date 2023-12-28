@@ -93,4 +93,4 @@ def generate_fraghub_id(msp_directory_path):
             spectrum_list = genrate_fraghubid_processing(spectrum_list)
 
             with open(msp_file_path, 'w', encoding='utf-8') as buffer:
-                buffer.write("\n\n".join(spectrum_list))
+                buffer.write("\n\n\n".join(spectrum_list))
