@@ -58,30 +58,11 @@ def genrate_fraghubid(spectrum):
 
     :param spectrum: The spectrum data.
     :return: The spectrum data with Fragment Hub ID.
-
-    Example:
-    --------
-    >>> spectrum = "MS/MS Spectrum"
-    >>> genrate_fraghubid(spectrum)
-    'FRAGHUBID: 123456\nMS/MS Spectrum'
     """
     hash_key = hash_spectrum_data(spectrum)
     spectrum = f"FRAGHUBID: {str(hash_key)}\n" + spectrum
 
     return spectrum
-def generate_fraghub_id(msp_directory_path):
-    """
-    Generate the FragHub ID for each spectrum in the given MSP directory path.
-
-    :param msp_directory_path: The path to the MSP directory.
-    :type msp_directory_path: str
-    :return: None
-    """
-    for files in os.listdir(msp_directory_path):
-        if files.endswith(".msp"):
-            msp_file_path = os.path.join(msp_directory_path, files)
-            spectrum_list= load_spectrum_list(msp_file_path)
-            spectrum_list = genrate_fraghubid_processing(spectrum_list)
 
 def genrate_fraghubid_processing(spectrum_list):
     """
@@ -96,3 +77,20 @@ def genrate_fraghubid_processing(spectrum_list):
     final = [res for res in results if res is not None]
 
     return final # returns the list of different worker executions.
+
+def generate_fraghub_id(msp_directory_path):
+    """
+    Generate the FragHub ID for each spectrum in the given MSP directory path.
+
+    :param msp_directory_path: The path to the MSP directory.
+    :type msp_directory_path: str
+    :return: None
+    """
+    for files in os.listdir(msp_directory_path):
+        if files.endswith(".msp"):
+            msp_file_path = os.path.join(msp_directory_path, files)
+            spectrum_list= load_spectrum_list(msp_file_path)
+            spectrum_list = genrate_fraghubid_processing(spectrum_list)
+
+            with open(msp_file_path, 'w', encoding='utf-8') as buffer:
+                buffer.write("\n\n".join(spectrum_list))
