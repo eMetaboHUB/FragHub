@@ -324,6 +324,19 @@ def normalize_predicted(metadata_dict):
         metadata_dict["PREDICTED"] = "false"
         return metadata_dict
 
+def normalize_synonymes(metadata_dict):
+    """
+    :param metadata_dict: A dictionary containing metadata for an object.
+                        The dictionary must have a 'SYNON' key representing the synonyms.
+    :return: The updated metadata dictionary with the synonyms normalized.
+
+    """
+    synonymes = metadata_dict['SYNON']
+    if synonymes == "$:00in-source":
+        metadata_dict['SYNON'] = ""
+
+    return metadata_dict
+
 def normalize_values(metadata_dict):
     """
     :param metadata_dict: A dictionary containing metadata information.
@@ -340,9 +353,8 @@ def normalize_values(metadata_dict):
          metadata_dict = normalize_ionmode(metadata_dict)
          # metadata_dict = normalize_retention_time(metadata_dict)
          metadata_dict = normalize_ms_level(metadata_dict)
-         # metadata_dict = normalize_synonymes(metadata_dict)
+         metadata_dict = normalize_synonymes(metadata_dict)
          # metadata_dict = normalize_formula(metadata_dict) # NOTE: dérivé depuis rdkit ==> plus propre
          metadata_dict = normalize_predicted(metadata_dict)
-         # metadata_dict = normalize_db_informations(metadata_dict) # NOTE: normalement plus besion, mais à vérifier
 
     return metadata_dict
