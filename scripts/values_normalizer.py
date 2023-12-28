@@ -1,3 +1,4 @@
+from mols_calculation import *
 import numpy as np
 import re
 
@@ -354,5 +355,6 @@ def normalize_values(metadata_dict):
          metadata_dict = normalize_ms_level(metadata_dict)
          metadata_dict = normalize_synonymes(metadata_dict)
          metadata_dict = normalize_predicted(metadata_dict)
+         metadata_dict = mols_calculation(metadata_dict)
 
     return metadata_dict
