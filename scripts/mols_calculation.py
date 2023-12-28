@@ -1,91 +1,104 @@
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from rdkit import RDLogger
 from pycdk.pycdk import *
+from tqdm import tqdm
+import pandas as pd
 from rdkit import Chem
 
 RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
 
-def mols_derivator(metadata_dict):
+def apply_transformations(row):
     """
-    Derives molecular properties from the given metadata dictionary.
+    Apply transformations to the given row.
 
-    :param metadata_dict: A dictionary containing metadata of a molecule.
-                          It should have the keys "INCHI" and "SMILES".
-                          The values corresponding to these keys should be valid InChI and SMILES representations, respectively.
-                          Note: At least one of the keys should have a value.
-
-    :return: The metadata dictionary with additional derived properties.
-             The keys "INCHI", "INCHIKEY", "SMILES", and "FORMULA" will be added with their respective derived values.
+    :param row: The row to apply transformations to.
+    :return: The row with transformed values.
 
     """
-    inchi = metadata_dict["INCHI"]
-    smiles = metadata_dict["SMILES"]
-
-    if inchi:
-        mol = Chem.MolFromInchi(inchi)
+    if not pd.isna(row['INCHI']):
+        mol = Chem.MolFromInchi(row['INCHI'])
         if mol is not None:
-            metadata_dict['INCHI'] = Chem.MolToInchi(mol)
-            metadata_dict['INCHIKEY'] = Chem.MolToInchiKey(mol)
-            metadata_dict['SMILES'] = Chem.MolToSmiles(mol)
-            metadata_dict['FORMULA'] = CalcMolFormula(mol)
-    elif smiles:
-        mol = Chem.MolFromSmiles(smiles)
+            row['INCHI'] = Chem.MolToInchi(mol)
+            row['INCHIKEY'] = Chem.MolToInchiKey(mol)
+            row['SMILES'] = Chem.MolToSmiles(mol)
+            row['FORMULA'] = CalcMolFormula(mol)
+    elif not pd.isna(row['SMILES']):
+        mol = Chem.MolFromSmiles(row['SMILES'])
         if mol is not None:
-            metadata_dict['SMILES'] = Chem.MolToSmiles(mol)
-            metadata_dict['INCHI'] = Chem.MolToInchi(mol)
-            metadata_dict['INCHIKEY'] = Chem.MolToInchiKey(mol)
-            metadata_dict['FORMULA'] = CalcMolFormula(mol)
+            row['SMILES'] = Chem.MolToSmiles(mol)
+            row['INCHI'] = Chem.MolToInchi(mol)
+            row['INCHIKEY'] = Chem.MolToInchiKey(mol)
+            row['FORMULA'] = CalcMolFormula(mol)
+    return row
 
-    return metadata_dict
-
-def mass_calculation(metadata_dict):
+def mols_derivator(CONCATENATE_DF):
     """
-    :param metadata_dict: A dictionary containing metadata information, including the SMILES string.
-    :return: The updated metadata dictionary.
+    :param CONCATENATE_DF: DataFrame containing the data to be transformed.
+    :return: DataFrame with the transformed data.
 
-    This method performs mass calculations using the CDK library for the molecule specified by the SMILES string in the metadata dictionary. The method adds two new entries to the metadata
-    * dictionary: 'EXACTMASS' and 'AVERAGEMASS', representing the exact mass and average mass of the molecule, respectively.
+    This method applies transformations to each row of the input DataFrame in parallel using the `apply` function. It tracks the progress using a progress bar provided by the `tqdm` library
+    *. The transformations are applied by calling the `apply_transformations` function on each row. After all transformations are applied, the updated DataFrame is returned.
 
     Example usage:
-    metadata = {
-        "SMILES": "C1=CC=CC=C1"
-    }
-    mass_calculation(metadata)
-    print(metadata)  # {'SMILES': 'C1=CC=CC=C1', 'EXACTMASS': '90.0399', 'AVERAGEMASS': '91.0938'}
+    ```
+    result = mols_derivator(input_df)
+    ```
     """
-    SMILES = metadata_dict["SMILES"]
+    total_rows = len(CONCATENATE_DF)
+    t = tqdm(total=total_rows, unit=" rows", colour="green", desc="\t  generating")
 
-    if SMILES:
-        # CDK exact mass
-        try:
-            mol = MolFromSmiles(SMILES)
-            if mol is not None:
-                metadata_dict['EXACTMASS'] = str(getMolExactMass(mol))
-        except:
-            return metadata_dict
+    CONCATENATE_DF = CONCATENATE_DF.apply(apply_transformations, axis=1)
+
+    t.update(total_rows)
+
+    # Fermer la barre de progression
+    t.close()
+
+    return CONCATENATE_DF
+
+def mass_calculation(row):
+    """
+    Mass calculation method.
+
+    :param row: pandas DataFrame row containing 'SMILES' column
+    :return: pandas DataFrame row with calculated 'EXACTMASS' and 'AVERAGEMASS' columns
+
+    """
+    if not pd.isna(row['SMILES']):
+        SMILES = str(row['SMILES'])
+        if SMILES != "None":
+            try:
+                mol = MolFromSmiles(SMILES)
+                if mol is not None:
+                    row['EXACTMASS'] = str(getMolExactMass(mol))
+            except:
+                return row
         # CDK average mass
-        try:
-            mol = MolFromSmiles(SMILES)
-            if mol is not None:
-                metadata_dict['AVERAGEMASS'] = str(getMolNaturalMass(mol))
-        except:
-            return metadata_dict
+        SMILES = str(row['SMILES'])
+        if SMILES != "None":
+            try:
+                mol = MolFromSmiles(SMILES)
+                if mol is not None:
+                    row['AVERAGEMASS'] = str(getMolNaturalMass(mol))
+            except:
+                return row
 
-    return metadata_dict
+    return row
 
-def mols_calculation(metadata_dict):
+def mass_calculator(CONCATENATE_DF):
     """
-    :param metadata_dict: A dictionary containing metadata about a compound or molecule.
+    Calculate mass for each row in the given DataFrame.
 
-    :return: The updated metadata dictionary with additional derived properties.
-
-    This method performs calculations on the given metadata to derive additional information about a compound or molecule. It first calls the 'mols_derivator' function to compute molecule
-    * derivatives and updates the metadata dictionary accordingly. Then, it calls the 'mass_calculation' function to calculate the mass of the molecule and updates the metadata dictionary
-    * again.
-
-    The final updated metadata_dict is returned.
+    :param CONCATENATE_DF: The DataFrame containing the data.
+    :return: The DataFrame with mass values calculated and updated.
     """
-    metadata_dict = mols_derivator(metadata_dict)
-    metadata_dict = mass_calculation(metadata_dict)
+    total_rows = len(CONCATENATE_DF)
+    t = tqdm(total=total_rows, unit=" rows", colour="green", desc="\t  processing")
 
-    return metadata_dict
+    CONCATENATE_DF = CONCATENATE_DF.apply(mass_calculation, axis=1)
+    t.update(total_rows)
+
+    # Fermer la barre de progression
+    t.close()
+
+    return CONCATENATE_DF
