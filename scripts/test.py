@@ -66,7 +66,7 @@ df = df[ordered_columns]
 
 print("-- MOLS HARMONIZATION --")
 time.sleep(0.01)
-df = mols_derivator(df)  # REMOVE NO SMILES/INCHI désormais inclut dans cette fonction
+df = mols_derivator(df)
 
 print("-- MASS CALCULATION --")
 time.sleep(0.01)
