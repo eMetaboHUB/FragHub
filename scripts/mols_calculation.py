@@ -8,51 +8,52 @@ from rdkit import Chem
 RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
 
 def apply_transformations(row):
-    """
-    Apply transformations to the given row.
+    unique_transforms = {}
 
-    :param row: The row to apply transformations to.
-    :return: The row with transformed values.
-
-    """
     if not pd.isna(row['INCHI']):
         mol = Chem.MolFromInchi(row['INCHI'])
         if mol is not None:
-            row['INCHI'] = Chem.MolToInchi(mol)
-            row['INCHIKEY'] = Chem.MolToInchiKey(mol)
-            row['SMILES'] = Chem.MolToSmiles(mol)
-            row['FORMULA'] = CalcMolFormula(mol)
+            unique_transforms[row['INCHI']] = {
+                'INCHI': Chem.MolToInchi(mol),
+                'INCHIKEY': Chem.MolToInchiKey(mol),
+                'SMILES': Chem.MolToSmiles(mol),
+                'FORMULA': CalcMolFormula(mol),
+            }
     elif not pd.isna(row['SMILES']):
         mol = Chem.MolFromSmiles(row['SMILES'])
         if mol is not None:
-            row['SMILES'] = Chem.MolToSmiles(mol)
-            row['INCHI'] = Chem.MolToInchi(mol)
-            row['INCHIKEY'] = Chem.MolToInchiKey(mol)
-            row['FORMULA'] = CalcMolFormula(mol)
-    return row
+            unique_transforms[row['SMILES']] = {
+                'INCHI': Chem.MolToInchi(mol),
+                'INCHIKEY': Chem.MolToInchiKey(mol),
+                'SMILES': Chem.MolToSmiles(mol),
+                'FORMULA': CalcMolFormula(mol),
+            }
+    return unique_transforms
 
 def mols_derivator(CONCATENATE_DF):
     """
     :param CONCATENATE_DF: DataFrame containing the data to be transformed.
     :return: DataFrame with the transformed data.
 
-    This method applies transformations to each row of the input DataFrame in parallel using the `apply` function. It tracks the progress using a progress bar provided by the `tqdm` library
-    *. The transformations are applied by calling the `apply_transformations` function on each row. After all transformations are applied, the updated DataFrame is returned.
-
-    Example usage:
-    ```
-    result = mols_derivator(input_df)
-    ```
+    This method applies transformations to each row of the input DataFrame. It tracks the progress using a progress bar provided by the `tqdm` library.
+    The transformations are applied by calling the `apply_transformations` function on each row. After all transformations have been collected, they are applied to DataFrame. The updated DataFrame is returned.
     """
+
+    unique_transforms = {}
     total_rows = len(CONCATENATE_DF)
+
     t = tqdm(total=total_rows, unit=" rows", colour="green", desc="\t  generating")
 
-    CONCATENATE_DF = CONCATENATE_DF.apply(apply_transformations, axis=1)
+    for i in range(total_rows):
+        row = CONCATENATE_DF.iloc[i]
+        unique_transforms.update(apply_transformations(row))
+        t.update()
 
-    t.update(total_rows)
-
-    # Fermer la barre de progression
     t.close()
+
+    for key, val in unique_transforms.items():
+        CONCATENATE_DF.loc[CONCATENATE_DF['INCHI'] == key] = val
+        CONCATENATE_DF.loc[CONCATENATE_DF['SMILES'] == key] = val
 
     return CONCATENATE_DF
 
