@@ -1,11 +1,18 @@
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from rdkit import RDLogger
 from pycdk.pycdk import *
+from rdkit import Chem
 from tqdm import tqdm
 import pandas as pd
-from rdkit import Chem
+import logging
 
 RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
+
+# Get the logger for 'pycdk'
+logger = logging.getLogger('pycdk')
+
+# Set the logging level to CRITICAL to ignore all logging messages
+logger.setLevel(logging.CRITICAL)
 
 def apply_transformations(inchi_smiles):
     """
@@ -27,93 +34,46 @@ def apply_transformations(inchi_smiles):
                 'FORMULA': CalcMolFormula(mol),
             }
         # Mass calculation
-        mol = MolFromInchi(inchi_smiles) if 'InChI=' in inchi_smiles else MolFromSmiles(inchi_smiles)
-        if mol is not None:
-            try:
-                transforms['EXACTMASS'] = str(getMolExactMass(mol))
-                transforms['AVERAGEMASS'] = str(getMolNaturalMass(mol))
-            except:
-                return transforms
+        if transforms:
+            mol = MolFromInchi(transforms['INCHI']) if 'InChI=' in inchi_smiles else MolFromSmiles(transforms['SMILES'])
+            if mol is not None:
+                try:
+                    transforms['EXACTMASS'] = str(getMolExactMass(mol))
+                    transforms['AVERAGEMASS'] = str(getMolNaturalMass(mol))
+                except:
+                    return transforms
 
     return transforms
 
+
 def map_transformations(row, unique_transforms):
     """
-    Transforms a DataFrame row using a dictionary of unique transformations.
+    Maps transformations to each row based on the values of 'INCHI' or 'SMILES' columns.
 
-    :param row: A row from a DataFrame.
-    :param unique_transforms: A dictionary containing unique transformations, with keys as INCHI or SMILES and values as transformed data.
-    :return: A transformed row as a pandas Series, if the row's INCHI or SMILES exists in the unique_transforms dictionary. Otherwise, returns the original row.
-
+    :param row: A pandas DataFrame row.
+    :param unique_transforms: A dictionary that maps unique values of 'INCHI' or 'SMILES' to transformations.
+    :return: The updated row with the transformations applied.
     """
     if row['INCHI'] in unique_transforms:
-        return pd.Series(unique_transforms[row['INCHI']])
+        row.update(pd.Series(unique_transforms[row['INCHI']]))
     elif row['SMILES'] in unique_transforms:
-        return pd.Series(unique_transforms[row['SMILES']])
-    else:
-        return row
+        row.update(pd.Series(unique_transforms[row['SMILES']]))
+    return row
+
 
 def mols_derivation_and_calculation(CONCATENATE_DF):
     """
-    :param CONCATENATE_DF: A pandas DataFrame containing columns 'INCHI' and 'SMILES'.
-    :return: The modified CONCATENATE_DF DataFrame with additional columns containing the respective transformations for each unique INCHI or SMILES.
+    Derives and calculates molecular properties based on unique INCHI and SMILES in the given DataFrame.
 
-    This method derives and calculates transformations for each unique INCHI or SMILES in the given CONCATENATE_DF DataFrame. It first identifies the unique INCHI or SMILES and creates a
-    * dictionary that maps each unique INCHI or SMILES to its respective transformations. Then, it applies the transformations to each row of the CONCATENATE_DF DataFrame using the map_transform
-    *ations function. Finally, it returns the modified CONCATENATE_DF DataFrame.
+    :param CONCATENATE_DF: DataFrame containing the INCHI and SMILES columns.
+    :return: DataFrame with calculated molecular properties.
     """
     unique_inchi_smiles = pd.concat([CONCATENATE_DF['INCHI'], CONCATENATE_DF['SMILES']]).dropna().unique()
 
     # Creating a dict that maps each unique INCHI or SMILES to its respective transformations.
     unique_transforms = {inchi_smiles: apply_transformations(inchi_smiles) for inchi_smiles in tqdm(unique_inchi_smiles, unit=" rows", colour="green", desc="generating")}
 
+    # Using apply to apply the transformations
     CONCATENATE_DF = CONCATENATE_DF.apply(map_transformations, axis=1, args=(unique_transforms,))
 
     return CONCATENATE_DF
-
-# def mass_calculation(row):
-#     """
-#     Mass calculation method.
-#
-#     :param row: pandas DataFrame row containing 'SMILES' column
-#     :return: pandas DataFrame row with calculated 'EXACTMASS' and 'AVERAGEMASS' columns
-#
-#     """
-#     if not pd.isna(row['SMILES']):
-#         SMILES = str(row['SMILES'])
-#         if SMILES != "None":
-#             try:
-#                 mol = MolFromSmiles(SMILES)
-#                 if mol is not None:
-#                     row['EXACTMASS'] = str(getMolExactMass(mol))
-#             except:
-#                 return row
-#         # CDK average mass
-#         SMILES = str(row['SMILES'])
-#         if SMILES != "None":
-#             try:
-#                 mol = MolFromSmiles(SMILES)
-#                 if mol is not None:
-#                     row['AVERAGEMASS'] = str(getMolNaturalMass(mol))
-#             except:
-#                 return row
-#
-#     return row
-#
-# def mass_calculator(CONCATENATE_DF):
-#     """
-#     Calculate mass for each row in the given DataFrame.
-#
-#     :param CONCATENATE_DF: The DataFrame containing the data.
-#     :return: The DataFrame with mass values calculated and updated.
-#     """
-#     total_rows = len(CONCATENATE_DF)
-#     t = tqdm(total=total_rows, unit=" rows", colour="green", desc="\t  processing")
-#
-#     CONCATENATE_DF = CONCATENATE_DF.apply(mass_calculation, axis=1)
-#     t.update(total_rows)
-#
-#     # Fermer la barre de progression
-#     t.close()
-#
-#     return CONCATENATE_DF
