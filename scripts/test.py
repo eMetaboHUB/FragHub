@@ -64,13 +64,13 @@ df = pd.DataFrame(spectrum_list)
 
 df = df[ordered_columns]
 
-print("-- MOLS HARMONIZATION --")
+print("-- MOLS HARMONIZATION AND MASS CALCULATION --")
 time.sleep(0.01)
-df = mols_derivator(df)
+df = mols_derivation_and_calculation(df)
 
-print("-- MASS CALCULATION --")
-time.sleep(0.01)
-df = mass_calculator(df)
+# print("-- MASS CALCULATION --")
+# time.sleep(0.01)
+# df = mass_calculator(df)
 
 fraghub_id_column = pd.DataFrame(columns=['FRAGHUBID'])
 fraghub_id_column = df[["FRAGHUBID"]]
