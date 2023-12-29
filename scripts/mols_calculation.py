@@ -1,18 +1,10 @@
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
-from rdkit import RDLogger
+from rdkit import RDLogger, Chem
 from pycdk.pycdk import *
-from rdkit import Chem
 from tqdm import tqdm
 import pandas as pd
-import logging
 
 RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
-
-# Get the logger for 'pycdk'
-logger = logging.getLogger('pycdk')
-
-# Set the logging level to CRITICAL to ignore all logging messages
-logger.setLevel(logging.CRITICAL)
 
 def apply_transformations(inchi_smiles):
     """
