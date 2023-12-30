@@ -55,7 +55,7 @@ for path in spectrum_path_list:
     spectrum_list = load_spectrum_list(path)
     break
 
-spectrum_list = msp_parsing_processing(spectrum_list)
+spectrum_list = msp_cleaning_processing(spectrum_list)
 
 # print(len(spectrum_list))
 
