@@ -43,7 +43,7 @@ ordered_columns = ["FILENAME",
                    "IONMODE",
                    "COMMENT",
                    "NUM PEAKS",
-                   "peak_list"]
+                   "PEAKS_LIST"]
 
 if __name__ == "__main__":
 
