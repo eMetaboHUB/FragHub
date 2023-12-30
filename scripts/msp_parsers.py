@@ -295,7 +295,7 @@ def msp_parser(spectrum):
         metadata['peak_list'] = peak_list
         return metadata
 
-def msp_parsing_processing(spectrum_list):
+def msp_cleaning_processing(spectrum_list):
     """
     :param spectrum_list: A list of spectrum data to be processed.
     :return: A list containing the results of processing the spectrum data.
