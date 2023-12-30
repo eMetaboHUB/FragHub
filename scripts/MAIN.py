@@ -96,6 +96,8 @@ if __name__ == "__main__":
     time.sleep(0.01)
     generate_fraghub_id(r"../INPUT/MSP")
 
+    CONCATENATED_SPECTRUMS_RESULTS = []
+
     # Creating list of spectrums
     for files in os.listdir(msp_dir):
         if files.endswith(".msp"):
@@ -108,61 +110,52 @@ if __name__ == "__main__":
             spectrum_list = load_spectrum_list(msp_path)
             spectrum_list = msp_cleaning_processing(spectrum_list)
 
-            df = pd.DataFrame(spectrum_list)
+            CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
 
             del spectrum_list
 
-            df = df[ordered_columns]
+    CONCATENATED_SPECTRUMS_DATAFRAME = pd.DataFrame(CONCATENATED_SPECTRUMS_RESULTS)
+
+    CONCATENATED_SPECTRUMS_DATAFRAME = CONCATENATED_SPECTRUMS_DATAFRAME[ordered_columns]
 
     # # STEP 4: (All msp files were cleaned)
-    clean_msp_path = os.path.join(output_path,"MSP")
-    CONCATENATE_LIST = concatenate_clean_msp(clean_msp_path)  # ICI mettre un df en sortie pour démarrer le traitement csv
-
-    CONCATENATE_DF = msp_to_csv(CONCATENATE_LIST)
-
-    del CONCATENATE_LIST
-
-    print("-- MOLS HARMONIZATION --")
+    print("-- MOLS HARMONIZATION AND MASS CALCULATION --")
     time.sleep(0.01)
-    CONCATENATE_DF = mols_derivator(CONCATENATE_DF)  # REMOVE NO SMILES/INCHI désormais inclut dans cette fonction
+    CONCATENATED_SPECTRUMS_DATAFRAME = mols_derivation_and_calculation(CONCATENATED_SPECTRUMS_DATAFRAME)
 
-    print("-- MASS CALCULATION --")
-    time.sleep(0.01)
-    CONCATENATE_DF = mass_calculator(CONCATENATE_DF)
-
-    print("-- NAMES COMPLETION --")
-    time.sleep(0.01)
-    CONCATENATE_DF = names_completion(CONCATENATE_DF)
-
-    print("-- SPLITTING [POS / NEG] --")
-    time.sleep(0.01)
-    POS, NEG = split_pos_neg(CONCATENATE_DF)
-
-    # STEP 5: Split LC / GC
-    time.sleep(0.01)
-    print("-- SPLITTING [LC / GC] --")
-    time.sleep(0.01)
-    POS_LC,POS_GC,NEG_LC,NEG_GC = split_LC_GC(POS,NEG)
-
-    del POS
-    del NEG
-
-    # STEP 5: EXP / In-Silico
-    time.sleep(0.01)
-    print("-- SPLITTING EXP / In-Silico --")
-    time.sleep(0.01)
-    POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico = exp_in_silico_splitter(POS_LC,POS_GC,NEG_LC,NEG_GC)
-
-
-    # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
-    print("-- REMOVING DUPLICATAS --")
-    time.sleep(0.01)
-    POS_LC,POS_LC_df,POS_LC_df_insilico,POS_LC_In_Silico,POS_GC,POS_GC_df,POS_GC_df_insilico,POS_GC_In_Silico,NEG_LC,NEG_LC_df,NEG_LC_df_insilico,NEG_LC_In_Silico,NEG_GC,NEG_GC_df,NEG_GC_df_insilico,NEG_GC_In_Silico = remove_duplicatas(POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico)
-
-    print("-- WRITING MSP --")
-    writting_msp(clean_msp_path, POS_LC, POS_GC, NEG_LC, NEG_GC, POS_LC_In_Silico, POS_GC_In_Silico, NEG_LC_In_Silico, NEG_GC_In_Silico)
-
-    print("-- WRITING CSV --")
-    writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico)
+    # print("-- NAMES COMPLETION --")
+    # time.sleep(0.01)
+    # CONCATENATED_SPECTRUMS_DATAFRAME = names_completion(CONCATENATED_SPECTRUMS_DATAFRAME)
+    #
+    # print("-- SPLITTING [POS / NEG] --")
+    # time.sleep(0.01)
+    # POS, NEG = split_pos_neg(CONCATENATE_DF)
+    #
+    # # STEP 5: Split LC / GC
+    # time.sleep(0.01)
+    # print("-- SPLITTING [LC / GC] --")
+    # time.sleep(0.01)
+    # POS_LC,POS_GC,NEG_LC,NEG_GC = split_LC_GC(POS,NEG)
+    #
+    # del POS
+    # del NEG
+    #
+    # # STEP 5: EXP / In-Silico
+    # time.sleep(0.01)
+    # print("-- SPLITTING EXP / In-Silico --")
+    # time.sleep(0.01)
+    # POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico = exp_in_silico_splitter(POS_LC,POS_GC,NEG_LC,NEG_GC)
+    #
+    #
+    # # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
+    # print("-- REMOVING DUPLICATAS --")
+    # time.sleep(0.01)
+    # POS_LC,POS_LC_df,POS_LC_df_insilico,POS_LC_In_Silico,POS_GC,POS_GC_df,POS_GC_df_insilico,POS_GC_In_Silico,NEG_LC,NEG_LC_df,NEG_LC_df_insilico,NEG_LC_In_Silico,NEG_GC,NEG_GC_df,NEG_GC_df_insilico,NEG_GC_In_Silico = remove_duplicatas(POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico)
+    #
+    # print("-- WRITING MSP --")
+    # writting_msp(clean_msp_path, POS_LC, POS_GC, NEG_LC, NEG_GC, POS_LC_In_Silico, POS_GC_In_Silico, NEG_LC_In_Silico, NEG_GC_In_Silico)
+    #
+    # print("-- WRITING CSV --")
+    # writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico)
 
     print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
