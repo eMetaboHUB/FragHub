@@ -123,34 +123,34 @@ if __name__ == "__main__":
     time.sleep(0.01)
     CONCATENATED_SPECTRUMS_DATAFRAME = mols_derivation_and_calculation(CONCATENATED_SPECTRUMS_DATAFRAME)
 
-    # print("-- NAMES COMPLETION --")
-    # time.sleep(0.01)
-    # CONCATENATED_SPECTRUMS_DATAFRAME = names_completion(CONCATENATED_SPECTRUMS_DATAFRAME)
-    #
-    # print("-- SPLITTING [POS / NEG] --")
-    # time.sleep(0.01)
-    # POS, NEG = split_pos_neg(CONCATENATE_DF)
-    #
-    # # STEP 5: Split LC / GC
-    # time.sleep(0.01)
-    # print("-- SPLITTING [LC / GC] --")
-    # time.sleep(0.01)
-    # POS_LC,POS_GC,NEG_LC,NEG_GC = split_LC_GC(POS,NEG)
-    #
-    # del POS
-    # del NEG
-    #
-    # # STEP 5: EXP / In-Silico
-    # time.sleep(0.01)
-    # print("-- SPLITTING EXP / In-Silico --")
-    # time.sleep(0.01)
-    # POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico = exp_in_silico_splitter(POS_LC,POS_GC,NEG_LC,NEG_GC)
-    #
-    #
-    # # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
-    # print("-- REMOVING DUPLICATAS --")
-    # time.sleep(0.01)
-    # POS_LC,POS_LC_df,POS_LC_df_insilico,POS_LC_In_Silico,POS_GC,POS_GC_df,POS_GC_df_insilico,POS_GC_In_Silico,NEG_LC,NEG_LC_df,NEG_LC_df_insilico,NEG_LC_In_Silico,NEG_GC,NEG_GC_df,NEG_GC_df_insilico,NEG_GC_In_Silico = remove_duplicatas(POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico)
+    print("-- NAMES COMPLETION --")
+    time.sleep(0.01)
+    CONCATENATED_SPECTRUMS_DATAFRAME = names_completion(CONCATENATED_SPECTRUMS_DATAFRAME)
+
+    print("-- SPLITTING [POS / NEG] --")
+    time.sleep(0.01)
+    POS, NEG = split_pos_neg(CONCATENATED_SPECTRUMS_DATAFRAME)
+
+    # STEP 5: Split LC / GC
+    time.sleep(0.01)
+    print("-- SPLITTING [LC / GC] --")
+    time.sleep(0.01)
+    POS_LC,POS_GC,NEG_LC,NEG_GC = split_LC_GC(POS,NEG)
+
+    del POS
+    del NEG
+
+    # STEP 5: Split EXP / In-Silico
+    time.sleep(0.01)
+    print("-- SPLITTING EXP / In-Silico --")
+    time.sleep(0.01)
+    POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico = exp_in_silico_splitter(POS_LC,POS_GC,NEG_LC,NEG_GC)
+
+
+    # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
+    print("-- REMOVING DUPLICATAS --")
+    time.sleep(0.01)
+    POS_LC,POS_LC_df,POS_LC_df_insilico,POS_LC_In_Silico,POS_GC,POS_GC_df,POS_GC_df_insilico,POS_GC_In_Silico,NEG_LC,NEG_LC_df,NEG_LC_df_insilico,NEG_LC_In_Silico,NEG_GC,NEG_GC_df,NEG_GC_df_insilico,NEG_GC_In_Silico = remove_duplicatas(POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico)
     #
     # print("-- WRITING MSP --")
     # writting_msp(clean_msp_path, POS_LC, POS_GC, NEG_LC, NEG_GC, POS_LC_In_Silico, POS_GC_In_Silico, NEG_LC_In_Silico, NEG_GC_In_Silico)
