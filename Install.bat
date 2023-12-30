@@ -1,13 +1,10 @@
 @echo off
 
-
 :start
 cls
 
+python ./setup.py
 
-python -m pip install -r requirements.txt
-
-pause
 exit
 
 
