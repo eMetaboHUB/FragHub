@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
             del spectrum_list
 
-    CONCATENATED_SPECTRUMS_DATAFRAME = pd.DataFrame(CONCATENATED_SPECTRUMS_RESULTS)[ordered_columns]
+    CONCATENATED_SPECTRUMS_DATAFRAME = pd.DataFrame(CONCATENATED_SPECTRUMS_RESULTS)[ordered_columns].astype(str)
 
     del CONCATENATED_SPECTRUMS_RESULTS
 
