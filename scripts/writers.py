@@ -1,6 +1,7 @@
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
+import time
 import os
 import re
 
@@ -83,6 +84,7 @@ def write_csv(df,filename):
     This method writes a pandas DataFrame object to a CSV file. The output file is saved in the "../OUTPUT/CSV/POS" directory with the same name as the input file, but with the extension
     * changed to ".csv". The data is written in chunks of 5000 rows to improve efficiency. The progress of writing is displayed with a progress bar.
     """
+    time.sleep(0.01)
     print(f"-- {filename.replace('.msp','.csv')} --")
 
     output_file_path = os.path.join("../OUTPUT/CSV/POS",filename)
