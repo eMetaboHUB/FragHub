@@ -126,7 +126,9 @@ def apply_filters(peak_array, precursormz):
     # if parameters_dict['check_minimum_of_high_peaks_requiered'] == 1.0:
     #     peak_array = check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peaks)
 
+    peak_array = np.array2string(peak_array)
+
     if len(peak_array) == 0:
-        return np.array([])
+        return ''
 
     return peak_array
