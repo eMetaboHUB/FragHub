@@ -1,6 +1,10 @@
-from matchms.importing import load_from_msp
+
 from duplicatas_remover import *
-from matchms_processing import *
+from msp_parsers import *
+from set_parameters import *
+from fraghubid_generator import *
+import numpy as np
+
 from rdkit import RDLogger
 from msp_utilities import *
 from converters import *
@@ -12,10 +16,12 @@ import sys
 import os
 
 RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
-logger = logging.getLogger("matchms") # Disable matchms log messages
-logger.disabled = True
 
 if __name__ == "__main__":
+
+    # Execution du GUI
+    build_window()
+
     start_time = time.time()
 
     input_path = r"..\INPUT"
@@ -60,20 +66,19 @@ if __name__ == "__main__":
     # generating FRAGHUBID
     print("-- GENERATING FragHub UNIQUE ID --")
     time.sleep(0.01)
-    unique_id_generator()
+    generate_fraghub_id(r"../INPUT/MSP")
 
     # Creating list of spectrums
     for files in os.listdir(msp_dir):
         if files.endswith(".msp"):
             msp_path = os.path.join(msp_dir, files)
-            file_name = os.path.basename(msp_path.replace(".msp", ""))
 
-            correct_uncomplete_charge(msp_path)
+            # correct_uncomplete_charge(msp_path)
 
             # STEP 3: Execute matchms (Multithreaded)
-            print("-- CLEANING: ",file_name," --")
-            spectrum_list = list(load_from_msp(msp_path))
-            results = matchms_processing(spectrum_list,file_name)
+            print(f"-- CLEANING: {files} --")
+            spectrum_list = load_spectrum_list(msp_path)
+            spectrum_list = msp_cleaning_processing(spectrum_list)
 
             del spectrum_list
 
