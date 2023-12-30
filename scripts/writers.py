@@ -5,77 +5,62 @@ import time
 import os
 import re
 
-def writting_msp(clean_msp_path,POS_LC,POS_GC,NEG_LC,NEG_GC,POS_LC_In_Silico,POS_GC_In_Silico,NEG_LC_In_Silico,NEG_GC_In_Silico):
+def write_msp(spectrum_list, filename, mode):
     """
-    :param clean_msp_path: The path where the cleaned MSP files will be saved.
-    :param POS_LC: A list of strings representing the positive LC data.
-    :param POS_GC: A list of strings representing the positive GC data.
-    :param NEG_LC: A list of strings representing the negative LC data.
-    :param NEG_GC: A list of strings representing the negative GC data.
-    :param POS_LC_In_Silico: A list of strings representing the positive LC In Silico data.
-    :param POS_GC_In_Silico: A list of strings representing the positive GC In Silico data.
-    :param NEG_LC_In_Silico: A list of strings representing the negative LC In Silico data.
-    :param NEG_GC_In_Silico: A list of strings representing the negative GC In Silico data.
+    Write the given spectrum list to a file in MSP format.
+
+    :param spectrum_list: A list of spectrum strings.
+    :param filename: The name of the output file.
+    :param mode: The mode to write the file in.
     :return: None
-
-    This method writes the cleaned MSP files to the specified `clean_msp_path` location. The cleaned data is obtained by joining the strings in the respective input lists and applying regular
-    * expression substitutions.
-
-    The cleaned MSP files are saved with the following names and paths:
-    - 'POS_LC_clean.msp' in the 'POS' folder under `clean_msp_path`
-    - 'POS_GC_clean.msp' in the 'POS' folder under `clean_msp_path`
-    - 'NEG_LC_clean.msp' in the 'NEG' folder under `clean_msp_path`
-    - 'NEG_GC_clean.msp' in the 'NEG' folder under `clean_msp_path`
-    - 'POS_LC_In_Silico_clean.msp' in the 'POS' folder under `clean_msp_path`
-    - 'POS_GC_In_Silico_clean.msp' in the 'POS' folder under `clean_msp_path`
-    - 'NEG_LC_In_Silico_clean.msp' in the 'NEG' folder under `clean_msp_path`
-    - 'NEG_GC_In_Silico_clean.msp' in the 'NEG' folder under `clean_msp_path`
     """
-    POS_LC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(POS_LC))
+    time.sleep(0.01)
+    print(f"-- {filename.replace('.msp', '.csv')} --")
+
+    output_file_path = os.path.join(f"../OUTPUT/MSP/{mode}", filename)
+
+    with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="\t    writting") as pbar:
+        with open(output_file_path, 'w') as f:
+            for spectrum in spectrum_list:
+                f.write(spectrum)
+
+                f.write("\n\n\n")
+
+                pbar.update()
+
+
+def writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_insilico,NEG_GC,NEG_GC_insilico):
+    """
+    Writes the content of the given parameters to separate MSP files.
+
+    :param POS_LC: The content to write to the "POS_LC.msp" file.
+    :param POS_LC_insilico: The content to write to the "POS_LC_insilico.msp" file.
+    :param POS_GC: The content to write to the "POS_GC.msp" file.
+    :param POS_GC_insilico: The content to write to the "POS_GC_insilico.msp" file.
+    :param NEG_LC: The content to write to the "NEG_LC.msp" file.
+    :param NEG_LC_insilico: The content to write to the "NEG_LC_insilico.msp" file.
+    :param NEG_GC: The content to write to the "NEG_GC.msp" file.
+    :param NEG_GC_insilico: The content to write to the "NEG_GC_insilico.msp" file.
+    :return: None
+    """
+    write_msp(POS_LC,"POS_LC.msp", "POS")
     del POS_LC
-    POS_GC_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(POS_GC))
+    write_msp(POS_LC_insilico, "POS_LC_insilico.msp", "POS")
+    del POS_LC_insilico
+    write_msp(POS_GC, "POS_GC.msp", "POS")
     del POS_GC
-    NEG_LC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG_LC))
+    write_msp(POS_GC_insilico, "POS_GC_insilico.msp", "POS")
+    del POS_GC_insilico
+    write_msp(NEG_LC, "NEG_LC.msp", "NEG")
     del NEG_LC
-    NEG_GC_FULL = re.sub("\n{2,}","\n\n\n","\n\n".join(NEG_GC))
+    write_msp(NEG_LC_insilico, "NEG_LC_insilico.msp", "NEG")
+    del NEG_LC_insilico
+    write_msp(NEG_GC, "NEG_GC.msp", "NEG")
     del NEG_GC
+    write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG")
+    del NEG_GC_insilico
 
-    POS_LC_In_Silico_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(POS_LC_In_Silico))
-    del POS_LC_In_Silico
-    POS_GC_In_Silico_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(POS_GC_In_Silico))
-    del POS_GC_In_Silico
-    NEG_LC_In_Silico_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(NEG_LC_In_Silico))
-    del NEG_LC_In_Silico
-    NEG_GC_In_Silico_FULL = re.sub("\n{2,}", "\n\n\n", "\n\n".join(NEG_GC_In_Silico))
-    del NEG_GC_In_Silico
-
-    with open(os.path.join(clean_msp_path,"POS/POS_LC_clean.msp"),"w",encoding="UTF-8") as pos:
-        pos.write(POS_LC_FULL)
-    del POS_LC_FULL
-    with open(os.path.join(clean_msp_path,"POS/POS_GC_clean.msp"),"w",encoding="UTF-8") as pos:
-        pos.write(POS_GC_FULL)
-    del POS_GC_FULL
-    with open(os.path.join(clean_msp_path, "NEG/NEG_LC_clean.msp"), "w", encoding="UTF-8") as neg:
-        neg.write(NEG_LC_FULL)
-    del NEG_LC_FULL
-    with open(os.path.join(clean_msp_path, "NEG/NEG_GC_clean.msp"), "w", encoding="UTF-8") as neg:
-        neg.write(NEG_GC_FULL)
-    del NEG_GC_FULL
-
-    with open(os.path.join(clean_msp_path,"POS/POS_LC_In_Silico_clean.msp"),"w",encoding="UTF-8") as pos:
-        pos.write(POS_LC_In_Silico_FULL)
-    del POS_LC_In_Silico_FULL
-    with open(os.path.join(clean_msp_path,"POS/POS_GC_In_Silico_clean.msp"),"w",encoding="UTF-8") as pos:
-        pos.write(POS_GC_In_Silico_FULL)
-    del POS_GC_In_Silico_FULL
-    with open(os.path.join(clean_msp_path, "NEG/NEG_LC_In_Silico_clean.msp"), "w", encoding="UTF-8") as neg:
-        neg.write(NEG_LC_In_Silico_FULL)
-    del NEG_LC_In_Silico_FULL
-    with open(os.path.join(clean_msp_path, "NEG/NEG_GC_In_Silico_clean.msp"), "w", encoding="UTF-8") as neg:
-        neg.write(NEG_GC_In_Silico_FULL)
-    del NEG_GC_In_Silico_FULL
-
-def write_csv(df,filename):
+def write_csv(df, filename, mode):
     """
     :param df: pandas DataFrame object containing the data to be written to CSV.
     :param filename: string representing the name of the output file. The extension ".msp" in the filename will be replaced by ".csv".
@@ -87,7 +72,7 @@ def write_csv(df,filename):
     time.sleep(0.01)
     print(f"-- {filename.replace('.msp','.csv')} --")
 
-    output_file_path = os.path.join("../OUTPUT/CSV/POS",filename)
+    output_file_path = os.path.join(f"../OUTPUT/CSV/{mode}",filename)
 
     chunk_size = 5000  # Taille de chaque fraction
     num_chunks = int(np.ceil(df.shape[0] / chunk_size))  # Calculer le nombre de fractions
@@ -119,20 +104,20 @@ def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_
     :param NEG_GC_df_insilico: DataFrame containing negative GC In Silico data
     :return: None
     """
-    write_csv(POS_LC_df,"POS_LC_clean.csv")
+    write_csv(POS_LC_df,"POS_LC_clean.csv","POS")
     del POS_LC_df
-    write_csv(POS_GC_df, "POS_GC_clean.csv")
+    write_csv(POS_GC_df, "POS_GC_clean.csv","POS")
     del POS_GC_df
-    write_csv(NEG_LC_df, "NEG_LC_clean.csv")
+    write_csv(NEG_LC_df, "NEG_LC_clean.csv","NEG")
     del NEG_LC_df
-    write_csv(NEG_GC_df, "NEG_GC_clean.csv")
+    write_csv(NEG_GC_df, "NEG_GC_clean.csv","NEG")
     del NEG_GC_df
 
-    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico_clean.csv")
+    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico_clean.csv","POS")
     del POS_LC_df_insilico
-    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico_clean.csv")
+    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico_clean.csv","POS")
     del POS_GC_df_insilico
-    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico_clean.csv")
+    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico_clean.csv","NEG")
     del NEG_LC_df_insilico
-    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico_clean.csv")
+    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico_clean.csv","NEG")
     del NEG_GC_df_insilico
