@@ -1,5 +1,4 @@
 from msp_parsers import *
-from data_preparer import *
 from set_parameters import *
 from fraghubid_generator import *
 import numpy as np
