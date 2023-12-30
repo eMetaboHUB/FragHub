@@ -344,7 +344,7 @@ def dataframe_to_msp(dataframe, name):
         SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
         SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
         SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
-        SPECTRUM = SPECTRUM + re.sub("([\[\]])","", row["PEAKS_LIST"]) + "\n"
+        SPECTRUM = SPECTRUM + re.sub("([\[\]])|(\n {1,2})","\n", row["PEAKS_LIST"]) + "\n"
         spectrum_list.append(SPECTRUM)
 
     return spectrum_list
