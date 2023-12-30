@@ -129,33 +129,35 @@ if __name__ == "__main__":
 
     print("-- SPLITTING [POS / NEG] --")
     time.sleep(0.01)
-    POS, NEG = split_pos_neg(CONCATENATED_SPECTRUMS_DATAFRAME)
+    POS_df, NEG_df = split_pos_neg(CONCATENATED_SPECTRUMS_DATAFRAME)
 
     # STEP 5: Split LC / GC
     time.sleep(0.01)
     print("-- SPLITTING [LC / GC] --")
     time.sleep(0.01)
-    POS_LC,POS_GC,NEG_LC,NEG_GC = split_LC_GC(POS,NEG)
+    POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df = split_LC_GC(POS_df, NEG_df)
 
-    del POS
-    del NEG
+    del POS_df
+    del NEG_df
 
     # STEP 5: Split EXP / In-Silico
     time.sleep(0.01)
     print("-- SPLITTING EXP / In-Silico --")
     time.sleep(0.01)
-    POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico = exp_in_silico_splitter(POS_LC,POS_GC,NEG_LC,NEG_GC)
+    POS_LC_df,POS_LC_In_Silico_df,POS_GC_df,POS_GC_In_Silico_df,NEG_LC_df,NEG_LC_In_Silico_df,NEG_GC_df,NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df)
 
 
     # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
     print("-- REMOVING DUPLICATAS --")
     time.sleep(0.01)
-    POS_LC,POS_LC_df,POS_LC_df_insilico,POS_LC_In_Silico,POS_GC,POS_GC_df,POS_GC_df_insilico,POS_GC_In_Silico,NEG_LC,NEG_LC_df,NEG_LC_df_insilico,NEG_LC_In_Silico,NEG_GC,NEG_GC_df,NEG_GC_df_insilico,NEG_GC_In_Silico = remove_duplicatas(POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico)
+    POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico = remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
+
+    POS_LC_df,POS_LC,POS_LC_df_insilico,POS_LC_insilico,POS_GC_df,POS_GC,POS_GC_df_insilico,POS_GC_insilico,NEG_LC_df,NEG_LC,NEG_LC_df_insilico,NEG_LC_insilico,NEG_GC_df,NEG_GC,NEG_GC_df_insilico,NEG_GC_insilico = csv_and_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico)
 
     print("-- WRITING CSV --")
     writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico)
 
-    # print("-- WRITING MSP --")
-    # writting_msp(clean_msp_path, POS_LC, POS_GC, NEG_LC, NEG_GC, POS_LC_In_Silico, POS_GC_In_Silico, NEG_LC_In_Silico, NEG_GC_In_Silico)
+    print("-- WRITING MSP --")
+    writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_insilico,NEG_GC,NEG_GC_insilico)
 
     print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
