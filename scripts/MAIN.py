@@ -17,6 +17,34 @@ import os
 
 RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
 
+ordered_columns = ["FILENAME",
+                   "PREDICTED",
+                   "FRAGHUBID",
+                   "SPECTRUMID",
+                   "RESOLUTION",
+                   "SYNON",
+                   "CHARGE",
+                   "IONIZATION",
+                   "MSLEVEL",
+                   "FRAGMENTATIONMODE",
+                   "NAME",
+                   "PRECURSORMZ",
+                   "EXACTMASS",
+                   "AVERAGEMASS",
+                   "PRECURSORTYPE",
+                   "INSTRUMENTTYPE",
+                   "INSTRUMENT",
+                   "SMILES",
+                   "INCHI",
+                   "INCHIKEY",
+                   "COLLISIONENERGY",
+                   "FORMULA",
+                   "RETENTIONTIME",
+                   "IONMODE",
+                   "COMMENT",
+                   "NUM PEAKS",
+                   "peak_list"]
+
 if __name__ == "__main__":
 
     # Execution du GUI
@@ -80,13 +108,11 @@ if __name__ == "__main__":
             spectrum_list = load_spectrum_list(msp_path)
             spectrum_list = msp_cleaning_processing(spectrum_list)
 
+            df = pd.DataFrame(spectrum_list)
+
             del spectrum_list
 
-            # Write matchms clean msp into new msp file
-            with open(os.path.join(r"../OUTPUT/MSP", file_name + "_clean" + ".msp"), "w", encoding="UTF-8") as clean:
-                clean.write("\n\n".join(results))
-
-            del results
+            df = df[ordered_columns]
 
     # # STEP 4: (All msp files were cleaned)
     clean_msp_path = os.path.join(output_path,"MSP")
