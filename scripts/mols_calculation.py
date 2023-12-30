@@ -65,7 +65,10 @@ def mols_derivation_and_calculation(CONCATENATE_DF):
     # Creating a dict that maps each unique INCHI or SMILES to its respective transformations.
     unique_transforms = {inchi_smiles: apply_transformations(inchi_smiles) for inchi_smiles in tqdm(unique_inchi_smiles, unit=" rows", colour="green", desc="\t  generating")}
 
+    # Set up progress apply with tqdm
+    tqdm.pandas(unit=" rows", colour="green", desc="\t\tupdating")
+
     # Using apply to apply the transformations
-    CONCATENATE_DF = CONCATENATE_DF.apply(map_transformations, axis=1, args=(unique_transforms,))
+    CONCATENATE_DF = CONCATENATE_DF.progress_apply(map_transformations, axis=1, args=(unique_transforms,))
 
     return CONCATENATE_DF
