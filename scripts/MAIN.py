@@ -151,11 +151,11 @@ if __name__ == "__main__":
     print("-- REMOVING DUPLICATAS --")
     time.sleep(0.01)
     POS_LC,POS_LC_df,POS_LC_df_insilico,POS_LC_In_Silico,POS_GC,POS_GC_df,POS_GC_df_insilico,POS_GC_In_Silico,NEG_LC,NEG_LC_df,NEG_LC_df_insilico,NEG_LC_In_Silico,NEG_GC,NEG_GC_df,NEG_GC_df_insilico,NEG_GC_In_Silico = remove_duplicatas(POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico)
-    #
+
+    print("-- WRITING CSV --")
+    writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico)
+
     # print("-- WRITING MSP --")
     # writting_msp(clean_msp_path, POS_LC, POS_GC, NEG_LC, NEG_GC, POS_LC_In_Silico, POS_GC_In_Silico, NEG_LC_In_Silico, NEG_GC_In_Silico)
-    #
-    # print("-- WRITING CSV --")
-    # writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico)
 
     print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
