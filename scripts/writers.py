@@ -1,4 +1,6 @@
+from tqdm import tqdm
 import pandas as pd
+import numpy as np
 import os
 import re
 
@@ -72,34 +74,63 @@ def writting_msp(clean_msp_path,POS_LC,POS_GC,NEG_LC,NEG_GC,POS_LC_In_Silico,POS
         neg.write(NEG_GC_In_Silico_FULL)
     del NEG_GC_In_Silico_FULL
 
+def write_csv(df,filename):
+    """
+    :param df: pandas DataFrame object containing the data to be written to CSV.
+    :param filename: string representing the name of the output file. The extension ".msp" in the filename will be replaced by ".csv".
+    :return: None
+
+    This method writes a pandas DataFrame object to a CSV file. The output file is saved in the "../OUTPUT/CSV/POS" directory with the same name as the input file, but with the extension
+    * changed to ".csv". The data is written in chunks of 5000 rows to improve efficiency. The progress of writing is displayed with a progress bar.
+    """
+    print(f"-- {filename.replace('.msp','.csv')} --")
+
+    output_file_path = os.path.join("../OUTPUT/CSV/POS",filename)
+
+    chunk_size = 5000  # Taille de chaque fraction
+    num_chunks = int(np.ceil(df.shape[0] / chunk_size))  # Calculer le nombre de fractions
+
+    with tqdm(total=num_chunks, unit=" row", colour="green", desc="\t    writting") as pbar:
+        for start in range(0, df.shape[0], chunk_size):
+            df_slice = df[start:start + chunk_size]
+            if start == 0:
+                # Écrire les en-têtes pour la première fraction
+                df_slice.to_csv(output_file_path, mode='w', sep=";", quotechar='"', encoding="UTF-8", index=False)
+            else:
+                # Append dans le fichier sans écrire les en-têtes pour les autres fractions
+                df_slice.to_csv(output_file_path, mode='a', header=False, index=False, sep=";", quotechar='"', encoding="UTF-8")
+
+            # Mettre à jour la barre de progression
+            pbar.update()
+
 def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_GC_df_insilico,NEG_LC_df_insilico,NEG_GC_df_insilico):
     """
-    Method to write dataframes to CSV files.
+    Writes the given dataframes to CSV files with specific file names.
 
-    :param POS_LC_df: Dataframe containing positive LC data.
-    :param POS_GC_df: Dataframe containing positive GC data.
-    :param NEG_LC_df: Dataframe containing negative LC data.
-    :param NEG_GC_df: Dataframe containing negative GC data.
-    :param POS_LC_df_insilico: Dataframe containing positive LC in silico data.
-    :param POS_GC_df_insilico: Dataframe containing positive GC in silico data.
-    :param NEG_LC_df_insilico: Dataframe containing negative LC in silico data.
-    :param NEG_GC_df_insilico: Dataframe containing negative GC in silico data.
+    :param POS_LC_df: DataFrame containing positive LC data
+    :param POS_GC_df: DataFrame containing positive GC data
+    :param NEG_LC_df: DataFrame containing negative LC data
+    :param NEG_GC_df: DataFrame containing negative GC data
+    :param POS_LC_df_insilico: DataFrame containing positive LC In Silico data
+    :param POS_GC_df_insilico: DataFrame containing positive GC In Silico data
+    :param NEG_LC_df_insilico: DataFrame containing negative LC In Silico data
+    :param NEG_GC_df_insilico: DataFrame containing negative GC In Silico data
     :return: None
     """
-    POS_LC_df.to_csv("../OUTPUT/CSV/POS/POS_LC_clean.csv", sep=";", encoding="UTF-8", index=False)
+    write_csv(POS_LC_df,"POS_LC_clean.csv")
     del POS_LC_df
-    POS_GC_df.to_csv("../OUTPUT/CSV/POS/POS_GC_clean.csv", sep=";", encoding="UTF-8", index=False)
+    write_csv(POS_GC_df, "POS_GC_clean.csv")
     del POS_GC_df
-    NEG_LC_df.to_csv("../OUTPUT/CSV/NEG/NEG_LC_clean.csv", sep=";", encoding="UTF-8", index=False)
+    write_csv(NEG_LC_df, "NEG_LC_clean.csv")
     del NEG_LC_df
-    NEG_GC_df.to_csv("../OUTPUT/CSV/NEG/NEG_GC_clean.csv", sep=";", encoding="UTF-8", index=False)
+    write_csv(NEG_GC_df, "NEG_GC_clean.csv")
     del NEG_GC_df
 
-    POS_LC_df_insilico.to_csv("../OUTPUT/CSV/POS/POS_LC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
+    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico_clean.csv")
     del POS_LC_df_insilico
-    POS_GC_df_insilico.to_csv("../OUTPUT/CSV/POS/POS_GC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
+    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico_clean.csv")
     del POS_GC_df_insilico
-    NEG_LC_df_insilico.to_csv("../OUTPUT/CSV/NEG/NEG_LC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
+    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico_clean.csv")
     del NEG_LC_df_insilico
-    NEG_GC_df_insilico.to_csv("../OUTPUT/CSV/NEG/NEG_GC_In_Silico_clean.csv", sep=";", encoding="UTF-8", index=False)
+    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico_clean.csv")
     del NEG_GC_df_insilico
