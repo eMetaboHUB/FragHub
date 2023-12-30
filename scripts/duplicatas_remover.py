@@ -187,394 +187,45 @@ def remove_dupli_NEG_GC_In_Silico(NEG_GC_In_Silico):
 
     return NEG_GC_In_Silico
 
-def format_comments(DF_row):
-    """
-    Format comments based on the given row of a DataFrame.
-
-    :param DF_row: A row of a DataFrame.
-    :type DF_row: pandas.Series
-    :return: A formatted string containing information from the row.
-    :rtype: str
-    """
-    return f'FILENAME={DF_row["FILENAME"]}; PREDICTED={DF_row["PREDICTED"]}; FRAGHUBID={DF_row["FRAGHUBID"]}; SPECTRUMID={DF_row["SPECTRUMID"]}; RESOLUTION={DF_row["RESOLUTION"]}; SYNON={DF_row["SYNON"]}; CHARGE={DF_row["CHARGE"]}; IONIZATION={DF_row["IONIZATION"]}; MSLEVEL={DF_row["MSLEVEL"]}; FRAGMENTATIONMODE={DF_row["FRAGMENTATIONMODE"]}; EXACTMASS={DF_row["EXACTMASS"]}; AVERAGEMASS={DF_row["AVERAGEMASS"]}'
-
-def re_write_MSP_POS_LC(POS_LC_df):
-    """
-    :param POS_LC_df: Pandas DataFrame representing POS_LC data.
-    :return: List of rewritten POS_LC data.
-
-    This method takes a DataFrame of POS_LC data and iterates through each row. It extracts the necessary information from each row and rewrites it into a new format. The rewritten data
-    * is stored in a list and returned.
-
-    The input DataFrame, POS_LC_df, is expected to have the following columns:
-    - NAME: Name of the POS_LC
-    - PRECURSORMZ: Precursor m/z value
-    - PRECURSORTYPE: Precursor ion type
-    - FORMULA: Chemical formula
-    - INCHIKEY: InChIKey
-    - INCHI: InChI
-    - SMILES: SMILES representation
-    - RETENTIONTIME: Retention time
-    - IONMODE: Ionization mode
-    - INSTRUMENTTYPE: Instrument type
-    - INSTRUMENT: Instrument name
-    - COLLISIONENERGY: Collision energy
-    - COMMENT: Additional comments
-    - NUM PEAKS: Number of peaks
-    - PEAKS_LIST: List of peak data
-
-    The method uses a for loop to iterate through each row. Within the loop, it extracts the relevant information from each column and constructs a string representation of the POS_LC data
-    *. The string representation is appended to the POS_LC list.
-
-    Finally, the list of rewritten POS_LC data is returned.
-    """
-
-    POS_LC = []
-    for index,row in tqdm(POS_LC_df.iterrows(), total=len(POS_LC_df), desc="\t\t  POS_LC", colour="green", unit=" row"):
-        COMMENTS = format_comments(row)
-
-        SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
-        # Ontology ???
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
-        SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
-        SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
-        SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
-        POS_LC.append(SPECTRUM)
-
-    return POS_LC
-
-def re_write_MSP_POS_LC_In_Silico(POS_LC_df_insilico):
-    """
-    Re-writes the POS_LC_in_Silico dataframe to a list of strings in the format of an MSP file.
-
-    :param POS_LC_df_insilico: The input dataframe containing the POS_LC_in_Silico data.
-    :return: A list of strings representing the re-written MSP data.
-    """
-    POS_LC = []
-    for index, row in tqdm(POS_LC_df_insilico.iterrows(), total=len(POS_LC_df_insilico), desc="POS_LC_In_Silico", colour="green", unit=" row"):
-        COMMENTS = format_comments(row)
-
-        SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
-        # Ontology ???
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
-        SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
-        SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
-        SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
-        POS_LC.append(SPECTRUM)
-
-    return POS_LC
-
-
-def re_write_MSP_POS_GC(POS_GC_df):
-    """
-    :param POS_GC_df: a pandas DataFrame containing data for POS_GC
-    :return: a list of strings where each string represents a POS_GC spectrum
-
-    The function takes a pandas DataFrame POS_GC_df as input and iterates over its rows.
-    For each row, it formats the data into a string representation of a POS_GC spectrum and appends it to a list POS_GC.
-    Finally, it returns the list POS_GC.
-    """
-    POS_GC = []
-    for index, row in tqdm(POS_GC_df.iterrows(), total=len(POS_GC_df), desc="\t\t  POS_GC", colour="green", unit=" row"):
-        COMMENTS = format_comments(row)
-
-        SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
-        # Ontology ???
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
-        SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
-        SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
-        SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
-        POS_GC.append(SPECTRUM)
-
-    return POS_GC
-
-def re_write_MSP_POS_GC_In_Silico(POS_GC_df_insilico):
-    """
-    :param POS_GC_df_insilico: DataFrame containing in silico data for POS_GC.
-    :return: List of formatted spectra.
-    """
-    POS_GC = []
-    for index, row in tqdm(POS_GC_df_insilico.iterrows(), total=len(POS_GC_df_insilico), desc="POS_GC_In_Silico", colour="green", unit=" row"):
-        COMMENTS = format_comments(row)
-
-        SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
-        # Ontology ???
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
-        SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
-        SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
-        SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
-        POS_GC.append(SPECTRUM)
-
-    return POS_GC
-
-def re_write_MSP_NEG_LC(NEG_LC_df):
-    """
-    Re-write the data from NEG_LC_df DataFrame into a list of spectra.
-
-    :param NEG_LC_df: The DataFrame containing the data to be re-written.
-    :type NEG_LC_df: pandas.DataFrame
-    :return: The list of re-written spectra.
-    :rtype: list
-    """
-    NEG_LC = []
-    for index, row in tqdm(NEG_LC_df.iterrows(), total=len(NEG_LC_df), desc="\t\t  NEG_LC", colour="green", unit=" row"):
-        COMMENTS = format_comments(row)
-
-        SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
-        # Ontology ???
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
-        SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
-        SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
-        SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
-        NEG_LC.append(SPECTRUM)
-
-    return NEG_LC
-
-def re_write_MSP_NEG_LC_In_Silico(NEG_LC_df_insilico):
-    """
-    :param NEG_LC_df_insilico: pd.DataFrame
-        The input DataFrame containing the in silico negative liquid chromatography (NEG_LC) data.
-        This DataFrame should have the following columns:
-        - "NAME": The name of the compound.
-        - "PRECURSORMZ": The precursor m/z value.
-        - "PRECURSORTYPE": The precursor type.
-        - "FORMULA": The chemical formula of the compound.
-        - "INCHIKEY": The InChIKey of the compound.
-        - "INCHI": The InChI of the compound.
-        - "SMILES": The SMILES representation of the compound.
-        - "RETENTIONTIME": The retention time of the compound.
-        - "IONMODE": The ion mode of the compound.
-        - "INSTRUMENTTYPE": The type of instrument used.
-        - "INSTRUMENT": The name of the instrument.
-        - "COLLISIONENERGY": The collision energy value.
-        - "NUM PEAKS": The number of peaks in the spectrum.
-        - "PEAKS_LIST": A string representation of the peaks list.
-
-    :return: list
-        A list of spectra in the format specified by the given DataFrame.
-
-    """
-    NEG_LC = []
-    for index, row in tqdm(NEG_LC_df_insilico.iterrows(), total=len(NEG_LC_df_insilico), desc="NEG_LC_In_Silico", colour="green", unit=" row"):
-        COMMENTS = format_comments(row)
-
-        SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
-        # Ontology ???
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
-        SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
-        SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
-        SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
-        NEG_LC.append(SPECTRUM)
-
-    return NEG_LC
-
-
-def re_write_MSP_NEG_GC(NEG_GC_df):
-    """
-    :param NEG_GC_df: pandas DataFrame containing the data to be processed
-    :return: list of formatted spectra
-
-    The re_write_MSP_NEG_GC method takes a pandas DataFrame, NEG_GC_df, as input. It iterates over each row of the DataFrame and formats the data into a spectrum string. The formatted spectra
-    * are then added to a list, NEG_GC, which is returned as the result.
-
-    The output spectrum string format is as follows:
-    NAME: [NAME]
-    PRECURSORMZ: [PRECURSORMZ]
-    PRECURSORTYPE: [PRECURSORTYPE]
-    FORMULA: [FORMULA]
-    INCHIKEY: [INCHIKEY]
-    INCHI: [INCHI]
-    SMILES: [SMILES]
-    RETENTIONTIME: [RETENTIONTIME]
-    IONMODE: [IONMODE]
-    INSTRUMENTTYPE: [INSTRUMENTTYPE]
-    INSTRUMENT: [INSTRUMENT]
-    COLLISIONENERGY: [COLLISIONENERGY]
-    COMMENT: [COMMENTS]
-    NUM PEAKS: [NUM PEAKS]
-    [PEAKS_LIST]
-
-    Example Usage:
-        df = pd.DataFrame(...)
-        result = re_write_MSP_NEG_GC(df)
-    """
-    NEG_GC = []
-    for index, row in tqdm(NEG_GC_df.iterrows(), total=len(NEG_GC_df), desc="\t\t  NEG_GC", colour="green", unit=" row"):
-        COMMENTS = format_comments(row)
-
-        SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
-        # Ontology ???
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
-        SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
-        SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
-        SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
-        NEG_GC.append(SPECTRUM)
-
-    return NEG_GC
-
-def re_write_MSP_NEG_GC_In_Silico(NEG_GC_df_insilico):
-    """
-    This method takes a DataFrame as input and converts it into a list of spectra in the MSP format.
-
-    :param NEG_GC_df_insilico: A DataFrame containing the input data.
-    :return: A list of spectra in the MSP format.
-    """
-    NEG_GC = []
-    for index, row in tqdm(NEG_GC_df_insilico.iterrows(), total=len(NEG_GC_df_insilico), desc="NEG_GC_in_Silico", colour="green", unit=" row"):
-        COMMENTS = format_comments(row)
-
-        SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] + "\n"
-        # Ontology ???
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] + "\n"
-        SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] + "\n"
-        SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
-        SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
-        SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
-        NEG_GC.append(SPECTRUM)
-
-    return NEG_GC
-
 def remove_duplicatas(POS_LC,POS_LC_In_Silico,POS_GC,POS_GC_In_Silico,NEG_LC,NEG_LC_In_Silico,NEG_GC,NEG_GC_In_Silico):
     """
-    Remove duplicates from the provided dataframes and perform additional conversions.
+    Remove duplicates from the given data frames.
 
-    :param POS_LC: Positive LC dataframe
-    :param POS_LC_In_Silico: Positive LC In Silico dataframe
-    :param POS_GC: Positive GC dataframe
-    :param POS_GC_In_Silico: Positive GC In Silico dataframe
-    :param NEG_LC: Negative LC dataframe
-    :param NEG_LC_In_Silico: Negative LC In Silico dataframe
-    :param NEG_GC: Negative GC dataframe
-    :param NEG_GC_In_Silico: Negative GC In Silico dataframe
-    :return: A tuple containing all the cleaned dataframes.
-
+    :param POS_LC: a pandas DataFrame containing positive LC data
+    :param POS_LC_In_Silico: a pandas DataFrame containing positive LC In Silico data
+    :param POS_GC: a pandas DataFrame containing positive GC data
+    :param POS_GC_In_Silico: a pandas DataFrame containing positive GC In Silico data
+    :param NEG_LC: a pandas DataFrame containing negative LC data
+    :param NEG_LC_In_Silico: a pandas DataFrame containing negative LC In Silico data
+    :param NEG_GC: a pandas DataFrame containing negative GC data
+    :param NEG_GC_In_Silico: a pandas DataFrame containing negative GC In Silico data
+    :return: a tuple of pandas DataFrames with duplicates removed:
+             (POS_LC_df, POS_LC_df_insilico, POS_GC_df, POS_GC_df_insilico,
+             NEG_LC_df, NEG_LC_df_insilico, NEG_GC_df, NEG_GC_df_insilico)
     """
     # ========================================================================= POS_LC =========================================================================
     POS_LC_df = remove_dupli_POS_LC(POS_LC)
-    # Re convert to MSP
-    POS_LC = re_write_MSP_POS_LC(POS_LC_df)
 
     # ========================================================================= POS_LC_In_Silico =========================================================================
     POS_LC_df_insilico = remove_dupli_POS_LC_In_Silico(POS_LC_In_Silico)
-    # Re convert to MSP
-    POS_LC_In_Silico = re_write_MSP_POS_LC_In_Silico(POS_LC_df_insilico)
 
     # ========================================================================= POS_GC =========================================================================
     POS_GC_df = remove_dupli_POS_GC(POS_GC)
-    # Re convert to MSP
-    POS_GC = re_write_MSP_POS_GC(POS_GC_df)
 
     # ========================================================================= POS_GC_In_Silico =========================================================================
     POS_GC_df_insilico = remove_dupli_POS_GC_In_Silico(POS_GC_In_Silico)
-    # Re convert to MSP
-    POS_GC_In_Silico = re_write_MSP_POS_GC_In_Silico(POS_GC_df_insilico)
 
     # ========================================================================= NEG_LC =========================================================================
     NEG_LC_df = remove_dupli_NEG_LC(NEG_LC)
-    # Re convert to MSP
-    NEG_LC = re_write_MSP_NEG_LC(NEG_LC_df)
 
     # ========================================================================= NEG_LC_In_Silico =========================================================================
     NEG_LC_df_insilico = remove_dupli_NEG_LC_In_Silico(NEG_LC_In_Silico)
-    # Re convert to MSP
-    NEG_LC_In_Silico = re_write_MSP_NEG_LC_In_Silico(NEG_LC_df_insilico)
 
     # ========================================================================= NEG_GC =========================================================================
     NEG_GC_df = remove_dupli_NEG_GC(NEG_GC)
-    # Re convert to MSP
-    NEG_GC = re_write_MSP_NEG_GC(NEG_GC_df)
 
     # ========================================================================= NEG_GC_In_Silico =========================================================================
     NEG_GC_df_insilico = remove_dupli_NEG_GC_In_Silico(NEG_GC_In_Silico)
-    # Re convert to MSP
-    NEG_GC_In_Silico = re_write_MSP_NEG_GC_In_Silico(NEG_GC_df_insilico)
 
 
-    return POS_LC,POS_LC_df,POS_LC_df_insilico,POS_LC_In_Silico,POS_GC,POS_GC_df,POS_GC_df_insilico,POS_GC_In_Silico,NEG_LC,NEG_LC_df,NEG_LC_df_insilico,NEG_LC_In_Silico,NEG_GC,NEG_GC_df,NEG_GC_df_insilico,NEG_GC_In_Silico
+    return POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico
