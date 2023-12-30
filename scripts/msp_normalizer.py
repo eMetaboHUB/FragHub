@@ -8,6 +8,8 @@ import time
 import os
 import re
 
+np.set_printoptions(suppress=True)
+
 global keys_dict
 Key_dataframe = pd.read_csv(os.path.abspath("../datas/key_to_convert.csv"),sep=";", encoding="UTF-8") # Remplacez 'your_file.csv' par le chemin de votre fichier
 keys_dict = dict(zip(Key_dataframe['known_synonym'], Key_dataframe['fraghub_default'].str.upper()))
