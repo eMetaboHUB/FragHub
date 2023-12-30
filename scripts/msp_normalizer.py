@@ -86,7 +86,7 @@ def load_spectrum_list(msp_file_path):
     total_lines = sum(1 for line in open(msp_file_path, 'r', encoding="UTF-8")) # count the total number of lines in the file
 
     with open(msp_file_path, 'r', encoding="UTF-8") as file:
-        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="\t     reading"): # wrap this with tqdm
+        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="{:>25}".format("reading")): # wrap this with tqdm
             if line.strip() == '':
                 if buffer:
                     spectrum_list.append('\n'.join(buffer))
@@ -309,7 +309,7 @@ def msp_cleaning_processing(spectrum_list):
     The function returns a list containing the results of processing the spectrum data. Any `None` results are filtered out before returning the final list.
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(msp_parser, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="\t  processing"))
+        results = list(tqdm(executor.map(msp_parser, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>25}".format("processing")))
 
     final = [res for res in results if res is not None]
 

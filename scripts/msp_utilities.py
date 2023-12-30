@@ -91,7 +91,7 @@ def names_completion(CONCATENATE_DF):
 
     """
     # Définir le nom de la barre de progression
-    tqdm.pandas(total=len(CONCATENATE_DF), desc="\t  processing", colour="green", unit=" row")
+    tqdm.pandas(total=len(CONCATENATE_DF), desc="{:>25}".format("processing"), colour="green", unit=" row")
 
     # Appliquer la transformation par groupe avec une barre de progression
     CONCATENATE_DF['NAME'] = CONCATENATE_DF.groupby('INCHI')['NAME'].progress_transform(lambda group: group.fillna(group.dropna().iloc[0] if group.dropna().size > 0 else ''))
@@ -112,7 +112,7 @@ def inchi_smiles_completion(CONCATENATE_LIST):
     inchi = "None"
     smiles = "None"
 
-    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t  processing"):
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="{:>25}".format("processing")):
         if re.search("INCHIKEY: (.*)\n", spectrum):
             inchikey = re.search("INCHIKEY: (.*)\n", spectrum).group(1)
         if re.search("\nINCHI: (.*)\n", spectrum):
@@ -128,7 +128,7 @@ def inchi_smiles_completion(CONCATENATE_LIST):
 
     # Update missing inchi/smiles with corresponding inchikey in dictionary list
     updated_spetcrum_list = []
-    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t    updating"):
+    for spectrum in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="{:>25}".format("updating")):
         if re.search("INCHIKEY: (.*)\n", spectrum):
             inchikey = re.search("INCHIKEY: (.*)\n", spectrum).group(1)
         # INCHI
@@ -156,7 +156,7 @@ def remove_no_smiles_inchi(CONCATENATE_LIST):
     :return: A new list containing only spectrums that have both "SMILES: None" and "INCHI: None" strings removed.
     """
     CONCATENATE_LIST_temp = []
-    for spectrums in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="\t  processing"):
+    for spectrums in tqdm(CONCATENATE_LIST, total=len(CONCATENATE_LIST), unit=" spectrums", colour="green", desc="{:>25}".format("processing")):
         if not (re.search("SMILES: None\n",spectrums) or re.search("INCHI: None\n",spectrums)):
             CONCATENATE_LIST_temp.append(spectrums)
 
@@ -181,7 +181,7 @@ def unique_id_generator():
                 content = content.split("\n\n")
                 content = [spectrum for spectrum in content if len(spectrum) > 10]
 
-                for spectrums in tqdm(content, total=len(content), unit=" spectrums", colour="green", desc="\t  processing"):
+                for spectrums in tqdm(content, total=len(content), unit=" spectrums", colour="green", desc="{:>25}".format("processing")):
                     spectrums = "FRAGHUBID: "+str(uuid.uuid4())+"\n"+spectrums
                     spectrums = re.sub("\n{2,}","\n",spectrums)
                     temp_list.append(spectrums)
@@ -243,7 +243,7 @@ def mols_derivator(CONCATENATE_DF):
     10. Returns the modified DataFrame.
     """
     total_rows = len(CONCATENATE_DF)
-    t = tqdm(total=total_rows, unit=" rows", colour="green", desc="\t  generating")
+    t = tqdm(total=total_rows, unit=" rows", colour="green", desc="{:>25}".format("generating"))
 
     # supprimer les spectres sans InChI || SMILES || InChIKey
     CONCATENATE_DF['INCHI'] = CONCATENATE_DF['INCHI'].replace('None', float('nan'))
@@ -300,7 +300,7 @@ def mass_calculator(CONCATENATE_DF):
     :return: The updated DataFrame with the calculated mass values.
     """
     total_rows = len(CONCATENATE_DF)
-    t = tqdm(total=total_rows, unit=" rows", colour="green", desc="\t  processing")
+    t = tqdm(total=total_rows, unit=" rows", colour="green", desc="{:>25}".format("processing"))
 
     CONCATENATE_DF = CONCATENATE_DF.apply(mass_calculation, axis=1)
     t.update(total_rows)
