@@ -234,7 +234,7 @@ def peak_list_to_df(peak_list, precursormz):
         peak_array = apply_filters(peak_array, precursormz)
         return peak_array
     else:
-        return ''  # Return an empty numpy array
+        return np.array([])  # Return an empty numpy array
 
 def structure_metadata_and_peak_list(metadata, peak_list):
     """
@@ -248,22 +248,22 @@ def structure_metadata_and_peak_list(metadata, peak_list):
     :rtype: tuple
     """
     if not metadata or not peak_list:
-        return {},''
+        return {},np.array([])
     else:
         metadata_dict = metadata_to_dict(metadata)
         if not metadata_dict:
-            return {},''
+            return {},np.array([])
         if "PRECURSORMZ" in metadata_dict:
             if metadata_dict["PRECURSORMZ"]:
                 try:
                     peak_list_DF = peak_list_to_df(peak_list,float(metadata_dict["PRECURSORMZ"].replace(",",".")))
                     return metadata_dict, peak_list_DF
                 except:
-                    return {},''
+                    return {},np.array([])
             else:
-                return {},''
+                return {},np.array([])
         else:
-            return {},''
+            return {},np.array([])
 
 def parse_metadata_and_peak_list(spectrum):
     """
@@ -288,10 +288,10 @@ def msp_parser(spectrum):
 
     metadata,peak_list = parse_metadata_and_peak_list(spectrum)
 
-    if not metadata or not peak_list:
+    if metadata == {} or len(peak_list) == 0:
         return None
     else:
-        metadata['NUM PEAKS'] = str(len(peak_list))
+        metadata['NUM PEAKS'] = len(peak_list)
         metadata['PEAKS_LIST'] = peak_list
         return metadata
 
