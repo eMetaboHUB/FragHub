@@ -1,8 +1,6 @@
 from tqdm.auto import tqdm
 from tqdm import tqdm
 import pandas as pd
-import time
-import re
 
 def removing_duplicates(dataframe, name):
     """
