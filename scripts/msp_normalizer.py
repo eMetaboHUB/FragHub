@@ -1,7 +1,7 @@
 from values_normalizer import *
 import concurrent.futures
-from filters import *
 from tqdm import tqdm
+from filters import *
 import pandas as pd
 import numpy as np
 import time
