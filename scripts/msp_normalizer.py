@@ -277,9 +277,9 @@ def parse_metadata_and_peak_list(spectrum):
     :return: A tuple containing dataframes for the parsed metadata and peak list.
     """
     metadata, peak_list = extract_metadata_and_peak_list(spectrum)
-    metadata_DF, peak_list_DF = structure_metadata_and_peak_list(metadata, peak_list)
+    metadata_DF, peak_list_str = structure_metadata_and_peak_list(metadata, peak_list)
 
-    return metadata_DF, peak_list_DF
+    return metadata_DF, peak_list_str
 
 def msp_parser(spectrum):
     """
