@@ -306,7 +306,7 @@ def msp_parser(spectrum):
     if not metadata or not peak_list:
         return None
     else:
-        metadata['NUM PEAKS'] = len(peak_list)
+        metadata['NUM PEAKS'] = peak_list.count('\n') + 1
         metadata['PEAKS_LIST'] = peak_list
         return metadata
 
