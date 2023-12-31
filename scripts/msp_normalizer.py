@@ -240,15 +240,10 @@ def peak_list_to_np_array(peak_list, precursormz):
 
 def peak_list_to_str(peak_list_np):
     """
-    Convert a peak list numpy array to a string representation.
-
-    :param peak_list_np: The peak list numpy array.
-    :return: The string representation of the peak list.
+    :param peak_list_np: The input peak list as a numpy array.
+    :return: A string representation of the peak list where each row is formatted as a space-separated string of floating point values.
     """
-    peak_list_np = np.array([[f"{x:.15f}" for x in row] for row in peak_list_np])
-    peak_list_np = "\n".join([" ".join(row) for row in peak_list_np])
-
-    return peak_list_np
+    return "\n".join(" ".join(map('{:.15f}'.format, row)) for row in peak_list_np)
 
 def structure_metadata_and_peak_list(metadata, peak_list):
     """
