@@ -33,7 +33,6 @@ def write_msp(spectrum_list, filename, mode, update):
                     pbar.update()
         else:
             with open(output_file_path, 'a') as f:
-                f.write("\n\n\n")
                 for spectrum in spectrum_list:
                     try:
                         f.write(spectrum)
