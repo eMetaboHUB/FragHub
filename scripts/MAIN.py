@@ -105,7 +105,7 @@ if __name__ == "__main__":
             # STEP 3: Execute matchms (Multithreaded)
             print(f"-- CLEANING: {files} --")
             spectrum_list = load_spectrum_list(msp_path)
-            spectrum_list = check_for_update(spectrum_list)
+            spectrum_list, update = check_for_update(spectrum_list)
             spectrum_list = msp_cleaning_processing(spectrum_list)
 
             CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
