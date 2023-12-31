@@ -238,6 +238,18 @@ def peak_list_to_np_array(peak_list, precursormz):
     else:
         return ''  # Return an empty numpy array
 
+def peak_list_to_str(peak_list_np):
+    """
+    Convert a peak list numpy array to a string representation.
+
+    :param peak_list_np: The peak list numpy array.
+    :return: The string representation of the peak list.
+    """
+    peak_list_np = np.array([[f"{x:.15f}" for x in row] for row in peak_list_np])
+    peak_list_np = "\n".join([" ".join(row) for row in peak_list_np])
+
+    return peak_list_np
+
 def structure_metadata_and_peak_list(metadata, peak_list):
     """
     Structure metadata and peak list into formatted DataFrames.
@@ -259,8 +271,7 @@ def structure_metadata_and_peak_list(metadata, peak_list):
             if metadata_dict["PRECURSORMZ"]:
                 try:
                     peak_list_np = peak_list_to_np_array(peak_list, float(metadata_dict["PRECURSORMZ"].replace(",", ".")))
-                    peak_list_np = np.array([[f"{x:.15f}" for x in row] for row in peak_list_np])
-                    peak_list_np = "\n".join([" ".join(row) for row in peak_list_np])
+                    peak_list_np = peak_list_to_str(peak_list_np)
                     return metadata_dict, peak_list_np
                 except:
                     return {},''
