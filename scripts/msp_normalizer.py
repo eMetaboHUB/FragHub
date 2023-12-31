@@ -236,7 +236,7 @@ def peak_list_to_np_array(peak_list, precursormz):
         peak_array = apply_filters(peak_array, precursormz)
         return peak_array
     else:
-        return np.array([])  # Return an empty numpy array
+        return ''  # Return an empty numpy array
 
 def structure_metadata_and_peak_list(metadata, peak_list):
     """
@@ -250,22 +250,24 @@ def structure_metadata_and_peak_list(metadata, peak_list):
     :rtype: tuple
     """
     if not metadata or not peak_list:
-        return {},np.array([])
+        return {},''
     else:
         metadata_dict = metadata_to_dict(metadata)
         if not metadata_dict:
-            return {},np.array([])
+            return {},''
         if "PRECURSORMZ" in metadata_dict:
             if metadata_dict["PRECURSORMZ"]:
                 try:
                     peak_list_np = peak_list_to_np_array(peak_list, float(metadata_dict["PRECURSORMZ"].replace(",", ".")))
+                    peak_list_np = np.array([[f"{x:.15f}" for x in row] for row in peak_list_np])
+                    peak_list_np = "\n".join([" ".join(row) for row in peak_list_np])
                     return metadata_dict, peak_list_np
                 except:
-                    return {},np.array([])
+                    return {},''
             else:
-                return {},np.array([])
+                return {},''
         else:
-            return {},np.array([])
+            return {},''
 
 def parse_metadata_and_peak_list(spectrum):
     """
