@@ -1,16 +1,12 @@
-
+from fraghubid_generator import *
 from duplicatas_remover import *
 from msp_normalizer import *
 from set_parameters import *
-from fraghubid_generator import *
-import numpy as np
-
-from rdkit import RDLogger
 from msp_utilities import *
+from rdkit import RDLogger
 from converters import *
 from splitter import *
 from writers import *
-import logging
 import time
 import sys
 import os
