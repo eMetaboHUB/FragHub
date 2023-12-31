@@ -14,11 +14,11 @@ def write_msp(spectrum_list, filename, mode, update):
     :param mode: The mode to write the file in.
     :return: None
     """
-    time.sleep(0.1)
     print(f"-- {filename.replace('.msp', '.csv')} --")
 
     output_file_path = os.path.join(f"../OUTPUT/MSP/{mode}", filename)
 
+    time.sleep(0.1)
     with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>25}".format("writting")) as pbar:
         if not update:
             with open(output_file_path, 'w') as f:
@@ -26,7 +26,7 @@ def write_msp(spectrum_list, filename, mode, update):
                     try:
                         f.write(spectrum)
 
-                        f.write("\n\n\n")
+                        f.write("\n\n")
                     except:
                         continue
 
@@ -37,7 +37,7 @@ def write_msp(spectrum_list, filename, mode, update):
                     try:
                         f.write(spectrum)
 
-                        f.write("\n\n\n")
+                        f.write("\n\n")
                     except:
                         continue
 
@@ -85,7 +85,6 @@ def write_csv(df, filename, mode, update):
     This method writes a pandas DataFrame object to a CSV file. The output file is saved in the "../OUTPUT/CSV/POS" directory with the same name as the input file, but with the extension
     * changed to ".csv". The data is written in chunks of 5000 rows to improve efficiency. The progress of writing is displayed with a progress bar.
     """
-    time.sleep(0.1)
     print(f"-- {filename.replace('.msp','.csv')} --")
 
     output_file_path = os.path.join(f"../OUTPUT/CSV/{mode}",filename)
@@ -93,6 +92,7 @@ def write_csv(df, filename, mode, update):
     chunk_size = 5000  # Taille de chaque fraction
     num_chunks = int(np.ceil(df.shape[0] / chunk_size))  # Calculer le nombre de fractions
 
+    time.sleep(0.1)
     with tqdm(total=num_chunks, unit=" row", colour="green", desc="{:>25}".format("writting")) as pbar:
         for start in range(0, df.shape[0], chunk_size):
             df_slice = df[start:start + chunk_size]
