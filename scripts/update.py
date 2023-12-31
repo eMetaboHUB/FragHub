@@ -24,7 +24,7 @@ def check_for_update(spectrum_list):
     """
     print("-- checking for updates --")
     # Ajout du code pour ouvrir et lire le fichier JSON
-    with open('./datas/update.json', 'r') as f:
+    with open('../datas/update.json', 'r') as f:
         json_update_file = json.load(f)
 
     json_update_file = init_json_update_file(json_update_file)
@@ -36,7 +36,7 @@ def check_for_update(spectrum_list):
     if not json_update_file:
         json_update_file = {"FRAGHBID_LIST": fraghub_id_list}
         # écrire les modifications dans le fichier JSON
-        with open('./datas/update.json', 'w') as f:
+        with open('../datas/update.json', 'w') as f:
             json.dump(json_update_file, f)
         return spectrum_list, False
     else:
@@ -47,7 +47,7 @@ def check_for_update(spectrum_list):
         json_fraghub_id_list.extend(difference_list)
         json_update_file["FRAGHBID_LIST"] = json_fraghub_id_list
         # écrire les modifications dans le fichier JSON
-        with open('./datas/update.json', 'w') as f:
+        with open('../datas/update.json', 'w') as f:
             json.dump(json_update_file, f)
 
         # retourner la liste des spectres qui ont un FRAGHUBID dans difference_list
