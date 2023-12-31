@@ -22,7 +22,7 @@ def check_for_update(spectrum_list):
     :param spectrum_list: A list of spectrums to check for updates.
     :return: A list of spectrums that have a FRAGHUBID in the difference_list.
     """
-    print("-- checking for updates --")
+    print("{:>44}".format("¤¤ checking for updates ¤¤"))
     # Ajout du code pour ouvrir et lire le fichier JSON
     with open('../datas/update.json', 'r') as f:
         json_update_file = json.load(f)
@@ -33,7 +33,8 @@ def check_for_update(spectrum_list):
     fraghub_id_spectrums = [(re.search("(?:FRAGHUBID: )(.*)", spectrum).group(1), spectrum) for spectrum in spectrum_list if re.search("(?:FRAGHUBID: )(.*)", spectrum)]
     fraghub_id_list = [fraghub_id for fraghub_id, spectrum in fraghub_id_spectrums]
 
-    if not json_update_file:
+
+    if not json_update_file["FRAGHBID_LIST"]:
         json_update_file = {"FRAGHBID_LIST": fraghub_id_list}
         # écrire les modifications dans le fichier JSON
         with open('../datas/update.json', 'w') as f:
