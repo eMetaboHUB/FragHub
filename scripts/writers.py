@@ -22,9 +22,12 @@ def write_msp(spectrum_list, filename, mode):
     with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>25}".format("writting")) as pbar:
         with open(output_file_path, 'w') as f:
             for spectrum in spectrum_list:
-                f.write(spectrum)
+                try:
+                    f.write(spectrum)
 
-                f.write("\n\n\n")
+                    f.write("\n\n\n")
+                except:
+                    continue
 
                 pbar.update()
 
