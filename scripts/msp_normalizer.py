@@ -243,7 +243,7 @@ def peak_list_to_str(peak_list_np):
     :param peak_list_np: The input peak list as a numpy array.
     :return: A string representation of the peak list where each row is formatted as a space-separated string of floating point values.
     """
-    return "\n".join(" ".join(map('{:.15f}'.format, row)) for row in peak_list_np)
+    return "\n".join("\t".join(map('{:.15f}'.format, row)) for row in peak_list_np)
 
 def structure_metadata_and_peak_list(metadata, peak_list):
     """
