@@ -37,6 +37,7 @@ def check_for_update(spectrum_list):
         # écrire les modifications dans le fichier JSON
         with open('./datas/update.json', 'w') as f:
             json.dump(json_update_file, f)
+        return spectrum_list
     else:
         json_fraghub_id_list = json_update_file["FRAGHBID_LIST"]
         # récupérer la liste des id qui sont dans fraghub_id_list mais pas dans json_fraghub_id_list
