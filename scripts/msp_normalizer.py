@@ -213,7 +213,7 @@ def metadata_to_dict(metadata):
 
     return metadata_dict
 
-def peak_list_to_df(peak_list, precursormz):
+def peak_list_to_np_array(peak_list, precursormz):
     """
     Converts a peak list string into a numpy array.
 
@@ -258,7 +258,7 @@ def structure_metadata_and_peak_list(metadata, peak_list):
         if "PRECURSORMZ" in metadata_dict:
             if metadata_dict["PRECURSORMZ"]:
                 try:
-                    peak_list_DF = peak_list_to_df(peak_list,float(metadata_dict["PRECURSORMZ"].replace(",",".")))
+                    peak_list_DF = peak_list_to_np_array(peak_list, float(metadata_dict["PRECURSORMZ"].replace(",", ".")))
                     return metadata_dict, peak_list_DF
                 except:
                     return {},np.array([])
