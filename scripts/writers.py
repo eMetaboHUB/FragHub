@@ -14,7 +14,7 @@ def write_msp(spectrum_list, filename, mode):
     :param mode: The mode to write the file in.
     :return: None
     """
-    time.sleep(0.01)
+    time.sleep(0.1)
     print(f"-- {filename.replace('.msp', '.csv')} --")
 
     output_file_path = os.path.join(f"../OUTPUT/MSP/{mode}", filename)
@@ -72,7 +72,7 @@ def write_csv(df, filename, mode):
     This method writes a pandas DataFrame object to a CSV file. The output file is saved in the "../OUTPUT/CSV/POS" directory with the same name as the input file, but with the extension
     * changed to ".csv". The data is written in chunks of 5000 rows to improve efficiency. The progress of writing is displayed with a progress bar.
     """
-    time.sleep(0.01)
+    time.sleep(0.1)
     print(f"-- {filename.replace('.msp','.csv')} --")
 
     output_file_path = os.path.join(f"../OUTPUT/CSV/{mode}",filename)
