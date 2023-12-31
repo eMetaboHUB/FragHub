@@ -1,6 +1,6 @@
 from values_normalizer import *
 import concurrent.futures
-from Filters_NEW import *
+from filters import *
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
