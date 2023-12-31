@@ -63,15 +63,15 @@ def writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_ins
     del POS_LC
     write_msp(POS_LC_insilico, "POS_LC_insilico.msp", "POS", update)
     del POS_LC_insilico
-    write_msp(POS_GC, "POS_GC.msp", "POS")
+    write_msp(POS_GC, "POS_GC.msp", "POS", update)
     del POS_GC
     write_msp(POS_GC_insilico, "POS_GC_insilico.msp", "POS", update)
     del POS_GC_insilico
-    write_msp(NEG_LC, "NEG_LC.msp", "NEG")
+    write_msp(NEG_LC, "NEG_LC.msp", "NEG", update)
     del NEG_LC
     write_msp(NEG_LC_insilico, "NEG_LC_insilico.msp", "NEG", update)
     del NEG_LC_insilico
-    write_msp(NEG_GC, "NEG_GC.msp", "NEG")
+    write_msp(NEG_GC, "NEG_GC.msp", "NEG", update)
     del NEG_GC
     write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update)
     del NEG_GC_insilico
@@ -129,11 +129,11 @@ def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_
     write_csv(NEG_GC_df, "NEG_GC_clean.csv","NEG", update)
     del NEG_GC_df
 
-    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico_clean.csv","POS")
+    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico_clean.csv","POS", update)
     del POS_LC_df_insilico
-    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico_clean.csv","POS")
+    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico_clean.csv","POS", update)
     del POS_GC_df_insilico
-    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico_clean.csv","NEG")
+    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico_clean.csv","NEG", update)
     del NEG_LC_df_insilico
-    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico_clean.csv","NEG")
+    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico_clean.csv","NEG", update)
     del NEG_GC_df_insilico
