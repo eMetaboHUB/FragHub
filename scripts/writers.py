@@ -5,7 +5,7 @@ import time
 import os
 import re
 
-def write_msp(spectrum_list, filename, mode):
+def write_msp(spectrum_list, filename, mode, update):
     """
     Write the given spectrum list to a file in MSP format.
 
@@ -20,19 +20,33 @@ def write_msp(spectrum_list, filename, mode):
     output_file_path = os.path.join(f"../OUTPUT/MSP/{mode}", filename)
 
     with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>25}".format("writting")) as pbar:
-        with open(output_file_path, 'w') as f:
-            for spectrum in spectrum_list:
-                try:
-                    f.write(spectrum)
+        if not update:
+            with open(output_file_path, 'w') as f:
+                for spectrum in spectrum_list:
+                    try:
+                        f.write(spectrum)
 
-                    f.write("\n\n\n")
-                except:
-                    continue
+                        f.write("\n\n\n")
+                    except:
+                        continue
 
-                pbar.update()
+                    pbar.update()
+        else:
+            with open(output_file_path, 'a') as f:
+                f.write("\n\n\n")
+                for spectrum in spectrum_list:
+                    try:
+                        f.write(spectrum)
+
+                        f.write("\n\n\n")
+                    except:
+                        continue
+
+                    pbar.update()
 
 
-def writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_insilico,NEG_GC,NEG_GC_insilico):
+
+def writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_insilico,NEG_GC,NEG_GC_insilico, update=False):
     """
     Writes the content of the given parameters to separate MSP files.
 
@@ -46,24 +60,24 @@ def writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_ins
     :param NEG_GC_insilico: The content to write to the "NEG_GC_insilico.msp" file.
     :return: None
     """
-    write_msp(POS_LC,"POS_LC.msp", "POS")
+    write_msp(POS_LC,"POS_LC.msp", "POS", update)
     del POS_LC
-    write_msp(POS_LC_insilico, "POS_LC_insilico.msp", "POS")
+    write_msp(POS_LC_insilico, "POS_LC_insilico.msp", "POS", update)
     del POS_LC_insilico
     write_msp(POS_GC, "POS_GC.msp", "POS")
     del POS_GC
-    write_msp(POS_GC_insilico, "POS_GC_insilico.msp", "POS")
+    write_msp(POS_GC_insilico, "POS_GC_insilico.msp", "POS", update)
     del POS_GC_insilico
     write_msp(NEG_LC, "NEG_LC.msp", "NEG")
     del NEG_LC
-    write_msp(NEG_LC_insilico, "NEG_LC_insilico.msp", "NEG")
+    write_msp(NEG_LC_insilico, "NEG_LC_insilico.msp", "NEG", update)
     del NEG_LC_insilico
     write_msp(NEG_GC, "NEG_GC.msp", "NEG")
     del NEG_GC
-    write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG")
+    write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update)
     del NEG_GC_insilico
 
-def write_csv(df, filename, mode):
+def write_csv(df, filename, mode, update):
     """
     :param df: pandas DataFrame object containing the data to be written to CSV.
     :param filename: string representing the name of the output file. The extension ".msp" in the filename will be replaced by ".csv".
@@ -83,7 +97,7 @@ def write_csv(df, filename, mode):
     with tqdm(total=num_chunks, unit=" row", colour="green", desc="{:>25}".format("writting")) as pbar:
         for start in range(0, df.shape[0], chunk_size):
             df_slice = df[start:start + chunk_size]
-            if start == 0:
+            if start == 0 and not update:
                 # Écrire les en-têtes pour la première fraction
                 df_slice.to_csv(output_file_path, mode='w', sep=";", quotechar='"', encoding="UTF-8", index=False)
             else:
@@ -93,7 +107,7 @@ def write_csv(df, filename, mode):
             # Mettre à jour la barre de progression
             pbar.update()
 
-def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_GC_df_insilico,NEG_LC_df_insilico,NEG_GC_df_insilico):
+def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_GC_df_insilico,NEG_LC_df_insilico,NEG_GC_df_insilico, update=False):
     """
     Writes the given dataframes to CSV files with specific file names.
 
@@ -107,13 +121,13 @@ def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_
     :param NEG_GC_df_insilico: DataFrame containing negative GC In Silico data
     :return: None
     """
-    write_csv(POS_LC_df,"POS_LC_clean.csv","POS")
+    write_csv(POS_LC_df,"POS_LC_clean.csv","POS", update)
     del POS_LC_df
-    write_csv(POS_GC_df, "POS_GC_clean.csv","POS")
+    write_csv(POS_GC_df, "POS_GC_clean.csv","POS", update)
     del POS_GC_df
-    write_csv(NEG_LC_df, "NEG_LC_clean.csv","NEG")
+    write_csv(NEG_LC_df, "NEG_LC_clean.csv","NEG", update)
     del NEG_LC_df
-    write_csv(NEG_GC_df, "NEG_GC_clean.csv","NEG")
+    write_csv(NEG_GC_df, "NEG_GC_clean.csv","NEG", update)
     del NEG_GC_df
 
     write_csv(POS_LC_df_insilico, "POS_LC_In_Silico_clean.csv","POS")
