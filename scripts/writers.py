@@ -120,20 +120,20 @@ def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_
     :param NEG_GC_df_insilico: DataFrame containing negative GC In Silico data
     :return: None
     """
-    write_csv(POS_LC_df,"POS_LC_clean.csv","POS", update)
+    write_csv(POS_LC_df,"POS_LC.csv","POS", update)
     del POS_LC_df
-    write_csv(POS_GC_df, "POS_GC_clean.csv","POS", update)
+    write_csv(POS_GC_df, "POS_GC.csv","POS", update)
     del POS_GC_df
-    write_csv(NEG_LC_df, "NEG_LC_clean.csv","NEG", update)
+    write_csv(NEG_LC_df, "NEG_LC.csv","NEG", update)
     del NEG_LC_df
-    write_csv(NEG_GC_df, "NEG_GC_clean.csv","NEG", update)
+    write_csv(NEG_GC_df, "NEG_GC.csv","NEG", update)
     del NEG_GC_df
 
-    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico_clean.csv","POS", update)
+    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico.csv","POS", update)
     del POS_LC_df_insilico
-    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico_clean.csv","POS", update)
+    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico.csv","POS", update)
     del POS_GC_df_insilico
-    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico_clean.csv","NEG", update)
+    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico.csv","NEG", update)
     del NEG_LC_df_insilico
-    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico_clean.csv","NEG", update)
+    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv","NEG", update)
     del NEG_GC_df_insilico
