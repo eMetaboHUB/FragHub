@@ -309,16 +309,21 @@ def msp_cleaning_processing(spectrum_list):
     """
     :param spectrum_list: A list of spectrum data to be processed.
     :return: A list containing the results of processing the spectrum data.
-
-    This method takes in a list of spectrum data and processes it using multiple threads for improved performance. The spectrum data is passed to the `msp_parser` function, which carries
-    * out the actual processing. The `ThreadPoolExecutor` from the `concurrent.futures` module is used to concurrently execute the `msp_parser` function on each spectrum in the provided
-    * list.
-
-    The function returns a list containing the results of processing the spectrum data. Any `None` results are filtered out before returning the final list.
     """
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(msp_parser, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>25}".format("processing")))
 
-    final = [res for res in results if res is not None]
+    chunk_size = 5000
+    final = []
+    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>25}".format("processing"))
 
-    return final # returns the list of different worker executions.
+    # Dividing the spectrum list into chunks
+    for i in range(0, len(spectrum_list), chunk_size):
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            chunk = spectrum_list[i:i + chunk_size]
+            results = list(executor.map(msp_parser, chunk))
+            progress_bar.update(len(chunk))
+
+        final.extend([res for res in results if res is not None])
+
+    progress_bar.close()
+
+    return final
