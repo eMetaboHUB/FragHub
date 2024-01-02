@@ -18,7 +18,6 @@ def write_msp(spectrum_list, filename, mode, update):
 
     output_file_path = os.path.join(f"../OUTPUT/MSP/{mode}", filename)
 
-    time.sleep(0.1)
     with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>25}".format("writting")) as pbar:
         if not update:
             with open(output_file_path, 'w') as f:
@@ -59,20 +58,28 @@ def writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_ins
     :param NEG_GC_insilico: The content to write to the "NEG_GC_insilico.msp" file.
     :return: None
     """
+    time.sleep(0.1)
     write_msp(POS_LC,"POS_LC.msp", "POS", update)
     del POS_LC
+    time.sleep(0.1)
     write_msp(POS_LC_insilico, "POS_LC_insilico.msp", "POS", update)
     del POS_LC_insilico
+    time.sleep(0.1)
     write_msp(POS_GC, "POS_GC.msp", "POS", update)
     del POS_GC
+    time.sleep(0.1)
     write_msp(POS_GC_insilico, "POS_GC_insilico.msp", "POS", update)
     del POS_GC_insilico
+    time.sleep(0.1)
     write_msp(NEG_LC, "NEG_LC.msp", "NEG", update)
     del NEG_LC
+    time.sleep(0.1)
     write_msp(NEG_LC_insilico, "NEG_LC_insilico.msp", "NEG", update)
     del NEG_LC_insilico
+    time.sleep(0.1)
     write_msp(NEG_GC, "NEG_GC.msp", "NEG", update)
     del NEG_GC
+    time.sleep(0.1)
     write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update)
     del NEG_GC_insilico
 
@@ -92,7 +99,6 @@ def write_csv(df, filename, mode, update):
     chunk_size = 5000  # Taille de chaque fraction
     num_chunks = int(np.ceil(df.shape[0] / chunk_size))  # Calculer le nombre de fractions
 
-    time.sleep(0.1)
     with tqdm(total=num_chunks, unit=" row", colour="green", desc="{:>25}".format("writting")) as pbar:
         for start in range(0, df.shape[0], chunk_size):
             df_slice = df[start:start + chunk_size]
@@ -120,20 +126,27 @@ def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_
     :param NEG_GC_df_insilico: DataFrame containing negative GC In Silico data
     :return: None
     """
+    time.sleep(0.1)
     write_csv(POS_LC_df,"POS_LC.csv","POS", update)
     del POS_LC_df
+    time.sleep(0.1)
     write_csv(POS_GC_df, "POS_GC.csv","POS", update)
     del POS_GC_df
+    time.sleep(0.1)
     write_csv(NEG_LC_df, "NEG_LC.csv","NEG", update)
     del NEG_LC_df
+    time.sleep(0.1)
     write_csv(NEG_GC_df, "NEG_GC.csv","NEG", update)
     del NEG_GC_df
-
+    time.sleep(0.1)
     write_csv(POS_LC_df_insilico, "POS_LC_In_Silico.csv","POS", update)
     del POS_LC_df_insilico
+    time.sleep(0.1)
     write_csv(POS_GC_df_insilico, "POS_GC_In_Silico.csv","POS", update)
     del POS_GC_df_insilico
+    time.sleep(0.1)
     write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico.csv","NEG", update)
     del NEG_LC_df_insilico
+    time.sleep(0.1)
     write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv","NEG", update)
     del NEG_GC_df_insilico
