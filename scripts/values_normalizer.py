@@ -44,6 +44,9 @@ ms_level_pattern = re.compile("(?:ms)?(\d)", flags=re.IGNORECASE)
 global In_Silico_pattern
 In_Silico_pattern = re.compile("in.silico|insilico|predicted|theoretical|Annotation.level.3", flags=re.IGNORECASE)
 
+global empty_pattern
+empty_pattern = re.compile("(0 .*)|(0\.0 .*)|()|(na .*)|(n/a .*)|(nan .*)|(unknown .*)|(unknow .*)|(none .*)|(\? .*)|(unk .*)|(x .*)", flags=re.IGNORECASE)
+
 def normalize_empties(metadata_dict):
     """
     Normalizes empties in a metadata dictionary.
@@ -51,14 +54,9 @@ def normalize_empties(metadata_dict):
     :param metadata_dict: the dictionary containing metadata
     :return: the updated metadata dictionary
     """
-    regex_to_replace = [re.compile(re.escape(str(item)), re.I) for item in [0, 0.0, "", "na", "n/a", "nan", "unknown", "unknow", "none", "?", "unk", np.nan]]
-
     for k, v in metadata_dict.items():
-        # For each item to replace
-        for regex in regex_to_replace:
-            # If the current value matches, replace it
-            if regex.fullmatch(str(v)):
-                metadata_dict[k] = ''
+        if re.search(empty_pattern, str(v)) or np.isnan(v):
+            metadata_dict[k] = ''
 
     return metadata_dict
 
