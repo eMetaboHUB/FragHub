@@ -351,6 +351,43 @@ def normalize_synonymes(metadata_dict):
 
     return metadata_dict
 
+def normalize_retentiontime(metadata_dict):
+    """
+    Normalize the retention time value in the given metadata dictionary.
+
+    :param metadata_dict: The dictionary containing the metadata information.
+    :type metadata_dict: dict
+    :return: The updated metadata dictionary with the normalized retention time.
+    :rtype: dict
+    """
+    retientiontime = metadata_dict["RETENTIONTIME"]
+
+    match = re.search("(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(.*)", retientiontime, flags=re.IGNORECASE)
+
+    if match:
+        time = match.group(1)
+        unit = match.group(2).lower()
+
+        if not unit:
+            retientiontime = str(float(time))
+            metadata_dict["RETENTIONTIME"] = retientiontime
+            return metadata_dict
+        else:
+            if unit in ["m", "min", "minute", "minutes"]:
+                retientiontime = str(float(time))
+                metadata_dict["RETENTIONTIME"] = retientiontime
+                return metadata_dict
+            elif unit in ["s", "sec", "second", "seconds"]:
+                retientiontime = str(float(time) / 60)
+                metadata_dict["RETENTIONTIME"] = retientiontime
+                return metadata_dict
+            elif unit in ["ms", "millisecond", "milliseconds"]:
+                retientiontime = str(float(time) / 60000)
+                metadata_dict["RETENTIONTIME"] = retientiontime
+                return metadata_dict
+
+    return metadata_dict
+
 def normalize_values(metadata_dict):
     """
     :param metadata_dict: A dictionary containing metadata information.
@@ -363,10 +400,11 @@ def normalize_values(metadata_dict):
     metadata_dict = delete_no_smiles_inchi_inchikey(metadata_dict)
 
     if metadata_dict:
-         metadata_dict = normalize_adduct(metadata_dict)
-         metadata_dict = normalize_ionmode(metadata_dict)
-         metadata_dict = normalize_ms_level(metadata_dict)
-         metadata_dict = normalize_synonymes(metadata_dict)
-         metadata_dict = normalize_predicted(metadata_dict)
+        metadata_dict = normalize_adduct(metadata_dict)
+        metadata_dict = normalize_ionmode(metadata_dict)
+        metadata_dict = normalize_ms_level(metadata_dict)
+        metadata_dict = normalize_synonymes(metadata_dict)
+        metadata_dict = normalize_predicted(metadata_dict)
+        metadata_dict = normalize_retentiontime(metadata_dict)
 
     return metadata_dict
