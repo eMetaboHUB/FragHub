@@ -54,11 +54,7 @@ def normalize_empties(metadata_dict):
     :param metadata_dict: the dictionary containing metadata
     :return: the updated metadata dictionary
     """
-    for k, v in metadata_dict.items():
-        if re.search(empty_pattern, str(v)) or np.isnan(v):
-            metadata_dict[k] = ''
-
-    return metadata_dict
+    return {k: '' if re.search(empty_pattern, str(v)) or np.isnan(v) else v for k, v in metadata_dict.items()}
 
 def repair_inchi(metadata_dict):
     """
