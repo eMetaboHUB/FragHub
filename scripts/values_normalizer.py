@@ -45,7 +45,7 @@ global In_Silico_pattern
 In_Silico_pattern = re.compile("in.silico|insilico|predicted|theoretical|Annotation.level.3", flags=re.IGNORECASE)
 
 global empty_pattern
-empty_pattern = re.compile("(0 .*)|(0\.0 .*)|()|(na .*)|(n/a .*)|(nan .*)|(unknown .*)|(unknow .*)|(none .*)|(\? .*)|(unk .*)|(x .*)", flags=re.IGNORECASE)
+empty_pattern = re.compile("(^0( .*)?)|(^0\.0( .*)?)|(^$)|(^na( .*)?)|(^n/a( .*)?)|(^nan( .*)?)|(^unknown( .*)?)|(^unknow( .*)?)|(^none( .*)?)|(^\?( .*)?)|(^unk( .*)?)|(^x( .*)?)", flags=re.IGNORECASE)
 
 def normalize_empties(metadata_dict):
     """
@@ -54,7 +54,12 @@ def normalize_empties(metadata_dict):
     :param metadata_dict: the dictionary containing metadata
     :return: the updated metadata dictionary
     """
-    return {k: '' if re.search(empty_pattern, str(v)) or np.isnan(v) else v for k, v in metadata_dict.items()}
+    for k, v in metadata_dict.items():
+        # For each item to replace
+        if re.fullmatch(empty_pattern, v):
+            metadata_dict[k] = ''
+
+    return metadata_dict
 
 def repair_inchi(metadata_dict):
     """
