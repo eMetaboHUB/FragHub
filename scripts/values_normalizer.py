@@ -362,7 +362,7 @@ def normalize_retentiontime(metadata_dict):
     """
     retientiontime = metadata_dict["RETENTIONTIME"]
 
-    match = re.search("(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(.*)", retientiontime, flags=re.IGNORECASE)
+    match = re.search("(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(m|min|minute|minutes|s|sec|second|seconds|ms|millisecond|milliseconds)(\W)", retientiontime, flags=re.IGNORECASE)
 
     if match:
         time = match.group(1)
