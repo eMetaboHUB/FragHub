@@ -1,4 +1,3 @@
-
 import re
 
 def remove_no_inchikey(spectrum):
