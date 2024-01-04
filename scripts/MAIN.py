@@ -105,7 +105,8 @@ if __name__ == "__main__":
             # STEP 3: Execute matchms (Multithreaded)
             print(f"-- CLEANING: {files} --")
             spectrum_list = load_spectrum_list(msp_path)
-            spectrum_list, update = check_for_update(spectrum_list)
+            update = False
+            # spectrum_list, update = check_for_update(spectrum_list)
             spectrum_list = msp_cleaning_processing(spectrum_list)
 
             CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
@@ -158,4 +159,5 @@ if __name__ == "__main__":
     print("-- WRITING MSP --")
     writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_insilico,NEG_GC,NEG_GC_insilico, update)
 
+    time.sleep(0.01)
     print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
