@@ -1,10 +1,9 @@
 from rdkit.Chem.Descriptors import ExactMolWt
 import concurrent.futures
-import pubchempy as pcp
+from pycdk.pycdk import *
 from rdkit import Chem
 from tqdm import tqdm
 import pandas as pd
-from pycdk.pycdk import *
 import uuid
 import re
 import os
