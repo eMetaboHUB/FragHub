@@ -2,7 +2,6 @@ import concurrent.futures
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
-import chardet
 import time
 import json
 import os
