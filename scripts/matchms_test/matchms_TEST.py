@@ -40,8 +40,6 @@ for files in os.listdir(msp_dir):
             spectrum = matchms_filters(spectrum)
             spectrums_final.append(spectrum)
 
-        spectrums_final = [spectrum for spectrum in spectrums_final if spectrum is not None]
-
-        save_as_msp(spectrums_final,r"C:\Users\Axel\PycharmProjects\msp_v3\scripts\matchms_test\ALL_GNPS.msp")
+        save_as_msp(spectrums_final,f"./matchms_test/{files}")
 
 print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
