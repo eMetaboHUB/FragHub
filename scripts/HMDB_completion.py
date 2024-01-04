@@ -14,8 +14,10 @@ for files in tqdm(dirs, total=len(dirs), unit="files", colour="green"):
         with open(os.path.join("../INPUT/XML", files), "r", encoding="UTF-8") as buffer:
             xml_content = buffer.read()
 
-        HMDB_ID = re.search("<database-id>(.*)</database-id>",xml_content).group(1) # hmdb id retrieval for csv matching
-        if HMDB_ID != None:
+        HMDB_ID = re.search("<database-id>(.*)</database-id>",xml_content) # hmdb id retrieval for csv matching
+        if HMDB_ID:
+            HMDB_ID = HMDB_ID.group(1)
+
             line = HMDB_df.loc[HMDB_df['EXTERNAL_ID'] == HMDB_ID]
 
             if not line.empty:
