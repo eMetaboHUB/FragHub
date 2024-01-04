@@ -204,8 +204,6 @@ def delete_no_smiles_inchi_inchikey(metadata_dict):
     else:
         return metadata_dict
 
-
-
 def normalize_adduct(metadata_dict):
     """
     :param metadata_dict: A dictionary containing metadata information.
