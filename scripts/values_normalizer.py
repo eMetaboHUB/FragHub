@@ -135,9 +135,6 @@ def repair_mol_descriptors(metadata_dict):
 
     return metadata_dict
 
-
-
-
 def determining_adduct_charge(adduct): # NOTE: ATTENTION: pas certains que ce soit correcte
     """
     Calculate the charge of a given adduct.
@@ -188,7 +185,6 @@ def determining_adduct_charge(adduct): # NOTE: ATTENTION: pas certains que ce so
                 return str(abs(min))+"-"
     else:
         return None
-
 
 def delete_no_smiles_inchi_inchikey(metadata_dict):
     """
