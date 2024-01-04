@@ -135,9 +135,6 @@ def repair_mol_descriptors(metadata_dict):
 
     return metadata_dict
 
-
-
-
 def determining_adduct_charge(adduct): # NOTE: ATTENTION: pas certains que ce soit correcte
     """
     Calculate the charge of a given adduct.
@@ -189,7 +186,6 @@ def determining_adduct_charge(adduct): # NOTE: ATTENTION: pas certains que ce so
     else:
         return None
 
-
 def delete_no_smiles_inchi_inchikey(metadata_dict):
     """
     Delete entries from the given metadata dictionary if both 'SMILES' and 'INCHI' keys have NaN values.
@@ -203,8 +199,6 @@ def delete_no_smiles_inchi_inchikey(metadata_dict):
         return None
     else:
         return metadata_dict
-
-
 
 def normalize_adduct(metadata_dict):
     """
