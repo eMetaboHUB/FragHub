@@ -66,7 +66,7 @@ def genrate_fraghubid(spectrum):
 
     return spectrum
 
-def genrate_fraghubid_processing(spectrum_list, filename):
+def genrate_fraghubid_processing(spectrum_list, files):
     """
     Perform parallel processing of the given spectrum list and generate fraghubid for each spectrum.
 
@@ -74,7 +74,7 @@ def genrate_fraghubid_processing(spectrum_list, filename):
     :return: A list of fraghubids generated for each spectrum.
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(genrate_fraghubid, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>25}".format(f"generating FragHubID on {filename}")))
+        results = list(tqdm(executor.map(genrate_fraghubid, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>25}".format(f"generating FragHubID on {files}")))
 
     final = [res for res in results if res is not None]
 
@@ -115,10 +115,9 @@ def generate_fraghub_id(msp_directory_path):
     for files in os.listdir(msp_directory_path):
         if files.endswith(".msp"):
             msp_file_path = os.path.join(msp_directory_path, files)
-            filename = files.replace(".msp", "")
             if not check_fraghubid_already_done(msp_file_path):
                 spectrum_list= load_spectrum_list(msp_file_path)
-                spectrum_list = genrate_fraghubid_processing(spectrum_list, filename)
+                spectrum_list = genrate_fraghubid_processing(spectrum_list, files)
 
                 with open(msp_file_path, 'w', encoding='utf-8') as buffer:
                     buffer.write("\n\n\n".join(spectrum_list))
