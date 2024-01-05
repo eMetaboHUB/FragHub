@@ -1,44 +1,49 @@
 import concurrent.futures
-from tqdm import tqdm
-from loaders import *
-import hashlib
-import ijson
-import json
-import sys
-import os
 import re
 
-global inchikey_update_pattern
-inchikey_update_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])", flags=re.IGNORECASE)
+from tqdm import tqdm
+import hashlib
+import os
 
-global peak_list_split_update_pattern
-peak_list_split_update_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
+def load_spectrum_list(msp_file_path):
+    """
+    Load spectra from an MSP file and return a list of spectra.
 
-def get_peak_list_key(spectrum):
-    for key, value in spectrum.items():
-        if isinstance(value, list) and all(isinstance(i, list) and len(i) == 2 and all(isinstance(n, (int, float)) for n in i) for i in value):
-            return key
-    return None
+    :param msp_file_path: Path to the MSP file.
+    :return: List of spectra.
+    """
+    spectrum_list = []
+    buffer = []
+
+    total_lines = sum(1 for line in open(msp_file_path, 'r', encoding="UTF-8")) # count the total number of lines in the file
+
+    with open(msp_file_path, 'r', encoding="UTF-8") as file:
+        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="{:>25}".format("loading file")): # wrap this with tqdm
+            if line.strip() == '':
+                if buffer:
+                    spectrum_list.append('\n'.join(buffer))
+                    buffer = []
+            else:
+                if not buffer:
+                    buffer.append(f"FILENAME: {os.path.basename(msp_file_path)}") # adding filename to spectrum
+                buffer.append(line.strip())
+
+    # Add the last spectrum to the list
+    if buffer:
+        spectrum_list.append('\n'.join(buffer))
+
+    return spectrum_list
 
 def hash_spectrum_data(spectrum_data):
     """
-    Calculate the SHA256 hash of spectrum data.
+    :param spectrum_data: The spectrum data to be hashed.
+    :return: The SHA-256 hash of the spectrum data as a hexadecimal string.
 
-    :param spectrum_data: The spectrum data to hash.
-    :type spectrum_data: str
-    :return: The SHA256 hash of spectrum data.
-    :rtype: str
+    This method takes the spectrum data and converts it into a string. It then creates a SHA-256 object and updates it with the spectrum string encoded in UTF-8. Finally, it returns the
+    * hexadecimal representation of the SHA-256 hash.
     """
+    # Convertir le spectre data en une chaîne de caractères
     spectrum_string = str(spectrum_data)
-
-    inchikey = re.search(inchikey_update_pattern, spectrum_string)
-    peak_list = str(spectrum_data[get_peak_list_key(spectrum_data)])
-
-    if inchikey:
-        inchikey = inchikey.group(1)
-
-    if inchikey and peak_list:
-        spectrum_string = inchikey+"\n"+peak_list
 
     # Créer un objet sha256
     sha256 = hashlib.sha256()
@@ -56,11 +61,10 @@ def genrate_fraghubid(spectrum):
     :param spectrum: The spectrum data.
     :return: The spectrum data with Fragment Hub ID.
     """
-    fraghubid = str(hash_spectrum_data(spectrum))
-    new_spectrum = {"FRAGHUBID": fraghubid}
-    new_spectrum.update(spectrum)
+    hash_key = hash_spectrum_data(spectrum)
+    spectrum = f"FRAGHUBID: {str(hash_key)}\n" + spectrum
 
-    return new_spectrum
+    return spectrum
 
 def genrate_fraghubid_processing(spectrum_list, files):
     """
@@ -69,63 +73,35 @@ def genrate_fraghubid_processing(spectrum_list, files):
     :param spectrum_list: A list of spectra.
     :return: A list of fraghubids generated for each spectrum.
     """
-    filename = os.path.basename(files)
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(genrate_fraghubid, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>80}".format(f"generating FragHubID on [{filename}]")))
+        results = list(tqdm(executor.map(genrate_fraghubid, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>25}".format(f"generating FragHubID on {files}")))
 
     final = [res for res in results if res is not None]
 
     return final # returns the list of different worker executions.
 
 
-def check_fraghubid_already_done(json_file_path):
+def check_fraghubid_already_done(msp_file_path):
     """
     Check if a FragHubID is already done in a given file.
 
-    :param json_file_path: The file path of the JSON file to check.
-    :type json_file_path: str
-    :return: True if a FRAGHUBID is found, False otherwise.
+    :param msp_file_path: The file path of the MSP file to check.
+    :type msp_file_path: str
+    :return: True if a FragHubID is found, False otherwise.
     :rtype: bool
     """
-    with open(json_file_path, 'r') as file:
-        # ijson items returns a generator yielding items in a json file
-        objects = ijson.items(file, '')
+    with open(msp_file_path, 'r') as file:
+        # Read the first 10 lines
+        lines = [next(file) for _ in range(10)]
 
-        first_dict = next(objects)
+    combined_lines = '\n'.join(lines)
 
-        # check if 'FRAGHUBID' is in the first dictionary
-        if 'FRAGHUBID' in first_dict:
-            return True
+    if re.search("(FRAGHUBID: )(.*)\n", combined_lines):
+        return True
+    else:
+        return False
 
-    # 'FRAGHUBID' was not found or file was empty
-    return False
-
-def process_converted_after(spectrum_list, mode):
-    """
-    Process converted spectrum list after conversion.
-
-    :param spectrum_list: List of converted spectra.
-    :param mode: Conversion mode. Can be "MSP", "XML", "CSV", or "JSON".
-    :return: Processed spectrum list.
-    """
-    if mode == "MSP":
-        file_path = os.path.abspath("../INPUT/CONVERTED/MSP_converted.json")
-        filename = os.path.basename(file_path)
-    elif mode == "XML":
-        file_path = os.path.abspath("../INPUT/CONVERTED/XML_converted.json")
-        filename = os.path.basename(file_path)
-    elif mode == "CSV":
-        file_path = os.path.abspath("../INPUT/CONVERTED/CSV_converted.json")
-        filename = os.path.basename(file_path)
-    elif mode == "JSON":
-        file_path = os.path.abspath("../INPUT/CONVERTED/JSON_converted.json")
-        filename = os.path.basename(file_path)
-
-    spectrum_list = genrate_fraghubid_processing(spectrum_list, filename)
-
-    return spectrum_list
-
-def generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON):
+def generate_fraghub_id(msp_directory_path):
     """
     :param msp_directory_path: The path to the MSP directory.
     :return: None
@@ -136,13 +112,12 @@ def generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON):
 
     Finally, it opens the MSP file in write mode and writes the modified spectrum list with the generated FragHub ID into the file.
     """
-    if FINAL_MSP:
-        FINAL_MSP = process_converted_after(FINAL_MSP, "MSP")
-    if FINAL_XML:
-        FINAL_XML = process_converted_after(FINAL_XML, "XML")
-    if FINAL_CSV:
-        FINAL_CSV = process_converted_after(FINAL_CSV, "CSV")
-    if FINAL_JSON:
-        FINAL_JSON = process_converted_after(FINAL_JSON, "JSON")
+    for files in os.listdir(msp_directory_path):
+        if files.endswith(".msp"):
+            msp_file_path = os.path.join(msp_directory_path, files)
+            if not check_fraghubid_already_done(msp_file_path):
+                spectrum_list= load_spectrum_list(msp_file_path)
+                spectrum_list = genrate_fraghubid_processing(spectrum_list, files)
 
-    return FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON
+                with open(msp_file_path, 'w', encoding='utf-8') as buffer:
+                    buffer.write("\n\n\n".join(spectrum_list))
