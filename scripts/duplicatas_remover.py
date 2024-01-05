@@ -11,7 +11,7 @@ def removing_duplicates(dataframe, name, mode, update):
     :return: The dataframe with duplicates removed.
     """
     if update:
-        csv_dataframe = pd.read_csv(f"../OUTPUT/CSV/{mode}/{name}.csv")
+        csv_dataframe = pd.read_csv(f"../OUTPUT/CSV/{mode}/{name}.csv", sep=";", quotechar='"', encoding="UTF-8")
         dataframe = pd.concat([dataframe, csv_dataframe])
 
     total_rows = len(dataframe)
