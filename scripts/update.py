@@ -22,7 +22,7 @@ def check_for_update(spectrum_list):
     :param spectrum_list: A list of spectrums to check for updates.
     :return: A list of spectrums that have a FRAGHUBID in the difference_list.
     """
-    print("{:>44}".format("¤¤ checking for updates ¤¤"))
+    print("{:>80}".format("¤¤ checking for updates ¤¤"))
     # Ajout du code pour ouvrir et lire le fichier JSON
     with open('../datas/update.json', 'r') as f:
         json_update_file = json.load(f)

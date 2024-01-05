@@ -252,7 +252,7 @@ def convert_to_msp(input_path):
             json_to_do = True
     if json_to_do == True:
         time.sleep(0.02)
-        print("-- CONVERTING JSON TO MSP --")
+        print("{:>80}".format("-- CONVERTING JSON TO MSP --"))
         # Concatenate all JSON to a list
         FINAL_JSON = concatenate_json(json_path)
         # Convert all JSON spectrum to MSP spectrum (Multithreaded)
@@ -268,7 +268,7 @@ def convert_to_msp(input_path):
             xml_to_do = True
     if xml_to_do == True:
         time.sleep(0.02)
-        print("-- CONVERTING XML TO MSP --")
+        print("{:>80}".format("-- CONVERTING XML TO MSP --"))
         # Concatenate all XML to a list
         FINAL_XML = concatenate_xml(xml_path)
         # Convert all XML spectrum to MSP spectrum (Multithreaded)
@@ -284,7 +284,7 @@ def convert_to_msp(input_path):
             csv_to_do = True
     if csv_to_do == True:
         time.sleep(0.02)
-        print("-- CONVERTING CSV TO MSP --")
+        print("{:>80}".format("-- CONVERTING CSV TO MSP --"))
         # Concatenate all CSV to a list
         FINAL_CSV = concatenate_csv(csv_path)
         # Convert all CSV spectrum to MSP spectrum (Multithreaded)
