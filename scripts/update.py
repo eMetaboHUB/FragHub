@@ -1,78 +1,55 @@
-import concurrent.futures
-from tqdm import tqdm
 import json
+import re
 
 def init_json_update_file(json_update_file):
     """
-    :param json_update_file: The JSON update file to be initialized. It should be a dictionary or None.
-    :return: The initialized JSON update file. If the input JSON update file is None, a new dictionary will be created with the key "FRAGHBID_LIST" and an empty list as its value. If the
-    * input JSON update file is not None, it will be returned as is.
-    """
-    first_run = False
+    Initializes a JSON update file if not provided.
 
-    if not bool(json_update_file):
-        first_run = True
-        json_update_file = {"FRAGHUBID_LIST": {}}
-        return json_update_file, first_run
+    :param json_update_file: The existing JSON update file. If not provided, a new one will be created.
+    :type json_update_file: dict or None
+    :return: The initialized or existing JSON update file.
+    :rtype: dict
+    """
+    if not json_update_file:
+        json_update_file = {"FRAGHBID_LIST": []}
+        return json_update_file
     else:
-        return json_update_file, first_run
+        return json_update_file
 
-def check_for_update(spectrum):
+
+def check_for_update(spectrum_list):
     """
-    :param spectrum: The spectrum to check for updates.
-    :return: If the spectrum is not found in the dictionary or the dictionary is empty, returns the spectrum and the fraghub_id_spectrum. Otherwise, returns None.
-    """
-    fraghub_id_spectrum = spectrum["FRAGHUBID"]
-
-    fraghub_id_dict = json_update_file["FRAGHUBID_LIST"]
-
-    # Vérifier si le dictionnaire est vide ou si fraghub_id_spectrum n'est pas dans le dictionnaire.
-    if not fraghub_id_dict or fraghub_id_spectrum not in fraghub_id_dict:
-        return spectrum, fraghub_id_spectrum
-    else:
-        return None
-
-def check_for_update_processing(spectrum_list):
-    """
-
     :param spectrum_list: A list of spectrums to check for updates.
-    :return: A list of spectrums that have been updated.
-
+    :return: A list of spectrums that have a FRAGHUBID in the difference_list.
     """
-    global json_update_file
-
+    print("{:>80}".format("¤¤ checking for updates ¤¤"))
+    # Ajout du code pour ouvrir et lire le fichier JSON
     with open('../datas/update.json', 'r') as f:
         json_update_file = json.load(f)
 
-    json_update_file, first_run = init_json_update_file(json_update_file)
+    json_update_file = init_json_update_file(json_update_file)
 
-    chunk_size = 5000
-    final = []
-    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>80}".format("checking for updates"))
+    # associer chaque spectrum avec son FRAGHUBID
+    fraghub_id_spectrums = [(re.search("(?:FRAGHUBID: )(.*)", spectrum).group(1), spectrum) for spectrum in spectrum_list if re.search("(?:FRAGHUBID: )(.*)", spectrum)]
+    fraghub_id_list = [fraghub_id for fraghub_id, spectrum in fraghub_id_spectrums]
 
-    # Dividing the spectrum list into chunks
-    for i in range(0, len(spectrum_list), chunk_size):
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            chunk = spectrum_list[i:i + chunk_size]
-            results = list(executor.map(check_for_update, chunk))
-            progress_bar.update(len(chunk))
 
-        final.extend([res for res in results if res is not None])
-
-    final_spectrum_list = [res[0] for res in final]
-    new_fraghubid = {res[1]: True for res in final}
-
-    if final:
-        update = True
+    if not json_update_file["FRAGHBID_LIST"]:
+        json_update_file = {"FRAGHBID_LIST": fraghub_id_list}
+        # écrire les modifications dans le fichier JSON
+        with open('../datas/update.json', 'w') as f:
+            json.dump(json_update_file, f)
+        return spectrum_list, False
     else:
-        update = False
+        json_fraghub_id_list = json_update_file["FRAGHBID_LIST"]
+        # récupérer la liste des id qui sont dans fraghub_id_list mais pas dans json_fraghub_id_list
+        difference_list = list(set(fraghub_id_list) - set(json_fraghub_id_list))
+        # ajouter les éléments de difference_list à json_fraghub_id_list
+        json_fraghub_id_list.extend(difference_list)
+        json_update_file["FRAGHBID_LIST"] = json_fraghub_id_list
+        # écrire les modifications dans le fichier JSON
+        with open('../datas/update.json', 'w') as f:
+            json.dump(json_update_file, f)
 
-    json_update_file["FRAGHUBID_LIST"].update(new_fraghubid)
-
-    # écrire les modifications dans le fichier JSON
-    with open('../datas/update.json', 'w') as f:
-        json.dump(json_update_file, f, ensure_ascii=False, indent=4)
-
-    progress_bar.close()
-
-    return final_spectrum_list, update, first_run
+        # retourner la liste des spectres qui ont un FRAGHUBID dans difference_list
+        return [spectrum for fraghub_id, spectrum in fraghub_id_spectrums if fraghub_id in difference_list], True
