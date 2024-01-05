@@ -73,7 +73,14 @@ def check_for_update_processing(spectrum_list):
         final.extend([res for res in results if res is not None])
 
     final_spectrum_list = [res[0] for res in final]
-    json_update_file["FRAGHBID_LIST"].extend([res[1] for res in final])
+    new_fraghubid = [res[1] for res in final]
+
+    if final:
+        update = True
+    else:
+        update = False
+
+    json_update_file["FRAGHBID_LIST"].extend(new_fraghubid)
 
     # écrire les modifications dans le fichier JSON
     with open('../datas/update.json', 'w') as f:
@@ -81,4 +88,4 @@ def check_for_update_processing(spectrum_list):
 
     progress_bar.close()
 
-    return final_spectrum_list
+    return final_spectrum_list, update
