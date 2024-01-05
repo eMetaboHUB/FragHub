@@ -74,7 +74,7 @@ def genrate_fraghubid_processing(spectrum_list, files):
     :return: A list of fraghubids generated for each spectrum.
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(genrate_fraghubid, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>25}".format(f"generating FragHubID on {files}")))
+        results = list(tqdm(executor.map(genrate_fraghubid, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>25}".format(f"generating FragHubID on [{files}]")))
 
     final = [res for res in results if res is not None]
 
