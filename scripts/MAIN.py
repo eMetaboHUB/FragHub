@@ -52,27 +52,27 @@ if __name__ == "__main__":
     input_path = r"..\INPUT"
     output_path = r"..\OUTPUT"
 
-    # STEP 1: convert files to msp if needed (Multithreaded)
-    FINAL_JSON,FINAL_XML,FINAL_CSV = convert_to_msp(input_path)
-
-    if FINAL_JSON != [] :
-        with open(os.path.join("../INPUT/MSP/JSON_converted"+".msp"), "a", encoding="UTF-8") as temp:
-            temp.write("\n\n".join(FINAL_JSON))
-
-    if FINAL_XML != []:
-        with open(os.path.join("../INPUT/MSP/XML_converted"+".msp"), "a", encoding="UTF-8") as temp:
-            temp.write("\n\n".join(FINAL_XML))
-
-    if FINAL_CSV != []:
-        compteur = 1
-        for elements in FINAL_CSV:
-            with open(os.path.join(f"../INPUT/MSP/CSV_converted_{compteur}"+".msp"), "w", encoding="UTF-8") as temp:
-                temp.write(elements)
-            compteur += 1
-
-    del FINAL_JSON
-    del FINAL_XML
-    del FINAL_CSV
+    # # STEP 1: convert files to msp if needed (Multithreaded)
+    # FINAL_JSON,FINAL_XML,FINAL_CSV = convert_to_msp(input_path)
+    #
+    # if FINAL_JSON != [] :
+    #     with open(os.path.join("../INPUT/MSP/JSON_converted"+".msp"), "a", encoding="UTF-8") as temp:
+    #         temp.write("\n\n".join(FINAL_JSON))
+    #
+    # if FINAL_XML != []:
+    #     with open(os.path.join("../INPUT/MSP/XML_converted"+".msp"), "a", encoding="UTF-8") as temp:
+    #         temp.write("\n\n".join(FINAL_XML))
+    #
+    # if FINAL_CSV != []:
+    #     compteur = 1
+    #     for elements in FINAL_CSV:
+    #         with open(os.path.join(f"../INPUT/MSP/CSV_converted_{compteur}"+".msp"), "w", encoding="UTF-8") as temp:
+    #             temp.write(elements)
+    #         compteur += 1
+    #
+    # del FINAL_JSON
+    # del FINAL_XML
+    # del FINAL_CSV
 
     msp_dir = os.path.join(input_path, "MSP")
 
@@ -99,10 +99,9 @@ if __name__ == "__main__":
             msp_path = os.path.join(msp_dir, files)
 
             # STEP 3: cleaning spectrums (Multithreaded)
-            print(f"-- CLEANING: {files} --")
+            print("{:>80}".format(f"-- CLEANING: {files} --"))
             spectrum_list = load_spectrum_list(msp_path)
-            update = False
-            # spectrum_list, update = check_for_update(spectrum_list)
+            final_spectrum_list, update, first_run = check_for_update_processing(spectrum_list)
             spectrum_list = msp_cleaning_processing(spectrum_list)
 
             CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
@@ -114,7 +113,7 @@ if __name__ == "__main__":
     del CONCATENATED_SPECTRUMS_RESULTS
 
     # STEP 4: complete missing information into spectrum
-    print("{:>80}".format("-- MOLS HARMONIZATION AND MASS CALCULATION --"))
+    print("{:>80}".format("-- MOLS DERIVATION AND MASS CALCULATION --"))
     time.sleep(0.01)
     CONCATENATED_SPECTRUMS_DATAFRAME = mols_derivation_and_calculation(CONCATENATED_SPECTRUMS_DATAFRAME)
 
@@ -144,15 +143,19 @@ if __name__ == "__main__":
     # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
     print("{:>80}".format("-- REMOVING DUPLICATAS --"))
     time.sleep(0.01)
-    POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico = remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, update)
+    POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico = remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, first_run, update)
 
+    print("{:>80}".format("-- CONVERTING CSV TO MSP --"))
+    time.sleep(0.01)
     POS_LC_df,POS_LC,POS_LC_df_insilico,POS_LC_insilico,POS_GC_df,POS_GC,POS_GC_df_insilico,POS_GC_insilico,NEG_LC_df,NEG_LC,NEG_LC_df_insilico,NEG_LC_insilico,NEG_GC_df,NEG_GC,NEG_GC_df_insilico,NEG_GC_insilico = csv_and_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico)
 
     # STEP 7: writting output files
     print("{:>80}".format("-- WRITING CSV --"))
-    writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, update)
+    time.sleep(0.01)
+    writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, update)
 
     print("{:>80}".format("-- WRITING MSP --"))
+    time.sleep(0.01)
     writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_insilico,NEG_GC,NEG_GC_insilico, update)
 
     time.sleep(0.01)
