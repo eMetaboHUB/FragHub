@@ -4,7 +4,6 @@ from tqdm import tqdm
 from filters import *
 import pandas as pd
 import numpy as np
-import time
 import os
 import re
 
@@ -294,8 +293,6 @@ def msp_parser(spectrum):
     :param spectrum: The spectrum data to be parsed.
     :return: The parsed metadata with peak list.
     """
-    time.sleep(0.000000001) # Needed to ensure progress bar display update (1ns)
-
     metadata,peak_list = parse_metadata_and_peak_list(spectrum)
 
     if not metadata or not peak_list:
