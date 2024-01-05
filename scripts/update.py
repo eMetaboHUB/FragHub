@@ -16,7 +16,7 @@ def init_json_update_file(json_update_file):
     """
     first_run = False
 
-    if not json_update_file:
+    if not bool(json_update_file):
         first_run = True
         json_update_file = {"FRAGHBID_LIST": {}}
         return json_update_file, first_run
