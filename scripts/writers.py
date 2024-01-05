@@ -14,8 +14,6 @@ def write_msp(spectrum_list, filename, mode, update):
     :param mode: The mode to write the file in.
     :return: None
     """
-    filename = filename.replace('.msp', '.csv')
-
     output_file_path = os.path.join(f"../OUTPUT/MSP/{mode}", filename)
 
     with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>80}".format(f"writting {filename}")) as pbar:
@@ -83,7 +81,7 @@ def writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_ins
     write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update)
     del NEG_GC_insilico
 
-def write_csv(df, filename, mode, update):
+def write_csv(df, filename, mode, update, first_run):
     """
     :param df: pandas DataFrame object containing the data to be written to CSV.
     :param filename: string representing the name of the output file. The extension ".msp" in the filename will be replaced by ".csv".
@@ -92,8 +90,6 @@ def write_csv(df, filename, mode, update):
     This method writes a pandas DataFrame object to a CSV file. The output file is saved in the "../OUTPUT/CSV/POS" directory with the same name as the input file, but with the extension
     * changed to ".csv". The data is written in chunks of 5000 rows to improve efficiency. The progress of writing is displayed with a progress bar.
     """
-    filename = filename.replace('.msp','.csv')
-
     output_file_path = os.path.join(f"../OUTPUT/CSV/{mode}",filename)
 
     chunk_size = 5000  # Taille de chaque fraction
@@ -102,7 +98,7 @@ def write_csv(df, filename, mode, update):
     with tqdm(total=num_chunks, unit=" row", colour="green", desc="{:>80}".format(f"writting {filename}")) as pbar:
         for start in range(0, df.shape[0], chunk_size):
             df_slice = df[start:start + chunk_size]
-            if start == 0 and not update:
+            if start == 0 and first_run:
                 # Écrire les en-têtes pour la première fraction
                 df_slice.to_csv(output_file_path, mode='w', sep=";", quotechar='"', encoding="UTF-8", index=False)
             else:
@@ -112,7 +108,7 @@ def write_csv(df, filename, mode, update):
             # Mettre à jour la barre de progression
             pbar.update()
 
-def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_GC_df_insilico,NEG_LC_df_insilico,NEG_GC_df_insilico, update=False):
+def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_GC_df_insilico,NEG_LC_df_insilico,NEG_GC_df_insilico, first_run, update=False):
     """
     Writes the given dataframes to CSV files with specific file names.
 
@@ -127,26 +123,26 @@ def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_
     :return: None
     """
     time.sleep(0.1)
-    write_csv(POS_LC_df,"POS_LC.csv","POS", update)
+    write_csv(POS_LC_df,"POS_LC.csv","POS", update, first_run)
     del POS_LC_df
     time.sleep(0.1)
-    write_csv(POS_GC_df, "POS_GC.csv","POS", update)
+    write_csv(POS_GC_df, "POS_GC.csv","POS", update, first_run)
     del POS_GC_df
     time.sleep(0.1)
-    write_csv(NEG_LC_df, "NEG_LC.csv","NEG", update)
+    write_csv(NEG_LC_df, "NEG_LC.csv","NEG", update, first_run)
     del NEG_LC_df
     time.sleep(0.1)
-    write_csv(NEG_GC_df, "NEG_GC.csv","NEG", update)
+    write_csv(NEG_GC_df, "NEG_GC.csv","NEG", update, first_run)
     del NEG_GC_df
     time.sleep(0.1)
-    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico.csv","POS", update)
+    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico.csv","POS", update, first_run)
     del POS_LC_df_insilico
     time.sleep(0.1)
-    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico.csv","POS", update)
+    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico.csv","POS", update, first_run)
     del POS_GC_df_insilico
     time.sleep(0.1)
-    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico.csv","NEG", update)
+    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico.csv","NEG", update, first_run)
     del NEG_LC_df_insilico
     time.sleep(0.1)
-    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv","NEG", update)
+    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv","NEG", update, first_run)
     del NEG_GC_df_insilico
