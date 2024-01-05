@@ -86,7 +86,7 @@ def load_spectrum_list(msp_file_path):
     total_lines = sum(1 for line in open(msp_file_path, 'r', encoding="UTF-8")) # count the total number of lines in the file
 
     with open(msp_file_path, 'r', encoding="UTF-8") as file:
-        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="{:>40}".format("loading file")): # wrap this with tqdm
+        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="{:>100}".format("loading file")): # wrap this with tqdm
             if line.strip() == '':
                 if buffer:
                     spectrum_list.append('\n'.join(buffer))
@@ -313,7 +313,7 @@ def msp_cleaning_processing(spectrum_list):
 
     chunk_size = 5000
     final = []
-    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>40}".format("cleaning file"))
+    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>100}".format("cleaning file"))
 
     # Dividing the spectrum list into chunks
     for i in range(0, len(spectrum_list), chunk_size):
