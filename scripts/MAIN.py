@@ -88,7 +88,7 @@ if __name__ == "__main__":
         sys.exit("There is no msp file to process into \"./INPUT/MSP\". Exiting code !")
 
     # STEP 2: generating FRAGHUBID
-    print("-- GENERATING FragHub UNIQUE ID --")
+    print("{:>80}".format("-- GENERATING FragHub UNIQUE ID --"))
     time.sleep(0.01)
     generate_fraghub_id(r"../INPUT/MSP")
 
@@ -113,21 +113,21 @@ if __name__ == "__main__":
     del CONCATENATED_SPECTRUMS_RESULTS
 
     # STEP 4: complete missing information into spectrum
-    print("-- MOLS HARMONIZATION AND MASS CALCULATION --")
+    print("{:>80}".format("-- MOLS HARMONIZATION AND MASS CALCULATION --"))
     time.sleep(0.01)
     CONCATENATED_SPECTRUMS_DATAFRAME = mols_derivation_and_calculation(CONCATENATED_SPECTRUMS_DATAFRAME)
 
-    print("-- NAMES COMPLETION --")
+    print("{:>80}".format("-- NAMES COMPLETION --"))
     time.sleep(0.01)
     CONCATENATED_SPECTRUMS_DATAFRAME = names_completion(CONCATENATED_SPECTRUMS_DATAFRAME)
 
     # STEP 5: splitting POS/NEG -- LC/GC -- EXP/InSilico
-    print("-- SPLITTING [POS / NEG] --")
+    print("{:>80}".format("-- SPLITTING [POS / NEG] --"))
     time.sleep(0.01)
     POS_df, NEG_df = split_pos_neg(CONCATENATED_SPECTRUMS_DATAFRAME)
 
     time.sleep(0.01)
-    print("-- SPLITTING [LC / GC] --")
+    print("{:>80}".format("-- SPLITTING [LC / GC] --"))
     time.sleep(0.01)
     POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df = split_LC_GC(POS_df, NEG_df)
 
@@ -135,23 +135,23 @@ if __name__ == "__main__":
     del NEG_df
 
     time.sleep(0.01)
-    print("-- SPLITTING EXP / In-Silico --")
+    print("{:>80}".format("-- SPLITTING EXP / In-Silico --"))
     time.sleep(0.01)
     POS_LC_df,POS_LC_In_Silico_df,POS_GC_df,POS_GC_In_Silico_df,NEG_LC_df,NEG_LC_In_Silico_df,NEG_GC_df,NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df)
 
 
     # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
-    print("-- REMOVING DUPLICATAS --")
+    print("{:>80}".format("-- REMOVING DUPLICATAS --"))
     time.sleep(0.01)
     POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico = remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, update)
 
     POS_LC_df,POS_LC,POS_LC_df_insilico,POS_LC_insilico,POS_GC_df,POS_GC,POS_GC_df_insilico,POS_GC_insilico,NEG_LC_df,NEG_LC,NEG_LC_df_insilico,NEG_LC_insilico,NEG_GC_df,NEG_GC,NEG_GC_df_insilico,NEG_GC_insilico = csv_and_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico)
 
     # STEP 7: writting output files
-    print("-- WRITING CSV --")
+    print("{:>80}".format("-- WRITING CSV --"))
     writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, update)
 
-    print("-- WRITING MSP --")
+    print("{:>80}".format("-- WRITING MSP --"))
     writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_insilico,NEG_GC,NEG_GC_insilico, update)
 
     print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
