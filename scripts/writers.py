@@ -14,11 +14,11 @@ def write_msp(spectrum_list, filename, mode, update):
     :param mode: The mode to write the file in.
     :return: None
     """
-    print(f"-- {filename.replace('.msp', '.csv')} --")
+    filename = filename.replace('.msp', '.csv')
 
     output_file_path = os.path.join(f"../OUTPUT/MSP/{mode}", filename)
 
-    with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>25}".format("writting")) as pbar:
+    with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>25}".format(f"writting {filename}")) as pbar:
         if not update:
             with open(output_file_path, 'w') as f:
                 for spectrum in spectrum_list:
