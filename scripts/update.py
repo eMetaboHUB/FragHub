@@ -7,40 +7,38 @@ global fraghub_id_pattern
 fraghub_id_pattern = re.compile("(?:FRAGHUBID: )(.*)")
 
 
+
 def init_json_update_file(json_update_file):
     """
     :param json_update_file: The JSON update file to be initialized. It should be a dictionary or None.
     :return: The initialized JSON update file. If the input JSON update file is None, a new dictionary will be created with the key "FRAGHBID_LIST" and an empty list as its value. If the
     * input JSON update file is not None, it will be returned as is.
     """
+    first_run = False
+
     if not json_update_file:
-        json_update_file = {"FRAGHBID_LIST": []}
-        return json_update_file
+        first_run = True
+        json_update_file = {"FRAGHBID_LIST": {}}
+        return json_update_file, first_run
     else:
-        return json_update_file
+        return json_update_file, first_run
 
 def check_for_update(spectrum):
     """
-    :param spectrum: The input spectrum to check for an update.
-    :return: Returns a tuple: (spectrum, fraghub_id_spectrum) if there is an update, or None if there is no update.
-
-    This method checks if the given spectrum has an update by comparing the fraghub_id_spectrum with the list of fraghub IDs in the json_update_file. If the fraghub_id_spectrum is found
-    * in the list, it means there is no update and None is returned. Otherwise, the tuple (spectrum, fraghub_id_spectrum) is returned indicating that there is an update.
+    :param spectrum: The spectrum to check for updates.
+    :return: If the spectrum is not found in the dictionary or the dictionary is empty, returns the spectrum and the fraghub_id_spectrum. Otherwise, returns None.
     """
     fraghub_id_spectrum = re.search(fraghub_id_pattern, spectrum)
     if fraghub_id_spectrum:
         fraghub_id_spectrum = fraghub_id_spectrum.group(1)
 
-    fraghub_id_list = json_update_file["FRAGHBID_LIST"]
+    fraghub_id_dict = json_update_file["FRAGHBID_LIST"]
 
-    if not fraghub_id_list:
+    # Vérifier si le dictionnaire est vide ou si fraghub_id_spectrum n'est pas dans le dictionnaire.
+    if not fraghub_id_dict or fraghub_id_spectrum not in fraghub_id_dict:
         return spectrum, fraghub_id_spectrum
     else:
-        if fraghub_id_spectrum not in fraghub_id_list:
-            return spectrum, fraghub_id_spectrum
-        else:
-            return None
-
+        return None
 
 def check_for_update_processing(spectrum_list):
     """
@@ -54,7 +52,7 @@ def check_for_update_processing(spectrum_list):
     with open('../datas/update.json', 'r') as f:
         json_update_file = json.load(f)
 
-    json_update_file = init_json_update_file(json_update_file)
+    json_update_file, first_run = init_json_update_file(json_update_file)
 
     chunk_size = 5000
     final = []
@@ -71,14 +69,14 @@ def check_for_update_processing(spectrum_list):
         final.extend([res for res in results if res is not None])
 
     final_spectrum_list = [res[0] for res in final]
-    new_fraghubid = [res[1] for res in final]
+    new_fraghubid = {res[1]: True for res in final}
 
     if final:
         update = True
     else:
         update = False
 
-    json_update_file["FRAGHBID_LIST"].extend(new_fraghubid)
+    json_update_file["FRAGHBID_LIST"].update(new_fraghubid)
 
     # écrire les modifications dans le fichier JSON
     with open('../datas/update.json', 'w') as f:
@@ -86,4 +84,4 @@ def check_for_update_processing(spectrum_list):
 
     progress_bar.close()
 
-    return final_spectrum_list, update
+    return final_spectrum_list, update, first_run
