@@ -86,7 +86,7 @@ def load_spectrum_list(msp_file_path):
     total_lines = sum(1 for line in open(msp_file_path, 'r', encoding="UTF-8")) # count the total number of lines in the file
 
     with open(msp_file_path, 'r', encoding="UTF-8") as file:
-        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="{:>25}".format("reading")): # wrap this with tqdm
+        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="{:>25}".format("loading file")): # wrap this with tqdm
             if line.strip() == '':
                 if buffer:
                     spectrum_list.append('\n'.join(buffer))
