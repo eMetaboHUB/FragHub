@@ -10,7 +10,7 @@ def removing_duplicates(dataframe, name, mode, update, first_run):
     :param name: The name to display on the progress bar.
     :return: The dataframe with duplicates removed.
     """
-    if update and first_run:
+    if update and not first_run:
         csv_dataframe = pd.read_csv(f"../OUTPUT/CSV/{mode}/{name}.csv", sep=";", quotechar='"', encoding="UTF-8")
         dataframe = pd.concat([dataframe, csv_dataframe])
 
