@@ -313,7 +313,7 @@ def msp_cleaning_processing(spectrum_list):
 
     chunk_size = 5000
     final = []
-    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>25}".format("processing"))
+    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>25}".format("cleaning file"))
 
     # Dividing the spectrum list into chunks
     for i in range(0, len(spectrum_list), chunk_size):
