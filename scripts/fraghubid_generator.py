@@ -1,9 +1,17 @@
 import concurrent.futures
-import re
-
 from tqdm import tqdm
 import hashlib
 import os
+import re
+
+global inchikey_update_pattern
+inchikey_update_pattern = re.compile("([A-Z]{14}-[A-Z]{10}-[NO])", flags=re.IGNORECASE)
+
+global peak_list_update_pattern
+peak_list_update_pattern = re.compile("([\s\S]*:.[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)", flags=re.IGNORECASE)
+
+global peak_list_split_update_pattern
+peak_list_split_update_pattern = re.compile("(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 def load_spectrum_list(msp_file_path):
     """
@@ -36,14 +44,31 @@ def load_spectrum_list(msp_file_path):
 
 def hash_spectrum_data(spectrum_data):
     """
-    :param spectrum_data: The spectrum data to be hashed.
-    :return: The SHA-256 hash of the spectrum data as a hexadecimal string.
+    Calculate the SHA256 hash of spectrum data.
 
-    This method takes the spectrum data and converts it into a string. It then creates a SHA-256 object and updates it with the spectrum string encoded in UTF-8. Finally, it returns the
-    * hexadecimal representation of the SHA-256 hash.
+    :param spectrum_data: The spectrum data to hash.
+    :type spectrum_data: str
+    :return: The SHA256 hash of spectrum data.
+    :rtype: str
     """
-    # Convertir le spectre data en une chaîne de caractères
-    spectrum_string = str(spectrum_data)
+    inchikey = re.search(inchikey_update_pattern, spectrum_data)
+    peak_list = re.search(peak_list_update_pattern, spectrum_data)
+
+    if inchikey:
+        inchikey = inchikey.group(1)
+
+    if inchikey and peak_list:
+        peak_list = peak_list.group(2)
+        peaks_match = re.findall(peak_list_split_update_pattern, peak_list)
+        if peaks_match:
+            peaks_match = [f"{i}\t{j}" for i, j in peaks_match]
+            peak_list = "\n".join(peaks_match)
+
+            spectrum_string = inchikey+"\n"+peak_list
+        else:
+            spectrum_string = str(spectrum_data)
+    else:
+        spectrum_string = str(spectrum_data)
 
     # Créer un objet sha256
     sha256 = hashlib.sha256()
