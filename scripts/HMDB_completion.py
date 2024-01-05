@@ -7,9 +7,9 @@ HMDB_df = pd.read_csv("../datas/HMDB.csv",sep=";",encoding="UTF-8")
 
 dirs = os.listdir("../INPUT/XML")
 
-print("-- COMPLETING HMDB SPECTRUMS --")
+print("{:>80}".format("-- COMPLETING HMDB SPECTRUMS --"))
 
-for files in tqdm(dirs, total=len(dirs), unit="files", colour="green"):
+for files in tqdm(dirs, total=len(dirs), unit="files", colour="green", desc="{:>80}".format("completing spectrums")):
     if files.endswith(".xml"):
         with open(os.path.join("../INPUT/XML", files), "r", encoding="UTF-8") as buffer:
             xml_content = buffer.read()
