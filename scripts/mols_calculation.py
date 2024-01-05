@@ -1,6 +1,6 @@
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
-from rdkit.Chem.Descriptors import ExactMolWt, MolWt
 from rdkit import RDLogger, Chem
+from pycdk.pycdk import *
 from tqdm import tqdm
 import pandas as pd
 
@@ -27,11 +27,11 @@ def apply_transformations(inchi_smiles):
             }
         # Mass calculation
         if transforms:
-            mol = Chem.MolFromInchi(transforms['INCHI']) if 'InChI=' in inchi_smiles else Chem.MolFromSmiles(transforms['SMILES'])
+            mol = MolFromInchi(transforms['INCHI']) if 'InChI=' in inchi_smiles else MolFromSmiles(transforms['SMILES'])
             if mol is not None:
                 try:
-                    transforms['EXACTMASS'] = ExactMolWt(mol)
-                    transforms['AVERAGEMASS'] = MolWt(mol)
+                    transforms['EXACTMASS'] = str(getMolExactMass(mol))
+                    transforms['AVERAGEMASS'] = str(getMolNaturalMass(mol))
                 except:
                     return transforms
 
@@ -63,10 +63,10 @@ def mols_derivation_and_calculation(CONCATENATE_DF):
     unique_inchi_smiles = pd.concat([CONCATENATE_DF['INCHI'], CONCATENATE_DF['SMILES']]).dropna().unique()
 
     # Creating a dict that maps each unique INCHI or SMILES to its respective transformations.
-    unique_transforms = {inchi_smiles: apply_transformations(inchi_smiles) for inchi_smiles in tqdm(unique_inchi_smiles, unit=" rows", colour="green", desc="{:>80}".format("derivation and calculation"))}
+    unique_transforms = {inchi_smiles: apply_transformations(inchi_smiles) for inchi_smiles in tqdm(unique_inchi_smiles, unit=" rows", colour="green", desc="{:>40}".format("derivation and calculation"))}
 
     # Set up progress apply with tqdm
-    tqdm.pandas(unit=" rows", colour="green", desc="{:>80}".format("updating dataframe"))
+    tqdm.pandas(unit=" rows", colour="green", desc="{:>40}".format("updating dataframe"))
 
     # Using apply to apply the transformations
     CONCATENATE_DF = CONCATENATE_DF.progress_apply(map_transformations, axis=1, args=(unique_transforms,))

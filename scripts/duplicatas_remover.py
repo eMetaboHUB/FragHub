@@ -2,7 +2,7 @@ from tqdm.auto import tqdm
 from tqdm import tqdm
 import pandas as pd
 
-def removing_duplicates(dataframe, name, mode, update, first_run):
+def removing_duplicates(dataframe, name, mode, update):
     """
     Remove duplicates from a dataframe and update the progress bar.
 
@@ -10,12 +10,12 @@ def removing_duplicates(dataframe, name, mode, update, first_run):
     :param name: The name to display on the progress bar.
     :return: The dataframe with duplicates removed.
     """
-    if update and not first_run:
-        csv_dataframe = pd.read_csv(f"../OUTPUT/CSV/{mode}/{name}.csv", sep=";", quotechar='"', encoding="UTF-8")
+    if update:
+        csv_dataframe = pd.read_csv(f"../OUTPUT/CSV/{mode}/{name}.csv")
         dataframe = pd.concat([dataframe, csv_dataframe])
 
     total_rows = len(dataframe)
-    t = tqdm(total=len(dataframe), desc="{:>80}".format(name), colour="green", unit=" row")
+    t = tqdm(total=len(dataframe), desc="{:>40}".format(name), colour="green", unit=" row")
 
     # Supprimer les doublons et mettre à jour la barre de progression
     dataframe = dataframe.loc[~dataframe.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
@@ -26,7 +26,7 @@ def removing_duplicates(dataframe, name, mode, update, first_run):
 
     return dataframe
 
-def remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, first_run, update=False):
+def remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, update=False):
     """
     Remove duplicates from the given dataframes.
 
@@ -41,28 +41,28 @@ def remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silic
     :return: Tuple containing the updated dataframes without duplicates.
     """
     # ========================================================================= POS_LC =========================================================================
-    POS_LC_df = removing_duplicates(POS_LC_df, "POS_LC", "POS", update, first_run)
+    POS_LC_df = removing_duplicates(POS_LC_df, "POS_LC", "POS", update)
 
     # ========================================================================= POS_LC_In_Silico =========================================================================
-    POS_LC_In_Silico_df = removing_duplicates(POS_LC_In_Silico_df, "POS_LC_In_Silico", "POS", update, first_run)
+    POS_LC_In_Silico_df = removing_duplicates(POS_LC_In_Silico_df, "POS_LC_In_Silico", "POS", update)
 
     # ========================================================================= POS_GC =========================================================================
-    POS_GC_df = removing_duplicates(POS_GC_df, "POS_GC", "POS", update, first_run)
+    POS_GC_df = removing_duplicates(POS_GC_df, "POS_GC", "POS", update)
 
     # ========================================================================= POS_GC_In_Silico =========================================================================
-    POS_GC_In_Silico_df = removing_duplicates(POS_GC_In_Silico_df, "POS_GC_In_Silico", "POS", update, first_run)
+    POS_GC_In_Silico_df = removing_duplicates(POS_GC_In_Silico_df, "POS_GC_In_Silico", "POS", update)
 
     # ========================================================================= NEG_LC =========================================================================
-    NEG_LC_df = removing_duplicates(NEG_LC_df, "NEG_LC", "NEG", update, first_run)
+    NEG_LC_df = removing_duplicates(NEG_LC_df, "NEG_LC", "NEG", update)
 
     # ========================================================================= NEG_LC_In_Silico =========================================================================
-    NEG_LC_In_Silico_df = removing_duplicates(NEG_LC_In_Silico_df, "NEG_LC_In_Silico", "NEG", update, first_run)
+    NEG_LC_In_Silico_df = removing_duplicates(NEG_LC_In_Silico_df, "NEG_LC_In_Silico", "NEG", update)
 
     # ========================================================================= NEG_GC =========================================================================
-    NEG_GC_df = removing_duplicates(NEG_GC_df, "NEG_GC", "NEG", update, first_run)
+    NEG_GC_df = removing_duplicates(NEG_GC_df, "NEG_GC", "NEG", update)
 
     # ========================================================================= NEG_GC_In_Silico =========================================================================
-    NEG_GC_In_Silico_df = removing_duplicates(NEG_GC_In_Silico_df, "NEG_GC_In_Silico", "NEG", update, first_run)
+    NEG_GC_In_Silico_df = removing_duplicates(NEG_GC_In_Silico_df, "NEG_GC_In_Silico", "NEG", update)
 
 
     return POS_LC_df,POS_LC_In_Silico_df,POS_GC_df,POS_GC_In_Silico_df,NEG_LC_df,NEG_LC_In_Silico_df,NEG_GC_df,NEG_GC_In_Silico_df

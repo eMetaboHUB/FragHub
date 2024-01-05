@@ -7,21 +7,16 @@ import json
 import os
 import re
 
-global HMDB_df
-HMDB_df = pd.read_csv("../datas/HMDB.csv", sep=";", encoding="UTF-8")
-
-def concatenate_json(json_list):
+def concatenate_json(json_path):
     """
-    Concatenates multiple JSON files into a single list of dictionaries.
-
-    :param json_list: A list of file paths to JSON files.
-    :return: A list of dictionaries containing the JSON data from each file, with an added "filename" key.
+    :param json_path: The path to the directory containing the JSON files.
+    :return: A list of JSON objects, with each object representing the contents of a JSON file in the given directory.
     """
     JSON_LIST = []
-    for files in tqdm(json_list, total=len(json_list), unit=" spectrums", colour="green", desc="{:>80}".format("concatenate")):
+    for files in tqdm(os.listdir(json_path), total=len(os.listdir(json_path)), unit=" spectrums", colour="green", desc="{:>40}".format("concatenate")):
         if files.endswith(".json"):
-            file_name = os.path.basename(files).replace(".json", "")
-            with  open(files, "r", encoding="UTF-8") as f:
+            file_name = os.path.basename(os.path.join(json_path, files)).replace(".json", "")
+            with  open(os.path.join(json_path, files), "r", encoding="UTF-8") as f:
                 lines = f.readlines()
 
             data = [json.loads(line) for line in lines]  # returns JSON object as a list of dictionary
@@ -64,28 +59,22 @@ def JSON_convert_processing(FINAL_JSON):
     :rtype: list
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(json_to_msp, FINAL_JSON), total=len(FINAL_JSON), unit=" spectrums", colour="green", desc="{:>80}".format("converting")))
+        results = list(tqdm(executor.map(json_to_msp, FINAL_JSON), total=len(FINAL_JSON), unit=" spectrums", colour="green", desc="{:>40}".format("converting")))
 
     final = [res for res in results if res is not None]
 
     return final # returns the list of different worker executions.
 
-def concatenate_xml(xml_list):
+def concatenate_xml(xml_path):
     """
-    Concatenates the contents of XML files into a single XML string.
-
-    :param xml_list: List of XML file paths to be concatenated.
-    :return: List containing the concatenated XML contents of all files.
-
-    Example usage:
-        xml_list = ["file1.xml", "file2.xml"]
-        result = concatenate_xml(xml_list)
+    :param xml_path: The directory path where the XML files are located.
+    :return: The concatenated XML content in a list.
     """
     FINAL_XML = []
-    for files in tqdm(xml_list, total=len(xml_list), unit=" spectrums", colour="green", desc="{:>80}".format("concatenate")):
+    for files in tqdm(os.listdir(xml_path), total=len(os.listdir(xml_path)), unit=" spectrums", colour="green", desc="{:>40}".format("concatenate")):
         if files.endswith(".xml"):
-            file_name = os.path.basename(files.replace(".xml", ""))
-            with open(files, "r", encoding="UTF-8") as xml_file:
+            file_name = os.path.basename(os.path.join(xml_path, files).replace(".xml", ""))
+            with open(os.path.join(xml_path, files), "r", encoding="UTF-8") as xml_file:
                 xml_content = xml_file.read()
             # Add filename to xml
             xml_content = re.sub("</sample-mass>\n",f"</sample-mass>\n  <filename>{file_name}</filename>\n",xml_content)
@@ -94,21 +83,19 @@ def concatenate_xml(xml_list):
 
     return FINAL_XML
 
-def concatenate_csv(csv_list):
+def concatenate_csv(csv_path):
     """
-    Concatenates a list of CSV files into a single dataframe.
+    Concatenates all CSV files in a given directory.
 
-    :param csv_list: A list of file paths to the CSV files.
-    :type csv_list: list[str]
-
-    :return: The concatenated dataframe.
-    :rtype: pandas.DataFrame
+    :param csv_path: The path to the directory containing the CSV files.
+    :return: A list of dataframes representing the concatenated CSV files.
     """
     FINAL_CSV = []
-    for files in tqdm(csv_list, total=len(csv_list), unit=" spectrums", colour="green", desc="{:>80}".format("concatenate")):
+    for files in tqdm(os.listdir(csv_path), total=len(os.listdir(csv_path)), unit=" spectrums", colour="green", desc="{:>40}".format("concatenate")):
         if files.endswith(".csv"):
-            file_name = os.path.basename(files.replace(".csv", ""))
-            csv_df = pd.read_csv(files, sep=";", encoding="UTF-8")
+            file_path = os.path.join(csv_path, files)
+            file_name = os.path.basename(file_path.replace(".csv", ""))
+            csv_df = pd.read_csv(str(file_path), sep=";", encoding="UTF-8")
 
             # Add filename column to dataframe
             csv_df.insert(0, 'filename', file_name)
@@ -200,7 +187,7 @@ def XML_convert_processing(FINAL_XML):
     :return: The list of successfully converted XML files.
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(xml_to_msp, FINAL_XML), total=len(FINAL_XML), unit=" spectrums", colour="green", desc="{:>80}".format("converting")))
+        results = list(tqdm(executor.map(xml_to_msp, FINAL_XML), total=len(FINAL_XML), unit=" spectrums", colour="green", desc="{:>40}".format("converting")))
 
     final = [res for res in results if res is not None]
 
@@ -241,7 +228,7 @@ def CSV_convert_processing(FINAL_CSV):
     :return: The list of successfully converted CSV files.
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(csv_to_msp, FINAL_CSV), total=len(FINAL_CSV), unit=" spectrums", colour="green", desc="{:>80}".format("converting")))
+        results = list(tqdm(executor.map(csv_to_msp, FINAL_CSV), total=len(FINAL_CSV), unit=" spectrums", colour="green", desc="{:>40}".format("converting")))
 
     final = [res for res in results if res is not None]
 
@@ -257,61 +244,49 @@ def convert_to_msp(input_path):
     """
     # JSON
     FINAL_JSON = []
-    json_list = []
     json_to_do = False
     json_path = os.path.join(input_path,"JSON")
     # check if there is a json file into the directory
-    for root, dirs, files in os.walk(json_path):
-        for file in files:
-            if file.endswith(".json"):
-                json_path = os.path.join(root, file)  # Full path to the file
-                json_list.append(json_path)
-                json_to_do = True
+    for files in os.listdir(json_path):
+        if files.endswith(".json"):
+            json_to_do = True
     if json_to_do == True:
         time.sleep(0.02)
-        print("{:>80}".format("-- CONVERTING JSON TO MSP --"))
+        print("-- CONVERTING JSON TO MSP --")
         # Concatenate all JSON to a list
-        FINAL_JSON = concatenate_json(json_list)
+        FINAL_JSON = concatenate_json(json_path)
         # Convert all JSON spectrum to MSP spectrum (Multithreaded)
         FINAL_JSON = JSON_convert_processing(FINAL_JSON)
 
     # XML
     FINAL_XML = []
-    xml_list = []
     xml_to_do = False
     xml_path = os.path.join(input_path, "XML")
     # check if there is a xml file into the directory
-    for root, dirs, files in os.walk(xml_path):
-        for file in files:
-            if file.endswith(".xml"):
-                xml_path = os.path.join(root, file)  # Full path to the file
-                xml_list.append(xml_path)
-                xml_to_do = True
+    for files in os.listdir(xml_path):
+        if files.endswith(".xml"):
+            xml_to_do = True
     if xml_to_do == True:
         time.sleep(0.02)
-        print("{:>80}".format("-- CONVERTING XML TO MSP --"))
+        print("-- CONVERTING XML TO MSP --")
         # Concatenate all XML to a list
-        FINAL_XML = concatenate_xml(xml_list)
+        FINAL_XML = concatenate_xml(xml_path)
         # Convert all XML spectrum to MSP spectrum (Multithreaded)
         FINAL_XML = XML_convert_processing(FINAL_XML)
 
     # CSV
     FINAL_CSV = []
-    csv_list= []
     csv_to_do = False
     csv_path = os.path.join(input_path, "CSV")
     # check if there is a csv file into the directory
-    for root, dirs, files in os.walk(csv_path):
-        for file in files:
-            if file.endswith(".csv"):
-                csv_path = os.path.join(root, file)  # Full path to the file
-                csv_list.append(csv_path)
-                csv_to_do = True
+    for files in os.listdir(csv_path):
+        if files.endswith(".csv"):
+            csv_to_do = True
     if csv_to_do == True:
         time.sleep(0.02)
-        print("{:>80}".format("-- CONVERTING CSV TO MSP --"))
+        print("-- CONVERTING CSV TO MSP --")
         # Concatenate all CSV to a list
-        FINAL_CSV = concatenate_csv(csv_list)
+        FINAL_CSV = concatenate_csv(csv_path)
         # Convert all CSV spectrum to MSP spectrum (Multithreaded)
         FINAL_CSV = CSV_convert_processing(FINAL_CSV)
 
@@ -327,6 +302,7 @@ def format_comments(DF_row):
     :rtype: str
     """
     return f'FILENAME={DF_row["FILENAME"]}; PREDICTED={DF_row["PREDICTED"]}; FRAGHUBID={DF_row["FRAGHUBID"]}; SPECTRUMID={DF_row["SPECTRUMID"]}; RESOLUTION={DF_row["RESOLUTION"]}; SYNON={DF_row["SYNON"]}; CHARGE={DF_row["CHARGE"]}; IONIZATION={DF_row["IONIZATION"]}; MSLEVEL={DF_row["MSLEVEL"]}; FRAGMENTATIONMODE={DF_row["FRAGMENTATIONMODE"]}; EXACTMASS={DF_row["EXACTMASS"]}; AVERAGEMASS={DF_row["AVERAGEMASS"]}'
+
 
 def dataframe_to_msp(dataframe, name):
     """
@@ -348,7 +324,7 @@ def dataframe_to_msp(dataframe, name):
         spectra = dataframe_to_msp(dataframe, name)  # Convert DataFrame to list of formatted spectra strings
     """
     spectrum_list = []
-    for index, row in tqdm(dataframe.iterrows(), total=len(dataframe), desc="{:>80}".format(name), colour="green", unit=" row"):
+    for index, row in tqdm(dataframe.iterrows(), total=len(dataframe), desc="{:>40}".format(name), colour="green", unit=" row"):
         COMMENTS = format_comments(row)
 
         SPECTRUM = ""
@@ -367,7 +343,7 @@ def dataframe_to_msp(dataframe, name):
         SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
         SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
         SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
-        SPECTRUM = SPECTRUM + re.sub(r"([\[\]])|(\n {1,2})","\n", row["PEAKS_LIST"]) + "\n"
+        SPECTRUM = SPECTRUM + re.sub("([\[\]])|(\n {1,2})","\n", row["PEAKS_LIST"]) + "\n"
         spectrum_list.append(SPECTRUM)
 
     return spectrum_list
