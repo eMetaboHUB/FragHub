@@ -93,6 +93,8 @@ if __name__ == "__main__":
     generate_fraghub_id(r"../INPUT/MSP")
 
     CONCATENATED_SPECTRUMS_RESULTS = []
+    first_run = False
+    update = False
 
     for files in os.listdir(msp_dir):
         if files.endswith(".msp"):
@@ -101,7 +103,11 @@ if __name__ == "__main__":
             # STEP 3: cleaning spectrums (Multithreaded)
             print("{:>80}".format(f"-- CLEANING: {files} --"))
             spectrum_list = load_spectrum_list(msp_path)
-            final_spectrum_list, update, first_run = check_for_update_processing(spectrum_list)
+            final_spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list)
+            if update_temp:
+                update = True
+            if first_run_temp:
+                first_run = True
             spectrum_list = msp_cleaning_processing(spectrum_list)
 
             CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
@@ -138,7 +144,6 @@ if __name__ == "__main__":
     print("{:>80}".format("-- SPLITTING EXP / In-Silico --"))
     time.sleep(0.01)
     POS_LC_df,POS_LC_In_Silico_df,POS_GC_df,POS_GC_In_Silico_df,NEG_LC_df,NEG_LC_In_Silico_df,NEG_GC_df,NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df)
-
 
     # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
     print("{:>80}".format("-- REMOVING DUPLICATAS --"))
