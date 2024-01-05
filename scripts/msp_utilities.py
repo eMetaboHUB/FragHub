@@ -90,7 +90,7 @@ def names_completion(CONCATENATE_DF):
 
     """
     # Définir le nom de la barre de progression
-    tqdm.pandas(total=len(CONCATENATE_DF), desc="{:>25}".format("processing"), colour="green", unit=" row")
+    tqdm.pandas(total=len(CONCATENATE_DF), colour="green", unit=" row", desc="{:>25}".format("updating names"))
 
     # Appliquer la transformation par groupe avec une barre de progression
     CONCATENATE_DF['NAME'] = CONCATENATE_DF.groupby('INCHI')['NAME'].progress_transform(lambda group: group.fillna(group.dropna().iloc[0] if group.dropna().size > 0 else ''))
