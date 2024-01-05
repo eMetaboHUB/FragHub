@@ -13,7 +13,7 @@ def concatenate_json(json_path):
     :return: A list of JSON objects, with each object representing the contents of a JSON file in the given directory.
     """
     JSON_LIST = []
-    for files in tqdm(os.listdir(json_path), total=len(os.listdir(json_path)), unit=" spectrums", colour="green", desc="{:>40}".format("concatenate")):
+    for files in tqdm(os.listdir(json_path), total=len(os.listdir(json_path)), unit=" spectrums", colour="green", desc="{:>100}".format("concatenate")):
         if files.endswith(".json"):
             file_name = os.path.basename(os.path.join(json_path, files)).replace(".json", "")
             with  open(os.path.join(json_path, files), "r", encoding="UTF-8") as f:
@@ -59,7 +59,7 @@ def JSON_convert_processing(FINAL_JSON):
     :rtype: list
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(json_to_msp, FINAL_JSON), total=len(FINAL_JSON), unit=" spectrums", colour="green", desc="{:>40}".format("converting")))
+        results = list(tqdm(executor.map(json_to_msp, FINAL_JSON), total=len(FINAL_JSON), unit=" spectrums", colour="green", desc="{:>100}".format("converting")))
 
     final = [res for res in results if res is not None]
 
@@ -71,7 +71,7 @@ def concatenate_xml(xml_path):
     :return: The concatenated XML content in a list.
     """
     FINAL_XML = []
-    for files in tqdm(os.listdir(xml_path), total=len(os.listdir(xml_path)), unit=" spectrums", colour="green", desc="{:>40}".format("concatenate")):
+    for files in tqdm(os.listdir(xml_path), total=len(os.listdir(xml_path)), unit=" spectrums", colour="green", desc="{:>100}".format("concatenate")):
         if files.endswith(".xml"):
             file_name = os.path.basename(os.path.join(xml_path, files).replace(".xml", ""))
             with open(os.path.join(xml_path, files), "r", encoding="UTF-8") as xml_file:
@@ -91,7 +91,7 @@ def concatenate_csv(csv_path):
     :return: A list of dataframes representing the concatenated CSV files.
     """
     FINAL_CSV = []
-    for files in tqdm(os.listdir(csv_path), total=len(os.listdir(csv_path)), unit=" spectrums", colour="green", desc="{:>40}".format("concatenate")):
+    for files in tqdm(os.listdir(csv_path), total=len(os.listdir(csv_path)), unit=" spectrums", colour="green", desc="{:>100}".format("concatenate")):
         if files.endswith(".csv"):
             file_path = os.path.join(csv_path, files)
             file_name = os.path.basename(file_path.replace(".csv", ""))
@@ -187,7 +187,7 @@ def XML_convert_processing(FINAL_XML):
     :return: The list of successfully converted XML files.
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(xml_to_msp, FINAL_XML), total=len(FINAL_XML), unit=" spectrums", colour="green", desc="{:>40}".format("converting")))
+        results = list(tqdm(executor.map(xml_to_msp, FINAL_XML), total=len(FINAL_XML), unit=" spectrums", colour="green", desc="{:>100}".format("converting")))
 
     final = [res for res in results if res is not None]
 
@@ -228,7 +228,7 @@ def CSV_convert_processing(FINAL_CSV):
     :return: The list of successfully converted CSV files.
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(csv_to_msp, FINAL_CSV), total=len(FINAL_CSV), unit=" spectrums", colour="green", desc="{:>40}".format("converting")))
+        results = list(tqdm(executor.map(csv_to_msp, FINAL_CSV), total=len(FINAL_CSV), unit=" spectrums", colour="green", desc="{:>100}".format("converting")))
 
     final = [res for res in results if res is not None]
 
@@ -324,7 +324,7 @@ def dataframe_to_msp(dataframe, name):
         spectra = dataframe_to_msp(dataframe, name)  # Convert DataFrame to list of formatted spectra strings
     """
     spectrum_list = []
-    for index, row in tqdm(dataframe.iterrows(), total=len(dataframe), desc="{:>40}".format(name), colour="green", unit=" row"):
+    for index, row in tqdm(dataframe.iterrows(), total=len(dataframe), desc="{:>100}".format(name), colour="green", unit=" row"):
         COMMENTS = format_comments(row)
 
         SPECTRUM = ""

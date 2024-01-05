@@ -18,7 +18,7 @@ def load_spectrum_list(msp_file_path):
     total_lines = sum(1 for line in open(msp_file_path, 'r', encoding="UTF-8")) # count the total number of lines in the file
 
     with open(msp_file_path, 'r', encoding="UTF-8") as file:
-        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="{:>40}".format("loading file")): # wrap this with tqdm
+        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="{:>100}".format("loading file")): # wrap this with tqdm
             if line.strip() == '':
                 if buffer:
                     spectrum_list.append('\n'.join(buffer))
@@ -74,7 +74,7 @@ def genrate_fraghubid_processing(spectrum_list, files):
     :return: A list of fraghubids generated for each spectrum.
     """
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(genrate_fraghubid, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>40}".format(f"generating FragHubID on [{files}]")))
+        results = list(tqdm(executor.map(genrate_fraghubid, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>100}".format(f"generating FragHubID on [{files}]")))
 
     final = [res for res in results if res is not None]
 
