@@ -18,7 +18,7 @@ def write_msp(spectrum_list, filename, mode, update):
 
     output_file_path = os.path.join(f"../OUTPUT/MSP/{mode}", filename)
 
-    with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>100}".format(f"writting {filename}")) as pbar:
+    with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>80}".format(f"writting {filename}")) as pbar:
         if not update:
             with open(output_file_path, 'w') as f:
                 for spectrum in spectrum_list:
@@ -99,7 +99,7 @@ def write_csv(df, filename, mode, update):
     chunk_size = 5000  # Taille de chaque fraction
     num_chunks = int(np.ceil(df.shape[0] / chunk_size))  # Calculer le nombre de fractions
 
-    with tqdm(total=num_chunks, unit=" row", colour="green", desc="{:>100}".format(f"writting {filename}")) as pbar:
+    with tqdm(total=num_chunks, unit=" row", colour="green", desc="{:>80}".format(f"writting {filename}")) as pbar:
         for start in range(0, df.shape[0], chunk_size):
             df_slice = df[start:start + chunk_size]
             if start == 0 and not update:
