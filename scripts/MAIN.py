@@ -74,7 +74,6 @@ if __name__ == "__main__":
     del FINAL_XML
     del FINAL_CSV
 
-    # STEP 2: split spectrums into a list AND matchms clean
     msp_dir = os.path.join(input_path, "MSP")
 
     # Check if there is msp file to process
@@ -88,21 +87,18 @@ if __name__ == "__main__":
     if msp_to_process == False:
         sys.exit("There is no msp file to process into \"./INPUT/MSP\". Exiting code !")
 
-    # generating FRAGHUBID
+    # STEP 2: generating FRAGHUBID
     print("-- GENERATING FragHub UNIQUE ID --")
     time.sleep(0.01)
     generate_fraghub_id(r"../INPUT/MSP")
 
     CONCATENATED_SPECTRUMS_RESULTS = []
 
-    # Creating list of spectrums
     for files in os.listdir(msp_dir):
         if files.endswith(".msp"):
             msp_path = os.path.join(msp_dir, files)
 
-            # correct_uncomplete_charge(msp_path)
-
-            # STEP 3: Execute matchms (Multithreaded)
+            # STEP 3: cleaning spectrums (Multithreaded)
             print(f"-- CLEANING: {files} --")
             spectrum_list = load_spectrum_list(msp_path)
             update = False
@@ -117,7 +113,7 @@ if __name__ == "__main__":
 
     del CONCATENATED_SPECTRUMS_RESULTS
 
-    # # STEP 4: (All msp files were cleaned)
+    # STEP 4: complete missing information into spectrum
     print("-- MOLS HARMONIZATION AND MASS CALCULATION --")
     time.sleep(0.01)
     CONCATENATED_SPECTRUMS_DATAFRAME = mols_derivation_and_calculation(CONCATENATED_SPECTRUMS_DATAFRAME)
@@ -126,11 +122,11 @@ if __name__ == "__main__":
     time.sleep(0.01)
     CONCATENATED_SPECTRUMS_DATAFRAME = names_completion(CONCATENATED_SPECTRUMS_DATAFRAME)
 
+    # STEP 5: splitting POS/NEG -- LC/GC -- EXP/InSilico
     print("-- SPLITTING [POS / NEG] --")
     time.sleep(0.01)
     POS_df, NEG_df = split_pos_neg(CONCATENATED_SPECTRUMS_DATAFRAME)
 
-    # STEP 5: Split LC / GC
     time.sleep(0.01)
     print("-- SPLITTING [LC / GC] --")
     time.sleep(0.01)
@@ -139,7 +135,6 @@ if __name__ == "__main__":
     del POS_df
     del NEG_df
 
-    # STEP 5: Split EXP / In-Silico
     time.sleep(0.01)
     print("-- SPLITTING EXP / In-Silico --")
     time.sleep(0.01)
@@ -153,6 +148,7 @@ if __name__ == "__main__":
 
     POS_LC_df,POS_LC,POS_LC_df_insilico,POS_LC_insilico,POS_GC_df,POS_GC,POS_GC_df_insilico,POS_GC_insilico,NEG_LC_df,NEG_LC,NEG_LC_df_insilico,NEG_LC_insilico,NEG_GC_df,NEG_GC,NEG_GC_df_insilico,NEG_GC_insilico = csv_and_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico)
 
+    # STEP 7: writting output files
     print("-- WRITING CSV --")
     writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, update)
 
