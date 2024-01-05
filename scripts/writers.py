@@ -92,14 +92,14 @@ def write_csv(df, filename, mode, update):
     This method writes a pandas DataFrame object to a CSV file. The output file is saved in the "../OUTPUT/CSV/POS" directory with the same name as the input file, but with the extension
     * changed to ".csv". The data is written in chunks of 5000 rows to improve efficiency. The progress of writing is displayed with a progress bar.
     """
-    print(f"-- {filename.replace('.msp','.csv')} --")
+    filename = filename.replace('.msp','.csv')
 
     output_file_path = os.path.join(f"../OUTPUT/CSV/{mode}",filename)
 
     chunk_size = 5000  # Taille de chaque fraction
     num_chunks = int(np.ceil(df.shape[0] / chunk_size))  # Calculer le nombre de fractions
 
-    with tqdm(total=num_chunks, unit=" row", colour="green", desc="{:>25}".format("writting")) as pbar:
+    with tqdm(total=num_chunks, unit=" row", colour="green", desc="{:>25}".format(f"writting {filename}")) as pbar:
         for start in range(0, df.shape[0], chunk_size):
             df_slice = df[start:start + chunk_size]
             if start == 0 and not update:
