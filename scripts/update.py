@@ -3,10 +3,6 @@ from tqdm import tqdm
 import json
 import re
 
-global json_update_file
-with open('../datas/update.json', 'r') as f:
-    json_update_file = json.load(f)
-
 global fraghub_id_pattern
 fraghub_id_pattern = re.compile("(?:FRAGHUBID: )(.*)")
 
@@ -22,10 +18,6 @@ def init_json_update_file(json_update_file):
         return json_update_file
     else:
         return json_update_file
-
-
-json_update_file = init_json_update_file(json_update_file)
-
 
 def check_for_update(spectrum):
     """
@@ -57,6 +49,12 @@ def check_for_update_processing(spectrum_list):
     :return: A list of spectrums that have been updated.
 
     """
+    global json_update_file
+
+    with open('../datas/update.json', 'r') as f:
+        json_update_file = json.load(f)
+
+    json_update_file = init_json_update_file(json_update_file)
 
     chunk_size = 5000
     final = []
