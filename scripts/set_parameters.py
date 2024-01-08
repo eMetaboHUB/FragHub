@@ -27,8 +27,6 @@ def on_done_button_clicked():
         if key in parameters_dict:
             parameters_dict[key] = float(parameters_dict[key].get())
 
-    parameters_dict['check_minimum_peak_requiered'] = 1.0
-
     root.destroy()
 
 
