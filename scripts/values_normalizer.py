@@ -299,7 +299,7 @@ def normalize_ms_level(metadata_dict):
         if ms_level:
             if len(ms_level) == 1:
                 metadata_dict["MSLEVEL"] = ms_level[0]
-            elif len(ms_level) > 2:
+            elif len(ms_level) >= 2:
                 metadata_dict["MSLEVEL"] = f"{ms_level[0]}-{ms_level[1]}"
 
     return metadata_dict
