@@ -295,9 +295,12 @@ def normalize_ms_level(metadata_dict):
     """
     ms_level = metadata_dict["MSLEVEL"]
     if ms_level:
-        ms_level = re.search(ms_level_pattern, ms_level)
+        ms_level = re.findall(ms_level_pattern, ms_level)
         if ms_level:
-            metadata_dict["MSLEVEL"] = ms_level.group(1)
+            if len(ms_level) == 1:
+                metadata_dict["MSLEVEL"] = ms_level[0]
+            elif len(ms_level) > 2:
+                metadata_dict["MSLEVEL"] = f"{ms_level[0]}-{ms_level[1]}"
 
     return metadata_dict
 
