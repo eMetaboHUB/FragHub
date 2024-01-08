@@ -247,9 +247,10 @@ def convert_to_msp(input_path):
     json_to_do = False
     json_path = os.path.join(input_path,"JSON")
     # check if there is a json file into the directory
-    for files in os.listdir(json_path):
-        if files.endswith(".json"):
-            json_to_do = True
+    for root, dirs, files in os.walk(json_path):
+        for file in files:
+            if file.endswith(".json"):
+                json_to_do = True
     if json_to_do == True:
         time.sleep(0.02)
         print("{:>80}".format("-- CONVERTING JSON TO MSP --"))
@@ -263,9 +264,10 @@ def convert_to_msp(input_path):
     xml_to_do = False
     xml_path = os.path.join(input_path, "XML")
     # check if there is a xml file into the directory
-    for files in os.listdir(xml_path):
-        if files.endswith(".xml"):
-            xml_to_do = True
+    for root, dirs, files in os.walk(xml_path):
+        for file in files:
+            if file.endswith(".xml"):
+                xml_to_do = True
     if xml_to_do == True:
         time.sleep(0.02)
         print("{:>80}".format("-- CONVERTING XML TO MSP --"))
@@ -279,9 +281,10 @@ def convert_to_msp(input_path):
     csv_to_do = False
     csv_path = os.path.join(input_path, "CSV")
     # check if there is a csv file into the directory
-    for files in os.listdir(csv_path):
-        if files.endswith(".csv"):
-            csv_to_do = True
+    for root, dirs, files in os.walk(csv_path):
+        for file in files:
+            if file.endswith(".xml"):
+                csv_to_do = True
     if csv_to_do == True:
         time.sleep(0.02)
         print("{:>80}".format("-- CONVERTING CSV TO MSP --"))
