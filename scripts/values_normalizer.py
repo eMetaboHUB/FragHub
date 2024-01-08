@@ -1,19 +1,18 @@
 from mols_calculation import *
 import numpy as np
 import re
-import os
 
 global repair_inchi_pattern
-repair_inchi_pattern = re.compile(r"^(inchi=)?", flags=re.IGNORECASE)
+repair_inchi_pattern = re.compile("^(inchi=)?", flags=re.IGNORECASE)
 
 global smiles_pattern
-smiles_pattern = re.compile(r"[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}", flags=re.IGNORECASE) # Match smiles
+smiles_pattern = re.compile("[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}", flags=re.IGNORECASE) # Match smiles
 
 global inchi_pattern
-inchi_pattern = re.compile(r"InChI=.*|\/[0-9A-Z]*\/", flags=re.IGNORECASE) # Match inchi
+inchi_pattern = re.compile("InChI=.*|\/[0-9A-Z]*\/", flags=re.IGNORECASE) # Match inchi
 
 global inchikey_pattern
-inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
+inchikey_pattern = re.compile("([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
 
 global adduct_pattern
 adduct_pattern = re.compile(r"(\[([A-Za-z0-9\+\-\(\)]*)\]((?:[0-9]*)?[\+\-\*])*)(?:\/|$)?")
@@ -22,42 +21,31 @@ global charge_pattern
 charge_pattern = re.compile(r"((\+|\-|^)\d+)|(\+|\-)")
 
 global adduct_pattern_2
-adduct_pattern_2 = re.compile(r"([A-Za-z0-9\+\-\(\)\*]*)")
+adduct_pattern_2 = re.compile("([A-Za-z0-9\+\-\(\)\*]*)")
 
 global ending_by_charge_pattern
-ending_by_charge_pattern = re.compile(r"(\d)?([\+\-\*])$")
+ending_by_charge_pattern = re.compile("(\d)?([\+\-\*])$")
 
 global ionmode_pos_pattern
-ionmode_pos_pattern = re.compile(r"^p|^\+|^pos", flags=re.IGNORECASE)
+ionmode_pos_pattern = re.compile("^p|^\+|^pos", flags=re.IGNORECASE)
 
 global ionmode_neg_pattern
-ionmode_neg_pattern = re.compile(r"^n|^\-|^neg", flags=re.IGNORECASE)
+ionmode_neg_pattern = re.compile("^n|^\-|^neg", flags=re.IGNORECASE)
 
 global precursortype_pos_pattern
-precursortype_pos_pattern = re.compile(r"\][\+\*]*$")
+precursortype_pos_pattern = re.compile("\][\+\*]*$")
 
 global precursortype_neg_pattern
-precursortype_neg_pattern = re.compile(r"\][\-\*]*$")
+precursortype_neg_pattern = re.compile("\][\-\*]*$")
 
 global ms_level_pattern
-ms_level_pattern = re.compile(r"(?:ms)?(\d)", flags=re.IGNORECASE)
+ms_level_pattern = re.compile("(?:ms)?(\d)", flags=re.IGNORECASE)
 
 global In_Silico_pattern
-In_Silico_pattern = re.compile(r"in.silico|insilico|predicted|theoretical|Annotation.level.3", flags=re.IGNORECASE)
+In_Silico_pattern = re.compile("in.silico|insilico|predicted|theoretical|Annotation.level.3", flags=re.IGNORECASE)
 
 global empty_pattern
-empty_pattern = re.compile(r"(^0( .*)?)|(^0\.0( .*)?)|(^$)|(^na( .*)?)|(^n/a( .*)?)|(^nan( .*)?)|(^unknown( .*)?)|(^unknow( .*)?)|(^none( .*)?)|(^\?( .*)?)|(^unk( .*)?)|(^x( .*)?)", flags=re.IGNORECASE)
-
-global adduct_dict
-adduct_dataframe = pd.read_csv(os.path.abspath("../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
-adduct_dict = dict(zip(adduct_dataframe['known_adduct'], adduct_dataframe['fraghub_default']))
-
-global adduct_massdiff_dict
-adduct_dataframe = pd.read_csv(os.path.abspath("../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
-adduct_massdiff_dict = dict(zip(adduct_dataframe['fraghub_default'], adduct_dataframe['massdiff']))
-
-global sub_adduct_pattern
-sub_adduct_pattern = re.compile(r"\(|\)|(.*\[)|(\]([\d\+\-\*]*)?)")
+empty_pattern = re.compile("(^0( .*)?)|(^0\.0( .*)?)|(^$)|(^na( .*)?)|(^n/a( .*)?)|(^nan( .*)?)|(^unknown( .*)?)|(^unknow( .*)?)|(^none( .*)?)|(^\?( .*)?)|(^unk( .*)?)|(^x( .*)?)", flags=re.IGNORECASE)
 
 def normalize_empties(metadata_dict):
     """
@@ -68,9 +56,8 @@ def normalize_empties(metadata_dict):
     """
     for k, v in metadata_dict.items():
         # For each item to replace
-        if isinstance(v, str):
-            if re.fullmatch(empty_pattern, v):
-                metadata_dict[k] = ''
+        if re.fullmatch(empty_pattern, v):
+            metadata_dict[k] = ''
 
     return metadata_dict
 
@@ -148,6 +135,57 @@ def repair_mol_descriptors(metadata_dict):
 
     return metadata_dict
 
+def determining_adduct_charge(adduct): # NOTE: ATTENTION: pas certains que ce soit correcte
+    """
+    Calculate the charge of a given adduct.
+
+    :param adduct: The adduct string to calculate the charge for.
+                   The adduct string should contain a combination of numbers and
+                   '+' or '-' symbols to represent the charge. For example, '+2',
+                   '-1', '+', '-'.
+    :return: Return the calculated charge as a string. The returned string represents
+             the charge and can have one of the following formats: '+', '-', '+X',
+             '-X', where X is a positive integer.
+    """
+    sum = 0
+    min = 0
+    max = 0
+
+    matches = re.findall(charge_pattern,adduct)
+
+    # determine signe
+    if matches:
+        for match in matches:
+            charge = next((item for item in match if item), '')
+            if charge == "-":
+                sum -= 1
+                if min > -1:
+                    min = -1
+            elif charge == "+":
+                sum += 1
+                if max < 1:
+                    max = 1
+            else:
+                sum += int(charge)
+                if int(charge) > max:
+                    max = int(charge)
+                if int(charge) < min:
+                    min = int(charge)
+
+        # determine charge
+        if sum > 0:
+            if max == 1:
+                return "+"
+            else:
+                return str(max)+"+"
+        elif sum < 0:
+            if min == -1:
+                return "-"
+            else:
+                return str(abs(min))+"-"
+    else:
+        return None
+
 def delete_no_smiles_inchi_inchikey(metadata_dict):
     """
     Delete entries from the given metadata dictionary if both 'SMILES' and 'INCHI' keys have NaN values.
@@ -157,25 +195,77 @@ def delete_no_smiles_inchi_inchikey(metadata_dict):
     :return: The updated metadata dictionary.
     :rtype: dict
     """
-    if not metadata_dict["SMILES"] and not metadata_dict["INCHI"]:
+    if not metadata_dict.get('SMILES') and not metadata_dict.get('INCHI'):
         return None
     else:
         return metadata_dict
 
 def normalize_adduct(metadata_dict):
     """
-    Normalize adduct value in the given metadata dictionary.
+    :param metadata_dict: A dictionary containing metadata information.
+    :return: The modified metadata dictionary.
 
-    :param metadata_dict: The dictionary containing metadata information.
-    :return: The modified metadata dictionary with normalized adduct value.
+    This method takes a dictionary of metadata information and normalizes the "PRECURSORTYPE" value according to a specific format. The method checks if the value already matches the format
+    *, and if not, it modifies it accordingly.
+
+    If the value already matches the expected format, the method does nothing and returns the unmodified metadata dictionary. If the value does not match the format, the method attempts
+    * to determine the charge value and add it to the end of the value in the correct format.
+
+    Note: The method relies on an external function called determining_charge() to determine the charge value. This function is not included in this documentation.
+
+    Example usage:
+    metadata_dict = {"PRECURSORTYPE": "[M+H]"}
+    normalized_dict = normalize_adduct(metadata_dict)
+    print(normalized_dict)
+
+    Output:
+    {"PRECURSORTYPE": "[M+H]"}
     """
-    adduct = metadata_dict['PRECURSORTYPE']
-    adduct = re.sub(sub_adduct_pattern, "", adduct)
+    adduct = metadata_dict["PRECURSORTYPE"]
 
-    if adduct in adduct_dict:
-        metadata_dict['PRECURSORTYPE'] = adduct_dict[adduct]
 
-    return metadata_dict
+    match = re.search(adduct_pattern, adduct)
+
+    if match: # Si deja le format correct, on ne fait rien
+        if not match.group(3): # si pas de charge a la fin
+            charge = determining_adduct_charge(adduct)
+            if "*" in match.group():
+                if charge:
+                    metadata_dict["PRECURSORTYPE"] = adduct + charge + "*"
+                    return metadata_dict
+                else:
+                    return metadata_dict
+            else:
+                if charge:
+                    metadata_dict["PRECURSORTYPE"] = adduct + charge
+                    return metadata_dict
+                else:
+                    return metadata_dict
+        return metadata_dict
+    else: # pas le format correct
+        match = re.search(adduct_pattern_2, adduct)
+        if match:
+            if not re.search(ending_by_charge_pattern, adduct): # si pas de charge a la fin
+                charge = determining_adduct_charge(adduct)
+                if "*" in match.group():
+                    if charge:
+                        metadata_dict["PRECURSORTYPE"] = "[" + match.group() + "]" + charge + "*"
+                        return metadata_dict
+                    else:
+                        return metadata_dict
+                else:
+                    if charge:
+                        metadata_dict["PRECURSORTYPE"] = "[" + match.group() + "]" + charge
+                        return metadata_dict
+                    else:
+                        return metadata_dict
+            else:
+                charge = re.search(ending_by_charge_pattern, adduct)
+                if charge:
+                    metadata_dict["PRECURSORTYPE"] = "[" + match.group() + "]" + charge.group()
+                    return metadata_dict
+                else:
+                    return metadata_dict
 
 def normalize_ionmode(metadata_dict):
     """
@@ -209,7 +299,7 @@ def normalize_ms_level(metadata_dict):
         if ms_level:
             if len(ms_level) == 1:
                 metadata_dict["MSLEVEL"] = ms_level[0]
-            elif len(ms_level) >= 2:
+            elif len(ms_level) > 2:
                 metadata_dict["MSLEVEL"] = f"{ms_level[0]}-{ms_level[1]}"
 
     return metadata_dict
@@ -268,7 +358,7 @@ def normalize_retentiontime(metadata_dict):
     """
     retientiontime = metadata_dict["RETENTIONTIME"]
 
-    match = re.search(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(m|min|minute|minutes|s|sec|second|seconds|ms|millisecond|milliseconds)(?:\W)?", retientiontime, flags=re.IGNORECASE)
+    match = re.search("(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(m|min|minute|minutes|s|sec|second|seconds|ms|millisecond|milliseconds)(?:\W)?", retientiontime, flags=re.IGNORECASE)
 
     if match:
         time = match.group(1)
