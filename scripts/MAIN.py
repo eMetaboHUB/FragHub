@@ -1,8 +1,8 @@
 from fraghubid_generator import *
 from duplicatas_remover import *
+from name_completion import *
 from msp_normalizer import *
 from set_parameters import *
-from msp_utilities import *
 from rdkit import RDLogger
 from converters import *
 from splitter import *
@@ -102,7 +102,7 @@ if __name__ == "__main__":
                 msp_path = os.path.join(root, file)
 
                 # STEP 3: cleaning spectrums (Multithreaded)
-                print("{:>80}".format(f"-- CLEANING: {files} --"))
+                print("{:>80}".format(f"-- CLEANING: {file} --"))
                 spectrum_list = load_spectrum_list(msp_path)
                 final_spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list)
                 if update_temp:
