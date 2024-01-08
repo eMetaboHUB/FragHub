@@ -91,19 +91,21 @@ def concatenate_xml(xml_list):
 
     return FINAL_XML
 
-def concatenate_csv(csv_path):
+def concatenate_csv(csv_list):
     """
-    Concatenates all CSV files in a given directory.
+    Concatenates a list of CSV files into a single dataframe.
 
-    :param csv_path: The path to the directory containing the CSV files.
-    :return: A list of dataframes representing the concatenated CSV files.
+    :param csv_list: A list of file paths to the CSV files.
+    :type csv_list: list[str]
+
+    :return: The concatenated dataframe.
+    :rtype: pandas.DataFrame
     """
     FINAL_CSV = []
-    for files in tqdm(os.listdir(csv_path), total=len(os.listdir(csv_path)), unit=" spectrums", colour="green", desc="{:>80}".format("concatenate")):
+    for files in tqdm(csv_list, total=len(csv_list), unit=" spectrums", colour="green", desc="{:>80}".format("concatenate")):
         if files.endswith(".csv"):
-            file_path = os.path.join(csv_path, files)
-            file_name = os.path.basename(file_path.replace(".csv", ""))
-            csv_df = pd.read_csv(str(file_path), sep=";", encoding="UTF-8")
+            file_name = os.path.basename(files.replace(".csv", ""))
+            csv_df = pd.read_csv(files, sep=";", encoding="UTF-8")
 
             # Add filename column to dataframe
             csv_df.insert(0, 'filename', file_name)
@@ -292,18 +294,21 @@ def convert_to_msp(input_path):
 
     # CSV
     FINAL_CSV = []
+    csv_list= []
     csv_to_do = False
     csv_path = os.path.join(input_path, "CSV")
     # check if there is a csv file into the directory
     for root, dirs, files in os.walk(csv_path):
         for file in files:
-            if file.endswith(".xml"):
+            if file.endswith(".csv"):
+                csv_path = os.path.join(root, file)  # Full path to the file
+                csv_list.append(csv_path)
                 csv_to_do = True
     if csv_to_do == True:
         time.sleep(0.02)
         print("{:>80}".format("-- CONVERTING CSV TO MSP --"))
         # Concatenate all CSV to a list
-        FINAL_CSV = concatenate_csv(csv_path)
+        FINAL_CSV = concatenate_csv(csv_list)
         # Convert all CSV spectrum to MSP spectrum (Multithreaded)
         FINAL_CSV = CSV_convert_processing(FINAL_CSV)
 
