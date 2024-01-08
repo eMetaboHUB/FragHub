@@ -105,9 +105,10 @@ def apply_filters(peak_array, precursormz):
     intensity_percent = parameters_dict['check_minimum_of_high_peaks_requiered_intensity_percent']
     no_peaks = parameters_dict['check_minimum_of_high_peaks_requiered_no_peaks']
 
-    peak_array = check_minimum_peak_requiered(peak_array, n_peaks)
-    if len(peak_array) == 0:
-        return np.array([])
+    if parameters_dict['check_minimum_peak_requiered'] == 1.0:
+        peak_array = check_minimum_peak_requiered(peak_array, n_peaks)
+        if len(peak_array) == 0:
+            return np.array([])
 
     if parameters_dict['remove_peak_above_precursormz'] == 1.0:
         peak_array = remove_peak_above_precursormz(peak_array, precursormz)
