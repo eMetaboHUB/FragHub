@@ -77,11 +77,11 @@ if __name__ == "__main__":
     msp_dir = os.path.join(input_path, "MSP")
 
     # Check if there is msp file to process
-    msp_to_process = False
-    for files in os.listdir(msp_dir):
-        if files.endswith(".msp"):
-            msp_to_process = True
-            break
+    for root, dirs, files in os.walk(msp_dir):
+        for file in files:
+            if file.endswith(".msp"):
+                msp_to_process = True
+                break
 
     # If there is no msp to process: stop python execution
     if msp_to_process == False:
@@ -96,23 +96,24 @@ if __name__ == "__main__":
     first_run = False
     update = False
 
-    for files in os.listdir(msp_dir):
-        if files.endswith(".msp"):
-            msp_path = os.path.join(msp_dir, files)
+    for root, dirs, files in os.walk(msp_dir):
+        for file in files:
+            if file.endswith(".msp"):
+                msp_path = os.path.join(root, file)
 
-            # STEP 3: cleaning spectrums (Multithreaded)
-            print("{:>80}".format(f"-- CLEANING: {files} --"))
-            spectrum_list = load_spectrum_list(msp_path)
-            final_spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list)
-            if update_temp:
-                update = True
-            if first_run_temp:
-                first_run = True
-            spectrum_list = msp_cleaning_processing(spectrum_list)
+                # STEP 3: cleaning spectrums (Multithreaded)
+                print("{:>80}".format(f"-- CLEANING: {files} --"))
+                spectrum_list = load_spectrum_list(msp_path)
+                final_spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list)
+                if update_temp:
+                    update = True
+                if first_run_temp:
+                    first_run = True
+                spectrum_list = msp_cleaning_processing(spectrum_list)
 
-            CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
+                CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
 
-            del spectrum_list
+                del spectrum_list
 
     CONCATENATED_SPECTRUMS_DATAFRAME = pd.DataFrame(CONCATENATED_SPECTRUMS_RESULTS)[ordered_columns].astype(str)
 
