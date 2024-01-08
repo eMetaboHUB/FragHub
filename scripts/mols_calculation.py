@@ -1,6 +1,6 @@
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
+from rdkit.Chem.Descriptors import ExactMolWt, MolWt
 from rdkit import RDLogger, Chem
-from pycdk.pycdk import *
 from tqdm import tqdm
 import pandas as pd
 
@@ -27,11 +27,11 @@ def apply_transformations(inchi_smiles):
             }
         # Mass calculation
         if transforms:
-            mol = MolFromInchi(transforms['INCHI']) if 'InChI=' in inchi_smiles else MolFromSmiles(transforms['SMILES'])
+            mol = Chem.MolFromInchi(transforms['INCHI']) if 'InChI=' in inchi_smiles else Chem.MolFromSmiles(transforms['SMILES'])
             if mol is not None:
                 try:
-                    transforms['EXACTMASS'] = str(getMolExactMass(mol))
-                    transforms['AVERAGEMASS'] = str(getMolNaturalMass(mol))
+                    transforms['EXACTMASS'] = ExactMolWt(mol)
+                    transforms['AVERAGEMASS'] = MolWt(mol)
                 except:
                     return transforms
 
