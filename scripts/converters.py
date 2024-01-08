@@ -67,16 +67,22 @@ def JSON_convert_processing(FINAL_JSON):
 
     return final # returns the list of different worker executions.
 
-def concatenate_xml(xml_path):
+def concatenate_xml(xml_list):
     """
-    :param xml_path: The directory path where the XML files are located.
-    :return: The concatenated XML content in a list.
+    Concatenates the contents of XML files into a single XML string.
+
+    :param xml_list: List of XML file paths to be concatenated.
+    :return: List containing the concatenated XML contents of all files.
+
+    Example usage:
+        xml_list = ["file1.xml", "file2.xml"]
+        result = concatenate_xml(xml_list)
     """
     FINAL_XML = []
-    for files in tqdm(os.listdir(xml_path), total=len(os.listdir(xml_path)), unit=" spectrums", colour="green", desc="{:>80}".format("concatenate")):
+    for files in tqdm(xml_list, total=len(xml_list), unit=" spectrums", colour="green", desc="{:>80}".format("concatenate")):
         if files.endswith(".xml"):
-            file_name = os.path.basename(os.path.join(xml_path, files).replace(".xml", ""))
-            with open(os.path.join(xml_path, files), "r", encoding="UTF-8") as xml_file:
+            file_name = os.path.basename(files.replace(".xml", ""))
+            with open(files, "r", encoding="UTF-8") as xml_file:
                 xml_content = xml_file.read()
             # Add filename to xml
             xml_content = re.sub("</sample-mass>\n",f"</sample-mass>\n  <filename>{file_name}</filename>\n",xml_content)
@@ -266,18 +272,21 @@ def convert_to_msp(input_path):
 
     # XML
     FINAL_XML = []
+    xml_list = []
     xml_to_do = False
     xml_path = os.path.join(input_path, "XML")
     # check if there is a xml file into the directory
     for root, dirs, files in os.walk(xml_path):
         for file in files:
             if file.endswith(".xml"):
+                xml_path = os.path.join(root, file)  # Full path to the file
+                xml_list.append(xml_path)
                 xml_to_do = True
     if xml_to_do == True:
         time.sleep(0.02)
         print("{:>80}".format("-- CONVERTING XML TO MSP --"))
         # Concatenate all XML to a list
-        FINAL_XML = concatenate_xml(xml_path)
+        FINAL_XML = concatenate_xml(xml_list)
         # Convert all XML spectrum to MSP spectrum (Multithreaded)
         FINAL_XML = XML_convert_processing(FINAL_XML)
 
