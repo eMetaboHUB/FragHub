@@ -7,16 +7,18 @@ import json
 import os
 import re
 
-def concatenate_json(json_path):
+def concatenate_json(json_list):
     """
-    :param json_path: The path to the directory containing the JSON files.
-    :return: A list of JSON objects, with each object representing the contents of a JSON file in the given directory.
+    Concatenates multiple JSON files into a single list of dictionaries.
+
+    :param json_list: A list of file paths to JSON files.
+    :return: A list of dictionaries containing the JSON data from each file, with an added "filename" key.
     """
     JSON_LIST = []
-    for files in tqdm(os.listdir(json_path), total=len(os.listdir(json_path)), unit=" spectrums", colour="green", desc="{:>80}".format("concatenate")):
+    for files in tqdm(json_list, total=len(json_list), unit=" spectrums", colour="green", desc="{:>80}".format("concatenate")):
         if files.endswith(".json"):
-            file_name = os.path.basename(os.path.join(json_path, files)).replace(".json", "")
-            with  open(os.path.join(json_path, files), "r", encoding="UTF-8") as f:
+            file_name = os.path.basename(files).replace(".json", "")
+            with  open(files, "r", encoding="UTF-8") as f:
                 lines = f.readlines()
 
             data = [json.loads(line) for line in lines]  # returns JSON object as a list of dictionary
@@ -244,18 +246,21 @@ def convert_to_msp(input_path):
     """
     # JSON
     FINAL_JSON = []
+    json_list = []
     json_to_do = False
     json_path = os.path.join(input_path,"JSON")
     # check if there is a json file into the directory
     for root, dirs, files in os.walk(json_path):
         for file in files:
             if file.endswith(".json"):
+                json_path = os.path.join(root, file)  # Full path to the file
+                json_list.append(json_path)
                 json_to_do = True
     if json_to_do == True:
         time.sleep(0.02)
         print("{:>80}".format("-- CONVERTING JSON TO MSP --"))
         # Concatenate all JSON to a list
-        FINAL_JSON = concatenate_json(json_path)
+        FINAL_JSON = concatenate_json(json_list)
         # Convert all JSON spectrum to MSP spectrum (Multithreaded)
         FINAL_JSON = JSON_convert_processing(FINAL_JSON)
 
