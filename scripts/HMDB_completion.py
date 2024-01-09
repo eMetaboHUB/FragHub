@@ -128,5 +128,7 @@ def hmdb_completion_processing(xml_files_absolute_paths):
 
 xml_files_absolute_paths = generate_xml_paths_list()
 
+hmdb_completion_processing(xml_files_absolute_paths)
+
 
 
