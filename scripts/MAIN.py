@@ -52,27 +52,27 @@ if __name__ == "__main__":
     input_path = r"..\INPUT"
     output_path = r"..\OUTPUT"
 
-    # # STEP 1: convert files to msp if needed (Multithreaded)
-    # FINAL_JSON,FINAL_XML,FINAL_CSV = convert_to_msp(input_path)
-    #
-    # if FINAL_JSON != [] :
-    #     with open(os.path.join("../INPUT/MSP/JSON_converted"+".msp"), "a", encoding="UTF-8") as temp:
-    #         temp.write("\n\n".join(FINAL_JSON))
-    #
-    # if FINAL_XML != []:
-    #     with open(os.path.join("../INPUT/MSP/XML_converted"+".msp"), "a", encoding="UTF-8") as temp:
-    #         temp.write("\n\n".join(FINAL_XML))
-    #
-    # if FINAL_CSV != []:
-    #     compteur = 1
-    #     for elements in FINAL_CSV:
-    #         with open(os.path.join(f"../INPUT/MSP/CSV_converted_{compteur}"+".msp"), "w", encoding="UTF-8") as temp:
-    #             temp.write(elements)
-    #         compteur += 1
-    #
-    # del FINAL_JSON
-    # del FINAL_XML
-    # del FINAL_CSV
+    # STEP 1: convert files to msp if needed (Multithreaded)
+    FINAL_JSON,FINAL_XML,FINAL_CSV = convert_to_msp(input_path)
+
+    if FINAL_JSON != [] :
+        with open(os.path.join("../INPUT/MSP/JSON_converted"+".msp"), "a", encoding="UTF-8") as temp:
+            temp.write("\n\n".join(FINAL_JSON))
+
+    if FINAL_XML != []:
+        with open(os.path.join("../INPUT/MSP/XML_converted"+".msp"), "a", encoding="UTF-8") as temp:
+            temp.write("\n\n".join(FINAL_XML))
+
+    if FINAL_CSV != []:
+        compteur = 1
+        for elements in FINAL_CSV:
+            with open(os.path.join(f"../INPUT/MSP/CSV_converted_{compteur}"+".msp"), "w", encoding="UTF-8") as temp:
+                temp.write(elements)
+            compteur += 1
+
+    del FINAL_JSON
+    del FINAL_XML
+    del FINAL_CSV
 
     msp_dir = os.path.join(input_path, "MSP")
 
