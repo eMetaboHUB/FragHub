@@ -5,13 +5,13 @@ import os
 import re
 
 global inchikey_update_pattern
-inchikey_update_pattern = re.compile("([A-Z]{14}-[A-Z]{10}-[NO])", flags=re.IGNORECASE)
+inchikey_update_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])", flags=re.IGNORECASE)
 
 global peak_list_update_pattern
-peak_list_update_pattern = re.compile("([\s\S]*:.[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)", flags=re.IGNORECASE)
+peak_list_update_pattern = re.compile(r"([\s\S]*:.[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)", flags=re.IGNORECASE)
 
 global peak_list_split_update_pattern
-peak_list_split_update_pattern = re.compile("(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
+peak_list_split_update_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 def load_spectrum_list(msp_file_path):
     """

@@ -3,16 +3,16 @@ import numpy as np
 import re
 
 global repair_inchi_pattern
-repair_inchi_pattern = re.compile("^(inchi=)?", flags=re.IGNORECASE)
+repair_inchi_pattern = re.compile(r"^(inchi=)?", flags=re.IGNORECASE)
 
 global smiles_pattern
-smiles_pattern = re.compile("[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}", flags=re.IGNORECASE) # Match smiles
+smiles_pattern = re.compile(r"[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}", flags=re.IGNORECASE) # Match smiles
 
 global inchi_pattern
-inchi_pattern = re.compile("InChI=.*|\/[0-9A-Z]*\/", flags=re.IGNORECASE) # Match inchi
+inchi_pattern = re.compile(r"InChI=.*|\/[0-9A-Z]*\/", flags=re.IGNORECASE) # Match inchi
 
 global inchikey_pattern
-inchikey_pattern = re.compile("([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
+inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
 
 global adduct_pattern
 adduct_pattern = re.compile(r"(\[([A-Za-z0-9\+\-\(\)]*)\]((?:[0-9]*)?[\+\-\*])*)(?:\/|$)?")
@@ -21,31 +21,31 @@ global charge_pattern
 charge_pattern = re.compile(r"((\+|\-|^)\d+)|(\+|\-)")
 
 global adduct_pattern_2
-adduct_pattern_2 = re.compile("([A-Za-z0-9\+\-\(\)\*]*)")
+adduct_pattern_2 = re.compile(r"([A-Za-z0-9\+\-\(\)\*]*)")
 
 global ending_by_charge_pattern
-ending_by_charge_pattern = re.compile("(\d)?([\+\-\*])$")
+ending_by_charge_pattern = re.compile(r"(\d)?([\+\-\*])$")
 
 global ionmode_pos_pattern
-ionmode_pos_pattern = re.compile("^p|^\+|^pos", flags=re.IGNORECASE)
+ionmode_pos_pattern = re.compile(r"^p|^\+|^pos", flags=re.IGNORECASE)
 
 global ionmode_neg_pattern
-ionmode_neg_pattern = re.compile("^n|^\-|^neg", flags=re.IGNORECASE)
+ionmode_neg_pattern = re.compile(r"^n|^\-|^neg", flags=re.IGNORECASE)
 
 global precursortype_pos_pattern
-precursortype_pos_pattern = re.compile("\][\+\*]*$")
+precursortype_pos_pattern = re.compile(r"\][\+\*]*$")
 
 global precursortype_neg_pattern
-precursortype_neg_pattern = re.compile("\][\-\*]*$")
+precursortype_neg_pattern = re.compile(r"\][\-\*]*$")
 
 global ms_level_pattern
-ms_level_pattern = re.compile("(?:ms)?(\d)", flags=re.IGNORECASE)
+ms_level_pattern = re.compile(r"(?:ms)?(\d)", flags=re.IGNORECASE)
 
 global In_Silico_pattern
-In_Silico_pattern = re.compile("in.silico|insilico|predicted|theoretical|Annotation.level.3", flags=re.IGNORECASE)
+In_Silico_pattern = re.compile(r"in.silico|insilico|predicted|theoretical|Annotation.level.3", flags=re.IGNORECASE)
 
 global empty_pattern
-empty_pattern = re.compile("(^0( .*)?)|(^0\.0( .*)?)|(^$)|(^na( .*)?)|(^n/a( .*)?)|(^nan( .*)?)|(^unknown( .*)?)|(^unknow( .*)?)|(^none( .*)?)|(^\?( .*)?)|(^unk( .*)?)|(^x( .*)?)", flags=re.IGNORECASE)
+empty_pattern = re.compile(r"(^0( .*)?)|(^0\.0( .*)?)|(^$)|(^na( .*)?)|(^n/a( .*)?)|(^nan( .*)?)|(^unknown( .*)?)|(^unknow( .*)?)|(^none( .*)?)|(^\?( .*)?)|(^unk( .*)?)|(^x( .*)?)", flags=re.IGNORECASE)
 
 def normalize_empties(metadata_dict):
     """
@@ -358,7 +358,7 @@ def normalize_retentiontime(metadata_dict):
     """
     retientiontime = metadata_dict["RETENTIONTIME"]
 
-    match = re.search("(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(m|min|minute|minutes|s|sec|second|seconds|ms|millisecond|milliseconds)(?:\W)?", retientiontime, flags=re.IGNORECASE)
+    match = re.search(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(m|min|minute|minutes|s|sec|second|seconds|ms|millisecond|milliseconds)(?:\W)?", retientiontime, flags=re.IGNORECASE)
 
     if match:
         time = match.group(1)

@@ -42,28 +42,28 @@ keys_list = ['FILENAME',
              'NUM PEAKS']
 
 global metadata_peak_list_split_pattern
-metadata_peak_list_split_pattern = re.compile("([\s\S]*:.[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
+metadata_peak_list_split_pattern = re.compile(r"([\s\S]*:.[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
 
 global sub_fields_pattern
-sub_fields_pattern = re.compile("(\S+?)=\"([^\"]*)\"|\"(\w+?)=([^\"]*)\"|\"([^\"]*?)=([^\"]*)\"|(\S+?)=(\d+(?:[.,]\d*)?)|(\S+?)=(.*?)(?:;|\n|$)")
+sub_fields_pattern = re.compile(r"(\S+?)=\"([^\"]*)\"|\"(\w+?)=([^\"]*)\"|\"([^\"]*?)=([^\"]*)\"|(\S+?)=(\d+(?:[.,]\d*)?)|(\S+?)=(.*?)(?:;|\n|$)")
 
 global metadata_pattern
-metadata_pattern = re.compile("([^:\n]*?):\s*([^:\n]*)(?:\n|$)")
+metadata_pattern = re.compile(r"([^:\n]*?):\s*([^:\n]*)(?:\n|$)")
 
 global metadata_fields_name_pattern
 metadata_fields_name_pattern = re.compile(r'^[\W_]+|[\W_]+$')
 
 global metadata_strip_value_pattern
-metadata_strip_value_pattern = re.compile("^\"|\"$")
+metadata_strip_value_pattern = re.compile(r"^\"|\"$")
 
 global peak_list_split_pattern
-peak_list_split_pattern = re.compile("(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
+peak_list_split_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 global computed_pattern
-computed_pattern = re.compile("computed", flags=re.IGNORECASE)
+computed_pattern = re.compile(r"computed", flags=re.IGNORECASE)
 
 global comment_pattern
-comment_pattern = re.compile('comment.*', flags=re.IGNORECASE)
+comment_pattern = re.compile(r'comment.*', flags=re.IGNORECASE)
 
 def load_spectrum_list(msp_file_path):
     """
