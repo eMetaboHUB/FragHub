@@ -7,6 +7,9 @@ import json
 import os
 import re
 
+global HMDB_df
+HMDB_df = pd.read_csv("../datas/HMDB.csv", sep=";", encoding="UTF-8")
+
 def concatenate_json(json_list):
     """
     Concatenates multiple JSON files into a single list of dictionaries.
