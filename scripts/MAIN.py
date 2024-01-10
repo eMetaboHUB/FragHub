@@ -57,39 +57,31 @@ if __name__ == "__main__":
     # STEP 1: convert files to json if needed (Multithreaded)
     FINAL_MSP, FINAL_XML, FINAL_CSV = convert_to_json(input_path)
 
-    if FINAL_MSP != []:
-        with open(os.path.join("../INPUT/JSON/MSP_converted.json"), "w", encoding="UTF-8") as buffer:
-            json.dump(FINAL_MSP, buffer, ensure_ascii=False, indent=4)
-
-    if FINAL_XML != []:
-        with open(os.path.join("../INPUT/JSON/XML_converted.json"), "w", encoding="UTF-8") as buffer:
-            json.dump(FINAL_XML, buffer, ensure_ascii=False, indent=4)
-
-    if FINAL_CSV != []:
-        with open(os.path.join("../INPUT/JSON/CSV_converted.json"), "w", encoding="UTF-8") as buffer:
-            json.dump(FINAL_CSV, buffer, ensure_ascii=False, indent=4)
+    write_json_converted(FINAL_MSP, "MSP")
+    write_json_converted(FINAL_XML, "XML")
+    write_json_converted(FINAL_CSV, "CSV")
 
     del FINAL_MSP
     del FINAL_XML
     del FINAL_CSV
 
-    json_dir = os.path.join(input_path, "JSON")
-
-    # Check if there is msp file to process
-    for root, dirs, files in os.walk(json_dir):
-        for file in files:
-            if file.endswith(".json"):
-                json_to_process = True
-                break
-
-    # If there is no msp to process: stop python execution
-    if json_to_process == False:
-        sys.exit("There is no json file to process into \"./INPUT/JSON\". Exiting code !")
-
-    # STEP 2: generating FRAGHUBID
-    print("{:>80}".format("-- GENERATING FragHub UNIQUE ID --"))
-    time.sleep(0.01)
-    generate_fraghub_id(r"../INPUT/JSON")
+    # json_dir = os.path.join(input_path, "JSON")
+    #
+    # # Check if there is msp file to process
+    # for root, dirs, files in os.walk(json_dir):
+    #     for file in files:
+    #         if file.endswith(".json"):
+    #             json_to_process = True
+    #             break
+    #
+    # # If there is no msp to process: stop python execution
+    # if json_to_process == False:
+    #     sys.exit("There is no json file to process into \"./INPUT/JSON\". Exiting code !")
+    #
+    # # STEP 2: generating FRAGHUBID
+    # print("{:>80}".format("-- GENERATING FragHub UNIQUE ID --"))
+    # time.sleep(0.01)
+    # generate_fraghub_id(r"../INPUT/JSON")
 
     # CONCATENATED_SPECTRUMS_RESULTS = []
     # first_run = False
