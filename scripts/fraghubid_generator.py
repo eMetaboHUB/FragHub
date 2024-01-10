@@ -9,37 +9,34 @@ global inchikey_update_pattern
 inchikey_update_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])", flags=re.IGNORECASE)
 
 global peak_list_update_pattern
-peak_list_update_pattern = re.compile(r"([\s\S]*:.[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)", flags=re.IGNORECASE)
+peak_list_update_pattern = re.compile(r"\"peaks\":([\S\s]*?)\}", flags=re.IGNORECASE)
 
 global peak_list_split_update_pattern
 peak_list_split_update_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
-def load_spectrum_list(msp_file_path):
-    """
-    Load spectra from an MSP file and return a list of spectra.
 
-    :param msp_file_path: Path to the MSP file.
+def load_spectrum_list_json(json_file_path):
+    """
+    Load spectra from a JSON file and return a list of spectra.
+
+    :param json_file_path: Path to the JSON file.
     :return: List of spectra.
     """
     spectrum_list = []
-    buffer = []
 
-    total_lines = sum(1 for line in open(msp_file_path, 'r', encoding="UTF-8")) # count the total number of lines in the file
+    # First, calculate total bytes for tqdm
+    total_bytes = os.path.getsize(json_file_path)
 
-    with open(msp_file_path, 'r', encoding="UTF-8") as file:
-        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="{:>80}".format("loading file")): # wrap this with tqdm
-            if line.strip() == '':
-                if buffer:
-                    spectrum_list.append('\n'.join(buffer))
-                    buffer = []
-            else:
-                if not buffer:
-                    buffer.append(f"FILENAME: {os.path.basename(msp_file_path)}") # adding filename to spectrum
-                buffer.append(line.strip())
+    with open(json_file_path, 'r', encoding="UTF-8") as file:
+        # ijson.items(file, 'item') returns a generator yielding items in a JSON file
+        spectra = ijson.items(file, 'item')
+        # Create tqdm progress bar
+        progress = tqdm(total=total_bytes, unit="B", unit_scale=True, colour="green", desc="{:>80}".format("Loading file"))
 
-    # Add the last spectrum to the list
-    if buffer:
-        spectrum_list.append('\n'.join(buffer))
+        for spectrum in spectra:
+            spectrum_list.append(spectrum)
+            progress.update(len(str(spectrum)))
+        progress.close()
 
     return spectrum_list
 
@@ -52,22 +49,18 @@ def hash_spectrum_data(spectrum_data):
     :return: The SHA256 hash of spectrum data.
     :rtype: str
     """
-    inchikey = re.search(inchikey_update_pattern, spectrum_data)
-    peak_list = re.search(peak_list_update_pattern, spectrum_data)
+    spectrum_string = str(spectrum_data)
+
+    inchikey = re.search(inchikey_update_pattern, spectrum_string)
+    peak_list = re.search(peak_list_update_pattern, spectrum_string)
 
     if inchikey:
         inchikey = inchikey.group(1)
 
     if inchikey and peak_list:
-        peak_list = peak_list.group(2)
-        peaks_match = re.findall(peak_list_split_update_pattern, peak_list)
-        if peaks_match:
-            peaks_match = [f"{i}\t{j}" for i, j in peaks_match]
-            peak_list = "\n".join(peaks_match)
+        peak_list = peak_list.group(1)
+        spectrum_string = inchikey+"\n"+peak_list
 
-            spectrum_string = inchikey+"\n"+peak_list
-        else:
-            spectrum_string = str(spectrum_data)
     else:
         spectrum_string = str(spectrum_data)
 
@@ -150,7 +143,7 @@ def generate_fraghub_id(json_directory_path):
     for files in json_path_list:
         if files.endswith(".json"):
             if not check_fraghubid_already_done(files):
-                spectrum_list= load_spectrum_list(files)
+                spectrum_list = load_spectrum_list_json(files)
                 spectrum_list = genrate_fraghubid_processing(spectrum_list, files)
 
                 with open(files, 'w', encoding='utf-8') as buffer:
