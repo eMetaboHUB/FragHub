@@ -10,7 +10,7 @@ def get_first_n_items(json_file_path, n):
             items.append(item)
     return items
 
-first_10_items = get_first_n_items(r"C:\Users\Axel\PycharmProjects\msp_v3\INPUT\JSON\MSP_converted.json", 10)
+first_10_items = get_first_n_items(r"C:\Users\Axel\PycharmProjects\msp_v3\INPUT\JSON\ALL_GNPS.json", 10)
 
 for item in first_10_items:
     print(item)
