@@ -5,7 +5,6 @@ from name_completion import *
 from msp_normalizer import *
 from set_parameters import *
 from rdkit import RDLogger
-from converters import *
 from splitter import *
 from writers import *
 from update import *
@@ -102,9 +101,9 @@ if __name__ == "__main__":
                     first_run = True
                 spectrum_list = msp_cleaning_processing(final_spectrum_list)
 
-                # CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
-                #
-                # del spectrum_list
+                CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
+
+                del spectrum_list
     #
     # CONCATENATED_SPECTRUMS_DATAFRAME = pd.DataFrame(CONCATENATED_SPECTRUMS_RESULTS)[ordered_columns].astype(str)
     #
