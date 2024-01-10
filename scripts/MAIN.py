@@ -57,17 +57,12 @@ if __name__ == "__main__":
     # STEP 1: convert files to json if needed (Multithreaded)
     FINAL_MSP, FINAL_XML, FINAL_CSV = convert_to_json(input_path)
 
-    write_json_converted(FINAL_MSP, "MSP")
-    write_json_converted(FINAL_XML, "XML")
-    write_json_converted(FINAL_CSV, "CSV")
-
-    del FINAL_MSP
-    del FINAL_XML
-    del FINAL_CSV
-
     json_dir = os.path.join(input_path, "JSON")
 
     # Check if there is msp file to process
+    if FINAL_MSP or FINAL_XML or FINAL_CSV:
+        json_to_process = True
+
     for root, dirs, files in os.walk(json_dir):
         for file in files:
             if file.endswith(".json"):
@@ -81,7 +76,11 @@ if __name__ == "__main__":
     # STEP 2: generating FRAGHUBID
     print("{:>80}".format("-- GENERATING FragHub UNIQUE ID --"))
     time.sleep(0.01)
-    generate_fraghub_id(r"../INPUT/JSON")
+    generate_fraghub_id(r"../INPUT/JSON", FINAL_MSP, FINAL_XML, FINAL_CSV)
+
+    del FINAL_MSP
+    del FINAL_XML
+    del FINAL_CSV
 
     # CONCATENATED_SPECTRUMS_RESULTS = []
     # first_run = False
