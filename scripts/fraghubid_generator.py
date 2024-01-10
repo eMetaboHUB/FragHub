@@ -127,7 +127,51 @@ def check_fraghubid_already_done(json_file_path):
     # 'FRAGHUBID' was not found or file was empty
     return False
 
-def generate_fraghub_id(json_directory_path):
+def process_converted_after(spectrum_list, mode):
+    """
+    :param spectrum_list: List of spectra to be processed
+    :param mode: Mode in which the spectra are converted (MSP, XML, CSV)
+    :return: None
+
+    Processes the converted spectra and writes them to a JSON file based on the specified mode.
+
+    The `spectrum_list` parameter should contain a list of spectra to be processed. The `mode` parameter specifies the format in which the spectra are converted, and can be one of the following
+    *: "MSP", "XML", or "CSV".
+
+    The method first determines the file path and filename based on the mode. The file path is set to the absolute path of the corresponding converted JSON file, and the filename is extracted
+    * from the file path.
+
+    Next, the method calls the `genrate_fraghubid_processing` function to generate additional processing on the spectrum list. The `spectrum_list` and `filename` parameters are passed to
+    * this function, which modifies and returns the spectrum list.
+
+    If the spectrum list is not empty, the method opens the file specified by the file path in write mode and writes the spectra to the file in JSON format. It iterates over the spectrum
+    * list and writes each spectrum object as a JSON object to the file. The JSON objects are separated by commas. Finally, the method writes closing brackets to end the JSON list.
+
+    Note: The method uses the `tqdm` package to display a progress bar while writing the spectra to the file.
+    """
+    if mode == "MSP":
+        file_path = os.path.abspath("../INPUT/JSON/MSP_converted.json")
+        filename = os.path.basename(file_path)
+    elif mode == "XML":
+        file_path = os.path.abspath("../INPUT/JSON/XML_converted.json")
+        filename = os.path.basename(file_path)
+    elif mode == "CSV":
+        file_path = os.path.abspath("../INPUT/JSON/CSV_converted.json")
+        filename = os.path.basename(file_path)
+
+    spectrum_list = genrate_fraghubid_processing(spectrum_list, filename)
+
+    if spectrum_list:
+        with open(file_path, "w", encoding="UTF-8") as buffer:
+            buffer.write("[")  # begin the JSON list
+            for i in tqdm(range(len(spectrum_list)), total=len(spectrum_list), unit=" row", colour="green", desc="{:>80}".format(f"writting {filename}")):
+                # write a comma before every object except the first one
+                if i != 0:
+                    buffer.write(",")
+                json.dump(spectrum_list[i], buffer, ensure_ascii=False)
+            buffer.write("]")  # end the JSON lists
+
+def generate_fraghub_id(json_directory_path, FINAL_MSP, FINAL_XML, FINAL_CSV):
     """
     :param msp_directory_path: The path to the MSP directory.
     :return: None
@@ -161,3 +205,10 @@ def generate_fraghub_id(json_directory_path):
                                 buffer.write(",")
                             json.dump(spectrum_list[i], buffer, ensure_ascii=False)
                         buffer.write("]")  # end the JSON list
+
+    if FINAL_MSP:
+        process_converted_after(FINAL_MSP, "MSP")
+    if FINAL_XML:
+        process_converted_after(FINAL_XML, "XML")
+    if FINAL_CSV:
+        process_converted_after(FINAL_CSV, "CSV")
