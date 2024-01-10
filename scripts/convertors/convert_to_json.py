@@ -95,14 +95,16 @@ def concatenate_csv(csv_list):
     df = concatenate_csv(csv_list)
     ```
     """
-    df_list = [pd.read_csv(file, sep=";", encoding="UTF-8") for file in csv_list]
+    df_list = []
+
+    for file in csv_list:
+        df = pd.read_csv(file, sep=";", encoding="UTF-8")
+        df['filename'] = os.path.basename(file)
+        df_list.append(df)
+
     df = pd.concat(df_list, ignore_index=True)
 
     return df
-
-
-
-
 
 def convert_to_json(input_path):
     """
