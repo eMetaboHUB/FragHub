@@ -1,6 +1,7 @@
 import concurrent.futures
 from tqdm import tqdm
 import hashlib
+import ijson
 import os
 import re
 
@@ -106,27 +107,29 @@ def genrate_fraghubid_processing(spectrum_list, files):
     return final # returns the list of different worker executions.
 
 
-def check_fraghubid_already_done(msp_file_path):
+def check_fraghubid_already_done(json_file_path):
     """
     Check if a FragHubID is already done in a given file.
 
-    :param msp_file_path: The file path of the MSP file to check.
-    :type msp_file_path: str
-    :return: True if a FragHubID is found, False otherwise.
+    :param json_file_path: The file path of the JSON file to check.
+    :type json_file_path: str
+    :return: True if a FRAGHUBID is found, False otherwise.
     :rtype: bool
     """
-    with open(msp_file_path, 'r') as file:
-        # Read the first 10 lines
-        lines = [next(file) for _ in range(10)]
+    with open(json_file_path, 'r') as file:
+        # ijson items returns a generator yielding items in a json file
+        objects = ijson.items(file, item='item')
 
-    combined_lines = '\n'.join(lines)
+        first_dict = next(objects)
 
-    if re.search("(FRAGHUBID: )(.*)\n", combined_lines):
-        return True
-    else:
-        return False
+        # check if 'FRAGHUBID' is in the first dictionary
+        if 'FRAGHUBID' in first_dict:
+            return True
 
-def generate_fraghub_id(msp_directory_path):
+    # 'FRAGHUBID' was not found or file was empty
+    return False
+
+def generate_fraghub_id(json_directory_path):
     """
     :param msp_directory_path: The path to the MSP directory.
     :return: None
@@ -137,12 +140,18 @@ def generate_fraghub_id(msp_directory_path):
 
     Finally, it opens the MSP file in write mode and writes the modified spectrum list with the generated FragHub ID into the file.
     """
-    for files in os.listdir(msp_directory_path):
-        if files.endswith(".msp"):
-            msp_file_path = os.path.join(msp_directory_path, files)
-            if not check_fraghubid_already_done(msp_file_path):
-                spectrum_list= load_spectrum_list(msp_file_path)
+    json_path_list = []
+
+    for root, dirs, files in os.walk(json_directory_path):
+        for file in files:
+            if file.endswith(".json"):
+                json_path_list.append(os.path.join(root, file))
+
+    for files in json_path_list:
+        if files.endswith(".json"):
+            if not check_fraghubid_already_done(files):
+                spectrum_list= load_spectrum_list(files)
                 spectrum_list = genrate_fraghubid_processing(spectrum_list, files)
 
-                with open(msp_file_path, 'w', encoding='utf-8') as buffer:
+                with open(files, 'w', encoding='utf-8') as buffer:
                     buffer.write("\n\n\n".join(spectrum_list))
