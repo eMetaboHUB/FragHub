@@ -14,10 +14,11 @@ def structure_metadata_and_peak_list(metadata, peak_list):
     :param peak_list: the list of peaks in the spectrum
     :return: the structured spectrum JSON object
     """
-    spectrum_json = {key.lower(): value for (key, value) in metadata}
+    spectrum_json = {key: value for (key, value) in metadata}
     spectrum_json["peaks"] = [[i, j] for i, j in peak_list]
 
     return spectrum_json
+
 
 def extract_metadata_and_peak_list(spectrum):
     """
