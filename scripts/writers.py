@@ -7,6 +7,23 @@ import os
 import re
 
 def write_json_converted(json_object, original_format):
+    """
+    Write the given JSON object to a file in the specified format.
+
+    :param json_object: The JSON object to be written.
+    :param original_format: The original format of the JSON object.
+    :return: None
+
+    Example usage:
+        json_object = [...]  # Replace with your JSON object
+        original_format = "example"  # Replace with the original format
+        write_json_converted(json_object, original_format)
+
+    The method writes the JSON object to a file named "{original_format}_converted.json" in the "../INPUT/JSON/" directory.
+    The file is opened in write mode ("w") and encoded using UTF-8. The `ensure_ascii` parameter of the JSON dump function is set to False to preserve non-ASCII characters.
+
+    Note that the method will not write anything if the JSON object is an empty list ([]).
+    """
     if json_object != []:
         with open(os.path.join(f"../INPUT/JSON/{original_format}_converted.json"), "w", encoding="UTF-8") as buffer:
             json.dump(json_object, buffer, ensure_ascii=False)
