@@ -19,7 +19,6 @@ def structure_metadata_and_peak_list(metadata, peak_list):
 
     return spectrum_json
 
-
 def extract_metadata_and_peak_list(spectrum):
     """
     Extracts metadata and peak list from a given spectrum.
