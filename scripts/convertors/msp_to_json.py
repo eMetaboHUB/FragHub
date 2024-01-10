@@ -162,7 +162,7 @@ def msp_to_json(spectrum):
     """
     metadata, peak_list = extract_metadata_and_peak_list(spectrum)
     metadata_DF, peak_list = structure_metadata_and_peak_list(metadata, peak_list)
-    metadata_DF["peaks"] = peak_list
+    metadata_DF["peaks"] = str(peak_list)
 
     return metadata_DF
 
