@@ -1,12 +1,6 @@
 import concurrent.futures
 from tqdm import tqdm
 import json
-import re
-
-global fraghub_id_pattern
-fraghub_id_pattern = re.compile("(?:FRAGHUBID: )(.*)")
-
-
 
 def init_json_update_file(json_update_file):
     """
@@ -18,7 +12,7 @@ def init_json_update_file(json_update_file):
 
     if not bool(json_update_file):
         first_run = True
-        json_update_file = {"FRAGHBID_LIST": {}}
+        json_update_file = {"FRAGHUBID_LIST": {}}
         return json_update_file, first_run
     else:
         return json_update_file, first_run
@@ -28,11 +22,9 @@ def check_for_update(spectrum):
     :param spectrum: The spectrum to check for updates.
     :return: If the spectrum is not found in the dictionary or the dictionary is empty, returns the spectrum and the fraghub_id_spectrum. Otherwise, returns None.
     """
-    fraghub_id_spectrum = re.search(fraghub_id_pattern, spectrum)
-    if fraghub_id_spectrum:
-        fraghub_id_spectrum = fraghub_id_spectrum.group(1)
+    fraghub_id_spectrum = spectrum["FRAGHUBID"]
 
-    fraghub_id_dict = json_update_file["FRAGHBID_LIST"]
+    fraghub_id_dict = json_update_file["FRAGHUBID_LIST"]
 
     # Vérifier si le dictionnaire est vide ou si fraghub_id_spectrum n'est pas dans le dictionnaire.
     if not fraghub_id_dict or fraghub_id_spectrum not in fraghub_id_dict:
@@ -56,8 +48,7 @@ def check_for_update_processing(spectrum_list):
 
     chunk_size = 5000
     final = []
-    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green",
-                        desc="{:>80}".format("checking for updates"))
+    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>80}".format("checking for updates"))
 
     # Dividing the spectrum list into chunks
     for i in range(0, len(spectrum_list), chunk_size):
@@ -76,7 +67,7 @@ def check_for_update_processing(spectrum_list):
     else:
         update = False
 
-    json_update_file["FRAGHBID_LIST"].update(new_fraghubid)
+    json_update_file["FRAGHUBID_LIST"].update(new_fraghubid)
 
     # écrire les modifications dans le fichier JSON
     with open('../datas/update.json', 'w') as f:
