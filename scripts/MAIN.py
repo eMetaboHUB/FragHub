@@ -65,23 +65,23 @@ if __name__ == "__main__":
     del FINAL_XML
     del FINAL_CSV
 
-    # json_dir = os.path.join(input_path, "JSON")
-    #
-    # # Check if there is msp file to process
-    # for root, dirs, files in os.walk(json_dir):
-    #     for file in files:
-    #         if file.endswith(".json"):
-    #             json_to_process = True
-    #             break
-    #
-    # # If there is no msp to process: stop python execution
-    # if json_to_process == False:
-    #     sys.exit("There is no json file to process into \"./INPUT/JSON\". Exiting code !")
-    #
-    # # STEP 2: generating FRAGHUBID
-    # print("{:>80}".format("-- GENERATING FragHub UNIQUE ID --"))
-    # time.sleep(0.01)
-    # generate_fraghub_id(r"../INPUT/JSON")
+    json_dir = os.path.join(input_path, "JSON")
+
+    # Check if there is msp file to process
+    for root, dirs, files in os.walk(json_dir):
+        for file in files:
+            if file.endswith(".json"):
+                json_to_process = True
+                break
+
+    # If there is no msp to process: stop python execution
+    if json_to_process == False:
+        sys.exit("There is no json file to process into \"./INPUT/JSON\". Exiting code !")
+
+    # STEP 2: generating FRAGHUBID
+    print("{:>80}".format("-- GENERATING FragHub UNIQUE ID --"))
+    time.sleep(0.01)
+    generate_fraghub_id(r"../INPUT/JSON")
 
     # CONCATENATED_SPECTRUMS_RESULTS = []
     # first_run = False
