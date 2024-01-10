@@ -55,6 +55,30 @@ def concatenate_MSP(msp_list):
 
     return spectrum_list
 
+def concatenate_xml(xml_list):
+    """
+    Concatenates the contents of XML files into a single XML string.
+
+    :param xml_list: List of XML file paths to be concatenated.
+    :return: List containing the concatenated XML contents of all files.
+
+    Example usage:
+        xml_list = ["file1.xml", "file2.xml"]
+        result = concatenate_xml(xml_list)
+    """
+    FINAL_XML = []
+    for files in tqdm(xml_list, total=len(xml_list), unit=" spectrums", colour="green", desc="{:>80}".format("concatenate")):
+        if files.endswith(".xml"):
+            file_name = os.path.basename(files.replace(".xml", ""))
+            with open(files, "r", encoding="UTF-8") as xml_file:
+                xml_content = xml_file.read()
+            # Add filename to xml
+            xml_content = re.sub("</sample-mass>\n",f"</sample-mass>\n  <filename>{file_name}</filename>\n",xml_content)
+
+            FINAL_XML.extend([xml_content])
+
+    return FINAL_XML
+
 def convert_to_json(input_path):
     """
     Converts JSON and XML files to MSP format.
@@ -96,11 +120,11 @@ def convert_to_json(input_path):
                 xml_to_do = True
     if xml_to_do == True:
         time.sleep(0.02)
-        print("{:>80}".format("-- CONVERTING XML TO MSP --"))
+        print("{:>80}".format("-- CONVERTING XML TO JSON --"))
         # Concatenate all XML to a list
         FINAL_XML = concatenate_xml(xml_list)
         # Convert all XML spectrum to MSP spectrum (Multithreaded)
-        FINAL_XML = XML_convert_processing(FINAL_XML)
+        FINAL_XML = xml_to_json_processing(FINAL_XML)
 
     # CSV
     FINAL_CSV = []
