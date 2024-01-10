@@ -20,10 +20,10 @@ def load_spectrum_list_from_msp(msp_file_path):
     spectrum_list = []
     buffer = []
 
-    total_lines = sum(1 for line in open(msp_file_path, 'r', encoding="UTF-8")) # count the total number of lines in the file
+    total_size = os.path.getsize(msp_file_path)  # get the total size of the file in bytes
 
     with open(msp_file_path, 'r', encoding="UTF-8") as file:
-        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="{:>80}".format(f"loading [{filename}]")): # wrap this with tqdm
+        for line in tqdm(file, total=total_size, unit="B", unit_scale=True, colour="green", desc="{:>80}".format(f"loading [{filename}]")): # wrap this with tqdm
             if line.strip() == '':
                 if buffer:
                     spectrum_list.append('\n'.join(buffer))
