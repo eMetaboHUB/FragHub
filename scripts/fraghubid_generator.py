@@ -147,10 +147,17 @@ def generate_fraghub_id(json_directory_path):
 
     for files in json_path_list:
         if files.endswith(".json"):
+            filename = os.path.basename(files)
             if not check_fraghubid_already_done(str(files)):
                 spectrum_list = load_spectrum_list_json(files)
                 spectrum_list = genrate_fraghubid_processing(spectrum_list, files)
 
                 if spectrum_list:
                     with open(files, "w", encoding="UTF-8") as buffer:
-                        json.dump(spectrum_list, buffer, ensure_ascii=False, indent=1)
+                        buffer.write("[")  # begin the JSON list
+                        for i in tqdm(range(len(spectrum_list)), total=len(spectrum_list), unit=" row", colour="green", desc="{:>80}".format(f"writting {filename}")):
+                            # write a comma before every object except the first one
+                            if i != 0:
+                                buffer.write(",")
+                            json.dump(spectrum_list[i], buffer, ensure_ascii=False)
+                        buffer.write("]")  # end the JSON list
