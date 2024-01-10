@@ -80,8 +80,7 @@ def genrate_fraghubid(spectrum):
     :param spectrum: The spectrum data.
     :return: The spectrum data with Fragment Hub ID.
     """
-    hash_key = hash_spectrum_data(spectrum)
-    spectrum["FRAGHUBID"] = str(hash_key)
+    spectrum["FRAGHUBID"] = str(hash_spectrum_data(spectrum))
 
     return spectrum
 
