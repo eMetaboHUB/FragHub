@@ -82,28 +82,28 @@ if __name__ == "__main__":
     del FINAL_XML
     del FINAL_CSV
 
-    # CONCATENATED_SPECTRUMS_RESULTS = []
-    # first_run = False
-    # update = False
-    #
-    # for root, dirs, files in os.walk(msp_dir):
-    #     for file in files:
-    #         if file.endswith(".msp"):
-    #             msp_path = os.path.join(root, file)
-    #
-    #             # STEP 3: cleaning spectrums (Multithreaded)
-    #             print("{:>80}".format(f"-- CLEANING: {file} --"))
-    #             spectrum_list = load_spectrum_list(msp_path)
-    #             final_spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list)
-    #             if update_temp:
-    #                 update = True
-    #             if first_run_temp:
-    #                 first_run = True
-    #             spectrum_list = msp_cleaning_processing(spectrum_list)
-    #
-    #             CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
-    #
-    #             del spectrum_list
+    CONCATENATED_SPECTRUMS_RESULTS = []
+    first_run = False
+    update = False
+
+    for root, dirs, files in os.walk(msp_dir):
+        for file in files:
+            if file.endswith(".msp"):
+                msp_path = os.path.join(root, file)
+
+                # STEP 3: cleaning spectrums (Multithreaded)
+                print("{:>80}".format(f"-- CLEANING: {file} --"))
+                spectrum_list = load_spectrum_list_json(msp_path)
+                final_spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list)
+                if update_temp:
+                    update = True
+                if first_run_temp:
+                    first_run = True
+                spectrum_list = msp_cleaning_processing(spectrum_list)
+
+                CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
+
+                del spectrum_list
     #
     # CONCATENATED_SPECTRUMS_DATAFRAME = pd.DataFrame(CONCATENATED_SPECTRUMS_RESULTS)[ordered_columns].astype(str)
     #
