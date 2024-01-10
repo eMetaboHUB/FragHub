@@ -4,6 +4,7 @@ from tqdm import tqdm
 from filters import *
 import pandas as pd
 import numpy as np
+import ijson
 import os
 import re
 
@@ -65,39 +66,28 @@ computed_pattern = re.compile(r"computed", flags=re.IGNORECASE)
 global comment_pattern
 comment_pattern = re.compile(r'comment.*', flags=re.IGNORECASE)
 
-def load_spectrum_list(msp_file_path):
+def load_spectrum_list_json(json_file_path):
     """
-    Load a spectrum list from a given MSP (Mass Spectral Peak) file.
+    Load spectra from a JSON file and return a list of spectra.
 
-    :param msp_file_path: The path to the MSP file.
-    :return: The list of spectra read from the file. Each spectrum is represented as a string.
-
-    Example usage:
-    ```
-    msp_file_path = "path/to/spectrum.msp"
-    spectrum_list = load_spectrum_list(msp_file_path)
-    print(spectrum_list)
-    ```
+    :param json_file_path: Path to the JSON file.
+    :return: List of spectra.
     """
     spectrum_list = []
-    buffer = []
 
-    total_lines = sum(1 for line in open(msp_file_path, 'r', encoding="UTF-8")) # count the total number of lines in the file
+    # First, calculate total bytes for tqdm
+    total_bytes = os.path.getsize(json_file_path)
 
-    with open(msp_file_path, 'r', encoding="UTF-8") as file:
-        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="{:>80}".format("loading file")): # wrap this with tqdm
-            if line.strip() == '':
-                if buffer:
-                    spectrum_list.append('\n'.join(buffer))
-                    buffer = []
-            else:
-                if not buffer:
-                    buffer.append(f"FILENAME: {os.path.basename(msp_file_path)}") # adding filename to spectrum
-                buffer.append(line.strip())
+    with open(json_file_path, 'r', encoding="UTF-8") as file:
+        # ijson.items(file, 'item') returns a generator yielding items in a JSON file
+        spectra = ijson.items(file, 'item')
+        # Create tqdm progress bar
+        progress = tqdm(total=total_bytes, unit="B", unit_scale=True, colour="green", desc="{:>80}".format("Loading file"))
 
-    # Add the last spectrum to the list
-    if buffer:
-        spectrum_list.append('\n'.join(buffer))
+        for spectrum in spectra:
+            spectrum_list.append(spectrum)
+            progress.update(len(str(spectrum)))
+        progress.close()
 
     return spectrum_list
 
