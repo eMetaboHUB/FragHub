@@ -6,30 +6,6 @@ import time
 import os
 import re
 
-def write_json_converted(json_object, original_format):
-    """
-    :param json_object: The JSON object to be written to a file.
-    :param original_format: The original format of the JSON object.
-    :return: None
-
-    This method takes a JSON object and its original format as parameters and writes the converted JSON object to a file. The file is saved in the "../INPUT/JSON" directory with the name
-    * "{original_format}_converted.json". The method uses UTF-8 encoding to write the file.
-
-    Example usage:
-        json_obj = {"name": "John", "age": 30}
-        original_fmt = "example"
-        write_json_converted(json_obj, original_fmt)
-    """
-    if json_object:
-        with open(os.path.join(f"../INPUT/JSON/{original_format}_converted.json"), "w", encoding="UTF-8") as buffer:
-            buffer.write('[')
-            for i in tqdm(range(len(json_object)), total=len(json_object), unit=" row", colour="green", desc="{:>80}".format(f"writting {original_format}_converted.json")):
-                # write comma before every object except the first one
-                if i != 0:
-                    buffer.write(',')
-                json.dump(json_object[i], buffer, ensure_ascii=False)
-            buffer.write(']')
-
 def write_msp(spectrum_list, filename, mode, update):
     """
     Write the given spectrum list to a file in MSP format.
