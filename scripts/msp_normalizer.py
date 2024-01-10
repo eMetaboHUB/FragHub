@@ -5,6 +5,7 @@ from filters import *
 import pandas as pd
 import numpy as np
 import ijson
+import json
 import os
 import re
 
@@ -40,7 +41,8 @@ keys_list = ['FILENAME',
              'RETENTIONTIME',
              'IONMODE',
              'COMMENT',
-             'NUM PEAKS']
+             'NUM PEAKS',
+             'PEAKS_LIST']
 
 global metadata_peak_list_split_pattern
 metadata_peak_list_split_pattern = re.compile(r"([\s\S]*:.[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
@@ -211,28 +213,33 @@ def peak_list_to_np_array(peak_list, precursormz):
     :return: A numpy array containing the peak data, with two columns for "mz" and "intensity". The "mz" column contains the m/z values, and the "intensity" column contains the corresponding
     * peak intensities.
     """
-    peaks_match = re.findall(peak_list_split_pattern, peak_list)
+    peak_list = json.loads(peak_list)
 
-    if peaks_match:
-        peaks_match = [(float(i), float(j)) for i, j in peaks_match]
+    # Convert list of tuples to numpy array
+    peak_list = np.array(peak_list, dtype=float)
 
-        # Convert list of tuples to numpy array
-        peak_array = np.array(peaks_match, dtype=float)
+    # Sort the array based on the mz values
+    peak_list = peak_list[peak_list[:, 0].argsort()]
 
-        # Sort the array based on the mz values
-        peak_array = peak_array[peak_array[:, 0].argsort()]
+    peak_list = apply_filters(peak_list, precursormz)
 
-        peak_array = apply_filters(peak_array, precursormz)
-        return peak_array
-    else:
-        return ''  # Return an empty numpy array
+    if peak_list.size == 0:
+        return ''
+
+    return peak_list
 
 def peak_list_to_str(peak_list_np):
     """
     :param peak_list_np: The input peak list as a numpy array.
     :return: A string representation of the peak list where each row is formatted as a space-separated string of floating point values.
     """
-    return "\n".join("\t".join(map('{:.15f}'.format, row)) for row in peak_list_np)
+    # Convertir l'array en liste
+    peak_list_np = peak_list_np.tolist()
+
+    # Convertir la liste en chaîne JSON
+    peak_list_np = json.dumps(peak_list_np)
+
+    return peak_list_np
 
 def structure_metadata_and_peak_list(metadata, peak_list):
     """
@@ -283,14 +290,21 @@ def msp_parser(spectrum):
     :param spectrum: The spectrum data to be parsed.
     :return: The parsed metadata with peak list.
     """
-    metadata,peak_list = parse_metadata_and_peak_list(spectrum)
+    spectrum = convert_keys(spectrum)
+    spectrum = normalize_values(spectrum)
+    if "PRECURSORMZ" in spectrum:
+        if spectrum["PRECURSORMZ"]:
+            try:
+                peak_list_np = peak_list_to_np_array(spectrum["PEAKS_LIST"], float(spectrum["PRECURSORMZ"].replace(",", ".")))
+                if not peak_list_np:
+                    return {}
+                peak_list_np = peak_list_to_str(peak_list_np)
+                spectrum["PEAKS_LIST"] = peak_list_np
+                return spectrum
+            except:
+                return {}
 
-    if not metadata or not peak_list:
-        return None
-    else:
-        metadata['NUM PEAKS'] = peak_list.count('\n') + 1
-        metadata['PEAKS_LIST'] = peak_list
-        return metadata
+    return spectrum
 
 def msp_cleaning_processing(spectrum_list):
     """
