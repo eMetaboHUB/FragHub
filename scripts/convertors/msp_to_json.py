@@ -162,13 +162,11 @@ def msp_to_json(spectrum):
     """
     metadata, peak_list = extract_metadata_and_peak_list(spectrum)
     metadata_DF, peak_list = structure_metadata_and_peak_list(metadata, peak_list)
-    if not metadata or not peak_list:
-        return None
     metadata_DF["peaks"] = peak_list
 
     return metadata_DF
 
-def msp_to_json_processing(FINAL_MSP):
+def msp_to_json_processing(spectrum_list):
     """
     Process a list of spectrums and convert them to JSON format.
 
@@ -178,12 +176,12 @@ def msp_to_json_processing(FINAL_MSP):
 
     chunk_size = 5000
     final = []
-    progress_bar = tqdm(total=len(FINAL_MSP), unit=" spectrums", colour="green", desc="{:>80}".format("converting MSP spectrums"))
+    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>80}".format("converting MSP spectrums"))
 
     # Dividing the spectrum list into chunks
-    for i in range(0, len(FINAL_MSP), chunk_size):
+    for i in range(0, len(spectrum_list), chunk_size):
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            chunk = FINAL_MSP[i:i + chunk_size]
+            chunk = spectrum_list[i:i + chunk_size]
             results = list(executor.map(msp_to_json, chunk))
             progress_bar.update(len(chunk))
 
