@@ -1,7 +1,10 @@
 import concurrent.futures
+import uuid
+
 from tqdm import tqdm
 import hashlib
 import ijson
+import json
 import os
 import re
 
@@ -80,9 +83,11 @@ def genrate_fraghubid(spectrum):
     :param spectrum: The spectrum data.
     :return: The spectrum data with Fragment Hub ID.
     """
-    spectrum["FRAGHUBID"] = str(hash_spectrum_data(spectrum))
+    fraghubid = str(hash_spectrum_data(spectrum))
+    new_spectrum = {"FRAGHUBID": fraghubid}
+    new_spectrum.update(spectrum)
 
-    return spectrum
+    return new_spectrum
 
 def genrate_fraghubid_processing(spectrum_list, files):
     """
@@ -91,8 +96,9 @@ def genrate_fraghubid_processing(spectrum_list, files):
     :param spectrum_list: A list of spectra.
     :return: A list of fraghubids generated for each spectrum.
     """
+    filename = os.path.basename(files)
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(genrate_fraghubid, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>80}".format(f"generating FragHubID on [{files}]")))
+        results = list(tqdm(executor.map(genrate_fraghubid, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>80}".format(f"generating FragHubID on [{filename}]")))
 
     final = [res for res in results if res is not None]
 
@@ -110,7 +116,7 @@ def check_fraghubid_already_done(json_file_path):
     """
     with open(json_file_path, 'r') as file:
         # ijson items returns a generator yielding items in a json file
-        objects = ijson.items(file, item='item')
+        objects = ijson.items(file, '')
 
         first_dict = next(objects)
 
@@ -141,9 +147,10 @@ def generate_fraghub_id(json_directory_path):
 
     for files in json_path_list:
         if files.endswith(".json"):
-            if not check_fraghubid_already_done(files):
+            if not check_fraghubid_already_done(str(files)):
                 spectrum_list = load_spectrum_list_json(files)
                 spectrum_list = genrate_fraghubid_processing(spectrum_list, files)
 
-                with open(files, 'w', encoding='utf-8') as buffer:
-                    buffer.write("\n\n\n".join(spectrum_list))
+                if spectrum_list:
+                    with open(files, "w", encoding="UTF-8") as buffer:
+                        json.dump(spectrum_list, buffer, ensure_ascii=False, indent=1)
