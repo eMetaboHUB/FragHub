@@ -1,5 +1,6 @@
 import concurrent.futures
 from tqdm import tqdm
+from loaders import *
 import hashlib
 import ijson
 import json
@@ -14,32 +15,6 @@ peak_list_update_pattern = re.compile(r"\"peaks\":([\S\s]*?)\}", flags=re.IGNORE
 
 global peak_list_split_update_pattern
 peak_list_split_update_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
-
-
-def load_spectrum_list_json(json_file_path):
-    """
-    Load spectra from a JSON file and return a list of spectra.
-
-    :param json_file_path: Path to the JSON file.
-    :return: List of spectra.
-    """
-    spectrum_list = []
-
-    # First, calculate total bytes for tqdm
-    total_bytes = os.path.getsize(json_file_path)
-
-    with open(json_file_path, 'r', encoding="UTF-8") as file:
-        # ijson.items(file, 'item') returns a generator yielding items in a JSON file
-        spectra = ijson.items(file, 'item')
-        # Create tqdm progress bar
-        progress = tqdm(total=total_bytes, unit="B", unit_scale=True, colour="green", desc="{:>80}".format("Loading file"))
-
-        for spectrum in spectra:
-            spectrum_list.append(spectrum)
-            progress.update(len(str(spectrum)))
-        progress.close()
-
-    return spectrum_list
 
 def hash_spectrum_data(spectrum_data):
     """
