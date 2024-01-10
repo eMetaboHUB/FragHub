@@ -1,6 +1,7 @@
 from msp_to_json import *
 from xml_to_json import *
 from csv_to_json import *
+import pandas as pd
 import time
 import os
 
@@ -79,6 +80,28 @@ def concatenate_xml(xml_list):
 
     return FINAL_XML
 
+def concatenate_csv(csv_list):
+    """
+    Concatenates a list of CSV files into a single DataFrame.
+
+    :param csv_list: A list of file paths to CSV files.
+    :return: A pandas DataFrame containing the concatenated data.
+
+    Example usage:
+    ```python
+    csv_list = ["file1.csv", "file2.csv", "file3.csv"]
+    df = concatenate_csv(csv_list)
+    ```
+    """
+    df_list = [pd.read_csv(file, sep=";", encoding="UTF-8") for file in csv_list]
+    df = pd.concat(df_list, ignore_index=True)
+
+    return df
+
+
+
+
+
 def convert_to_json(input_path):
     """
     Converts JSON and XML files to MSP format.
@@ -123,7 +146,7 @@ def convert_to_json(input_path):
         print("{:>80}".format("-- CONVERTING XML TO JSON --"))
         # Concatenate all XML to a list
         FINAL_XML = concatenate_xml(xml_list)
-        # Convert all XML spectrum to MSP spectrum (Multithreaded)
+        # Convert all XML spectrum to JSON spectrum (Multithreaded)
         FINAL_XML = xml_to_json_processing(FINAL_XML)
 
     # CSV
@@ -140,10 +163,10 @@ def convert_to_json(input_path):
                 csv_to_do = True
     if csv_to_do == True:
         time.sleep(0.02)
-        print("{:>80}".format("-- CONVERTING CSV TO MSP --"))
+        print("{:>80}".format("-- CONVERTING CSV TO JSON --"))
         # Concatenate all CSV to a list
         FINAL_CSV = concatenate_csv(csv_list)
-        # Convert all CSV spectrum to MSP spectrum (Multithreaded)
-        FINAL_CSV = CSV_convert_processing(FINAL_CSV)
+        # Convert all CSV spectrum to JSON spectrum (Multithreaded)
+        FINAL_CSV = csv_to_json_processing(FINAL_CSV)
 
-    return FINAL_JSON,FINAL_XML,FINAL_CSV
+    return FINAL_MSP, FINAL_XML, FINAL_CSV
