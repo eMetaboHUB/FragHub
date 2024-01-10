@@ -1,9 +1,11 @@
 from msp_to_json import *
 from xml_to_json import *
 from csv_to_json import *
+from tqdm import tqdm
 import pandas as pd
 import time
 import os
+import re
 
 def load_spectrum_list_from_msp(msp_file_path):
     """
@@ -146,7 +148,7 @@ def convert_to_json(input_path):
         print("{:>80}".format("-- CONVERTING XML TO JSON --"))
         # Concatenate all XML to a list
         FINAL_XML = concatenate_xml(xml_list)
-        # Convert all XML spectrum to JSON spectrum (Multithreaded)
+        # Convert all XML spectrum to XML spectrum (Multithreaded)
         FINAL_XML = xml_to_json_processing(FINAL_XML)
 
     # CSV
