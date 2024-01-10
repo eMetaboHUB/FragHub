@@ -1,6 +1,4 @@
 import concurrent.futures
-import uuid
-
 from tqdm import tqdm
 import hashlib
 import ijson
