@@ -1,48 +1,12 @@
-from convertors.msp_to_json import *
-from convertors.xml_to_json import *
-from convertors.csv_to_json import *
+from . msp_to_json import *
+from . xml_to_json import *
+from . csv_to_json import *
+from .. loaders import *
 from tqdm import tqdm
 import pandas as pd
 import time
 import os
 import re
-
-def load_spectrum_list_from_msp(msp_file_path):
-    """
-    Load a spectrum list from a given MSP (Mass Spectral Peak) file.
-
-    :param msp_file_path: The path to the MSP file.
-    :return: The list of spectra read from the file. Each spectrum is represented as a string.
-
-    Example usage:
-    ```
-    msp_file_path = "path/to/spectrum.msp"
-    spectrum_list = load_spectrum_list(msp_file_path)
-    print(spectrum_list)
-    ```
-    """
-    filename = os.path.basename(msp_file_path)
-    spectrum_list = []
-    buffer = []
-
-    total_lines = sum(1 for line in open(msp_file_path, 'r', encoding="UTF-8")) # count the total number of lines in the file
-
-    with open(msp_file_path, 'r', encoding="UTF-8") as file:
-        for line in tqdm(file, total=total_lines, unit=" rows", colour="green", desc="{:>80}".format(f"loading [{filename}]")): # wrap this with tqdm
-            if line.strip() == '':
-                if buffer:
-                    spectrum_list.append('\n'.join(buffer))
-                    buffer = []
-            else:
-                if not buffer:
-                    buffer.append(f"FILENAME: {os.path.basename(msp_file_path)}") # adding filename to spectrum
-                buffer.append(line.strip())
-
-    # Add the last spectrum to the list
-    if buffer:
-        spectrum_list.append('\n'.join(buffer))
-
-    return spectrum_list
 
 def concatenate_MSP(msp_list):
     """
