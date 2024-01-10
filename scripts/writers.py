@@ -1,9 +1,15 @@
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
+import json
 import time
 import os
 import re
+
+def write_json_converted(json_object, original_format):
+    if json_object != []:
+        with open(os.path.join(f"../INPUT/JSON/{original_format}_converted.json"), "w", encoding="UTF-8") as buffer:
+            json.dump(json_object, buffer, ensure_ascii=False)
 
 def write_msp(spectrum_list, filename, mode, update):
     """
