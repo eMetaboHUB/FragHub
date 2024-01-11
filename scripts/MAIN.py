@@ -76,6 +76,7 @@ if __name__ == "__main__":
     del FINAL_MSP
     del FINAL_XML
     del FINAL_CSV
+    del FINAL_JSON
 
     CONCATENATED_SPECTRUMS_RESULTS = []
     first_run = False
