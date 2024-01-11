@@ -1,16 +1,20 @@
+import json
+import decimal
 import ijson
+import itertools
 
-def get_first_n_items(json_file_path, n):
-    items = []
-    with open(json_file_path, 'r') as f:
-        objects = ijson.items(f, 'item')
-        for index, item in enumerate(objects):
-            if index == n:
-                break
-            items.append(item)
-    return items
+def decimal_default(obj):
+    if isinstance(obj, decimal.Decimal):
+        return float(obj)
+    raise TypeError
 
-first_10_items = get_first_n_items(r"C:\Users\Axel\PycharmProjects\msp_v3\INPUT\JSON\ALL_GNPS.json", 10)
+with open('C:/Users/Axel/Downloads/MoNA-export-Experimental_Spectra.json', 'r', encoding="UTF-8") as fichier:
+    # Creation de l'iterator
+    objects = ijson.items(fichier, 'item')
 
-for item in first_10_items:
-    print(item)
+    # Obtenir le 100ème élement
+    centieme_element = next(itertools.islice(objects, 9999, None), None)
+
+    # Affichage du 100ème element en pretty JSON
+    if centieme_element:
+        print(json.dumps(centieme_element, default=decimal_default, indent=4))
