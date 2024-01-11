@@ -131,6 +131,9 @@ def process_converted_after(spectrum_list, mode):
     elif mode == "CSV":
         file_path = os.path.abspath("../INPUT/JSON/CSV_converted.json")
         filename = os.path.basename(file_path)
+    elif mode == "JSON":
+        file_path = os.path.abspath("../INPUT/JSON/JSON_converted.json")
+        filename = os.path.basename(file_path)
 
     spectrum_list = genrate_fraghubid_processing(spectrum_list, filename)
 
@@ -144,7 +147,7 @@ def process_converted_after(spectrum_list, mode):
                 json.dump(spectrum_list[i], buffer, ensure_ascii=False)
             buffer.write("]")  # end the JSON lists
 
-def generate_fraghub_id(json_directory_path, FINAL_MSP, FINAL_XML, FINAL_CSV):
+def generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON):
     """
     :param msp_directory_path: The path to the MSP directory.
     :return: None
@@ -155,33 +158,11 @@ def generate_fraghub_id(json_directory_path, FINAL_MSP, FINAL_XML, FINAL_CSV):
 
     Finally, it opens the MSP file in write mode and writes the modified spectrum list with the generated FragHub ID into the file.
     """
-    json_path_list = []
-
-    for root, dirs, files in os.walk(json_directory_path):
-        for file in files:
-            if file.endswith(".json"):
-                json_path_list.append(os.path.join(root, file))
-
-    for files in json_path_list:
-        if files.endswith(".json"):
-            filename = os.path.basename(files)
-            if not check_fraghubid_already_done(str(files)):
-                spectrum_list = load_spectrum_list_json(files)
-                spectrum_list = genrate_fraghubid_processing(spectrum_list, files)
-
-                if spectrum_list:
-                    with open(files, "w", encoding="UTF-8") as buffer:
-                        buffer.write("[")  # begin the JSON list
-                        for i in tqdm(range(len(spectrum_list)), total=len(spectrum_list), unit=" row", colour="green", desc="{:>80}".format(f"writting {filename}")):
-                            # write a comma before every object except the first one
-                            if i != 0:
-                                buffer.write(",")
-                            json.dump(spectrum_list[i], buffer, ensure_ascii=False)
-                        buffer.write("]")  # end the JSON list
-
     if FINAL_MSP:
         process_converted_after(FINAL_MSP, "MSP")
     if FINAL_XML:
         process_converted_after(FINAL_XML, "XML")
     if FINAL_CSV:
         process_converted_after(FINAL_CSV, "CSV")
+    if FINAL_JSON:
+        process_converted_after(FINAL_JSON, "JSON")
