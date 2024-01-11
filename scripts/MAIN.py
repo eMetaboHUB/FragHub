@@ -56,7 +56,7 @@ if __name__ == "__main__":
     # STEP 1: convert files to json if needed (Multithreaded)
     FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON = convert_to_json(input_path)
 
-    json_dir = os.path.join(input_path, "JSON")
+    json_dir = os.path.join(input_path, "CONVERTED")
 
     json_to_process = False
 
