@@ -225,3 +225,5 @@ targetgaspres;targetgaspressure
 targetgaspressure;targetgaspressure
 title;title
 peaks;peaks_list
+peaks_json;peaks_list
+spectrum;peaks_list
