@@ -1,0 +1,588 @@
+{
+    "compound": [
+        {
+            "kind": "biological",
+            "tags": [],
+            "inchi": "InChI=1S/C16H16N4O8S/c1-26-19-9(8-3-2-4-27-8)12(21)18-10-13(22)20-11(15(23)24)7(5-28-16(17)25)6-29-14(10)20/h2-4,10,14H,5-6H2,1H3,(H2,17,25)(H,18,21)(H,23,24)/b19-9-/t10-,14-/m1/s1",
+            "names": [
+                {
+                    "computed": false,
+                    "name": "Cefuroxime",
+                    "score": 0.0
+                }
+            ],
+            "molFile": "\n  CDK     01272302502D\n\n 29 31  0  0  1  0  0  0  0  0999 V2000\n   -8.6562    0.6777    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -5.1024    6.7774    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -5.9181    5.5186    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -3.6606    6.3913    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n    3.6086   -1.1008    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n    2.3100    1.1700    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n    2.3100   -0.3500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -4.9820    4.3520    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -5.3702    2.9031    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -1.8000    1.1700    0.0000 C   0  0  2  0  0  0  0  0  0  0  0  0\n    0.9900   -1.1100    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -4.3095    1.8424    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -1.8000   -0.3300    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -0.3000    1.1700    0.0000 C   0  0  2  0  0  0  0  0  0  0  0  0\n    0.9739   -2.6099    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n    6.2067   -1.1023    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n    7.5062   -0.3531    0.0000 N   0  0  0  0  0  0  0  0  0  0  0  0\n   -2.8607    2.2307    0.0000 N   0  0  0  0  0  0  0  0  0  0  0  0\n   -6.8191    2.5149    0.0000 N   0  0  0  0  0  0  0  0  0  0  0  0\n   -0.3000   -0.3300    0.0000 N   0  0  0  0  0  0  0  0  0  0  0  0\n   -4.6978    0.3935    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n   -2.8607   -1.3907    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n   -0.3331   -3.3460    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n    2.2649   -3.3738    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n    6.2058   -2.6023    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n   -7.2073    1.0660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n   -3.5800    4.8973    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n    4.9081   -0.3516    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n    0.9900    1.9200    0.0000 S   0  0  0  0  0  0  0  0  0  0  0  0\n  3  2  1  0  0  0  0\n  4  2  2  0  0  0  0\n  7  5  1  0  0  0  0\n  7  6  1  0  0  0  0\n  8  3  2  0  0  0  0\n  9  8  1  0  0  0  0\n 11  7  2  0  0  0  0\n 12  9  1  0  0  0  0\n 13 10  1  0  0  0  0\n 14 10  1  0  0  0  0\n 15 11  1  0  0  0  0\n 17 16  2  0  0  0  0\n 10 18  1  1  0  0  0\n 18 12  2  0  0  0  0\n  9 19  2  0  0  0  0\n 20 11  1  0  0  0  0\n 20 13  1  0  0  0  0\n 14 20  1  1  0  0  0\n 21 12  1  4  0  0  0\n 22 13  2  0  0  0  0\n 23 15  2  0  0  0  0\n 24 15  1  0  0  0  0\n 25 16  1  0  0  0  0\n 26  1  1  0  0  0  0\n 26 19  1  0  0  0  0\n 27  4  1  0  0  0  0\n 27  8  1  0  0  0  0\n 28  5  1  0  0  0  0\n 28 16  1  0  0  0  0\n 29  6  1  0  0  0  0\n 29 14  1  0  0  0  0\nM  END\n",
+            "computed": false,
+            "inchiKey": "JFPVXVDWJQMJEE-IZRZKJBUSA-N",
+            "metaData": [
+                {
+                    "name": "molecular formula",
+                    "value": "C16H16N4O8S",
+                    "hidden": false,
+                    "category": "none",
+                    "computed": false
+                },
+                {
+                    "name": "SMILES",
+                    "value": "CO/N=C(/C1=CC=CO1)\\C(=O)N[C@H]2[C@@H]3N(C2=O)C(=C(CS3)COC(=O)N)C(=O)O",
+                    "hidden": false,
+                    "category": "none",
+                    "computed": false
+                },
+                {
+                    "name": "cas",
+                    "value": "55268-75-2",
+                    "hidden": false,
+                    "category": "external id",
+                    "computed": false
+                },
+                {
+                    "name": "pubchem cid",
+                    "value": "5479529",
+                    "hidden": false,
+                    "category": "external id",
+                    "computed": false
+                },
+                {
+                    "name": "InChI",
+                    "value": "InChI=1S/C16H16N4O8S/c1-26-19-9(8-3-2-4-27-8)12(21)18-10-13(22)20-11(15(23)24)7(5-28-16(17)25)6-29-14(10)20/h2-4,10,14H,5-6H2,1H3,(H2,17,25)(H,18,21)(H,23,24)/b19-9-/t10-,14-/m1/s1",
+                    "hidden": false,
+                    "category": "none",
+                    "computed": false
+                },
+                {
+                    "name": "InChIKey",
+                    "value": "JFPVXVDWJQMJEE-IZRZKJBUSA-N",
+                    "hidden": false,
+                    "category": "none",
+                    "computed": false
+                },
+                {
+                    "name": "molecular formula",
+                    "value": "C16H16N4O8S",
+                    "hidden": false,
+                    "category": "computed",
+                    "computed": true
+                },
+                {
+                    "name": "total exact mass",
+                    "value": "424.06888447200004",
+                    "hidden": false,
+                    "category": "computed",
+                    "computed": true
+                },
+                {
+                    "name": "SMILES",
+                    "value": "O=C(O)C1=C(COC(=N)O)CSC2N1C(=O)C2N=C(O)C(=NOC)C=3OC=CC3",
+                    "hidden": false,
+                    "category": "computed",
+                    "computed": true
+                },
+                {
+                    "name": "[2M+H-H2O]+",
+                    "value": "831.130398944",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[2M+K]+",
+                    "value": "887.2360689440001",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[M+H]+",
+                    "value": "425.07685447200004",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[2M+Na]+",
+                    "value": "871.1275389440001",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[2M+Cl]-",
+                    "value": "883.590768944",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[2M+HAc-H]-",
+                    "value": "907.1817989440001",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[M-H20-H]-",
+                    "value": "405.050494472",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[M-H]-",
+                    "value": "423.06160847200005",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[2M-H]-",
+                    "value": "847.130492944",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[M+Na]+",
+                    "value": "447.05865447200006",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[M+H-H2O]+",
+                    "value": "407.06151447200006",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[2M+NH4]+",
+                    "value": "866.1763489440001",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[M+Cl]-",
+                    "value": "459.521884472",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[M+NH4]+",
+                    "value": "442.10746447200006",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[M+K]+",
+                    "value": "463.16718447200003",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[2M+H]+",
+                    "value": "849.1457389440001",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                },
+                {
+                    "name": "[M+HAc-H]-",
+                    "value": "483.11291447200006",
+                    "hidden": true,
+                    "category": "theoretical adduct",
+                    "computed": true
+                }
+            ],
+            "classification": [
+                {
+                    "name": "kingdom",
+                    "value": "Organic compounds",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "superclass",
+                    "value": "Organoheterocyclic compounds",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "class",
+                    "value": "Lactams",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "subclass",
+                    "value": "Beta lactams",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "direct parent level 1",
+                    "value": "Cephems",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "direct parent level 2",
+                    "value": "Cephalosporins",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "direct parent",
+                    "value": "Cephalosporin 3'-carbamates",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "N-acyl-alpha amino acids and derivatives",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "1,3-thiazines",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Tertiary carboxylic acid amides",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Carbamate esters",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Furans",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Heteroaromatic compounds",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Secondary carboxylic acid amides",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Azetidines",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Organic carbonic acids and derivatives",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Thiohemiaminal derivatives",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Azacyclic compounds",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Oxacyclic compounds",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Carboxylic acids",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Dialkylthioethers",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Monocarboxylic acids and derivatives",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Carbonyl compounds",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Organonitrogen compounds",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Organic oxides",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Hydrocarbon derivatives",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                },
+                {
+                    "name": "alternative parent",
+                    "value": "Organopnictogen compounds",
+                    "hidden": false,
+                    "category": "classification",
+                    "computed": true
+                }
+            ]
+        }
+    ],
+    "id": "WA002994",
+    "metaData": [
+        {
+            "name": "accession",
+            "value": "WA002994",
+            "hidden": false,
+            "category": "none",
+            "computed": false
+        },
+        {
+            "name": "date",
+            "value": "2016.01.19 (Created 2007.08.01, modified 2011.05.06)",
+            "hidden": false,
+            "category": "none",
+            "computed": false
+        },
+        {
+            "name": "author",
+            "value": "Nihon Waters K.K.",
+            "hidden": false,
+            "category": "none",
+            "computed": false
+        },
+        {
+            "name": "license",
+            "value": "CC BY-NC",
+            "hidden": false,
+            "category": "none",
+            "computed": false
+        },
+        {
+            "name": "exact mass",
+            "value": "424.06888",
+            "hidden": false,
+            "category": "none",
+            "computed": false
+        },
+        {
+            "name": "instrument",
+            "value": "ZQ, Waters",
+            "hidden": false,
+            "category": "none",
+            "computed": false
+        },
+        {
+            "name": "instrument type",
+            "value": "LC-ESI-Q",
+            "hidden": false,
+            "category": "none",
+            "computed": false
+        },
+        {
+            "name": "ms level",
+            "value": "MS1",
+            "hidden": false,
+            "category": "mass spectrometry",
+            "computed": false
+        },
+        {
+            "name": "ionization",
+            "value": "ESI",
+            "hidden": false,
+            "category": "mass spectrometry",
+            "computed": false
+        },
+        {
+            "name": "retention time",
+            "value": "11.420 min",
+            "hidden": false,
+            "category": "chromatography",
+            "computed": false
+        },
+        {
+            "name": "column",
+            "value": "2.1 mm id - 3. 5{mu}m XTerra C18MS",
+            "hidden": false,
+            "category": "chromatography",
+            "computed": false
+        },
+        {
+            "name": "column temperature",
+            "value": "35 C",
+            "hidden": false,
+            "category": "chromatography",
+            "computed": false
+        },
+        {
+            "name": "sampling cone",
+            "value": "60 V, 90 V",
+            "hidden": false,
+            "category": "chromatography",
+            "computed": false
+        },
+        {
+            "name": "find peak",
+            "value": "ignore rel.int. < 5",
+            "hidden": false,
+            "category": "data processing",
+            "computed": false
+        },
+        {
+            "name": "ionization mode",
+            "value": "negative",
+            "hidden": false,
+            "category": "mass spectrometry",
+            "computed": false
+        },
+        {
+            "name": "spectral entropy",
+            "value": "4.124517044473415",
+            "hidden": false,
+            "category": "computed",
+            "computed": true
+        },
+        {
+            "name": "normalized entropy",
+            "value": "0.8310792200354279",
+            "hidden": false,
+            "category": "computed",
+            "computed": true
+        }
+    ],
+    "annotations": [],
+    "score": {
+        "impacts": [
+            {
+                "value": 2.0,
+                "reason": "Valid molecular structure(s) provided for biological compound"
+            },
+            {
+                "value": 1.0,
+                "reason": "Chromatography identified as LC-MS"
+            },
+            {
+                "value": 1.0,
+                "reason": "Ionization mode/type provided"
+            },
+            {
+                "value": 1.0,
+                "reason": "MS type/level identified"
+            },
+            {
+                "value": 1.0,
+                "reason": "Instrument information provided"
+            },
+            {
+                "value": -1.0,
+                "reason": "No collision energy provided"
+            },
+            {
+                "value": 1.0,
+                "reason": "Retention time/index provided"
+            },
+            {
+                "value": 1.0,
+                "reason": "Column information provided"
+            }
+        ],
+        "score": 4.444444444444445,
+        "relativeScore": 0.0,
+        "scaledScore": 0.0
+    },
+    "spectrum": "100:3.103103 101:1.201201 102:1.201201 103:1.201201 104:15.315315 105:11.011011 106:2.402402 107:0.800801 108:3.103103 109:12.512513 110:7.107107 111:1.201201 112:1.201201 114:1.201201 115:5.105105 116:25.525526 117:3.903904 118:2.002002 119:5.105105 120:2.002002 121:2.702703 122:4.704705 123:3.503504 124:3.103103 128:1.601602 131:4.304304 132:4.704705 133:3.903904 134:1.201201 135:2.402402 138:5.105105 140:3.503504 141:1.601602 142:1.201201 143:0.800801 147:2.402402 148:3.503504 149:2.702703 150:5.905906 151:1.601602 152:0.800801 153:2.002002 155:0.800801 156:0.800801 157:0.800801 159:1.201201 160:2.702703 161:2.002002 162:4.704705 163:5.905906 164:2.402402 165:7.407407 166:2.702703 167:2.402402 168:1.601602 169:1.601602 175:1.601602 176:9.409409 177:4.704705 178:2.002002 179:0.800801 180:1.201201 181:2.002002 182:0.800801 183:1.601602 184:0.800801 185:0.800801 188:2.002002 191:1.601602 192:1.201201 193:5.505506 194:4.304304 195:1.601602 198:0.800801 199:3.103103 201:3.103103 202:0.800801 203:4.304304 204:1.601602 207:100.000000 208:12.512513 209:6.306306 211:2.002002 212:0.800801 214:1.601602 215:2.002002 217:0.800801 220:1.601602 222:0.800801 225:5.505506 227:2.002002 228:1.201201 230:0.800801 232:6.306306 233:1.201201 234:7.807808 235:2.002002 239:0.800801 244:0.800801 246:0.800801 248:0.800801 251:1.201201 252:1.201201 253:6.306306 254:2.002002 256:0.800801 257:1.201201 260:1.201201 263:0.800801 272:1.601602 274:2.702703 284:29.029029 285:3.103103 286:1.201201 290:2.702703 293:2.702703 302:1.201201 315:0.800801 318:14.514515 319:0.800801 320:1.201201 321:0.800801 330:0.800801 336:5.905906 338:0.800801 358:0.800801 362:3.903904 379:1.601602 380:1.601602 384:4.304304 386:1.601602 400:1.201201 401:1.601602 402:3.103103 403:1.201201 412:1.601602 418:0.800801 419:0.800801 423:22.322322 424:5.505506 429:0.800801 446:0.800801 449:0.800801",
+    "lastUpdated": 1657929600000,
+    "dateCreated": 1552348800000,
+    "lastCurated": 1674777600000,
+    "splash": {
+        "block1": "splash10",
+        "block2": "0a4i",
+        "block3": "0981100000",
+        "block4": "05f4b050fdb3869b8bd1",
+        "splash": "splash10-0a4i-0981100000-05f4b050fdb3869b8bd1"
+    },
+    "submitter": {
+        "emailAddress": "massbank@massbank.eu",
+        "firstName": "Nihon",
+        "lastName": "Waters",
+        "institution": "Nihon Waters K.K."
+    },
+    "tags": [
+        {
+            "text": "MassBank",
+            "ruleBased": false
+        },
+        {
+            "text": "LC-MS",
+            "ruleBased": true
+        }
+    ],
+    "library": {
+        "description": "MassBank High Quality Mass Spectral Database",
+        "link": "https://massbank.eu/MassBank/RecordDisplay.jsp?id=WA002994",
+        "library": "MassBank"
+    }
+}
