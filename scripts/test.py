@@ -8,7 +8,7 @@ def decimal_default(obj):
         return float(obj)
     raise TypeError
 
-with open('C:/Users/Axel/Downloads/MoNA-export-Experimental_Spectra.json', 'r', encoding="UTF-8") as fichier:
+with open('C:/Users/Axel/PycharmProjects/msp_v3/INPUT/CONVERTED/JSON_converted.json', 'r', encoding="UTF-8") as fichier:
     # Creation de l'iterator
     objects = ijson.items(fichier, 'item')
 
