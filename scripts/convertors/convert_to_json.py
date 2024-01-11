@@ -1,3 +1,4 @@
+from scripts.convertors.json_to_json import *
 from scripts.convertors.msp_to_json import *
 from scripts.convertors.xml_to_json import *
 from scripts.convertors.csv_to_json import *
@@ -5,6 +6,7 @@ from scripts.loaders import *
 from tqdm import tqdm
 import pandas as pd
 import time
+import json
 import os
 import re
 
@@ -70,6 +72,20 @@ def concatenate_csv(csv_list):
 
     return df
 
+def concatenate_JSON(json_list):
+    """
+    Concatenates a list of JSON files into a single JSON.
+
+    :param json_list: List of JSON files to concatenate.
+    :return: The concatenated JSON.
+    """
+    spectrum_list = []
+
+    for files in json_list:
+        spectrum_list.extend(load_spectrum_list_json(files))
+
+    return spectrum_list
+
 def convert_to_json(input_path):
     """
     Converts JSON and XML files to MSP format.
@@ -77,64 +93,84 @@ def convert_to_json(input_path):
     :param input_path: The path to the directory containing the JSON and XML files.
     :return: A tuple containing the converted JSON and XML files in MSP format.
     """
-    # MSP
-    FINAL_MSP = []
-    msp_list = []
-    msp_to_do = False
-    msp_path = os.path.join(input_path,"MSP")
+    # JSON
+    FINAL_JSON = []
+    json_list = []
+    json_to_do = False
+    json_path = os.path.join(input_path, "JSON")
     # check if there is a json file into the directory
-    for root, dirs, files in os.walk(msp_path):
+    for root, dirs, files in os.walk(json_path):
         for file in files:
-            if file.endswith(".msp"):
-                msp_path = os.path.join(root, file)  # Full path to the file
-                msp_list.append(msp_path)
-                msp_to_do = True
-    if msp_to_do == True:
+            if file.endswith(".json"):
+                json_path = os.path.join(root, file)  # Full path to the file
+                json_list.append(json_path)
+                json_to_do = True
+    if json_to_do == True:
         time.sleep(0.02)
-        print("{:>80}".format("-- CONVERTING MSP TO JSON --"))
-        # Concatenate all MSP to a list
-        FINAL_MSP = concatenate_MSP(msp_list)
-        # Convert all MSP spectrum to JSON spectrum (Multithreaded)
-        FINAL_MSP = msp_to_json_processing(FINAL_MSP)
+        print("{:>80}".format("-- CONVERTING JSON TO JSON --"))
+        # Concatenate all JSON to a list
+        FINAL_JSON = concatenate_JSON(json_list)
+        # Convert all bad structured JSON to pretty structured JSON (Multithreaded)
+        FINAL_JSON = json_to_json_processing(FINAL_JSON)
 
-    # XML
-    FINAL_XML = []
-    xml_list = []
-    xml_to_do = False
-    xml_path = os.path.join(input_path, "XML")
-    # check if there is a xml file into the directory
-    for root, dirs, files in os.walk(xml_path):
-        for file in files:
-            if file.endswith(".xml"):
-                xml_path = os.path.join(root, file)  # Full path to the file
-                xml_list.append(xml_path)
-                xml_to_do = True
-    if xml_to_do == True:
-        time.sleep(0.02)
-        print("{:>80}".format("-- CONVERTING XML TO JSON --"))
-        # Concatenate all XML to a list
-        FINAL_XML = concatenate_xml(xml_list)
-        # Convert all XML spectrum to XML spectrum (Multithreaded)
-        FINAL_XML = xml_to_json_processing(FINAL_XML)
+    # # MSP
+    # FINAL_MSP = []
+    # msp_list = []
+    # msp_to_do = False
+    # msp_path = os.path.join(input_path,"MSP")
+    # # check if there is a json file into the directory
+    # for root, dirs, files in os.walk(msp_path):
+    #     for file in files:
+    #         if file.endswith(".msp"):
+    #             msp_path = os.path.join(root, file)  # Full path to the file
+    #             msp_list.append(msp_path)
+    #             msp_to_do = True
+    # if msp_to_do == True:
+    #     time.sleep(0.02)
+    #     print("{:>80}".format("-- CONVERTING MSP TO JSON --"))
+    #     # Concatenate all MSP to a list
+    #     FINAL_MSP = concatenate_MSP(msp_list)
+    #     # Convert all MSP spectrum to JSON spectrum (Multithreaded)
+    #     FINAL_MSP = msp_to_json_processing(FINAL_MSP)
+    #
+    # # XML
+    # FINAL_XML = []
+    # xml_list = []
+    # xml_to_do = False
+    # xml_path = os.path.join(input_path, "XML")
+    # # check if there is a xml file into the directory
+    # for root, dirs, files in os.walk(xml_path):
+    #     for file in files:
+    #         if file.endswith(".xml"):
+    #             xml_path = os.path.join(root, file)  # Full path to the file
+    #             xml_list.append(xml_path)
+    #             xml_to_do = True
+    # if xml_to_do == True:
+    #     time.sleep(0.02)
+    #     print("{:>80}".format("-- CONVERTING XML TO JSON --"))
+    #     # Concatenate all XML to a list
+    #     FINAL_XML = concatenate_xml(xml_list)
+    #     # Convert all XML spectrum to XML spectrum (Multithreaded)
+    #     FINAL_XML = xml_to_json_processing(FINAL_XML)
+    #
+    # # CSV
+    # FINAL_CSV = []
+    # csv_list= []
+    # csv_to_do = False
+    # csv_path = os.path.join(input_path, "CSV")
+    # # check if there is a csv file into the directory
+    # for root, dirs, files in os.walk(csv_path):
+    #     for file in files:
+    #         if file.endswith(".csv"):
+    #             csv_path = os.path.join(root, file)  # Full path to the file
+    #             csv_list.append(csv_path)
+    #             csv_to_do = True
+    # if csv_to_do == True:
+    #     time.sleep(0.02)
+    #     print("{:>80}".format("-- CONVERTING CSV TO JSON --"))
+    #     # Concatenate all CSV to a list
+    #     FINAL_CSV = concatenate_csv(csv_list)
+    #     # Convert all CSV spectrum to JSON spectrum (Multithreaded)
+    #     FINAL_CSV = csv_to_json_processing(FINAL_CSV)
 
-    # CSV
-    FINAL_CSV = []
-    csv_list= []
-    csv_to_do = False
-    csv_path = os.path.join(input_path, "CSV")
-    # check if there is a csv file into the directory
-    for root, dirs, files in os.walk(csv_path):
-        for file in files:
-            if file.endswith(".csv"):
-                csv_path = os.path.join(root, file)  # Full path to the file
-                csv_list.append(csv_path)
-                csv_to_do = True
-    if csv_to_do == True:
-        time.sleep(0.02)
-        print("{:>80}".format("-- CONVERTING CSV TO JSON --"))
-        # Concatenate all CSV to a list
-        FINAL_CSV = concatenate_csv(csv_list)
-        # Convert all CSV spectrum to JSON spectrum (Multithreaded)
-        FINAL_CSV = csv_to_json_processing(FINAL_CSV)
-
-    return FINAL_MSP, FINAL_XML, FINAL_CSV
+    return FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON
