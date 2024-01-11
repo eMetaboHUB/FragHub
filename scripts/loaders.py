@@ -58,8 +58,6 @@ def load_spectrum_list_json(json_file_path):
         progress = tqdm(total=total_bytes, unit="B", unit_scale=True, colour="green", desc="{:>80}".format("Loading file"))
 
         for spectrum in spectra:
-            if "filename" not in spectrum:
-                spectrum["filename"] = os.path.basename(json_file_path)
             spectrum_list.append(spectrum)
             progress.update(len(str(spectrum)))
         progress.close()
