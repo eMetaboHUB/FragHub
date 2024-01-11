@@ -4,6 +4,7 @@ from loaders import *
 import hashlib
 import ijson
 import json
+import sys
 import os
 import re
 
@@ -140,7 +141,7 @@ def process_converted_after(spectrum_list, mode):
     if spectrum_list:
         with open(file_path, "w", encoding="UTF-8") as buffer:
             buffer.write("[")  # begin the JSON list
-            for i in tqdm(range(len(spectrum_list)), total=len(spectrum_list), unit=" row", colour="green", desc="{:>80}".format(f"writting {filename}")):
+            for i in tqdm(range(len(spectrum_list)), total=sys.getsizeof(spectrum_list), unit="B", colour="green", desc="{:>80}".format(f"writting {filename}")):
                 # write a comma before every object except the first one
                 if i != 0:
                     buffer.write(",")
