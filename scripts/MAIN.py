@@ -54,19 +54,15 @@ if __name__ == "__main__":
     output_path = r"../OUTPUT"
 
     # STEP 1: convert files to json if needed (Multithreaded)
-    FINAL_MSP, FINAL_XML, FINAL_CSV = convert_to_json(input_path)
+    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON = convert_to_json(input_path)
 
     json_dir = os.path.join(input_path, "JSON")
 
-    # Check if there is msp file to process
-    if FINAL_MSP or FINAL_XML or FINAL_CSV:
-        json_to_process = True
+    json_to_process = False
 
-    for root, dirs, files in os.walk(json_dir):
-        for file in files:
-            if file.endswith(".json"):
-                json_to_process = True
-                break
+    # Check if there is msp file to process
+    if FINAL_MSP or FINAL_XML or FINAL_CSV or FINAL_JSON:
+        json_to_process = True
 
     # If there is no msp to process: stop python execution
     if json_to_process == False:
@@ -75,7 +71,7 @@ if __name__ == "__main__":
     # STEP 2: generating FRAGHUBID
     print("{:>80}".format("-- GENERATING FragHub UNIQUE ID --"))
     time.sleep(0.01)
-    generate_fraghub_id(r"../INPUT/JSON", FINAL_MSP, FINAL_XML, FINAL_CSV)
+    generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON)
 
     del FINAL_MSP
     del FINAL_XML
