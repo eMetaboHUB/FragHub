@@ -123,16 +123,16 @@ def process_converted_after(spectrum_list, mode):
     Note: The method uses the `tqdm` package to display a progress bar while writing the spectra to the file.
     """
     if mode == "MSP":
-        file_path = os.path.abspath("../INPUT/JSON/MSP_converted.json")
+        file_path = os.path.abspath("../INPUT/CONVERTED/MSP_converted.json")
         filename = os.path.basename(file_path)
     elif mode == "XML":
-        file_path = os.path.abspath("../INPUT/JSON/XML_converted.json")
+        file_path = os.path.abspath("../INPUT/CONVERTED/XML_converted.json")
         filename = os.path.basename(file_path)
     elif mode == "CSV":
-        file_path = os.path.abspath("../INPUT/JSON/CSV_converted.json")
+        file_path = os.path.abspath("../INPUT/CONVERTED/CSV_converted.json")
         filename = os.path.basename(file_path)
     elif mode == "JSON":
-        file_path = os.path.abspath("../INPUT/JSON/JSON_converted.json")
+        file_path = os.path.abspath("../INPUT/CONVERTED/JSON_converted.json")
         filename = os.path.basename(file_path)
 
     spectrum_list = genrate_fraghubid_processing(spectrum_list, filename)
