@@ -81,7 +81,7 @@ def json_to_json_processing(FINAL_JSON):
     """
     chunk_size = 5000
     final = []
-    progress_bar = tqdm(total=len(FINAL_JSON), unit=" spectrums", colour="green", desc="{:>80}".format("converting MSP spectrums"))
+    progress_bar = tqdm(total=len(FINAL_JSON), unit=" spectrums", colour="green", desc="{:>80}".format("converting JSON spectrums"))
 
     # Dividing the spectrum list into chunks
     for i in range(0, len(FINAL_JSON), chunk_size):
