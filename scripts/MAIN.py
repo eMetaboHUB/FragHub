@@ -71,36 +71,36 @@ if __name__ == "__main__":
     # STEP 2: generating FRAGHUBID
     print("{:>80}".format("-- GENERATING FragHub UNIQUE ID --"))
     time.sleep(0.01)
-    generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON)
+    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON = generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON)
 
+    spectrum_list = []
+    spectrum_list.extend(FINAL_MSP)
     del FINAL_MSP
+    spectrum_list.extend(FINAL_XML)
     del FINAL_XML
+    spectrum_list.extend(FINAL_CSV)
     del FINAL_CSV
+    spectrum_list.extend(FINAL_JSON)
     del FINAL_JSON
 
     CONCATENATED_SPECTRUMS_RESULTS = []
     first_run = False
     update = False
 
-    for root, dirs, files in os.walk(json_dir):
-        for file in files:
-            if file.endswith(".json"):
-                json_path = os.path.join(root, file)
+    # STEP 3: cleaning spectrums (Multithreaded)
+    time.sleep(0.01)
+    print("{:>80}".format(f"-- CLEANING: SPECTRUMS --"))
+    # spectrum_list = load_spectrum_list_json(json_path)
+    spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list)
+    if update_temp:
+        update = True
+    if first_run_temp:
+        first_run = True
+    spectrum_list = msp_cleaning_processing(spectrum_list)
 
-                # STEP 3: cleaning spectrums (Multithreaded)
-                time.sleep(0.01)
-                print("{:>80}".format(f"-- CLEANING: {file} --"))
-                spectrum_list = load_spectrum_list_json(json_path)
-                final_spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list)
-                if update_temp:
-                    update = True
-                if first_run_temp:
-                    first_run = True
-                spectrum_list = msp_cleaning_processing(final_spectrum_list)
+    CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
 
-                CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
-
-                del spectrum_list
+    del spectrum_list
 
     # CONCATENATED_SPECTRUMS_DATAFRAME = pd.DataFrame(CONCATENATED_SPECTRUMS_RESULTS)[ordered_columns].astype(str)
     #
