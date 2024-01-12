@@ -11,11 +11,14 @@ import re
 global inchikey_update_pattern
 inchikey_update_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])", flags=re.IGNORECASE)
 
-global peak_list_update_pattern
-peak_list_update_pattern = re.compile(r"\"peaks\":([\S\s]*?)\}", flags=re.IGNORECASE)
-
 global peak_list_split_update_pattern
 peak_list_split_update_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
+
+def get_peak_list_key(spectrum):
+    for key, value in spectrum.items():
+        if isinstance(value, list) and all(isinstance(i, list) and len(i) == 2 and all(isinstance(n, (int, float)) for n in i) for i in value):
+            return key
+    return None
 
 def hash_spectrum_data(spectrum_data):
     """
@@ -29,17 +32,13 @@ def hash_spectrum_data(spectrum_data):
     spectrum_string = str(spectrum_data)
 
     inchikey = re.search(inchikey_update_pattern, spectrum_string)
-    peak_list = re.search(peak_list_update_pattern, spectrum_string)
+    peak_list = str(spectrum_data[get_peak_list_key(spectrum_data)])
 
     if inchikey:
         inchikey = inchikey.group(1)
 
     if inchikey and peak_list:
-        peak_list = peak_list.group(1)
         spectrum_string = inchikey+"\n"+peak_list
-
-    else:
-        spectrum_string = str(spectrum_data)
 
     # Créer un objet sha256
     sha256 = hashlib.sha256()
@@ -148,6 +147,8 @@ def process_converted_after(spectrum_list, mode):
                 json.dump(spectrum_list[i], buffer, ensure_ascii=False)
             buffer.write("]")  # end the JSON lists
 
+    return spectrum_list
+
 def generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON):
     """
     :param msp_directory_path: The path to the MSP directory.
@@ -160,10 +161,12 @@ def generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON):
     Finally, it opens the MSP file in write mode and writes the modified spectrum list with the generated FragHub ID into the file.
     """
     if FINAL_MSP:
-        process_converted_after(FINAL_MSP, "MSP")
+        FINAL_MSP = process_converted_after(FINAL_MSP, "MSP")
     if FINAL_XML:
-        process_converted_after(FINAL_XML, "XML")
+        FINAL_XML = process_converted_after(FINAL_XML, "XML")
     if FINAL_CSV:
-        process_converted_after(FINAL_CSV, "CSV")
+        FINAL_CSV = process_converted_after(FINAL_CSV, "CSV")
     if FINAL_JSON:
-        process_converted_after(FINAL_JSON, "JSON")
+        FINAL_JSON = process_converted_after(FINAL_JSON, "JSON")
+
+    return FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON
