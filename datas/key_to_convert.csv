@@ -68,7 +68,7 @@ ch$link:united_nations;unitednationsnumber
 ch$name;name
 ch$nominal_mass;nominalmass
 ch$smiles;smiles
-charge;
+charge;charge
 colenergy;collisionenergy
 collision_energy;collisionenergy
 collision_gas;collisiongas
@@ -227,3 +227,9 @@ title;title
 peaks;peaks_list
 peaks_json;peaks_list
 spectrum;peaks_list
+spectrum_id;spectrumid
+ms level;mslevel
+instrument type;instrumenttype
+ionization mode;ionmode
+collision energy;collisionenergy
+precursor m/z;precursormz
