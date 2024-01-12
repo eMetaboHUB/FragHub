@@ -83,73 +83,65 @@ if __name__ == "__main__":
     spectrum_list.extend(FINAL_JSON)
     del FINAL_JSON
 
-    CONCATENATED_SPECTRUMS_RESULTS = []
     first_run = False
     update = False
 
     # STEP 3: cleaning spectrums (Multithreaded)
     time.sleep(0.01)
     print("{:>80}".format(f"-- CLEANING: SPECTRUMS --"))
-    # spectrum_list = load_spectrum_list_json(json_path)
     spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list)
     if update_temp:
         update = True
     if first_run_temp:
         first_run = True
-    spectrum_list = msp_cleaning_processing(spectrum_list)
+    spectrum_list = spectrum_cleaning_processing(spectrum_list)
 
-    CONCATENATED_SPECTRUMS_RESULTS.extend(spectrum_list)
+    spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns].astype(str)
 
-    del spectrum_list
+    # STEP 4: complete missing information into spectrum
+    print("{:>80}".format("-- MOLS DERIVATION AND MASS CALCULATION --"))
+    time.sleep(0.01)
+    spectrum_list = mols_derivation_and_calculation(spectrum_list)
 
-    # CONCATENATED_SPECTRUMS_DATAFRAME = pd.DataFrame(CONCATENATED_SPECTRUMS_RESULTS)[ordered_columns].astype(str)
-    #
-    # del CONCATENATED_SPECTRUMS_RESULTS
-    #
-    # # STEP 4: complete missing information into spectrum
-    # print("{:>80}".format("-- MOLS DERIVATION AND MASS CALCULATION --"))
-    # time.sleep(0.01)
-    # CONCATENATED_SPECTRUMS_DATAFRAME = mols_derivation_and_calculation(CONCATENATED_SPECTRUMS_DATAFRAME)
-    #
-    # print("{:>80}".format("-- NAMES COMPLETION --"))
-    # time.sleep(0.01)
-    # CONCATENATED_SPECTRUMS_DATAFRAME = names_completion(CONCATENATED_SPECTRUMS_DATAFRAME)
-    #
-    # # STEP 5: splitting POS/NEG -- LC/GC -- EXP/InSilico
-    # print("{:>80}".format("-- SPLITTING [POS / NEG] --"))
-    # time.sleep(0.01)
-    # POS_df, NEG_df = split_pos_neg(CONCATENATED_SPECTRUMS_DATAFRAME)
-    #
-    # time.sleep(0.01)
-    # print("{:>80}".format("-- SPLITTING [LC / GC] --"))
-    # time.sleep(0.01)
-    # POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df = split_LC_GC(POS_df, NEG_df)
-    #
-    # del POS_df
-    # del NEG_df
-    #
-    # time.sleep(0.01)
-    # print("{:>80}".format("-- SPLITTING EXP / In-Silico --"))
-    # time.sleep(0.01)
-    # POS_LC_df,POS_LC_In_Silico_df,POS_GC_df,POS_GC_In_Silico_df,NEG_LC_df,NEG_LC_In_Silico_df,NEG_GC_df,NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df)
-    #
-    # # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
-    # print("{:>80}".format("-- REMOVING DUPLICATAS --"))
-    # time.sleep(0.01)
-    # POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico = remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, first_run, update)
-    #
-    # print("{:>80}".format("-- CONVERTING CSV TO MSP --"))
-    # time.sleep(0.01)
-    # POS_LC_df,POS_LC,POS_LC_df_insilico,POS_LC_insilico,POS_GC_df,POS_GC,POS_GC_df_insilico,POS_GC_insilico,NEG_LC_df,NEG_LC,NEG_LC_df_insilico,NEG_LC_insilico,NEG_GC_df,NEG_GC,NEG_GC_df_insilico,NEG_GC_insilico = csv_and_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico)
-    #
-    # # STEP 7: writting output files
-    # print("{:>80}".format("-- WRITING CSV --"))
-    # time.sleep(0.01)
-    # writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, update)
-    #
-    # print("{:>80}".format("-- WRITING MSP --"))
-    # time.sleep(0.01)
-    # writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_insilico,NEG_GC,NEG_GC_insilico, update)
+    print("{:>80}".format("-- NAMES COMPLETION --"))
+    time.sleep(0.01)
+    spectrum_list = names_completion(spectrum_list)
+
+    # STEP 5: splitting POS/NEG -- LC/GC -- EXP/InSilico
+    print("{:>80}".format("-- SPLITTING [POS / NEG] --"))
+    time.sleep(0.01)
+    POS_df, NEG_df = split_pos_neg(spectrum_list)
+
+    time.sleep(0.01)
+    print("{:>80}".format("-- SPLITTING [LC / GC] --"))
+    time.sleep(0.01)
+    POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df = split_LC_GC(POS_df, NEG_df)
+
+    del POS_df
+    del NEG_df
+
+    time.sleep(0.01)
+    print("{:>80}".format("-- SPLITTING EXP / In-Silico --"))
+    time.sleep(0.01)
+    POS_LC_df,POS_LC_In_Silico_df,POS_GC_df,POS_GC_In_Silico_df,NEG_LC_df,NEG_LC_In_Silico_df,NEG_GC_df,NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df)
+
+    # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
+    print("{:>80}".format("-- REMOVING DUPLICATAS --"))
+    time.sleep(0.01)
+    POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico = remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, first_run, update)
+
+    print("{:>80}".format("-- CONVERTING CSV TO MSP --"))
+    time.sleep(0.01)
+    POS_LC_df,POS_LC,POS_LC_df_insilico,POS_LC_insilico,POS_GC_df,POS_GC,POS_GC_df_insilico,POS_GC_insilico,NEG_LC_df,NEG_LC,NEG_LC_df_insilico,NEG_LC_insilico,NEG_GC_df,NEG_GC,NEG_GC_df_insilico,NEG_GC_insilico = csv_and_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico)
+
+    # STEP 7: writting output files
+    print("{:>80}".format("-- WRITING CSV --"))
+    time.sleep(0.01)
+    writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, update)
+
+    print("{:>80}".format("-- WRITING MSP --"))
+    time.sleep(0.01)
+    writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_insilico,NEG_GC,NEG_GC_insilico, update)
 
     time.sleep(0.01)
     print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
