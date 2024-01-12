@@ -46,7 +46,7 @@ def convert_MoNA_json(json_dict):
             dict_final[json_dict["metaData"][i]["name"]] = json_dict["metaData"][i]["value"]
 
     peak_list_string = json_dict["spectrum"]
-    dict_final["spectrum"] = parse_MoNA_peak_list(peak_list_string)
+    dict_final["peaks"] = parse_MoNA_peak_list(peak_list_string)
 
     return dict_final
 
