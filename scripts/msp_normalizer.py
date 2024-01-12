@@ -103,12 +103,13 @@ def msp_parser(spectrum):
     :param spectrum: The spectrum data to be parsed.
     :return: The parsed metadata with peak list.
     """
+    spectrum = convert_keys(spectrum)
+
     peaks_list = spectrum["PEAKS_LIST"]
 
-    spectrum = convert_keys(spectrum)
     spectrum = normalize_values(spectrum)
 
-    if peaks_list is not None:
+    if peaks_list and spectrum is not None:
         spectrum["PEAKS_LIST"] = peaks_list
 
     if not spectrum:
