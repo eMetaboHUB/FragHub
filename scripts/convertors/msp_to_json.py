@@ -164,7 +164,7 @@ def msp_to_json(spectrum):
     metadata_DF, peak_list = structure_metadata_and_peak_list(metadata, peak_list)
     if not metadata or not peak_list:
         return None
-    metadata_DF["peaks"] = str(peak_list)
+    metadata_DF["peaks"] = peak_list
 
     return metadata_DF
 
