@@ -51,9 +51,7 @@ def convert_keys(metadata_dict):
     :param metadata_dict: A dictionary containing metadata information.
     :return: A dictionary with converted keys based on the provided keys_dict and keys_list.
     """
-
-    converted = {keys_dict[key]: val for key, val in metadata_dict.items() if
-                 key in keys_dict and keys_dict[key] in keys_list}
+    converted = {keys_dict[key]: val for key, val in metadata_dict.items() if key in keys_dict and keys_dict[key] in keys_list}
 
     converted.update({key: "" for key in keys_list if key not in converted})
 
@@ -96,7 +94,7 @@ def peak_list_to_str(peak_list_np):
 
     return peak_list_np
 
-def msp_parser(spectrum):
+def spectrum_cleaning(spectrum):
     """
     Parse the given spectrum to extract metadata and peak list.
 
@@ -113,7 +111,7 @@ def msp_parser(spectrum):
         spectrum["PEAKS_LIST"] = peaks_list
 
     if not spectrum:
-        return {}
+        return None
 
     if "PRECURSORMZ" in spectrum:
         if spectrum["PRECURSORMZ"]:
@@ -129,7 +127,7 @@ def msp_parser(spectrum):
 
     return spectrum
 
-def msp_cleaning_processing(spectrum_list):
+def spectrum_cleaning_processing(spectrum_list):
     """
     :param spectrum_list: A list of spectrum data to be processed.
     :return: A list containing the results of processing the spectrum data.
@@ -143,7 +141,7 @@ def msp_cleaning_processing(spectrum_list):
     for i in range(0, len(spectrum_list), chunk_size):
         with concurrent.futures.ThreadPoolExecutor() as executor:
             chunk = spectrum_list[i:i + chunk_size]
-            results = list(executor.map(msp_parser, chunk))
+            results = list(executor.map(spectrum_cleaning, chunk))
             progress_bar.update(len(chunk))
 
         final.extend([res for res in results if res is not None])
