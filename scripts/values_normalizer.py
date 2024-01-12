@@ -56,8 +56,9 @@ def normalize_empties(metadata_dict):
     """
     for k, v in metadata_dict.items():
         # For each item to replace
-        if re.fullmatch(empty_pattern, v):
-            metadata_dict[k] = ''
+        if isinstance(v, str):
+            if re.fullmatch(empty_pattern, v):
+                metadata_dict[k] = ''
 
     return metadata_dict
 
