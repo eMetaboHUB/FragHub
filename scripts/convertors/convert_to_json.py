@@ -54,18 +54,16 @@ def concatenate_csv(csv_list):
 
     :param csv_list: A list of file paths to CSV files.
     :return: A pandas DataFrame containing the concatenated data.
-
-    Example usage:
-    ```python
-    csv_list = ["file1.csv", "file2.csv", "file3.csv"]
-    df = concatenate_csv(csv_list)
-    ```
     """
     df_list = []
 
     for file in csv_list:
         df = pd.read_csv(file, sep=";", encoding="UTF-8")
         df['filename'] = os.path.basename(file)
+
+        # Convertir tous les noms de colonnes en minuscules
+        df.columns = df.columns.str.lower()
+
         df_list.append(df)
 
     df = pd.concat(df_list, ignore_index=True)
