@@ -37,13 +37,13 @@ def convert_MoNA_json(json_dict):
 
     for i in range(len(json_dict["compound"][0]["metaData"])):
         if json_dict["compound"][0]["metaData"][i]["name"] in ["molecular formula", "SMILES", "InChI", "InChIKey"] and not json_dict["compound"][0]["metaData"][i]["computed"]:
-            dict_final[json_dict["compound"][0]["metaData"][i]["name"]] = json_dict["compound"][0]["metaData"][i]["value"]
+            dict_final[json_dict["compound"][0]["metaData"][i]["name"].lower()] = json_dict["compound"][0]["metaData"][i]["value"]
 
     dict_final["spectrum_id"] = json_dict["id"]
 
     for i in range(len(json_dict["metaData"])):
         if json_dict["metaData"][i]["name"] in ["instrument", "instrument type", "ms level", "ionization", "retention time", "ionization mode", "precursor type", "collision energy", "precursor m/z"]:
-            dict_final[json_dict["metaData"][i]["name"]] = json_dict["metaData"][i]["value"]
+            dict_final[json_dict["metaData"][i]["name"].lower()] = json_dict["metaData"][i]["value"]
 
     peak_list_string = json_dict["spectrum"]
     dict_final["peaks"] = parse_MoNA_peak_list(peak_list_string)
