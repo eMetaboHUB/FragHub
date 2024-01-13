@@ -1,4 +1,5 @@
 from convertors.convert_to_json import *
+from convertors.csv_to_msp import *
 from fraghubid_generator import *
 from duplicatas_remover import *
 from name_completion import *
@@ -12,6 +13,8 @@ import json
 import time
 import sys
 import os
+
+from converters import csv_and_msp
 
 RDLogger.DisableLog('rdApp.*')  # Disable rdkit log (warning) messages
 
@@ -132,7 +135,7 @@ if __name__ == "__main__":
 
     print("{:>80}".format("-- CONVERTING CSV TO MSP --"))
     time.sleep(0.01)
-    POS_LC_df,POS_LC,POS_LC_df_insilico,POS_LC_insilico,POS_GC_df,POS_GC,POS_GC_df_insilico,POS_GC_insilico,NEG_LC_df,NEG_LC,NEG_LC_df_insilico,NEG_LC_insilico,NEG_GC_df,NEG_GC,NEG_GC_df_insilico,NEG_GC_insilico = csv_and_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico)
+    POS_LC_df,POS_LC,POS_LC_df_insilico,POS_LC_insilico,POS_GC_df,POS_GC,POS_GC_df_insilico,POS_GC_insilico,NEG_LC_df,NEG_LC,NEG_LC_df_insilico,NEG_LC_insilico,NEG_GC_df,NEG_GC,NEG_GC_df_insilico,NEG_GC_insilico = csv_to_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico)
 
     # STEP 7: writting output files
     print("{:>80}".format("-- WRITING CSV --"))
