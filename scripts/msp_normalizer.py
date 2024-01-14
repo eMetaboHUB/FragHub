@@ -51,7 +51,7 @@ def convert_keys(metadata_dict):
     :param metadata_dict: A dictionary containing metadata information.
     :return: A dictionary with converted keys based on the provided keys_dict and keys_list.
     """
-    converted = {keys_dict[key]: val for key, val in metadata_dict.items() if key in keys_dict and keys_dict[key] in keys_list}
+    converted = {keys_dict[key.lower()]: val for key, val in metadata_dict.items() if key.lower() in keys_dict and keys_dict[key.lower()] in keys_list}
 
     converted.update({key: "" for key in keys_list if key not in converted})
 
@@ -107,7 +107,7 @@ def spectrum_cleaning(spectrum):
 
     spectrum = normalize_values(spectrum)
 
-    if peaks_list and spectrum is not None:
+    if peaks_list and spectrum:
         spectrum["PEAKS_LIST"] = peaks_list
 
     if not spectrum:
