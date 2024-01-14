@@ -157,7 +157,7 @@ def delete_no_smiles_inchi_inchikey(metadata_dict):
     :return: The updated metadata dictionary.
     :rtype: dict
     """
-    if not metadata_dict.get('SMILES') and not metadata_dict.get('INCHI'):
+    if not metadata_dict["SMILES"] and not metadata_dict["INCHI"]:
         return None
     else:
         return metadata_dict
