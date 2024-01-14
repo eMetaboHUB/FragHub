@@ -1,6 +1,7 @@
 from mols_calculation import *
 import numpy as np
 import re
+import os
 
 global repair_inchi_pattern
 repair_inchi_pattern = re.compile(r"^(inchi=)?", flags=re.IGNORECASE)
@@ -46,6 +47,17 @@ In_Silico_pattern = re.compile(r"in.silico|insilico|predicted|theoretical|Annota
 
 global empty_pattern
 empty_pattern = re.compile(r"(^0( .*)?)|(^0\.0( .*)?)|(^$)|(^na( .*)?)|(^n/a( .*)?)|(^nan( .*)?)|(^unknown( .*)?)|(^unknow( .*)?)|(^none( .*)?)|(^\?( .*)?)|(^unk( .*)?)|(^x( .*)?)", flags=re.IGNORECASE)
+
+global adduct_dict
+adduct_dataframe = pd.read_csv(os.path.abspath("../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
+adduct_dict = dict(zip(adduct_dataframe['known_adduct'], adduct_dataframe['fraghub_default']))
+
+global adduct_massdiff_dict
+adduct_dataframe = pd.read_csv(os.path.abspath("../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
+adduct_massdiff_dict = dict(zip(adduct_dataframe['fraghub_default'], adduct_dataframe['massdiff']))
+
+global sub_adduct_pattern
+sub_adduct_pattern = re.compile(r"\(|\)|(.*\[)|(\]([\d\+\-\*]*)?)")
 
 def normalize_empties(metadata_dict):
     """
@@ -136,57 +148,6 @@ def repair_mol_descriptors(metadata_dict):
 
     return metadata_dict
 
-def determining_adduct_charge(adduct): # NOTE: ATTENTION: pas certains que ce soit correcte
-    """
-    Calculate the charge of a given adduct.
-
-    :param adduct: The adduct string to calculate the charge for.
-                   The adduct string should contain a combination of numbers and
-                   '+' or '-' symbols to represent the charge. For example, '+2',
-                   '-1', '+', '-'.
-    :return: Return the calculated charge as a string. The returned string represents
-             the charge and can have one of the following formats: '+', '-', '+X',
-             '-X', where X is a positive integer.
-    """
-    sum = 0
-    min = 0
-    max = 0
-
-    matches = re.findall(charge_pattern,adduct)
-
-    # determine signe
-    if matches:
-        for match in matches:
-            charge = next((item for item in match if item), '')
-            if charge == "-":
-                sum -= 1
-                if min > -1:
-                    min = -1
-            elif charge == "+":
-                sum += 1
-                if max < 1:
-                    max = 1
-            else:
-                sum += int(charge)
-                if int(charge) > max:
-                    max = int(charge)
-                if int(charge) < min:
-                    min = int(charge)
-
-        # determine charge
-        if sum > 0:
-            if max == 1:
-                return "+"
-            else:
-                return str(max)+"+"
-        elif sum < 0:
-            if min == -1:
-                return "-"
-            else:
-                return str(abs(min))+"-"
-    else:
-        return None
-
 def delete_no_smiles_inchi_inchikey(metadata_dict):
     """
     Delete entries from the given metadata dictionary if both 'SMILES' and 'INCHI' keys have NaN values.
@@ -203,70 +164,18 @@ def delete_no_smiles_inchi_inchikey(metadata_dict):
 
 def normalize_adduct(metadata_dict):
     """
-    :param metadata_dict: A dictionary containing metadata information.
-    :return: The modified metadata dictionary.
+    Normalize adduct value in the given metadata dictionary.
 
-    This method takes a dictionary of metadata information and normalizes the "PRECURSORTYPE" value according to a specific format. The method checks if the value already matches the format
-    *, and if not, it modifies it accordingly.
-
-    If the value already matches the expected format, the method does nothing and returns the unmodified metadata dictionary. If the value does not match the format, the method attempts
-    * to determine the charge value and add it to the end of the value in the correct format.
-
-    Note: The method relies on an external function called determining_charge() to determine the charge value. This function is not included in this documentation.
-
-    Example usage:
-    metadata_dict = {"PRECURSORTYPE": "[M+H]"}
-    normalized_dict = normalize_adduct(metadata_dict)
-    print(normalized_dict)
-
-    Output:
-    {"PRECURSORTYPE": "[M+H]"}
+    :param metadata_dict: The dictionary containing metadata information.
+    :return: The modified metadata dictionary with normalized adduct value.
     """
-    adduct = metadata_dict["PRECURSORTYPE"]
+    adduct = metadata_dict['PRECURSORTYPE']
+    adduct = re.sub(sub_adduct_pattern, "", adduct)
 
+    if adduct in adduct_dict:
+        metadata_dict['PRECURSORTYPE'] = adduct_dict[adduct]
 
-    match = re.search(adduct_pattern, adduct)
-
-    if match: # Si deja le format correct, on ne fait rien
-        if not match.group(3): # si pas de charge a la fin
-            charge = determining_adduct_charge(adduct)
-            if "*" in match.group():
-                if charge:
-                    metadata_dict["PRECURSORTYPE"] = adduct + charge + "*"
-                    return metadata_dict
-                else:
-                    return metadata_dict
-            else:
-                if charge:
-                    metadata_dict["PRECURSORTYPE"] = adduct + charge
-                    return metadata_dict
-                else:
-                    return metadata_dict
-        return metadata_dict
-    else: # pas le format correct
-        match = re.search(adduct_pattern_2, adduct)
-        if match:
-            if not re.search(ending_by_charge_pattern, adduct): # si pas de charge a la fin
-                charge = determining_adduct_charge(adduct)
-                if "*" in match.group():
-                    if charge:
-                        metadata_dict["PRECURSORTYPE"] = "[" + match.group() + "]" + charge + "*"
-                        return metadata_dict
-                    else:
-                        return metadata_dict
-                else:
-                    if charge:
-                        metadata_dict["PRECURSORTYPE"] = "[" + match.group() + "]" + charge
-                        return metadata_dict
-                    else:
-                        return metadata_dict
-            else:
-                charge = re.search(ending_by_charge_pattern, adduct)
-                if charge:
-                    metadata_dict["PRECURSORTYPE"] = "[" + match.group() + "]" + charge.group()
-                    return metadata_dict
-                else:
-                    return metadata_dict
+    return metadata_dict
 
 def normalize_ionmode(metadata_dict):
     """
