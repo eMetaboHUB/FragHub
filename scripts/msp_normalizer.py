@@ -115,6 +115,7 @@ def spectrum_cleaning(spectrum):
             peak_list_np = peak_list_to_np_array(spectrum["PEAKS_LIST"], float(spectrum["PRECURSORMZ"].replace(",", ".")))
             if peak_list_np.size == 0:
                 return {}
+            spectrum["NUM PEAKS"] = str(peak_list_np.shape[0])
             peak_list_np = peak_list_to_str(peak_list_np)
             spectrum["PEAKS_LIST"] = peak_list_np
             return spectrum
