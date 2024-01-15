@@ -93,7 +93,6 @@ if __name__ == "__main__":
     time.sleep(0.01)
     print("{:>80}".format(f"-- CLEANING: SPECTRUMS --"))
     spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list)
-    print(spectrum_list[0])
     if update_temp:
         update = True
     if first_run_temp:
