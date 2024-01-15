@@ -1,5 +1,6 @@
 from tqdm import tqdm
 import pandas as pd
+import ast
 import re
 
 def format_comments(DF_row):
@@ -35,6 +36,7 @@ def dataframe_to_msp(dataframe, name):
     spectrum_list = []
     for index, row in tqdm(dataframe.iterrows(), total=len(dataframe), desc="{:>80}".format(name), colour="green", unit=" row"):
         COMMENTS = format_comments(row)
+        peak_list = ast.literal_eval(row["PEAKS_LIST"])
 
         SPECTRUM = ""
         SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] + "\n"
@@ -52,7 +54,7 @@ def dataframe_to_msp(dataframe, name):
         SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
         SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
         SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
-        SPECTRUM = SPECTRUM + re.sub(r"([\[\]])|(\n {1,2})","\n", row["PEAKS_LIST"]) + "\n"
+        SPECTRUM = SPECTRUM + "\n".join(["\t".join(map(str, sub_list)) for sub_list in peak_list]) + "\n"
         spectrum_list.append(SPECTRUM)
 
     return spectrum_list
