@@ -66,7 +66,7 @@ def peak_list_to_np_array(peak_list, precursormz):
     :return: A numpy array containing the peak data, with two columns for "mz" and "intensity". The "mz" column contains the m/z values, and the "intensity" column contains the corresponding
     * peak intensities.
     """
-    peak_list = json.loads(peak_list)
+    peak_list = eval(str(peak_list))
 
     # Convert list of tuples to numpy array
     peak_list = np.array(peak_list, dtype=float)
@@ -75,9 +75,6 @@ def peak_list_to_np_array(peak_list, precursormz):
     peak_list = peak_list[peak_list[:, 0].argsort()]
 
     peak_list = apply_filters(peak_list, precursormz)
-
-    if peak_list.size == 0:
-        return ''
 
     return peak_list
 
@@ -90,7 +87,7 @@ def peak_list_to_str(peak_list_np):
     peak_list_np = peak_list_np.tolist()
 
     # Convertir la liste en chaîne JSON
-    peak_list_np = json.dumps(peak_list_np)
+    peak_list_np = str(peak_list_np)
 
     return peak_list_np
 
@@ -115,15 +112,14 @@ def spectrum_cleaning(spectrum):
 
     if "PRECURSORMZ" in spectrum:
         if spectrum["PRECURSORMZ"]:
-            try:
-                peak_list_np = peak_list_to_np_array(spectrum["PEAKS_LIST"], float(spectrum["PRECURSORMZ"].replace(",", ".")))
-                if not peak_list_np:
-                    return {}
-                peak_list_np = peak_list_to_str(peak_list_np)
-                spectrum["PEAKS_LIST"] = peak_list_np
-                return spectrum
-            except:
+            peak_list_np = peak_list_to_np_array(spectrum["PEAKS_LIST"], float(spectrum["PRECURSORMZ"].replace(",", ".")))
+            if peak_list_np.size == 0:
                 return {}
+            peak_list_np = peak_list_to_str(peak_list_np)
+            spectrum["PEAKS_LIST"] = peak_list_np
+            return spectrum
+        else:
+            return None
 
     return spectrum
 
