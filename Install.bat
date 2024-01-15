@@ -3,9 +3,7 @@
 :start
 cls
 
-python -m pip install re
-
-pause
+python -m pip install -r requirements.txt
 
 exit
 
