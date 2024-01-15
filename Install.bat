@@ -3,7 +3,9 @@
 :start
 cls
 
-python ./setup.py
+python -m pip install re
+
+pause
 
 exit
 
