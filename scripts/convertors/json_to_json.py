@@ -45,6 +45,8 @@ def convert_MoNA_json(json_dict):
         if json_dict["metaData"][i]["name"] in ["instrument", "instrument type", "ms level", "ionization", "retention time", "ionization mode", "precursor type", "collision energy", "precursor m/z"]:
             dict_final[json_dict["metaData"][i]["name"].lower()] = json_dict["metaData"][i]["value"]
 
+    dict_final["filename"] = json_dict["filename"]
+
     peak_list_string = json_dict["spectrum"]
     dict_final["peaks"] = parse_MoNA_peak_list(peak_list_string)
 
@@ -60,7 +62,7 @@ def json_to_json(json_dict):
 
     Note: The "convert_MoNA_json" function is not implemented in this code, so you need to define it separately before using this method.
     """
-    if "compound" and "id" and "metaData" and "spectrum" in json_dict:
+    if "compound" and "id" and "metaData" and "spectrum" and "filename" in json_dict:
         json_dict = convert_MoNA_json(json_dict)
         return json_dict
     else:
