@@ -233,3 +233,4 @@ instrument type;instrumenttype
 ionization mode;ionmode
 collision energy;collisionenergy
 precursor m/z;precursormz
+peaks_list;peaks_list
