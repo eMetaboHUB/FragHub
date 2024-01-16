@@ -23,7 +23,7 @@ def load_spectrum_list_from_msp(msp_file_path):
     total_size = os.path.getsize(msp_file_path)  # get the total size of the file in bytes
 
     with open(msp_file_path, 'r', encoding="UTF-8") as file:
-        for line in tqdm(file, total=total_size, unit="B", unit_scale=True, colour="green", desc="{:>80}".format(f"loading [{filename}]")): # wrap this with tqdm
+        for line in tqdm(file, total=total_size, unit="B", unit_scale=True, colour="green", desc="{:>70}".format(f"loading [{filename}]")): # wrap this with tqdm
             if line.strip() == '':
                 if buffer:
                     spectrum_list.append('\n'.join(buffer))
@@ -55,7 +55,7 @@ def load_spectrum_list_json(json_file_path):
         # ijson.items(file, 'item') returns a generator yielding items in a JSON file
         spectra = ijson.items(file, 'item')
         # Create tqdm progress bar
-        progress = tqdm(total=total_bytes, unit="B", unit_scale=True, colour="green", desc="{:>80}".format("Loading file"))
+        progress = tqdm(total=total_bytes, unit="B", unit_scale=True, colour="green", desc="{:>70}".format("Loading file"))
 
         for spectrum in spectra:
             spectrum["filename"] = os.path.basename(json_file_path)
