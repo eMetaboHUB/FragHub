@@ -14,8 +14,6 @@ import time
 import sys
 import os
 
-from converters import csv_and_msp
-
 RDLogger.DisableLog('rdApp.*')  # Disable rdkit log (warning) messages
 
 ordered_columns = ["FILENAME",
