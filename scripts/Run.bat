@@ -1,11 +1,8 @@
 @echo off
 
-
 :start
 cls
 
+powershell -Command "python ./MAIN.py ; pause"
 
-python ./MAIN.py
-
-pause
 exit
