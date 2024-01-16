@@ -9,7 +9,6 @@ from rdkit import RDLogger
 from splitter import *
 from writers import *
 from update import *
-import json
 import time
 import sys
 import os
