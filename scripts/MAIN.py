@@ -96,7 +96,7 @@ if __name__ == "__main__":
     if first_run_temp:
         first_run = True
     time.sleep(0.01)
-    print("{:>70}".format(f"-- CLEANING: SPECTRUMS --"))
+    print("{:>70}".format(f"-- CLEANING SPECTRUMS --"))
     spectrum_list = spectrum_cleaning_processing(spectrum_list)
 
     spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns].astype(str)
