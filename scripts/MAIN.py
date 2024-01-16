@@ -51,8 +51,8 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    input_path = r"../INPUT"
-    output_path = r"../OUTPUT"
+    input_path = os.path.abspath(r"../INPUT")
+    output_path = os.path.abspath(r"../OUTPUT")
 
     # STEP 1: convert files to json if needed (Multithreaded)
     FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON = convert_to_json(input_path)
