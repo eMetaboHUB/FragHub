@@ -1,6 +1,6 @@
 import concurrent.futures
 from tqdm import tqdm
-from loaders import *
+from convertors.loaders import *
 import hashlib
 import ijson
 import json
