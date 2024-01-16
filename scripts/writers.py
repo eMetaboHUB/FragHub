@@ -147,3 +147,66 @@ def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_
     time.sleep(0.1)
     write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv","NEG", update, first_run)
     del NEG_GC_df_insilico
+
+def write_json(df, filename, mode):
+    """
+    :param df: pandas DataFrame object containing the data to be written to JSON.
+    :param filename: string representing the name of the output file. The extension ".csv" in the filename will be replaced by ".json".
+    :return: None
+    This method writes a pandas DataFrame object to a JSON array in file. The output file is saved in the "../OUTPUT/JSON/{mode}" directory with the same name as the input file,
+    but with the extension changed to ".json".
+    """
+    output_file_path = os.path.join(f"../OUTPUT/JSON/{mode}", filename)
+
+    # Convert the DataFrame to a list of dict records
+    json_records = df.to_dict('records')
+
+    with open(output_file_path, 'w') as f:
+        pbar = tqdm(total=len(json_records), unit=" row", colour="green", desc="{:>70}".format(f"writing {filename}"))
+        f.write('[\n')
+        for i, record in enumerate(json_records):
+            f.write('\t')
+            json.dump(record, f)
+            if i < len(json_records) - 1:  # Avoids adding a comma after the last record
+                f.write(',\n')
+            pbar.update()
+        f.write('\n]')
+
+def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico):
+    """
+    Write JSON files for the given data frames.
+
+    :param POS_LC_df: Positive LC data frame
+    :param POS_GC_df: Positive GC data frame
+    :param NEG_LC_df: Negative LC data frame
+    :param NEG_GC_df: Negative GC data frame
+    :param POS_LC_df_insilico: Positive LC In Silico data frame
+    :param POS_GC_df_insilico: Positive GC In Silico data frame
+    :param NEG_LC_df_insilico: Negative LC In Silico data frame
+    :param NEG_GC_df_insilico: Negative GC In Silico data frame
+    :return: None
+    """
+    time.sleep(0.1)
+    write_json(POS_LC_df, "POS_LC.json", "POS")
+    del POS_LC_df
+    time.sleep(0.1)
+    write_json(POS_GC_df, "POS_GC.json", "POS")
+    del POS_GC_df
+    time.sleep(0.1)
+    write_json(NEG_LC_df, "NEG_LC.json", "NEG")
+    del NEG_LC_df
+    time.sleep(0.1)
+    write_json(NEG_GC_df, "NEG_GC.json", "NEG")
+    del NEG_GC_df
+    time.sleep(0.1)
+    write_json(POS_LC_df_insilico, "POS_LC_In_Silico.json", "POS")
+    del POS_LC_df_insilico
+    time.sleep(0.1)
+    write_json(POS_GC_df_insilico, "POS_GC_In_Silico.json", "POS")
+    del POS_GC_df_insilico
+    time.sleep(0.1)
+    write_json(NEG_LC_df_insilico, "NEG_LC_In_Silico.json", "NEG")
+    del NEG_LC_df_insilico
+    time.sleep(0.1)
+    write_json(NEG_GC_df_insilico, "NEG_GC_In_Silico.json", "NEG")
+    del NEG_GC_df_insilico
