@@ -5,7 +5,7 @@
 cls
 
 
-python ./scripts/MAIN.py
+python ./MAIN.py
 
 pause
 exit
