@@ -1,4 +1,4 @@
-from ..HMDB_completion import *
+from .HMDB_completion import *
 import concurrent.futures
 from tqdm import tqdm
 import re
