@@ -148,7 +148,7 @@ def repair_mol_descriptors(metadata_dict):
 
     return metadata_dict
 
-def delete_no_smiles_inchi_inchikey(metadata_dict):
+def delete_no_smiles_no_inchi(metadata_dict):
     """
     Delete entries from the given metadata dictionary if both 'SMILES' and 'INCHI' keys have NaN values.
 
@@ -303,7 +303,7 @@ def normalize_values(metadata_dict):
 
     metadata_dict = repair_mol_descriptors(metadata_dict)
 
-    metadata_dict = delete_no_smiles_inchi_inchikey(metadata_dict)
+    metadata_dict = delete_no_smiles_no_inchi(metadata_dict)
 
     if metadata_dict:
         metadata_dict = normalize_adduct(metadata_dict)
