@@ -44,6 +44,9 @@ keys_list = ['FILENAME',
              'NUM PEAKS',
              'PEAKS_LIST']
 
+global float_check_pattern
+float_check_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
+
 def convert_keys(metadata_dict):
     """
     Convert keys in metadata_dict based on the provided keys_dict and keys_list.
@@ -111,7 +114,8 @@ def spectrum_cleaning(spectrum):
         return None
 
     if "PRECURSORMZ" in spectrum:
-        if spectrum["PRECURSORMZ"]:
+        if re.search(float_check_pattern, spectrum["PRECURSORMZ"]):
+            spectrum["PRECURSORMZ"] = re.search(float_check_pattern, spectrum["PRECURSORMZ"]).group(1)
             peak_list_np = peak_list_to_np_array(spectrum["PEAKS_LIST"], float(spectrum["PRECURSORMZ"].replace(",", ".")))
             if peak_list_np.size == 0:
                 return {}
