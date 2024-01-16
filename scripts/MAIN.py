@@ -59,15 +59,15 @@ if __name__ == "__main__":
 
     json_dir = os.path.join(input_path, "CONVERTED")
 
-    json_to_process = False
+    files_to_process = False
 
     # Check if there is msp file to process
     if FINAL_MSP or FINAL_XML or FINAL_CSV or FINAL_JSON:
-        json_to_process = True
+        files_to_process = True
 
     # If there is no msp to process: stop python execution
-    if json_to_process == False:
-        sys.exit("There is no json file to process into \"./INPUT/JSON\". Exiting code !")
+    if not files_to_process:
+        sys.exit("There is no files to process. Exiting code !")
 
     # STEP 2: generating FRAGHUBID
     print("{:>70}".format("-- GENERATING FragHub UNIQUE ID --"))
