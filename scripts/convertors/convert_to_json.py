@@ -1,8 +1,8 @@
-from scripts.convertors.json_to_json import *
-from scripts.convertors.msp_to_json import *
-from scripts.convertors.xml_to_json import *
-from scripts.convertors.csv_to_json import *
-from scripts.loaders import *
+from FragHub.scripts.convertors.json_to_json import *
+from FragHub.scripts.convertors.msp_to_json import *
+from FragHub.scripts.convertors.xml_to_json import *
+from FragHub.scripts.convertors.csv_to_json import *
+from FragHub.scripts.loaders import *
 from tqdm import tqdm
 import pandas as pd
 import time
