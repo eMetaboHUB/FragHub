@@ -73,7 +73,7 @@ def xml_to_json_processing(FINAL_XML):
     """
     chunk_size = 5000
     final = []
-    progress_bar = tqdm(total=len(FINAL_XML), unit=" spectrums", colour="green", desc="{:>80}".format("converting XML spectrums"))
+    progress_bar = tqdm(total=len(FINAL_XML), unit=" spectrums", colour="green", desc="{:>70}".format("converting XML spectrums"))
 
     # Dividing the spectrum list into chunks
     for i in range(0, len(FINAL_XML), chunk_size):

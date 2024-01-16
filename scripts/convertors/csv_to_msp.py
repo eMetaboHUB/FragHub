@@ -34,7 +34,7 @@ def dataframe_to_msp(dataframe, name):
         spectra = dataframe_to_msp(dataframe, name)  # Convert DataFrame to list of formatted spectra strings
     """
     spectrum_list = []
-    for index, row in tqdm(dataframe.iterrows(), total=len(dataframe), desc="{:>80}".format(name), colour="green", unit=" row"):
+    for index, row in tqdm(dataframe.iterrows(), total=len(dataframe), desc="{:>70}".format(name), colour="green", unit=" row"):
         COMMENTS = format_comments(row)
         peak_list = ast.literal_eval(row["PEAKS_LIST"])
 

@@ -36,7 +36,7 @@ def concatenate_xml(xml_list):
         result = concatenate_xml(xml_list)
     """
     FINAL_XML = []
-    for files in tqdm(xml_list, total=len(xml_list), unit=" spectrums", colour="green", desc="{:>80}".format("concatenate")):
+    for files in tqdm(xml_list, total=len(xml_list), unit=" spectrums", colour="green", desc="{:>70}".format("concatenate")):
         if files.endswith(".xml"):
             file_name = os.path.basename(files.replace(".xml", ""))
             with open(files, "r", encoding="UTF-8") as xml_file:
@@ -105,7 +105,7 @@ def convert_to_json(input_path):
                 json_to_do = True
     if json_to_do == True:
         time.sleep(0.02)
-        print("{:>80}".format("-- CONVERTING JSON TO JSON --"))
+        print("{:>70}".format("-- CONVERTING JSON TO JSON --"))
         # Concatenate all JSON to a list
         FINAL_JSON = concatenate_JSON(json_list)
         # Convert all bad structured JSON to pretty structured JSON (Multithreaded)
@@ -125,7 +125,7 @@ def convert_to_json(input_path):
                 msp_to_do = True
     if msp_to_do == True:
         time.sleep(0.02)
-        print("{:>80}".format("-- CONVERTING MSP TO JSON --"))
+        print("{:>70}".format("-- CONVERTING MSP TO JSON --"))
         # Concatenate all MSP to a list
         FINAL_MSP = concatenate_MSP(msp_list)
         # Convert all MSP spectrum to JSON spectrum (Multithreaded)
@@ -145,7 +145,7 @@ def convert_to_json(input_path):
                 xml_to_do = True
     if xml_to_do == True:
         time.sleep(0.02)
-        print("{:>80}".format("-- CONVERTING XML TO JSON --"))
+        print("{:>70}".format("-- CONVERTING XML TO JSON --"))
         # Concatenate all XML to a list
         FINAL_XML = concatenate_xml(xml_list)
         # Convert all XML spectrum to XML spectrum (Multithreaded)
@@ -165,7 +165,7 @@ def convert_to_json(input_path):
                 csv_to_do = True
     if csv_to_do == True:
         time.sleep(0.02)
-        print("{:>80}".format("-- CONVERTING CSV TO JSON --"))
+        print("{:>70}".format("-- CONVERTING CSV TO JSON --"))
         # Concatenate all CSV to a list
         FINAL_CSV = concatenate_csv(csv_list)
         # Convert all CSV spectrum to JSON spectrum (Multithreaded)

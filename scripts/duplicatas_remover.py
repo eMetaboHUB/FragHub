@@ -15,7 +15,7 @@ def removing_duplicates(dataframe, name, mode, update, first_run):
         dataframe = pd.concat([dataframe, csv_dataframe])
 
     total_rows = len(dataframe)
-    t = tqdm(total=len(dataframe), desc="{:>80}".format(name), colour="green", unit=" row")
+    t = tqdm(total=len(dataframe), desc="{:>70}".format(name), colour="green", unit=" row")
 
     # Supprimer les doublons et mettre à jour la barre de progression
     dataframe = dataframe.loc[~dataframe.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]

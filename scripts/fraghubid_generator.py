@@ -71,7 +71,7 @@ def genrate_fraghubid_processing(spectrum_list, files):
     """
     filename = os.path.basename(files)
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(genrate_fraghubid, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>80}".format(f"generating FragHubID on [{filename}]")))
+        results = list(tqdm(executor.map(genrate_fraghubid, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>70}".format(f"generating FragHubID on [{filename}]")))
 
     final = [res for res in results if res is not None]
 

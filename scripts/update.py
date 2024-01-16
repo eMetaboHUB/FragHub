@@ -48,7 +48,7 @@ def check_for_update_processing(spectrum_list):
 
     chunk_size = 5000
     final = []
-    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>80}".format("checking for updates"))
+    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>70}".format("checking for updates"))
 
     # Dividing the spectrum list into chunks
     for i in range(0, len(spectrum_list), chunk_size):
