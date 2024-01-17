@@ -7,7 +7,7 @@ global metadata_pattern
 metadata_pattern = re.compile(r"^  <(.*?)>(.*?)(?:</.*?>)\n", flags=re.MULTILINE)
 
 global peak_list_pattern
-peak_list_pattern = re.compile(r"^      <mass-charge>(.*?)</mass-charge>\n      <intensity>(.*?)</intensity>")
+peak_list_pattern = re.compile(r"^      <mass-charge>(.*?)</mass-charge>\n      <intensity>(.*?)</intensity>", flags=re.MULTILINE)
 
 global hmdb_pattern
 hmdb_pattern = re.compile(r"HMDB.*")
@@ -19,7 +19,7 @@ def structure_metadata_and_peak_list(metadata, peak_list):
     :return: the structured spectrum JSON object
     """
     spectrum_json = {key.lower(): value for (key, value) in metadata}
-    spectrum_json["peaks"] = [[i, j] for i, j in peak_list]
+    spectrum_json["peaks"] = [[float(i), float(j)] for i, j in peak_list]
 
     return spectrum_json
 
