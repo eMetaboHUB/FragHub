@@ -35,9 +35,12 @@ def convert_MoNA_json(json_dict):
     except:
         dict_final["compound_name"] = ''
 
-    for i in range(len(json_dict["compound"][0]["metaData"])):
-        if json_dict["compound"][0]["metaData"][i]["name"] in ["molecular formula", "SMILES", "InChI", "InChIKey"] and not json_dict["compound"][0]["metaData"][i]["computed"]:
-            dict_final[json_dict["compound"][0]["metaData"][i]["name"].lower()] = json_dict["compound"][0]["metaData"][i]["value"]
+    try:
+        for i in range(len(json_dict["compound"][0]["metaData"])):
+            if json_dict["compound"][0]["metaData"][i]["name"] in ["molecular formula", "SMILES", "InChI", "InChIKey"] and not json_dict["compound"][0]["metaData"][i]["computed"]:
+                dict_final[json_dict["compound"][0]["metaData"][i]["name"].lower()] = json_dict["compound"][0]["metaData"][i]["value"]
+    except:
+        print(json_dict)
 
     dict_final["spectrum_id"] = json_dict["id"]
 
