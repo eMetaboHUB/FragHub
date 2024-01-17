@@ -90,6 +90,10 @@ if __name__ == "__main__":
     time.sleep(0.01)
     print("{:>70}".format(f"-- CHECKING FOR UPDATES --"))
     spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list)
+
+    if not spectrum_list:
+        sys.exit("There is no new spectrums to clean from databases. Exiting code !")
+
     if update_temp:
         update = True
     if first_run_temp:
@@ -97,6 +101,9 @@ if __name__ == "__main__":
     time.sleep(0.01)
     print("{:>70}".format(f"-- CLEANING SPECTRUMS --"))
     spectrum_list = spectrum_cleaning_processing(spectrum_list)
+
+    if not spectrum_list:
+        sys.exit("There is no spectrums to process after cleaning. Exiting code !")
 
     spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns].astype(str)
 
