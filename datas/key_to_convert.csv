@@ -70,10 +70,12 @@ ch$nominal_mass;nominalmass
 ch$smiles;smiles
 charge;charge
 colenergy;collisionenergy
+collision energy;collisionenergy
 collision_energy;collisionenergy
 collision_gas;collisiongas
-collision-energy-voltage;collisionenergy
 collisionenergy;collisionenergy
+collision-energy-level;collisionenergy
+collision-energy-voltage;collisionenergy
 collisiongas;collisiongas
 column;columnname
 columnname;columnname
@@ -117,12 +119,14 @@ inchi;inchi
 inchiaux;inchiaux
 inchikey;inchikey
 instrument;instrument
+instrument type;instrumenttype
 instrument_type;instrumenttype
-instrument-type;instrumenttype
 instrumenttype;instrumenttype
+instrument-type;instrumenttype
 ion_mode;ionmode
 ion_source;ionization
 ionimethod;ionization
+ionization mode;ionmode
 ionization-mode;ionmode
 ionmode;ionmode
 ionpol;ionmode
@@ -138,7 +142,7 @@ mass_range;massrangemz
 massrange;massrangemz
 massrangemz;massrangemz
 maximum_intensity;basepeakintensity
-ms_level;mslevel
+ms level;mslevel
 ms$data_processing:charge_deconvoluted;chargedeconvolved
 ms$data_processing:find_peak;dataprocessingfindpeak
 ms$data_processing:software_system_id;softwaresystemid
@@ -156,6 +160,7 @@ ms$focused_ion:peak_width;peakwidth
 ms$focused_ion:precursor_ion_purity;precursorionpurity
 ms$focused_ion:precursor_m/z;precursormz
 ms$focused_ion:precursor_type;precursortype
+ms_level;mslevel
 mslevel;mslevel
 msn_pathway;msnpathway
 mw;nominalmass
@@ -166,6 +171,9 @@ ontology;compoundclass
 organism;organismname
 origin;origin
 parentmass;parentmass
+peaks;peaks_list
+peaks_json;peaks_list
+peaks_list;peaks_list
 peakwidth;peakwidth
 peptide_mods;peptidemodifications
 peptide_sequence;peptidesequence
@@ -174,6 +182,7 @@ pk$annotation;peakannotations
 pk$num_peak;numpeaks
 pk$splash;splash
 precursor;precursormz
+precursor m/z;precursormz
 precursor type;precursortype
 precursor_charge;charge
 precursor_mass;precursormz
@@ -197,6 +206,7 @@ resolution;resolution
 retention_index;retentionindex
 retentionindex;retentionindex
 retentiontime;retentiontime
+retention-time;retentiontime
 rettime;retentiontime
 ri;retentionindex
 rt;retentiontime
@@ -214,6 +224,8 @@ sp$link;samplelink
 sp$sample;sample
 sp$scientific_name;organismname
 special_fragmentation;fragmentationmode
+spectrum;peaks_list
+spectrum_id;spectrumid
 spectrum_type;mslevel
 spectrumid;spectrumid
 stdinchi;inchi
@@ -224,13 +236,3 @@ targetgas;targetgas
 targetgaspres;targetgaspressure
 targetgaspressure;targetgaspressure
 title;title
-peaks;peaks_list
-peaks_json;peaks_list
-spectrum;peaks_list
-spectrum_id;spectrumid
-ms level;mslevel
-instrument type;instrumenttype
-ionization mode;ionmode
-collision energy;collisionenergy
-precursor m/z;precursormz
-peaks_list;peaks_list
