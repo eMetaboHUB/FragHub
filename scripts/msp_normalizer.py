@@ -114,8 +114,8 @@ def spectrum_cleaning(spectrum):
         return None
 
     if "PRECURSORMZ" in spectrum:
-        if re.search(float_check_pattern, spectrum["PRECURSORMZ"]):
-            spectrum["PRECURSORMZ"] = re.search(float_check_pattern, spectrum["PRECURSORMZ"]).group(1)
+        if re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])):
+            spectrum["PRECURSORMZ"] = re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])).group(1)
             peak_list_np = peak_list_to_np_array(spectrum["PEAKS_LIST"], float(spectrum["PRECURSORMZ"].replace(",", ".")))
             if peak_list_np.size == 0:
                 return {}
