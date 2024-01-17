@@ -4,7 +4,7 @@ from tqdm import tqdm
 import re
 
 global metadata_pattern
-metadata_pattern = re.compile(r"^  <(.*?)>(.*?)(?:</.*?>)\n")
+metadata_pattern = re.compile(r"^  <(.*?)>(.*?)(?:</.*?>)\n", flags=re.MULTILINE)
 
 global peak_list_pattern
 peak_list_pattern = re.compile(r"^      <mass-charge>(.*?)</mass-charge>\n      <intensity>(.*?)</intensity>")
