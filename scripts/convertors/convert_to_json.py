@@ -42,7 +42,7 @@ def concatenate_xml(xml_list):
             with open(files, "r", encoding="UTF-8") as xml_file:
                 xml_content = xml_file.read()
             # Add filename to xml
-            xml_content = re.sub("</sample-mass>\n",f"</sample-mass>\n  <filename>{file_name}</filename>\n",xml_content)
+            xml_content = re.sub("</id>\n",f"</id>\n  <filename>{file_name}</filename>\n",xml_content)
 
             FINAL_XML.extend([xml_content])
 
