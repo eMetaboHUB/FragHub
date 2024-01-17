@@ -25,7 +25,6 @@ def complete_HMDB_spectrum(spectrum):
             spectrum["SMILES"] = line["SMILES"].values[0]
             spectrum["INCHI"] = line["INCHI"].values[0]
             spectrum["MOLECULAR_FORMULA"] = line["MOLECULAR_FORMULA"].values[0]
-            spectrum["ACC_MASS"] = line["ACC_MASS"].values[0]
             return spectrum
 
     return None
