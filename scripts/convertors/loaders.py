@@ -41,12 +41,11 @@ def load_spectrum_list_from_msp(msp_file_path):
 
 def load_spectrum_list_json(json_file_path):
     """
-    Load spectra from a JSON file and return a list of spectra.
+    Load spectra from a JSON file and return a generator of spectra.
 
     :param json_file_path: Path to the JSON file.
-    :return: List of spectra.
+    :return: Generator of spectra.
     """
-    spectrum_list = []
 
     # First, calculate total bytes for tqdm
     total_bytes = os.path.getsize(json_file_path)
@@ -57,10 +56,10 @@ def load_spectrum_list_json(json_file_path):
         # Create tqdm progress bar
         progress = tqdm(total=total_bytes, unit="B", unit_scale=True, colour="green", desc="{:>70}".format("Loading file"))
 
+        filename = os.path.basename(json_file_path)
         for spectrum in spectra:
-            spectrum["filename"] = os.path.basename(json_file_path)
-            spectrum_list.append(spectrum)
+            spectrum["filename"] = filename
             progress.update(len(str(spectrum)))
-        progress.close()
+            yield spectrum
 
-    return spectrum_list
+        progress.close()
