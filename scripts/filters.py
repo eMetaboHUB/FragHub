@@ -46,7 +46,7 @@ def check_minimum_peak_requiered(peak_array, n_peaks):
     else:
         return peak_array
 
-def normalize_intensity(peak_array, spectrum):
+def normalize_intensity(peak_array):
     """
     Normalize the intensity values of a numpy array.
 
