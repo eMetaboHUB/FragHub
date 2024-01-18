@@ -45,6 +45,7 @@ ac$mass_spectrometry:target_gas;targetgas
 ac$mass_spectrometry:target_gas_pressure;targetgaspressure
 ac$mass_spectrometry:trap_drive;trapdrivevalue
 accession;spectrumid
+adduct;precursortype
 authors;authors
 averagemass;averagemass
 ch$compound_class;compoundclass
@@ -73,9 +74,9 @@ colenergy;collisionenergy
 collision energy;collisionenergy
 collision_energy;collisionenergy
 collision_gas;collisiongas
-collisionenergy;collisionenergy
 collision-energy-level;collisionenergy
 collision-energy-voltage;collisionenergy
+collisionenergy;collisionenergy
 collisiongas;collisiongas
 column;columnname
 columnname;columnname
@@ -121,8 +122,8 @@ inchikey;inchikey
 instrument;instrument
 instrument type;instrumenttype
 instrument_type;instrumenttype
-instrumenttype;instrumenttype
 instrument-type;instrumenttype
+instrumenttype;instrumenttype
 ion_mode;ionmode
 ion_source;ionization
 ionimethod;ionization
@@ -143,6 +144,7 @@ massrange;massrangemz
 massrangemz;massrangemz
 maximum_intensity;basepeakintensity
 ms level;mslevel
+ms_level;mslevel
 ms$data_processing:charge_deconvoluted;chargedeconvolved
 ms$data_processing:find_peak;dataprocessingfindpeak
 ms$data_processing:software_system_id;softwaresystemid
@@ -160,7 +162,6 @@ ms$focused_ion:peak_width;peakwidth
 ms$focused_ion:precursor_ion_purity;precursorionpurity
 ms$focused_ion:precursor_m/z;precursormz
 ms$focused_ion:precursor_type;precursortype
-ms_level;mslevel
 mslevel;mslevel
 msn_pathway;msnpathway
 mw;nominalmass
@@ -204,9 +205,9 @@ record title;title
 related_cas#;cas
 resolution;resolution
 retention_index;retentionindex
+retention-time;retentiontime
 retentionindex;retentionindex
 retentiontime;retentiontime
-retention-time;retentiontime
 rettime;retentiontime
 ri;retentionindex
 rt;retentiontime
