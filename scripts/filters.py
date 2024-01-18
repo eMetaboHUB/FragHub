@@ -46,7 +46,7 @@ def check_minimum_peak_requiered(peak_array, n_peaks):
     else:
         return peak_array
 
-def normalize_intensity(peak_array):
+def normalize_intensity(peak_array, spectrum):
     """
     Normalize the intensity values of a numpy array.
 
@@ -57,9 +57,12 @@ def normalize_intensity(peak_array):
     :return: The input numpy array with normalized intensity values.
     :rtype: numpy.ndarray
     """
-    peak_array[:, 1] = peak_array[:, 1] / peak_array[:, 1].max()
+    if peak_array[:, 1].max() != 0:
+        peak_array[:, 1] = peak_array[:, 1] / peak_array[:, 1].max()
 
-    return peak_array
+        return peak_array
+
+    return np.array([])
 
 def keep_mz_in_range(peak_array, mz_from, mz_to):
     """
@@ -107,12 +110,12 @@ def apply_filters(peak_array, precursormz):
 
     if parameters_dict['check_minimum_peak_requiered'] == 1.0:
         peak_array = check_minimum_peak_requiered(peak_array, n_peaks)
-        if len(peak_array) == 0:
+        if peak_array.size == 0:
             return np.array([])
 
     if parameters_dict['remove_peak_above_precursormz'] == 1.0:
         peak_array = remove_peak_above_precursormz(peak_array, precursormz)
-        if len(peak_array) == 0:
+        if peak_array.size == 0:
             return np.array([])
 
     if parameters_dict['reduce_peak_list'] == 1.0:
@@ -120,6 +123,8 @@ def apply_filters(peak_array, precursormz):
 
     if parameters_dict['normalize_intensity'] == 1.0:
         peak_array = normalize_intensity(peak_array)
+        if peak_array.size == 0:
+            return np.array([])
 
     if parameters_dict['keep_mz_in_range'] == 1.0:
         peak_array = keep_mz_in_range(peak_array, mz_from, mz_to)
@@ -127,7 +132,7 @@ def apply_filters(peak_array, precursormz):
     if parameters_dict['check_minimum_of_high_peaks_requiered'] == 1.0:
         peak_array = check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peaks)
 
-    if len(peak_array) == 0:
+    if peak_array.size == 0:
         return np.array([])
 
     return peak_array
