@@ -13,7 +13,7 @@ NB: Make sure that python is in the path variables and that you run Python >= 3.
 To use this programme:
 
 1) Put your msp, json, csv or xml files into "INPUT/\<dedicated folder\>".
-2) CSV files need to be separated by ";" and peaks columns need to be named "peaks"<br>
+2) CSV files need to be separated by ";" and peaks columns need to be named "peaks" and formatted like this '"[[79.054840, 12486.074219], [79.629868, 854.089905]]"'<br>
 3) Double-click on your corresponding OS run script into RUN folder.<br>
 4) when the execution is finished, copy your cleaned msp files <br>"OUTPUT/MSP/(POS or NEG)"<br>and<br>csv version of the cleaned msp (POS and NEG) into<br>"OUTPUT/CSV/(POS or NEG)"
 5) DO NOT DELETE FILES INTO "OUTPUT" AFTER COPY CLEANED VERSIONS.
