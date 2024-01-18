@@ -39,6 +39,43 @@ def load_spectrum_list_from_msp(msp_file_path):
 
     return spectrum_list
 
+def load_spectrum_list_from_mgf(mgf_file_path):
+    """
+    Load a spectrum list from a given MGF (Mascot Generic Format) file.
+
+    :param mgf_file_path: The path to the MGF file.
+    :return: The list of spectra read from the file. Each spectrum is represented as a string.
+
+    Example usage:
+    ```
+    mgf_file_path = "path/to/spectrum.mgf"
+    spectrum_list = load_spectrum_list_from_mgf(mgf_file_path)
+    print(spectrum_list)
+    ```
+    """
+    filename = os.path.basename(mgf_file_path)
+    spectrum_list = []
+    buffer = []
+
+    total_size = os.path.getsize(mgf_file_path)  # get the total size of the file in bytes
+
+    with open(mgf_file_path, 'r', encoding="UTF-8") as file:
+        for line in tqdm(file, total=total_size, unit="B", unit_scale=True, colour="green", desc="{:>70}".format(f"loading [{filename}]")): # wrap this with tqdm
+            if line.strip() == 'END IONS':
+                if buffer:
+                    spectrum_list.append('\n'.join(buffer))
+                    buffer = []
+            else:
+                if not buffer:
+                    buffer.append(f"FILENAME={os.path.basename(mgf_file_path)}") # adding filename to spectrum
+                buffer.append(line.strip())
+
+    # Add the last spectrum to the list
+    if buffer:
+        spectrum_list.append('\n'.join(buffer))
+
+    return spectrum_list
+
 def load_spectrum_list_json(json_file_path):
     """
     Load spectra from a JSON file and return a generator of spectra.
