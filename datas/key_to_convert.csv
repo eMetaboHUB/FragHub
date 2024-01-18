@@ -176,6 +176,7 @@ peaks;peaks_list
 peaks_json;peaks_list
 peaks_list;peaks_list
 peakwidth;peakwidth
+pepmass;precursormz
 peptide_mods;peptidemodifications
 peptide_sequence;peptidesequence
 pi;principalinvestigator
@@ -237,3 +238,4 @@ targetgas;targetgas
 targetgaspres;targetgaspressure
 targetgaspressure;targetgaspressure
 title;title
+unpd_id;spectrumid
