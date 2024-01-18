@@ -70,8 +70,6 @@ def peak_list_to_np_array(peak_list, precursormz):
     :return: A numpy array containing the peak data, with two columns for "mz" and "intensity". The "mz" column contains the m/z values, and the "intensity" column contains the corresponding
     * peak intensities.
     """
-    peak_list = literal_eval(str(peak_list))
-
     # Convert list of tuples to numpy array
     peak_list = np.array(peak_list, dtype=float)
 
@@ -104,9 +102,9 @@ def spectrum_cleaning(spectrum):
     """
     spectrum = convert_keys(spectrum)
 
-    peaks_list_test = literal_eval(str(spectrum["PEAKS_LIST"]))
+    peak_list = spectrum["PEAKS_LIST"]
 
-    if not peaks_list_test:
+    if not peak_list:
         return None
 
     spectrum = normalize_values(spectrum)
@@ -117,7 +115,7 @@ def spectrum_cleaning(spectrum):
     if "PRECURSORMZ" in spectrum:
         if re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])):
             spectrum["PRECURSORMZ"] = re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])).group(1)
-            peak_list_np = peak_list_to_np_array(spectrum["PEAKS_LIST"], float(spectrum["PRECURSORMZ"].replace(",", ".")))
+            peak_list_np = peak_list_to_np_array(peak_list, float(spectrum["PRECURSORMZ"].replace(",", ".")))
             if peak_list_np.size == 0:
                 return {}
             spectrum["NUM PEAKS"] = str(peak_list_np.shape[0])
