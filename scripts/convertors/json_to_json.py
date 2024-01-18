@@ -77,11 +77,14 @@ def json_to_json(json_dict):
 
     Note: The "convert_MoNA_json" function is not implemented in this code, so you need to define it separately before using this method.
     """
-    if "compound" and "id" and "metaData" and "spectrum" and "filename" in json_dict:
+
+    keys_to_check = ["compound", "id", "metaData", "spectrum", "filename"]
+
+    if all(key in json_dict for key in keys_to_check):
         json_dict = convert_MoNA_json(json_dict)
         return json_dict
-    else:
-        return json_dict
+
+    return json_dict
 
 def json_to_json_processing(FINAL_JSON):
     """
