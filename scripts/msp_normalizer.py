@@ -1,4 +1,5 @@
 from values_normalizer import *
+from ast import literal_eval
 import concurrent.futures
 from tqdm import tqdm
 from filters import *
@@ -69,7 +70,7 @@ def peak_list_to_np_array(peak_list, precursormz):
     :return: A numpy array containing the peak data, with two columns for "mz" and "intensity". The "mz" column contains the m/z values, and the "intensity" column contains the corresponding
     * peak intensities.
     """
-    peak_list = eval(str(peak_list))
+    peak_list = literal_eval(str(peak_list))
 
     # Convert list of tuples to numpy array
     peak_list = np.array(peak_list, dtype=float)
@@ -103,12 +104,12 @@ def spectrum_cleaning(spectrum):
     """
     spectrum = convert_keys(spectrum)
 
-    peaks_list = spectrum["PEAKS_LIST"]
+    peaks_list_test = literal_eval(str(spectrum["PEAKS_LIST"]))
+
+    if not peaks_list_test:
+        return None
 
     spectrum = normalize_values(spectrum)
-
-    if peaks_list and spectrum:
-        spectrum["PEAKS_LIST"] = peaks_list
 
     if not spectrum:
         return None
