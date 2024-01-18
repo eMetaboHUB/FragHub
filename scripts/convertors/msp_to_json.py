@@ -161,12 +161,12 @@ def msp_to_json(spectrum):
     :return: The JSON representation of the spectrum.
     """
     metadata, peak_list = extract_metadata_and_peak_list(spectrum)
-    metadata_DF, peak_list = structure_metadata_and_peak_list(metadata, peak_list)
+    metadata, peak_list = structure_metadata_and_peak_list(metadata, peak_list)
     if not metadata or not peak_list:
         return None
-    metadata_DF["peaks"] = peak_list
+    metadata["peaks"] = peak_list
 
-    return metadata_DF
+    return metadata
 
 def msp_to_json_processing(FINAL_MSP):
     """
