@@ -3,7 +3,7 @@ from tqdm import tqdm
 import re
 
 global peak_list_json_to_json_pattern
-peak_list_json_to_json_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
+peak_list_json_to_json_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:|,|, )(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 
 def parse_MoNA_peak_list(peak_list_string):
@@ -67,6 +67,17 @@ def convert_MoNA_json(json_dict):
 
     return dict_final
 
+def parse_others_json_peak_list(peak_list):
+    """
+    Parses a JSON peak list and returns a list of peaks.
+
+    :param peak_list: A JSON string representing the peak list.
+    :return: A list of peak tuples where each tuple contains the mz (float) and intensity (float) values.
+    """
+    peak_list = re.findall(peak_list_json_to_json_pattern, peak_list)
+
+    return [[float(mz), float(intensity)] for mz, intensity in peak_list]
+
 def json_to_json(json_dict):
     """
     :param json_dict: A dictionary representing a JSON object.
@@ -79,12 +90,17 @@ def json_to_json(json_dict):
     """
 
     keys_to_check = ["compound", "id", "metaData", "spectrum", "filename"]
+    peak_list_keys = ["spectrum", "peaks_json", "peaks"]
 
     if all(key in json_dict for key in keys_to_check):
         json_dict = convert_MoNA_json(json_dict)
         return json_dict
-
-    return json_dict
+    else:
+        for key in peak_list_keys:
+            if key in json_dict:
+                json_dict[key] = parse_others_json_peak_list(str(json_dict[key]))
+                return json_dict
+    return None
 
 def json_to_json_processing(FINAL_JSON):
     """
