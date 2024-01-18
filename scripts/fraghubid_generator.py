@@ -15,9 +15,15 @@ global peak_list_split_update_pattern
 peak_list_split_update_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 def get_peak_list_key(spectrum):
-    for key, value in spectrum.items():
-        if isinstance(value, list) and all(isinstance(i, list) and len(i) == 2 and all(isinstance(n, (int, float)) for n in i) for i in value):
+    """
+    :param spectrum: A dictionary representing a spectrum object. It should contain keys related to peaks and their information.
+    :return: The key in the spectrum dictionary that corresponds to the peak list. If no key is found, returns None.
+    """
+    peak_list_keys = ["spectrum", "peaks_json", "peaks"]
+    for key in peak_list_keys:
+        if key in spectrum:
             return key
+
     return None
 
 def hash_spectrum_data(spectrum_data):
@@ -32,22 +38,26 @@ def hash_spectrum_data(spectrum_data):
     spectrum_string = str(spectrum_data)
 
     inchikey = re.search(inchikey_update_pattern, spectrum_string)
-    peak_list = str(spectrum_data[get_peak_list_key(spectrum_data)])
+    key = get_peak_list_key(spectrum_data)
+    if key:
+        peak_list = str(spectrum_data[key])
 
-    if inchikey:
-        inchikey = inchikey.group(1)
+        if inchikey:
+            inchikey = inchikey.group(1)
 
-    if inchikey and peak_list:
-        spectrum_string = inchikey+"\n"+peak_list
+        if inchikey and peak_list:
+            spectrum_string = inchikey+"\n"+peak_list
 
-    # Créer un objet sha256
-    sha256 = hashlib.sha256()
+        # Créer un objet sha256
+        sha256 = hashlib.sha256()
 
-    # Fournir les données de spectre à sha256
-    sha256.update(spectrum_string.encode('utf-8'))
+        # Fournir les données de spectre à sha256
+        sha256.update(spectrum_string.encode('utf-8'))
 
-    # Retourner le hash sha256 en hex
-    return sha256.hexdigest()
+        # Retourner le hash sha256 en hex
+        return sha256.hexdigest()
+
+    return None
 
 def genrate_fraghubid(spectrum):
     """
@@ -57,12 +67,15 @@ def genrate_fraghubid(spectrum):
     :return: The spectrum data with Fragment Hub ID.
     """
     fraghubid = str(hash_spectrum_data(spectrum))
+    if not fraghubid:
+        return None
     new_spectrum = {"FRAGHUBID": fraghubid}
     new_spectrum.update(spectrum)
 
     return new_spectrum
 
-def genrate_fraghubid_processing(spectrum_list, files):
+
+def generate_fraghubid_processing(spectrum_list, files):
     """
     Perform parallel processing of the given spectrum list and generate fraghubid for each spectrum.
 
@@ -70,35 +83,23 @@ def genrate_fraghubid_processing(spectrum_list, files):
     :return: A list of fraghubids generated for each spectrum.
     """
     filename = os.path.basename(files)
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(tqdm(executor.map(genrate_fraghubid, spectrum_list), total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>70}".format(f"generating FragHubID on [{filename}]")))
+    chunk_size = 5000  # Set the size of chunks
+    final = []
 
-    final = [res for res in results if res is not None]
+    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>70}".format(f"generating FragHubID on [{filename}]"))
 
-    return final # returns the list of different worker executions.
+    # Dividing the spectrum list into chunks
+    for i in range(0, len(spectrum_list), chunk_size):
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            chunk = spectrum_list[i:i + chunk_size]  # create a chunk
+            results = list(executor.map(genrate_fraghubid, chunk))
+            progress_bar.update(len(chunk))  # update the progress bar by the size of the chunk processed
 
+        final.extend([res for res in results if res is not None])  # Extend the final results list with results that are not None
 
-def check_fraghubid_already_done(json_file_path):
-    """
-    Check if a FragHubID is already done in a given file.
+    progress_bar.close()
 
-    :param json_file_path: The file path of the JSON file to check.
-    :type json_file_path: str
-    :return: True if a FRAGHUBID is found, False otherwise.
-    :rtype: bool
-    """
-    with open(json_file_path, 'r') as file:
-        # ijson items returns a generator yielding items in a json file
-        objects = ijson.items(file, '')
-
-        first_dict = next(objects)
-
-        # check if 'FRAGHUBID' is in the first dictionary
-        if 'FRAGHUBID' in first_dict:
-            return True
-
-    # 'FRAGHUBID' was not found or file was empty
-    return False
+    return final  # return the final results
 
 def process_converted_after(spectrum_list, mode):
     """
@@ -121,7 +122,7 @@ def process_converted_after(spectrum_list, mode):
         file_path = os.path.abspath("../INPUT/CONVERTED/JSON_converted.json")
         filename = os.path.basename(file_path)
 
-    spectrum_list = genrate_fraghubid_processing(spectrum_list, filename)
+    spectrum_list = generate_fraghubid_processing(spectrum_list, filename)
 
     return spectrum_list
 
