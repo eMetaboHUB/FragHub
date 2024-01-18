@@ -2,6 +2,7 @@ from .json_to_json import *
 from .msp_to_json import *
 from .xml_to_json import *
 from .csv_to_json import *
+from .mgf_to_json import *
 from .loaders import *
 from tqdm import tqdm
 import pandas as pd
@@ -84,6 +85,14 @@ def concatenate_JSON(json_list):
 
     return spectrum_list
 
+def concatenate_MGF(mgf_list):
+    spectrum_list = []
+
+    for files in mgf_list:
+        spectrum_list.extend(load_spectrum_list_from_mgf(files))
+
+    return spectrum_list
+
 def convert_to_json(input_path):
     """
     Converts JSON and XML files to MSP format.
@@ -131,6 +140,26 @@ def convert_to_json(input_path):
         # Convert all MSP spectrum to JSON spectrum (Multithreaded)
         FINAL_MSP = msp_to_json_processing(FINAL_MSP)
 
+    # MGF
+    FINAL_MGF = []
+    mgf_list = []
+    mgf_to_do = False
+    mgf_path = os.path.join(input_path, "MGF")
+    # check if there is a json file into the directory
+    for root, dirs, files in os.walk(mgf_path):
+        for file in files:
+            if file.endswith(".mgf"):
+                mgf_path = os.path.join(root, file)  # Full path to the file
+                mgf_list.append(mgf_path)
+                mgf_to_do = True
+    if mgf_to_do == True:
+        time.sleep(0.02)
+        print("{:>70}".format("-- CONVERTING MGF TO JSON --"))
+        # Concatenate all MGF to a list
+        FINAL_MGF = concatenate_MGF(mgf_list)
+        # Convert all MGF spectrum to JSON spectrum (Multithreaded)
+        FINAL_MGF = mgf_to_json_processing(FINAL_MGF)
+
     # XML
     FINAL_XML = []
     xml_list = []
@@ -171,4 +200,4 @@ def convert_to_json(input_path):
         # Convert all CSV spectrum to JSON spectrum (Multithreaded)
         FINAL_CSV = csv_to_json_processing(FINAL_CSV)
 
-    return FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON
+    return FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF

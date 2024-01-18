@@ -54,14 +54,14 @@ if __name__ == "__main__":
     output_path = os.path.abspath(r"../OUTPUT")
 
     # STEP 1: convert files to json if needed (Multithreaded)
-    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON = convert_to_json(input_path)
+    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = convert_to_json(input_path)
 
     json_dir = os.path.join(input_path, "CONVERTED")
 
     files_to_process = False
 
     # Check if there is msp file to process
-    if FINAL_MSP or FINAL_XML or FINAL_CSV or FINAL_JSON:
+    if FINAL_MSP or FINAL_XML or FINAL_CSV or FINAL_JSON or FINAL_MGF:
         files_to_process = True
 
     # If there is no msp to process: stop python execution
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     # STEP 2: generating FRAGHUBID
     print("{:>70}".format("-- GENERATING FragHub UNIQUE ID --"))
     time.sleep(0.01)
-    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON = generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON)
+    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF)
 
     spectrum_list = []
     spectrum_list.extend(FINAL_MSP)
@@ -82,6 +82,8 @@ if __name__ == "__main__":
     del FINAL_CSV
     spectrum_list.extend(FINAL_JSON)
     del FINAL_JSON
+    spectrum_list.extend(FINAL_MGF)
+    del FINAL_MGF
 
     first_run = False
     update = False
