@@ -121,12 +121,15 @@ def process_converted_after(spectrum_list, mode):
     elif mode == "JSON":
         file_path = os.path.abspath("../INPUT/CONVERTED/JSON_converted.json")
         filename = os.path.basename(file_path)
+    elif mode == "MGF":
+        file_path = os.path.abspath("../INPUT/CONVERTED/MGF_converted.json")
+        filename = os.path.basename(file_path)
 
     spectrum_list = generate_fraghubid_processing(spectrum_list, filename)
 
     return spectrum_list
 
-def generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON):
+def generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF):
     """
     :param msp_directory_path: The path to the MSP directory.
     :return: None
@@ -145,5 +148,7 @@ def generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON):
         FINAL_CSV = process_converted_after(FINAL_CSV, "CSV")
     if FINAL_JSON:
         FINAL_JSON = process_converted_after(FINAL_JSON, "JSON")
+    if FINAL_MGF:
+        FINAL_MGF = process_converted_after(FINAL_MGF, "MGF")
 
-    return FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON
+    return FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF
