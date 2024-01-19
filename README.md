@@ -21,6 +21,25 @@ To use this programme:
 3) When the execution is complete, please remember to take a copy of your cleaned files from the OUTPUT folder and place them in a different location.
 4) **DO NOT DELETE FILES INTO 'OUTPUT' AFTER COPY CLEANED VERSIONS.**
 
+## FILTERS
+
+**check_minimum_peak_requiered(peak_array, n_peaks)**<br>
+This function checks whether a given mass spectrum contains a minimum number of peaks. If the spectrum contains fewer peaks than the minimum requirement, it ignores the spectrum.<br>
+<br>
+**remove_peak_above_precursormz(peak_array, precursormz)**<br>
+This function removes all peaks from the spectrum whose m/z value is greater than the precursor's m/z value plus 5 Da.<br>
+<br>
+**reduce_peak_list(peak_array, max_peaks)**<br>
+This function reduces the peak list to a specified maximum number of peaks. The peaks to retain are chosen based on their intensity, with peaks of greater intensity being selected.<br>
+<br>
+**normalize_intensity(peak_array)**<br>
+This function normalizes the intensity of all the peaks in a given spectrum to the maximum intensity.<br>
+<br>
+**keep_mz_in_range(peak_array, mz_from, mz_to)**<br>
+This function takes an array of peak data (representing mass-to-charge ratio, or m/z) and returns a new array containing only those peaks whose m/z value falls between mz_from and mz_to.<br>
+
+**check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peaks)**<br>
+This function is used to check whether a given array containing peak data has a required minimum number of "high peaks". A "high peak" is defined as a peak whose intensity is above a certain percentage (intensity_percent) of the maximum intensity. If the array does not contain a sufficient number of "high peaks", the function ignore the spectrum.<br>
 
 ## required csv file
 1) CSV files need to be separated by '**;**' with quotechar '**"**'.<br>
