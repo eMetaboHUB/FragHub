@@ -19,7 +19,7 @@ def load_spectrum_list_from_msp(msp_file_path):
     """
     filename = os.path.basename(msp_file_path)
     spectrum_list = []
-    buffer = []
+    buffer = [f"FILENAME: {os.path.basename(msp_file_path)}\n"]  # initialisation of buffer with the filename
 
     total_size = os.path.getsize(msp_file_path)  # get the total size of the file in bytes
 
@@ -27,16 +27,12 @@ def load_spectrum_list_from_msp(msp_file_path):
         for line in tqdm(file, total=total_size, unit="B", unit_scale=True, colour="green", desc="{:>70}".format(f"loading [{filename}]")): # wrap this with tqdm
             if line.strip() == '':
                 if buffer:
-                    spectrum_list.append('\n'.join(buffer))
-                    buffer = []
+                    spectrum = '\n'.join(buffer)
+                    spectrum = re.sub(r"FILENAME: .*\n", f"FILENAME: {os.path.basename(msp_file_path)}\n", spectrum, flags=re.IGNORECASE)
+                    spectrum_list.append(spectrum)
+                    buffer = [f"FILENAME: {os.path.basename(msp_file_path)}\n"]  # buffer reinitialisation with the filename
             else:
-                if not buffer:
-                    buffer.append(f"FILENAME: {os.path.basename(msp_file_path)}") # adding filename to spectrum
                 buffer.append(line.strip())
-
-    # Add the last spectrum to the list
-    if buffer:
-        spectrum_list.append('\n'.join(buffer))
 
     return spectrum_list
 
@@ -56,25 +52,20 @@ def load_spectrum_list_from_mgf(mgf_file_path):
     """
     filename = os.path.basename(mgf_file_path)
     spectrum_list = []
-    buffer = []
+    buffer = [f"FILENAME={os.path.basename(mgf_file_path)}"]  # initialise the buffer with the filename
 
     total_size = os.path.getsize(mgf_file_path)  # get the total size of the file in bytes
 
     with open(mgf_file_path, 'r', encoding="UTF-8") as file:
-        for line in tqdm(file, total=total_size, unit="B", unit_scale=True, colour="green",
-                         desc="{:>70}".format(f"loading [{filename}]")):  # wrap this with tqdm
+        for line in tqdm(file, total=total_size, unit="B", unit_scale=True, colour="green", desc="{:>70}".format(f"loading [{filename}]")):  # wrap this with tqdm
             if line.strip() == 'END IONS':
                 if buffer:
                     spectrum = '\n'.join(buffer)
-                    spectrum = re.sub(r"(FILENAME=.*)|BEGIN IONS", f"FILENAME={os.path.basename(mgf_file_path)}", spectrum, flags=re.IGNORECASE)
+                    spectrum = re.sub(r"FILENAME=.*\n", f"FILENAME={os.path.basename(mgf_file_path)}\n", spectrum, flags=re.IGNORECASE)  # remove any existing 'FILENAME=' line
                     spectrum_list.append(spectrum)
-                    buffer = []
+                    buffer = [f"FILENAME={os.path.basename(mgf_file_path)}"]  # reinitialise the buffer with the filename
             else:
                 buffer.append(line.strip())
-
-    # Add the last spectrum to the list
-    if buffer:
-        spectrum_list.append('\n'.join(buffer))
 
     return spectrum_list
 
