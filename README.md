@@ -14,6 +14,8 @@ To use this programme:
 
 1) Put your msp, mgf, json, csv or xml files into "INPUT/\<dedicated folder\>".
 2) Double-click on your corresponding OS run script into RUN folder.<br>
+   1) ![img.png](img.png)
+   2) ![img_1.png](img_1.png)
 3) when the execution is finished, copy your cleaned msp files <br>"OUTPUT/MSP/(POS or NEG)"<br>and<br>csv version of the cleaned msp (POS and NEG) into<br>"OUTPUT/CSV/(POS or NEG)"
 4) DO NOT DELETE FILES INTO "OUTPUT" AFTER COPY CLEANED VERSIONS.
 
