@@ -48,13 +48,13 @@ def hash_spectrum_data(spectrum_data):
         if inchikey and peak_list:
             spectrum_string = inchikey+"\n"+peak_list
 
-        # Créer un objet sha256
+        # Create a sha256 object
         sha256 = hashlib.sha256()
 
-        # Fournir les données de spectre à sha256
+        # Provide spectrum data to sha256
         sha256.update(spectrum_string.encode('utf-8'))
 
-        # Retourner le hash sha256 en hex
+        # Return hash sha256 to hex
         return sha256.hexdigest()
 
     return None
