@@ -65,6 +65,8 @@ def concatenate_csv(csv_list):
         # Convertir tous les noms de colonnes en minuscules
         df.columns = df.columns.str.lower()
 
+        df = df.astype(str)
+
         df_list.append(df)
 
     df = pd.concat(df_list, ignore_index=True)
