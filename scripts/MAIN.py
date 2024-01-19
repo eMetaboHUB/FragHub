@@ -48,6 +48,9 @@ if __name__ == "__main__":
     # Execution du GUI
     build_window()
 
+    if parameters_dict['reset_updates'] == 1.0:
+        reset_updates()
+
     start_time = time.time()
 
     input_path = os.path.abspath(r"../INPUT")
