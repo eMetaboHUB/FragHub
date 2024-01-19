@@ -1,5 +1,7 @@
 from tkinter import Tk, Checkbutton, Button, Label, Entry, StringVar, IntVar, LEFT, Frame, RIGHT
 from tkinter import ttk  # import ttk module
+import json
+import os
 
 global parameters_dict
 parameters_dict = {}
@@ -117,12 +119,29 @@ def build_window():
 
     root.mainloop()
 
+def remove_files(directory):
+    """
+    Removes all files in the given directory and its subdirectories.
+    """
+    for filename in os.listdir(directory):
+        file_path = os.path.join(directory, filename)
+        if os.path.isfile(file_path):
+            os.remove(file_path)  # remove the file
+        elif os.path.isdir(file_path):
+            remove_files(file_path)  # call this function again
+
 def reset_updates():
     """
     Resets the updates by deleting the contents of the updates.json file and removing any existing output files.
-
-    :return: None
     """
     json_update_path = r"../data/updates.json"
     ouput_path = r"../OUTPUT"
+
+    # Reset the json file - Writing empty json object
+    with open(json_update_path, 'w') as f:
+        json.dump({}, f)
+
+    # Remove output files
+    if os.path.exists(ouput_path):
+        remove_files(ouput_path)
 
