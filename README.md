@@ -6,15 +6,14 @@
 ## INSTALLATION
 
 To install all dependencies, double-click on the install script corresponding to your OS.<br>
-NB 1: **Make sure that python is in the path variables and that you run Python >= 3.9**<br>
-NB 2: 
-If you have a file that contains **only** In-Silico spectra AND this is not specified within the filename or the spectrum, you can simply suffix the filename with "_insilico", like this: "UNPD_ISDB_R_p01_insilico.mgf".<br>
+NB: **Make sure that python is in the path variables and that you run Python >= 3.9**<br>
 
 ## USE
 
 To use this programme:
 
-1) Put your msp, mgf, json, csv or xml files into 'INPUT/\<dedicated folder\>'.
+1) Put your msp, mgf, json, csv or xml files into 'INPUT/\<dedicated folder\>'.<br>
+>NB: If you have a file that contains **only** In-Silico spectra AND this is not specified within the filename or the spectrum, you can simply suffix the filename with "_insilico", like this: "UNPD_ISDB_R_p01_insilico.mgf".<br>
 2) Double-click on your corresponding OS run script into RUN folder.<br>
    1) FragHub GUI start<br>
    2) First tab: This area allows users to select specific functions for inclusion during the processing stage. Moreover, it provides the option to adjust the respective parameters of each function.<br>![img.png](img.png)
