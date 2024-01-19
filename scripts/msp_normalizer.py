@@ -85,10 +85,10 @@ def peak_list_to_str(peak_list_np):
     :param peak_list_np: The input peak list as a numpy array.
     :return: A string representation of the peak list where each row is formatted as a space-separated string of floating point values.
     """
-    # Convertir l'array en liste
+    # Convert array to list
     peak_list_np = peak_list_np.tolist()
 
-    # Convertir la liste en chaîne JSON
+    # Convert list to JSON string
     peak_list_np = str(peak_list_np)
 
     return peak_list_np

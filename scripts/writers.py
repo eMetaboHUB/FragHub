@@ -100,13 +100,13 @@ def write_csv(df, filename, mode, update, first_run):
         for start in range(0, df.shape[0], chunk_size):
             df_slice = df[start:start + chunk_size]
             if start == 0 and first_run:
-                # Écrire les en-têtes pour la première fraction
+                # Write the headers for the first fraction
                 df_slice.to_csv(output_file_path, mode='w', sep=";", quotechar='"', encoding="UTF-8", index=False)
             else:
-                # Append dans le fichier sans écrire les en-têtes pour les autres fractions
+                # Append to file without writing headers for other fractions
                 df_slice.to_csv(output_file_path, mode='a', header=False, index=False, sep=";", quotechar='"', encoding="UTF-8")
 
-            # Mettre à jour la barre de progression
+            # Update progress bar
             pbar.update()
 
 def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_GC_df_insilico,NEG_LC_df_insilico,NEG_GC_df_insilico, first_run, update=False):

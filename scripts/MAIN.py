@@ -45,7 +45,7 @@ ordered_columns = ["FILENAME",
 
 if __name__ == "__main__":
 
-    # Execution du GUI
+    # GUI execution
     build_window()
 
     if parameters_dict['reset_updates'] == 1.0:

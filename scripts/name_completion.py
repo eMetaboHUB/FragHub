@@ -8,10 +8,10 @@ def names_completion(CONCATENATE_DF):
     :return: The modified DataFrame with name completion applied.
 
     """
-    # Définir le nom de la barre de progression
+    # Set progress bar
     tqdm.pandas(total=len(CONCATENATE_DF), colour="green", unit=" row", desc="{:>70}".format("updating names"))
 
-    # Appliquer la transformation par groupe avec une barre de progression
+    # Apply transformation by group with a progress bar
     CONCATENATE_DF['NAME'] = CONCATENATE_DF.groupby('INCHI')['NAME'].progress_transform(lambda group: group.fillna(group.dropna().iloc[0] if group.dropna().size > 0 else ''))
 
     return CONCATENATE_DF
