@@ -21,11 +21,12 @@ def on_done_button_clicked():
 
     :return: None
     """
-    for func in func_names:
-        parameters_dict[func] = float(parameters_dict[func].get())
-
     for key in [
         'reset_updates',
+        'csv',
+        'msp',
+        'json'
+    ] + func_names + [
         'check_minimum_peak_requiered_n_peaks',
         'reduce_peak_list_max_peaks',
         'keep_mz_in_range_from_mz',
@@ -51,11 +52,31 @@ def build_window():
 
     # Create Tab Control
     tabControl = ttk.Notebook(root)
+    # Existing tabs
     tab1 = Frame(tabControl)
     tab2 = Frame(tabControl)
+    # New tab
+    tab3 = Frame(tabControl)
+
     tabControl.add(tab1, text='Update Settings')
     tabControl.add(tab2, text='Filters Settings')
+    # Add the new tab
+    tabControl.add(tab3, text='Output Settings')
+
     tabControl.pack(expand=1, fill='both')
+
+    # Create Checkbuttons in the third tab
+    parameters_dict['csv'] = StringVar()
+    parameters_dict['csv'].set("1.0")
+    Checkbutton(tab3, text=".csv", variable=parameters_dict['csv'], onvalue="1.0", offvalue="0.0").pack()
+
+    parameters_dict['msp'] = StringVar()
+    parameters_dict['msp'].set("1.0")
+    Checkbutton(tab3, text=".msp", variable=parameters_dict['msp'], onvalue="1.0", offvalue="0.0").pack()
+
+    parameters_dict['json'] = StringVar()
+    parameters_dict['json'].set("1.0")
+    Checkbutton(tab3, text=".json", variable=parameters_dict['json'], onvalue="1.0", offvalue="0.0").pack()
 
     # Add Checkbox to tab1
     parameters_dict['reset_updates'] = IntVar()
