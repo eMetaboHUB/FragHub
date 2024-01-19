@@ -6,7 +6,9 @@
 ## INSTALLATION
 
 To install all dependencies, double-click on the install script corresponding to your OS.<br>
-NB: **Make sure that python is in the path variables and that you run Python >= 3.9**<br>
+NB 1: **Make sure that python is in the path variables and that you run Python >= 3.9**<br>
+NB 2: 
+If you have a file that contains **only** In-Silico spectra AND this is not specified within the filename or the spectrum, you can simply suffix the filename with "_insilico", like this: "UNPD_ISDB_R_p01_insilico.mgf".<br>
 
 ## USE
 
