@@ -5,7 +5,7 @@
 
 ## INSTALLATION
 
-To install all dependencies, double-click on "Install.bat".<br>
+To install all dependencies, double-click on the install script corresponding to your OS.<br>
 NB: Make sure that python is in the path variables and that you run Python >= 3.9<br>
 
 ## USE
