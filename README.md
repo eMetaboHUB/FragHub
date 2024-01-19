@@ -15,8 +15,8 @@ To use this programme:
 1) Put your msp, mgf, json, csv or xml files into "INPUT/\<dedicated folder\>".
 2) Double-click on your corresponding OS run script into RUN folder.<br>
    1) FragHub GUI start<br>
-   2) First tab: The 'Reset updates' option, when checked, allows for a reset of everything related to previously encountered spectra. This will also delete all existing files located in the OUTPUT folder.<br>![img.png](img.png)
-   3) Second tab: This area allows users to select specific functions for inclusion during the processing stage. Moreover, it provides the option to adjust the respective parameters of each function.<br>![img_1.png](img_1.png)
+   2) First tab: The 'Reset updates' option, when checked, allows for a reset of everything related to previously encountered spectra. This will also delete all existing files located in the OUTPUT folder.<br>![img_2.png](img_2.png)
+   3) Second tab: This area allows users to select specific functions for inclusion during the processing stage. Moreover, it provides the option to adjust the respective parameters of each function.<br>![img_3.png](img_3.png)
 3) when the execution is finished, copy your cleaned msp files <br>"OUTPUT/MSP/(POS or NEG)"<br>and<br>csv version of the cleaned msp (POS and NEG) into<br>"OUTPUT/CSV/(POS or NEG)"
 4) DO NOT DELETE FILES INTO "OUTPUT" AFTER COPY CLEANED VERSIONS.
 
