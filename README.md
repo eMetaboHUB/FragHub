@@ -22,9 +22,9 @@ To use this programme:
 
 
 ## required csv file
-1) CSV files need to be separated by ';' with quotechar '"'.<br>
-2) peaks columns need to be named 'peaks'.<br>
-3) 'peaks' column need to be formatted with one of the following format, in string:
+1) CSV files need to be separated by '**;**' with quotechar '**"**'.<br>
+2) peaks columns need to be named '**peaks**'.<br>
+3) '**peaks**' column need to be formatted with one of the following format, in string:
    1) >"[[79.054840, 12486.074219], [79.629868, 854.089905]]"
    2) > "<br>
    57.07042529 0.7697591662<br>
