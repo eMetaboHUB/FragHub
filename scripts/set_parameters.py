@@ -14,10 +14,16 @@ func_names = [
 ]
 
 def on_done_button_clicked():
+    """
+    Closes the root window and converts the values in the parameters_dict dictionary to floats.
+
+    :return: None
+    """
     for func in func_names:
         parameters_dict[func] = float(parameters_dict[func].get())
 
     for key in [
+        'reset_updates',
         'check_minimum_peak_requiered_n_peaks',
         'reduce_peak_list_max_peaks',
         'keep_mz_in_range_from_mz',
@@ -32,6 +38,11 @@ def on_done_button_clicked():
 
 
 def build_window():
+    """
+    Builds a window for setting filters parameters.
+
+    :return: None
+    """
     global root
     root = Tk()
     root.title("Set filters parameters")
@@ -105,3 +116,13 @@ def build_window():
     Button(root, text="Done", command=on_done_button_clicked).pack()
 
     root.mainloop()
+
+def reset_updates():
+    """
+    Resets the updates by deleting the contents of the updates.json file and removing any existing output files.
+
+    :return: None
+    """
+    json_update_path = r"../data/updates.json"
+    ouput_path = r"../OUTPUT"
+
