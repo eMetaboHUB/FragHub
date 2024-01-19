@@ -17,11 +17,11 @@ def removing_duplicates(dataframe, name, mode, update, first_run):
     total_rows = len(dataframe)
     t = tqdm(total=len(dataframe), desc="{:>70}".format(name), colour="green", unit=" row")
 
-    # Supprimer les doublons et mettre à jour la barre de progression
+    # Delete duplicates and update progress bar
     dataframe = dataframe.loc[~dataframe.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
     t.update(total_rows)
 
-    # Fermer la barre de progression
+    # Close progress bar
     t.close()
 
     return dataframe
