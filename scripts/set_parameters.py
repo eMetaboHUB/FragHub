@@ -79,7 +79,7 @@ def build_window():
 
     # Add Checkbox to tab1
     parameters_dict['reset_updates'] = IntVar()
-    Checkbutton(tab1, text='Reset updates', variable=parameters_dict['reset_updates'], onvalue=True, offvalue=False).pack()
+    Checkbutton(tab1, text='Reset updates', variable=parameters_dict['reset_updates'], onvalue=True, offvalue=False, fg='red', font=("Helvetica", 9, 'bold')).pack()
 
     for func in func_names:
         parameters_dict[func] = StringVar()
