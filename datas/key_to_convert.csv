@@ -72,6 +72,7 @@ ch$smiles;smiles
 charge;charge
 colenergy;collisionenergy
 collision energy;collisionenergy
+collision energy;collisionenergy
 collision_energy;collisionenergy
 collision_gas;collisiongas
 collision-energy-level;collisionenergy
@@ -100,6 +101,7 @@ compound id;spectrumid
 compound_name;name
 compound_name;name
 compound_type;compoundclass
+compoundname;name
 computed_inchi;inchi
 computed_inchikey;inchikey
 computed_smiles;smiles
@@ -110,6 +112,7 @@ datacollector;datacollector
 date;recorddate
 db;spectrumid
 db#;spectrumid
+dbid;spectrumid
 exact_mass;exactmass
 exactmass;exactmass
 filename;filename
@@ -185,6 +188,7 @@ pk$num_peak;numpeaks
 pk$splash;splash
 precursor;precursormz
 precursor m/z;precursormz
+precursor type;precursortype
 precursor type;precursortype
 precursor_charge;charge
 precursor_mass;precursormz
