@@ -1,4 +1,5 @@
 from tkinter import Tk, Checkbutton, Button, Label, Entry, StringVar, IntVar, LEFT, Frame, RIGHT
+from tkinter import ttk  # import ttk module
 
 global parameters_dict
 parameters_dict = {}
@@ -35,11 +36,23 @@ def build_window():
     root = Tk()
     root.title("Set filters parameters")
 
+    # Create Tab Control
+    tabControl = ttk.Notebook(root)
+    tab1 = Frame(tabControl)
+    tab2 = Frame(tabControl)
+    tabControl.add(tab1, text='Update Settings')
+    tabControl.add(tab2, text='Filters Settings')
+    tabControl.pack(expand=1, fill='both')
+
+    # Add Checkbox to tab1
+    parameters_dict['reset_updates'] = IntVar()
+    Checkbutton(tab1, text='Reset updates', variable=parameters_dict['reset_updates'], onvalue=True, offvalue=False).pack()
+
     for func in func_names:
         parameters_dict[func] = StringVar()
         parameters_dict[func].set(True)
 
-        frame = Frame(root)
+        frame = Frame(tab2)
         frame.pack(fill='x')
 
         frame_func = Frame(frame)
