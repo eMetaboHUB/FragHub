@@ -1,6 +1,7 @@
 from tqdm import tqdm
 import ijson
 import os
+import re
 
 def load_spectrum_list_from_msp(msp_file_path):
     """
@@ -60,14 +61,15 @@ def load_spectrum_list_from_mgf(mgf_file_path):
     total_size = os.path.getsize(mgf_file_path)  # get the total size of the file in bytes
 
     with open(mgf_file_path, 'r', encoding="UTF-8") as file:
-        for line in tqdm(file, total=total_size, unit="B", unit_scale=True, colour="green", desc="{:>70}".format(f"loading [{filename}]")): # wrap this with tqdm
+        for line in tqdm(file, total=total_size, unit="B", unit_scale=True, colour="green",
+                         desc="{:>70}".format(f"loading [{filename}]")):  # wrap this with tqdm
             if line.strip() == 'END IONS':
                 if buffer:
-                    spectrum_list.append('\n'.join(buffer))
+                    spectrum = '\n'.join(buffer)
+                    spectrum = re.sub(r"(FILENAME=.*)|BEGIN IONS", f"FILENAME={os.path.basename(mgf_file_path)}", spectrum, flags=re.IGNORECASE)
+                    spectrum_list.append(spectrum)
                     buffer = []
             else:
-                if not buffer:
-                    buffer.append(f"FILENAME={os.path.basename(mgf_file_path)}") # adding filename to spectrum
                 buffer.append(line.strip())
 
     # Add the last spectrum to the list
