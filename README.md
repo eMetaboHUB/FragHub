@@ -18,7 +18,7 @@ To use this programme:
    2) First tab: The 'Reset updates' option, when checked, allows for a reset of everything related to previously encountered spectra. This will also delete all existing files located in the OUTPUT folder.<br>![img_2.png](img_2.png)
    3) Second tab: This area allows users to select specific functions for inclusion during the processing stage. Moreover, it provides the option to adjust the respective parameters of each function.<br>![img_3.png](img_3.png)
 3) When the execution is complete, please remember to take a copy of your cleaned files from the OUTPUT folder and place them in a different location.
-4) **DO NOT DELETE FILES INTO "OUTPUT" AFTER COPY CLEANED VERSIONS.**
+4) **DO NOT DELETE FILES INTO 'OUTPUT' AFTER COPY CLEANED VERSIONS.**
 
 
 ## required csv file
