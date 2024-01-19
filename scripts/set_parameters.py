@@ -119,22 +119,26 @@ def build_window():
 
     root.mainloop()
 
+
 def remove_files(directory):
     """
-    Removes all files in the given directory and its subdirectories.
+    Removes all files (except .gitkeep) in the given directory and its subdirectories.
     """
     for filename in os.listdir(directory):
+        if filename == '.gitkeep':
+            continue  # skip .gitkeep files
+
         file_path = os.path.join(directory, filename)
         if os.path.isfile(file_path):
             os.remove(file_path)  # remove the file
         elif os.path.isdir(file_path):
-            remove_files(file_path)  # call this function again
+            remove_files(file_path)  # call this function again with the subdirectory
 
 def reset_updates():
     """
     Resets the updates by deleting the contents of the updates.json file and removing any existing output files.
     """
-    json_update_path = r"../data/updates.json"
+    json_update_path = r"../datas/update.json"
     ouput_path = r"../OUTPUT"
 
     # Reset the json file - Writing empty json object
