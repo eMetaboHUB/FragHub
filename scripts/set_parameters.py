@@ -58,10 +58,9 @@ def build_window():
     # New tab
     tab3 = Frame(tabControl)
 
-    tabControl.add(tab1, text='Update Settings')
     tabControl.add(tab2, text='Filters Settings')
-    # Add the new tab
     tabControl.add(tab3, text='Output Settings')
+    tabControl.add(tab1, text='Update Settings')
 
     tabControl.pack(expand=1, fill='both')
 
