@@ -47,7 +47,7 @@ def build_window():
     """
     global root
     root = Tk()
-    root.title("Set filters parameters")
+    root.title("FragHub")
 
     # Create Tab Control
     tabControl = ttk.Notebook(root)
