@@ -37,21 +37,25 @@ def apply_transformations(inchi_smiles):
 
     return transforms
 
-
 def map_transformations(row, unique_transforms):
     """
-    Maps transformations to each row based on the values of 'INCHI' or 'SMILES' columns.
+    Transforms the given row based on the unique transformations specified.
 
-    :param row: A pandas DataFrame row.
-    :param unique_transforms: A dictionary that maps unique values of 'INCHI' or 'SMILES' to transformations.
-    :return: The updated row with the transformations applied.
+    :param row: A dictionary representing a row of data.
+    :param unique_transforms: A dictionary of unique transformations.
+    :return: The transformed row.
     """
-    if row['INCHI'] in unique_transforms:
-        row.update(pd.Series(unique_transforms[row['INCHI']]))
-    elif row['SMILES'] in unique_transforms:
-        row.update(pd.Series(unique_transforms[row['SMILES']]))
-    return row
+    original_inchi = row['INCHI'] if pd.notna(row['INCHI']) else None
+    original_smiles = row['SMILES'] if pd.notna(row['SMILES']) else None
 
+    if original_inchi and original_inchi in unique_transforms:
+        for key, value in unique_transforms[original_inchi].items():
+            row[key] = value
+    elif original_smiles and original_smiles in unique_transforms:
+        for key, value in unique_transforms[original_smiles].items():
+            row[key] = value
+
+    return row
 
 def mols_derivation_and_calculation(CONCATENATE_DF):
     """
