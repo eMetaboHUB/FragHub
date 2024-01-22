@@ -13,8 +13,6 @@ import time
 import sys
 import os
 
-RDLogger.DisableLog('rdApp.*')  # Disable rdkit log (warning) messages
-
 ordered_columns = ["FILENAME",
                    "PREDICTED",
                    "FRAGHUBID",
