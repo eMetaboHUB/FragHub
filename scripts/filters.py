@@ -8,13 +8,9 @@ def remove_peak_above_precursormz(peak_array, precursormz):
     :param precursormz: float representing the precursor m/z value
     :return: filtered numpy array with peaks below the specified precursor m/z value + 5 Da
     """
-    if not isinstance(precursormz, float):
-        try:
-            precursormz = float(precursormz)
-            peak_array = peak_array[peak_array[:,0] < precursormz + 5.0]  # Removing peaks with mz > precursormz + 5 Da
-            return peak_array
-        except:
-            return np.empty((0,2))
+    if isinstance(precursormz, float):
+        peak_array = peak_array[peak_array[:,0] < precursormz + 5.0]  # Removing peaks with mz > precursormz + 5 Da
+        return peak_array
 
     return peak_array
 
