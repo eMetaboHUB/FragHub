@@ -70,6 +70,7 @@ if __name__ == "__main__":
         sys.exit("There is no files to process. Exiting code !")
 
     # STEP 2: generating FRAGHUBID
+    time.sleep(0.01)
     print("{:>70}".format("-- GENERATING FragHub UNIQUE ID --"))
     time.sleep(0.01)
     FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF)
@@ -92,6 +93,7 @@ if __name__ == "__main__":
     # STEP 3: cleaning spectrums (Multithreaded)
     time.sleep(0.01)
     print("{:>70}".format(f"-- CHECKING FOR UPDATES --"))
+    time.sleep(0.01)
     spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list)
 
     if not spectrum_list:
@@ -103,6 +105,7 @@ if __name__ == "__main__":
         first_run = True
     time.sleep(0.01)
     print("{:>70}".format(f"-- CLEANING SPECTRUMS --"))
+    time.sleep(0.01)
     spectrum_list = spectrum_cleaning_processing(spectrum_list)
 
     if not spectrum_list:
@@ -111,15 +114,18 @@ if __name__ == "__main__":
     spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns].astype(str)
 
     # STEP 4: complete missing information into spectrum
+    time.sleep(0.01)
     print("{:>70}".format("-- MOLS DERIVATION AND MASS CALCULATION --"))
     time.sleep(0.01)
     spectrum_list = mols_derivation_and_calculation(spectrum_list)
 
+    time.sleep(0.01)
     print("{:>70}".format("-- NAMES COMPLETION --"))
     time.sleep(0.01)
     spectrum_list = names_completion(spectrum_list)
 
     # STEP 5: splitting POS/NEG -- LC/GC -- EXP/InSilico
+    time.sleep(0.01)
     print("{:>70}".format("-- SPLITTING [POS / NEG] --"))
     time.sleep(0.01)
     POS_df, NEG_df = split_pos_neg(spectrum_list)
@@ -138,27 +144,32 @@ if __name__ == "__main__":
     POS_LC_df,POS_LC_In_Silico_df,POS_GC_df,POS_GC_In_Silico_df,NEG_LC_df,NEG_LC_In_Silico_df,NEG_GC_df,NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df)
 
     # STEP 6: Remove duplicates spectrum when same peak_list for the same inchikey.
+    time.sleep(0.01)
     print("{:>70}".format("-- REMOVING DUPLICATAS --"))
     time.sleep(0.01)
     POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico = remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, first_run, update)
 
     if parameters_dict["msp"] == 1.0:
+        time.sleep(0.01)
         print("{:>70}".format("-- CONVERTING CSV TO MSP --"))
         time.sleep(0.01)
         POS_LC_df,POS_LC,POS_LC_df_insilico,POS_LC_insilico,POS_GC_df,POS_GC,POS_GC_df_insilico,POS_GC_insilico,NEG_LC_df,NEG_LC,NEG_LC_df_insilico,NEG_LC_insilico,NEG_GC_df,NEG_GC,NEG_GC_df_insilico,NEG_GC_insilico = csv_to_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico)
 
     # STEP 7: writting output files
     if parameters_dict["csv"] == 1.0:
+        time.sleep(0.01)
         print("{:>70}".format("-- WRITING CSV --"))
         time.sleep(0.01)
         writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, update)
 
     if parameters_dict["msp"] == 1.0:
+        time.sleep(0.01)
         print("{:>70}".format("-- WRITING MSP --"))
         time.sleep(0.01)
         writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_insilico,NEG_GC,NEG_GC_insilico, update)
 
     if parameters_dict["json"] == 1.0:
+        time.sleep(0.01)
         print("{:>70}".format("-- WRITING JSON --"))
         time.sleep(0.01)
         writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico)
