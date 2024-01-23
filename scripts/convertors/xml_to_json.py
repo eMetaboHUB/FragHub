@@ -1,3 +1,4 @@
+from .keys_convertor import *
 from .HMDB_completion import *
 import concurrent.futures
 from tqdm import tqdm
@@ -61,6 +62,7 @@ def xml_to_json(spectrum):
     metadata, peak_list = extract_metadata_and_peak_list(spectrum)
     spectrum_json = structure_metadata_and_peak_list(metadata, peak_list)
     spectrum_json = complete_HMDB(spectrum_json)
+    spectrum_json = convert_keys(spectrum_json)
 
     return spectrum_json
 

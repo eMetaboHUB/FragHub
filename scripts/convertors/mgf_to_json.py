@@ -1,3 +1,4 @@
+from .keys_convertor import *
 import concurrent.futures
 from tqdm import tqdm
 import re
@@ -50,6 +51,7 @@ def metadata_to_dict(metadata):
         for match in metadata_matches:
             metadata_dict[re.sub(metadata_fields_name_pattern, '', match[0]).lower().strip()] = re.sub(metadata_strip_value_pattern, "", match[1])
 
+        metadata_dict = convert_keys(metadata_dict)
         return metadata_dict
 
     return metadata_dict
