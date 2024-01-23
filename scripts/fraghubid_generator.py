@@ -54,10 +54,9 @@ def genrate_fraghubid(spectrum):
     fraghubid = str(hash_spectrum_data(spectrum))
     if not fraghubid:
         return None
-    new_spectrum = {"FRAGHUBID": fraghubid}
-    new_spectrum.update(spectrum)
+    spectrum["FRAGHUBID"] = fraghubid
 
-    return new_spectrum
+    return spectrum
 
 
 def generate_fraghubid_processing(spectrum_list, files):
