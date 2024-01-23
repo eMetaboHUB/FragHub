@@ -1,4 +1,3 @@
-from convertors.keys_convertor import *
 from values_normalizer import *
 from ast import literal_eval
 import concurrent.futures
@@ -55,8 +54,6 @@ def spectrum_cleaning(spectrum):
     :param spectrum: The spectrum data to be parsed.
     :return: The parsed metadata with peak list.
     """
-    spectrum = convert_keys(spectrum)
-
     peak_list = spectrum["PEAKS_LIST"]
 
     if not peak_list:
