@@ -133,7 +133,7 @@ if __name__ == "__main__":
     del NEG_df
 
     time.sleep(0.01)
-    print("{:>70}".format("-- SPLITTING EXP / In-Silico --"))
+    print("{:>70}".format("-- SPLITTING [EXP / In-Silico] --"))
     time.sleep(0.01)
     POS_LC_df,POS_LC_In_Silico_df,POS_GC_df,POS_GC_In_Silico_df,NEG_LC_df,NEG_LC_In_Silico_df,NEG_GC_df,NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df)
 
