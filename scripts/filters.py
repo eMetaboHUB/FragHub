@@ -73,11 +73,14 @@ def keep_mz_in_range(peak_array, mz_from, mz_to):
 
 def check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peaks):
     """
-    :param peak_array: A numpy array containing peak data. The array must have two columns with the first column for 'intensity'.
-    :param intensity_percent: The minimum percentage of the maximum intensity required for a peak to be considered high.
-    :param no_peaks: The minimum number of high peaks required.
+    :param peak_array: An array containing peak values and intensities.
+    :param intensity_percent: The minimum percentage of maximum intensity required for a peak to be considered.
+    :param no_peaks: The minimum number of peaks required.
 
-    :return: If the number of high peaks in peak_array is less than no_peaks, an empty numpy array is returned. Otherwise, a filtered array containing the high peaks is returned.
+    :return: If the peak_array is empty, it returns peak_array.
+             If the number of peaks in filtered_array is less than no_peaks, it returns an empty array (0,2).
+             Otherwise, it returns peak_array.
+
     """
     if peak_array.size == 0:
         return peak_array
@@ -88,7 +91,7 @@ def check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peak
     if len(filtered_array) < int(no_peaks):
         return np.empty((0,2))
     else:
-        return filtered_array
+        return peak_array
 
 def apply_filters(peak_array, precursormz):
     """
