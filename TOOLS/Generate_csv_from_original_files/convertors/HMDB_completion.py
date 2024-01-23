@@ -1,7 +1,7 @@
 import pandas as pd
 
 global HMDB_df
-HMDB_df = pd.read_csv("../datas/HMDB.csv", sep=";", encoding="UTF-8")
+HMDB_df = pd.read_csv(r"C:\Users\Axel\Documents\PYTHON\MSP_V3\FragHub\TOOLS\Generate_csv_from_original_files\datas\HMDB.csv", sep=";", encoding="UTF-8")
 
 def complete_HMDB_spectrum(spectrum):
     """
