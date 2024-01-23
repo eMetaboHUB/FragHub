@@ -5,7 +5,6 @@ from duplicatas_remover import *
 from name_completion import *
 from msp_normalizer import *
 from set_parameters import *
-from rdkit import RDLogger
 from splitter import *
 from writers import *
 from update import *
