@@ -1,4 +1,4 @@
-from keys_convertor import *
+from .keys_convertor import *
 import concurrent.futures
 from tqdm import tqdm
 import re
