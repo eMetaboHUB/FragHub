@@ -1,3 +1,4 @@
+from .keys_convertor import *
 import concurrent.futures
 from tqdm import tqdm
 import re
@@ -165,6 +166,8 @@ def msp_to_json(spectrum):
     if not metadata or not peak_list:
         return None
     metadata["peaks"] = peak_list
+
+    metadata = convert_keys(metadata)
 
     return metadata
 
