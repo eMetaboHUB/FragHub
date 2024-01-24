@@ -78,13 +78,14 @@ def load_spectrum_list_json(json_file_path):
     """
 
     # First, calculate total bytes for tqdm
+    filename = os.path.basename(json_file_path)
     total_bytes = os.path.getsize(json_file_path)
 
     with open(json_file_path, 'r', encoding="UTF-8") as file:
         # ijson.items(file, 'item') returns a generator yielding items in a JSON file
         spectra = ijson.items(file, 'item')
         # Create tqdm progress bar
-        progress = tqdm(total=total_bytes, unit="B", unit_scale=True, colour="green", desc="{:>70}".format("Loading file"))
+        progress = tqdm(total=total_bytes, unit="B", unit_scale=True, colour="green", desc="{:>70}".format(f"loading [{filename}]"))
 
         filename = os.path.basename(json_file_path)
         for spectrum in spectra:
