@@ -58,7 +58,6 @@ def genrate_fraghubid(spectrum):
 
     return spectrum
 
-
 def generate_fraghubid_processing(spectrum_list, files):
     """
     Perform parallel processing of the given spectrum list and generate fraghubid for each spectrum.
