@@ -51,7 +51,6 @@ def metadata_to_dict(metadata):
         for match in metadata_matches:
             metadata_dict[re.sub(metadata_fields_name_pattern, '', match[0]).lower().strip()] = re.sub(metadata_strip_value_pattern, "", match[1])
 
-        metadata_dict = convert_keys(metadata_dict)
         return metadata_dict
 
     return metadata_dict
@@ -106,6 +105,7 @@ def mgf_to_json(spectrum):
     if not metadata or not peak_list:
         return None
     metadata["peaks"] = peak_list
+    metadata = convert_keys(metadata)
 
     return metadata
 
