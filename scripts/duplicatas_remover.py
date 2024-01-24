@@ -1,6 +1,7 @@
 from tqdm.auto import tqdm
 from tqdm import tqdm
 import pandas as pd
+import os
 
 def removing_duplicates(dataframe, name, mode, update, first_run):
     """
@@ -11,7 +12,12 @@ def removing_duplicates(dataframe, name, mode, update, first_run):
     :return: The dataframe with duplicates removed.
     """
     if update and not first_run:
-        csv_dataframe = pd.read_csv(f"../OUTPUT/CSV/{mode}/{name}.csv", sep=";", quotechar='"', encoding="UTF-8")
+        filename = os.path.abspath(f"../OUTPUT/CSV/{mode}/{name}.csv")
+        if os.path.exists(filename):
+            csv_dataframe = pd.read_csv(filename, sep=";", quotechar='"', encoding="UTF-8")
+        else:
+            csv_dataframe = pd.DataFrame()
+
         dataframe = pd.concat([dataframe, csv_dataframe])
 
     total_rows = len(dataframe)
