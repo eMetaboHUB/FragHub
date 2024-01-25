@@ -34,7 +34,7 @@ concatenated_df['INCHIKEY'] = concatenated_df['INCHIKEY'].apply(lambda x: re.mat
 # # Utilisez pivot_table pour réorganiser les données
 # concatenated_df = concatenated_df.pivot_table(index='INCHIKEY', columns='FILENAME', aggfunc='first', fill_value='')
 
-print(concatenated_df)
+# print(concatenated_df)
 
 # Supprimez les doublons
 df = concatenated_df.drop_duplicates(subset=['FILENAME', 'INCHIKEY'])
