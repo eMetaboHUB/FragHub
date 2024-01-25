@@ -26,15 +26,20 @@ concatenated_df["FILENAME"] = concatenated_df["FILENAME"].replace(r'.*XML_.*', '
 concatenated_df["FILENAME"] = concatenated_df["FILENAME"].replace(r'.*MassBank.*', 'MassBank', regex=True)
 concatenated_df["FILENAME"] = concatenated_df["FILENAME"].replace(r'.*ALL_GNPS.*', 'GNPS', regex=True)
 concatenated_df["FILENAME"] = concatenated_df["FILENAME"].replace(r'.*HMDB.*', 'HMDB', regex=True)
+concatenated_df["FILENAME"] = concatenated_df["FILENAME"].replace(r'.*UNPD.*', 'UNPD', regex=True)
 
-concatenated_df['INCHIKEY'] = concatenated_df['INCHIKEY'].apply(lambda x: re.match(r'^(\w{14})-.*$', str(x))[1])
+concatenated_df.reset_index(inplace=True)
+concatenated_df['INCHIKEY'] = concatenated_df['INCHIKEY'].apply(lambda x: re.match(r'^(\w{14})-.*$', str(x))[1] if re.match(r'^(\w{14})-.*$', str(x)) is not None else '')
 
-# Utilisez pivot_table pour réorganiser les données
-concatenated_df = concatenated_df.pivot_table(index='INCHIKEY', columns='FILENAME', aggfunc='first', fill_value='')
+# # Utilisez pivot_table pour réorganiser les données
+# concatenated_df = concatenated_df.pivot_table(index='INCHIKEY', columns='FILENAME', aggfunc='first', fill_value='')
 
+print(concatenated_df)
 
 # Supprimez les doublons
 df = concatenated_df.drop_duplicates(subset=['FILENAME', 'INCHIKEY'])
+
+
 
 # Utilisez la fonction pivot pour réorganiser les données
 pivot_df = df.pivot(index='INCHIKEY', columns='FILENAME', values='INCHIKEY').reset_index()
@@ -44,7 +49,7 @@ pivot_df = pivot_df.fillna('')
 
 pivot_df = pivot_df.drop('INCHIKEY', axis=1)
 
-# print(pivot_df)
+print(pivot_df)
 
 UpSet(pivot_df)
 
