@@ -120,12 +120,13 @@ if __name__ == "__main__":
     time.sleep(0.01)
     spectrum_list = names_completion(spectrum_list)
 
-    # STEP 5: splitting POS/NEG -- LC/GC -- EXP/InSilico
+    # STEP 5: -- SPLITTING [POS / NEG] --
     time.sleep(0.01)
     print("{:>70}".format("-- SPLITTING [POS / NEG] --"))
     time.sleep(0.01)
     POS_df, NEG_df = split_pos_neg(spectrum_list)
 
+    # -- SPLITTING [LC / GC] --
     time.sleep(0.01)
     print("{:>70}".format("-- SPLITTING [LC / GC] --"))
     time.sleep(0.01)
@@ -134,6 +135,7 @@ if __name__ == "__main__":
     del POS_df
     del NEG_df
 
+    # -- SPLITTING [EXP / In-Silico] --
     time.sleep(0.01)
     print("{:>70}".format("-- SPLITTING [EXP / In-Silico] --"))
     time.sleep(0.01)
