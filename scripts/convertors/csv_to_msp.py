@@ -33,6 +33,9 @@ def dataframe_to_msp(dataframe, name):
         name = "Spectrum Conversion"  # Specify a name for the spectrum
         spectra = dataframe_to_msp(dataframe, name)  # Convert DataFrame to list of formatted spectra strings
     """
+    # convert all columns of dataframe to string
+    dataframe = dataframe.astype(str)
+
     spectrum_list = []
     for index, row in tqdm(dataframe.iterrows(), total=len(dataframe), desc="{:>70}".format(name), colour="green", unit=" row"):
         COMMENTS = format_comments(row)
