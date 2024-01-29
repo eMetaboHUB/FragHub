@@ -32,7 +32,7 @@ def check_for_update(spectrum):
     else:
         return None
 
-def check_for_update_processing(spectrum_list):
+def check_for_update_processing(spectrum_list, profile_name):
     """
 
     :param spectrum_list: A list of spectrums to check for updates.
@@ -41,7 +41,7 @@ def check_for_update_processing(spectrum_list):
     """
     global json_update_file
 
-    with open('../datas/update.json', 'r') as f:
+    with open(f'../datas/updates/{profile_name}.json', 'r') as f:
         json_update_file = json.load(f)
 
     json_update_file, first_run = init_json_update_file(json_update_file)
@@ -70,7 +70,7 @@ def check_for_update_processing(spectrum_list):
     json_update_file["FRAGHUBID_LIST"].update(new_fraghubid)
 
     # write changes to JSON file
-    with open('../datas/update.json', 'w') as f:
+    with open(f'../datas/updates/{profile_name}.json', 'w') as f:
         json.dump(json_update_file, f, ensure_ascii=False, indent=4)
 
     progress_bar.close()

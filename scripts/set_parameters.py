@@ -52,17 +52,41 @@ def build_window():
 
     # Create Tab Control
     tabControl = ttk.Notebook(root)
+
+    # New tab
+    tab4 = Frame(tabControl)
+
     # Existing tabs
     tab1 = Frame(tabControl)
     tab2 = Frame(tabControl)
-    # New tab
     tab3 = Frame(tabControl)
 
+    # Add the new tab to the tabControl
     tabControl.add(tab2, text='Filters Settings')
     tabControl.add(tab3, text='Output Settings')
+    tabControl.add(tab4, text='Profils')
     tabControl.add(tab1, text='Update Settings')
 
     tabControl.pack(expand=1, fill='both')
+
+    # Make a list of profiles
+    profile_list = ['Profile 1', 'Profile 2', 'Profile 3']
+
+    # Create a StringVar for the dropdown/listbox
+    selected_profile = StringVar()
+
+    # Create the Combobox, link it with the StringVar, and set the options
+    profiles_dropdown = ttk.Combobox(tab4, textvariable=selected_profile)
+    profiles_dropdown['values'] = [file.replace('.json','') for file in os.listdir("../datas/updates") if file.endswith('.json')]
+    selected_profile.set('basic')
+    parameters_dict["selected_profile"] = "basic"
+    profiles_dropdown.pack()
+
+    # Update parameters_dict when a new selection is made
+    def update_parameters_dict(*args):
+        parameters_dict['selected_profile'] = selected_profile.get()
+
+    selected_profile.trace_add("write", update_parameters_dict)
 
     # Create Checkbuttons in the third tab
     parameters_dict['csv'] = StringVar()
@@ -154,12 +178,12 @@ def remove_files(directory):
         elif os.path.isdir(file_path):
             remove_files(file_path)  # call this function again with the subdirectory
 
-def reset_updates():
+def reset_updates(profile_name):
     """
     Resets the updates by deleting the contents of the updates.json file and removing any existing output files.
     """
-    json_update_path = r"../datas/update.json"
-    ouput_path = r"../OUTPUT"
+    json_update_path = rf"../datas/updates/{profile_name}.json"
+    ouput_path = rf"../OUTPUT/{profile_name}"
 
     # Reset the json file - Writing empty json object
     with open(json_update_path, 'w') as f:
@@ -169,3 +193,31 @@ def reset_updates():
     if os.path.exists(ouput_path):
         remove_files(ouput_path)
 
+def init_profile(profile_name):
+    # Get the file path
+    updates_file_path = os.path.join("../datas/updates", profile_name + ".json")
+    output_directory = os.path.join("../OUTPUT", profile_name)
+
+    main_directories = ['CSV', 'JSON', 'MSP']
+    sub_directories = ['NEG', 'POS']
+
+    # Check if file doesn't exist
+    if not os.path.isfile(updates_file_path):
+        # Create the file
+        with open(updates_file_path, 'w') as fp:
+            # Write an empty JSON object to the file
+            json.dump({}, fp)
+
+    if not os.path.isdir(output_directory):
+        # Create the directory
+        os.makedirs(output_directory)
+
+    # Loop through each main directory
+    for main_dir in main_directories:
+        # Loop through each sub directory
+        for sub_dir in sub_directories:
+            # Get the sub directory path
+            dir_path = os.path.join(output_directory, main_dir, sub_dir)
+            # If the directory doesn't exist, create it
+            if not os.path.isdir(dir_path):
+                os.makedirs(dir_path)
