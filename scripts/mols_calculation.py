@@ -78,7 +78,7 @@ def mols_derivation_and_calculation(CONCATENATE_DF):
     # Using apply to apply the transformations
     CONCATENATE_DF = CONCATENATE_DF.progress_apply(map_transformations, axis=1, args=(unique_transforms,))
 
-    mask = CONCATENATE_DF['INCHIKEY'].str.contains(inchikey_pattern, na=False)
+    mask = CONCATENATE_DF['INCHIKEY'].str.fullmatch(inchikey_pattern, na=False)
     CONCATENATE_DF = CONCATENATE_DF[mask]
 
     return CONCATENATE_DF
