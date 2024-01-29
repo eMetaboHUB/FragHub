@@ -6,19 +6,19 @@ def split_pos_neg(CONCATENATE_DF):
     :param CONCATENATE_DF: DataFrame containing data to be split based on the value of the 'IONMODE' column.
     :return: Tuple containing two DataFrames - 'POS' and 'NEG', representing the subsets of CONCATENATE_DF where the value of 'IONMODE' is 'positive' and 'negative' respectively.
     """
-    # Créer une barre de progression pour la première étape
+    # Create a progress bar for the first stage
     with tqdm(total=len(CONCATENATE_DF), unit=" spectrums", colour="green", desc="{:>70}".format("POS")) as pbar:
-        # Séparer les lignes en fonction de la valeur de la colonne "IONMODE"
+        # Separate rows according to the value of the "IONMODE" column
         POS = CONCATENATE_DF[CONCATENATE_DF['IONMODE'] == 'positive']
 
-        # Mettre à jour la barre de progression
+        # Update progress bar
         pbar.update(len(POS))
 
-    # Créer une barre de progression pour la deuxième étape
+    # Create a progress bar for the second stage
     with tqdm(total=len(CONCATENATE_DF), unit=" spectrums", colour="green", desc="{:>70}".format("NEG")) as pbar:
         NEG = CONCATENATE_DF[CONCATENATE_DF['IONMODE'] == 'negative']
 
-        # Mettre à jour la barre de progression
+        # Update progress bar
         pbar.update(len(NEG))
 
     return POS, NEG
@@ -29,32 +29,32 @@ def split_LC_GC(POS,NEG):
     :param NEG: DataFrame containing negative spectrums
     :return: Four DataFrames containing positive LC spectrums, positive GC spectrums, negative LC spectrums, and negative GC spectrums
     """
-    # Séparer les lignes en fonction de la colonne "INSTRUMENTTYPE" pour POS
+    # Separate lines according to "INSTRUMENTTYPE" column for POS
 
     with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="{:>70}".format("POS_GC")) as pbar:
         POS_GC = POS[POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
 
-        # Mettre à jour la barre de progression
+        # Update progress bar
         pbar.update(len(POS_GC))
 
 
     with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="{:>70}".format("POS_LC")) as pbar:
         POS_LC = POS[~POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
 
-        # Mettre à jour la barre de progression
+        # Update progress bar
         pbar.update(len(POS_LC))
 
-    # Séparer les lignes en fonction de la colonne "INSTRUMENTTYPE" pour NEG
+    # Separate rows according to "INSTRUMENTTYPE" column for NEG
     with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_GC")) as pbar:
         NEG_GC = NEG[NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
 
-        # Mettre à jour la barre de progression
+        # Update progress bar
         pbar.update(len(NEG_GC))
 
     with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_LC")) as pbar:
         NEG_LC = NEG[~NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
 
-        # Mettre à jour la barre de progression
+        # Update progress bar
         pbar.update(len(NEG_LC))
 
     return POS_LC, POS_GC, NEG_LC, NEG_GC
@@ -69,7 +69,7 @@ def exp_in_silico_splitter(POS_LC,POS_GC,NEG_LC,NEG_GC):
         negative LC in silico, negative GC in silico, positive LC experimental, positive GC experimental,
         negative LC experimental, and negative GC experimental.
     """
-    # Barres de progression pour chaque étape de séparation
+    # Progress bars for each separation step
     with tqdm(total=len(POS_LC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_LC_In_Silico")) as pbar:
         POS_LC_In_Silico_temp = POS_LC[POS_LC['PREDICTED'] == "true"]
         pbar.update(len(POS_LC_In_Silico_temp))
@@ -86,7 +86,7 @@ def exp_in_silico_splitter(POS_LC,POS_GC,NEG_LC,NEG_GC):
         NEG_GC_In_Silico_temp = NEG_GC[NEG_GC['PREDICTED'] == "true"]
         pbar.update(len(NEG_GC_In_Silico_temp))
 
-    # Séparation pour les lignes contenant "False"
+    # Separation for lines containing "False".
     with tqdm(total=len(POS_LC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_LC_Exp")) as pbar:
         POS_LC_temp = POS_LC[POS_LC['PREDICTED'] == "false"]
         pbar.update(len(POS_LC_temp))

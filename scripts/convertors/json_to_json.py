@@ -1,3 +1,4 @@
+from .keys_convertor import *
 import concurrent.futures
 from tqdm import tqdm
 import re
@@ -94,11 +95,13 @@ def json_to_json(json_dict):
 
     if all(key in json_dict for key in keys_to_check):
         json_dict = convert_MoNA_json(json_dict)
+        json_dict = convert_keys(json_dict)
         return json_dict
     else:
         for key in peak_list_keys:
             if key in json_dict:
                 json_dict[key] = parse_others_json_peak_list(str(json_dict[key]))
+                json_dict = convert_keys(json_dict)
                 return json_dict
     return None
 

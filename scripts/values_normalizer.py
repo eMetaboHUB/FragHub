@@ -46,7 +46,7 @@ global In_Silico_pattern
 In_Silico_pattern = re.compile(r"in.silico|insilico|predicted|theoretical|Annotation.level.3", flags=re.IGNORECASE)
 
 global empty_pattern
-empty_pattern = re.compile(r"(^0( .*)?)|(^0\.0( .*)?)|(^$)|(^na( .*)?)|(^n/a( .*)?)|(^nan( .*)?)|(^unknown( .*)?)|(^unknow( .*)?)|(^none( .*)?)|(^\?( .*)?)|(^unk( .*)?)|(^x( .*)?)", flags=re.IGNORECASE)
+empty_pattern = re.compile(r"(^CCS:( .*)?)|(^\$:00in-source( .*)?)|(^0( .*)?)|(^0\.0( .*)?)|(^$)|(^na( .*)?)|(^n/a( .*)?)|(^nan( .*)?)|(^unknown( .*)?)|(^unknow( .*)?)|(^none( .*)?)|(^\?( .*)?)|(^unk( .*)?)|(^x( .*)?)", flags=re.IGNORECASE)
 
 global adduct_dict
 adduct_dataframe = pd.read_csv(os.path.abspath("../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
@@ -244,19 +244,6 @@ def normalize_predicted(metadata_dict):
         metadata_dict["PREDICTED"] = "false"
         return metadata_dict
 
-def normalize_synonymes(metadata_dict):
-    """
-    :param metadata_dict: A dictionary containing metadata for an object.
-                        The dictionary must have a 'SYNON' key representing the synonyms.
-    :return: The updated metadata dictionary with the synonyms normalized.
-
-    """
-    synonymes = metadata_dict['SYNON']
-    if synonymes == "$:00in-source":
-        metadata_dict['SYNON'] = ""
-
-    return metadata_dict
-
 def normalize_retentiontime(metadata_dict):
     """
     Normalize the retention time value in the given metadata dictionary.
@@ -309,7 +296,6 @@ def normalize_values(metadata_dict):
         metadata_dict = normalize_adduct(metadata_dict)
         metadata_dict = normalize_ionmode(metadata_dict)
         metadata_dict = normalize_ms_level(metadata_dict)
-        metadata_dict = normalize_synonymes(metadata_dict)
         metadata_dict = normalize_predicted(metadata_dict)
         metadata_dict = normalize_retentiontime(metadata_dict)
 

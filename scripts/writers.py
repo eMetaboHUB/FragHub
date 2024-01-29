@@ -6,7 +6,7 @@ import time
 import os
 import re
 
-def write_msp(spectrum_list, filename, mode, update):
+def write_msp(spectrum_list, filename, mode, update, profile_name):
     """
     Write the given spectrum list to a file in MSP format.
 
@@ -15,7 +15,7 @@ def write_msp(spectrum_list, filename, mode, update):
     :param mode: The mode to write the file in.
     :return: None
     """
-    output_file_path = os.path.join(f"../OUTPUT/MSP/{mode}", filename)
+    output_file_path = os.path.join(f"../OUTPUT/{profile_name}/MSP/{mode}", filename)
 
     with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>70}".format(f"writting {filename}")) as pbar:
         if not update:
@@ -43,7 +43,7 @@ def write_msp(spectrum_list, filename, mode, update):
 
 
 
-def writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_insilico,NEG_GC,NEG_GC_insilico, update=False):
+def writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_insilico,NEG_GC,NEG_GC_insilico, profile_name, update=False):
     """
     Writes the content of the given parameters to separate MSP files.
 
@@ -58,31 +58,31 @@ def writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_ins
     :return: None
     """
     time.sleep(0.1)
-    write_msp(POS_LC,"POS_LC.msp", "POS", update)
+    write_msp(POS_LC,"POS_LC.msp", "POS", update, profile_name)
     del POS_LC
     time.sleep(0.1)
-    write_msp(POS_LC_insilico, "POS_LC_insilico.msp", "POS", update)
+    write_msp(POS_LC_insilico, "POS_LC_insilico.msp", "POS", update, profile_name)
     del POS_LC_insilico
     time.sleep(0.1)
-    write_msp(POS_GC, "POS_GC.msp", "POS", update)
+    write_msp(POS_GC, "POS_GC.msp", "POS", update, profile_name)
     del POS_GC
     time.sleep(0.1)
-    write_msp(POS_GC_insilico, "POS_GC_insilico.msp", "POS", update)
+    write_msp(POS_GC_insilico, "POS_GC_insilico.msp", "POS", update, profile_name)
     del POS_GC_insilico
     time.sleep(0.1)
-    write_msp(NEG_LC, "NEG_LC.msp", "NEG", update)
+    write_msp(NEG_LC, "NEG_LC.msp", "NEG", update, profile_name)
     del NEG_LC
     time.sleep(0.1)
-    write_msp(NEG_LC_insilico, "NEG_LC_insilico.msp", "NEG", update)
+    write_msp(NEG_LC_insilico, "NEG_LC_insilico.msp", "NEG", update, profile_name)
     del NEG_LC_insilico
     time.sleep(0.1)
-    write_msp(NEG_GC, "NEG_GC.msp", "NEG", update)
+    write_msp(NEG_GC, "NEG_GC.msp", "NEG", update, profile_name)
     del NEG_GC
     time.sleep(0.1)
-    write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update)
+    write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update, profile_name)
     del NEG_GC_insilico
 
-def write_csv(df, filename, mode, update, first_run):
+def write_csv(df, filename, mode, update, first_run, profile_name):
     """
     :param df: pandas DataFrame object containing the data to be written to CSV.
     :param filename: string representing the name of the output file. The extension ".msp" in the filename will be replaced by ".csv".
@@ -91,7 +91,7 @@ def write_csv(df, filename, mode, update, first_run):
     This method writes a pandas DataFrame object to a CSV file. The output file is saved in the "../OUTPUT/CSV/POS" directory with the same name as the input file, but with the extension
     * changed to ".csv". The data is written in chunks of 5000 rows to improve efficiency. The progress of writing is displayed with a progress bar.
     """
-    output_file_path = os.path.join(f"../OUTPUT/CSV/{mode}",filename)
+    output_file_path = os.path.join(f"../OUTPUT/{profile_name}/CSV/{mode}",filename)
 
     chunk_size = 5000  # Taille de chaque fraction
     num_chunks = int(np.ceil(df.shape[0] / chunk_size))  # Calculer le nombre de fractions
@@ -100,16 +100,16 @@ def write_csv(df, filename, mode, update, first_run):
         for start in range(0, df.shape[0], chunk_size):
             df_slice = df[start:start + chunk_size]
             if start == 0 and first_run:
-                # Écrire les en-têtes pour la première fraction
+                # Write the headers for the first fraction
                 df_slice.to_csv(output_file_path, mode='w', sep=";", quotechar='"', encoding="UTF-8", index=False)
             else:
-                # Append dans le fichier sans écrire les en-têtes pour les autres fractions
+                # Append to file without writing headers for other fractions
                 df_slice.to_csv(output_file_path, mode='a', header=False, index=False, sep=";", quotechar='"', encoding="UTF-8")
 
-            # Mettre à jour la barre de progression
+            # Update progress bar
             pbar.update()
 
-def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_GC_df_insilico,NEG_LC_df_insilico,NEG_GC_df_insilico, first_run, update=False):
+def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_GC_df_insilico,NEG_LC_df_insilico,NEG_GC_df_insilico, first_run, profile_name, update=False):
     """
     Writes the given dataframes to CSV files with specific file names.
 
@@ -124,31 +124,31 @@ def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_
     :return: None
     """
     time.sleep(0.1)
-    write_csv(POS_LC_df,"POS_LC.csv","POS", update, first_run)
+    write_csv(POS_LC_df,"POS_LC.csv","POS", update, first_run, profile_name)
     del POS_LC_df
     time.sleep(0.1)
-    write_csv(POS_GC_df, "POS_GC.csv","POS", update, first_run)
+    write_csv(POS_GC_df, "POS_GC.csv","POS", update, first_run, profile_name)
     del POS_GC_df
     time.sleep(0.1)
-    write_csv(NEG_LC_df, "NEG_LC.csv","NEG", update, first_run)
+    write_csv(NEG_LC_df, "NEG_LC.csv","NEG", update, first_run, profile_name)
     del NEG_LC_df
     time.sleep(0.1)
-    write_csv(NEG_GC_df, "NEG_GC.csv","NEG", update, first_run)
+    write_csv(NEG_GC_df, "NEG_GC.csv","NEG", update, first_run, profile_name)
     del NEG_GC_df
     time.sleep(0.1)
-    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico.csv","POS", update, first_run)
+    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico.csv","POS", update, first_run, profile_name)
     del POS_LC_df_insilico
     time.sleep(0.1)
-    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico.csv","POS", update, first_run)
+    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico.csv","POS", update, first_run, profile_name)
     del POS_GC_df_insilico
     time.sleep(0.1)
-    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico.csv","NEG", update, first_run)
+    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico.csv","NEG", update, first_run, profile_name)
     del NEG_LC_df_insilico
     time.sleep(0.1)
-    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv","NEG", update, first_run)
+    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv","NEG", update, first_run, profile_name)
     del NEG_GC_df_insilico
 
-def write_json(df, filename, mode):
+def write_json(df, filename, mode, profile_name):
     """
     :param df: pandas DataFrame object containing the data to be written to JSON.
     :param filename: string representing the name of the output file. The extension ".csv" in the filename will be replaced by ".json".
@@ -156,7 +156,7 @@ def write_json(df, filename, mode):
     This method writes a pandas DataFrame object to a JSON array in file. The output file is saved in the "../OUTPUT/JSON/{mode}" directory with the same name as the input file,
     but with the extension changed to ".json".
     """
-    output_file_path = os.path.join(f"../OUTPUT/JSON/{mode}", filename)
+    output_file_path = os.path.join(f"../OUTPUT/{profile_name}/JSON/{mode}", filename)
 
     # Convert the DataFrame to a list of dict records
     json_records = df.to_dict('records')
@@ -172,7 +172,7 @@ def write_json(df, filename, mode):
             pbar.update()
         f.write('\n]')
 
-def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico):
+def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, profile_name):
     """
     Write JSON files for the given data frames.
 
@@ -187,26 +187,26 @@ def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico
     :return: None
     """
     time.sleep(0.1)
-    write_json(POS_LC_df, "POS_LC.json", "POS")
+    write_json(POS_LC_df, "POS_LC.json", "POS", profile_name)
     del POS_LC_df
     time.sleep(0.1)
-    write_json(POS_GC_df, "POS_GC.json", "POS")
+    write_json(POS_GC_df, "POS_GC.json", "POS", profile_name)
     del POS_GC_df
     time.sleep(0.1)
-    write_json(NEG_LC_df, "NEG_LC.json", "NEG")
+    write_json(NEG_LC_df, "NEG_LC.json", "NEG", profile_name)
     del NEG_LC_df
     time.sleep(0.1)
-    write_json(NEG_GC_df, "NEG_GC.json", "NEG")
+    write_json(NEG_GC_df, "NEG_GC.json", "NEG", profile_name)
     del NEG_GC_df
     time.sleep(0.1)
-    write_json(POS_LC_df_insilico, "POS_LC_In_Silico.json", "POS")
+    write_json(POS_LC_df_insilico, "POS_LC_In_Silico.json", "POS", profile_name)
     del POS_LC_df_insilico
     time.sleep(0.1)
-    write_json(POS_GC_df_insilico, "POS_GC_In_Silico.json", "POS")
+    write_json(POS_GC_df_insilico, "POS_GC_In_Silico.json", "POS", profile_name)
     del POS_GC_df_insilico
     time.sleep(0.1)
-    write_json(NEG_LC_df_insilico, "NEG_LC_In_Silico.json", "NEG")
+    write_json(NEG_LC_df_insilico, "NEG_LC_In_Silico.json", "NEG", profile_name)
     del NEG_LC_df_insilico
     time.sleep(0.1)
-    write_json(NEG_GC_df_insilico, "NEG_GC_In_Silico.json", "NEG")
+    write_json(NEG_GC_df_insilico, "NEG_GC_In_Silico.json", "NEG", profile_name)
     del NEG_GC_df_insilico

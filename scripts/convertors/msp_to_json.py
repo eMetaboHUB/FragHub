@@ -1,3 +1,4 @@
+from .keys_convertor import *
 import concurrent.futures
 from tqdm import tqdm
 import re
@@ -6,7 +7,7 @@ global metadata_peak_list_split_pattern
 metadata_peak_list_split_pattern = re.compile(r"([\s\S]*:.[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
 
 global metadata_pattern
-metadata_pattern = re.compile(r"([^:\n]*?):\s*([^:\n]*)(?:\n|$)")
+metadata_pattern = re.compile(r"([^:]*):(?: )?([^\n]*)(?:\n|$)")
 
 global computed_pattern
 computed_pattern = re.compile(r"computed", flags=re.IGNORECASE)
@@ -165,6 +166,8 @@ def msp_to_json(spectrum):
     if not metadata or not peak_list:
         return None
     metadata["peaks"] = peak_list
+
+    metadata = convert_keys(metadata)
 
     return metadata
 

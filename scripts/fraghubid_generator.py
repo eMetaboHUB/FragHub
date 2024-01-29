@@ -1,6 +1,6 @@
+from convertors.loaders import *
 import concurrent.futures
 from tqdm import tqdm
-from convertors.loaders import *
 import hashlib
 import ijson
 import json
@@ -14,18 +14,6 @@ inchikey_update_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])", flags=re.IGN
 global peak_list_split_update_pattern
 peak_list_split_update_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
-def get_peak_list_key(spectrum):
-    """
-    :param spectrum: A dictionary representing a spectrum object. It should contain keys related to peaks and their information.
-    :return: The key in the spectrum dictionary that corresponds to the peak list. If no key is found, returns None.
-    """
-    peak_list_keys = ["spectrum", "peaks_json", "peaks"]
-    for key in peak_list_keys:
-        if key in spectrum:
-            return key
-
-    return None
-
 def hash_spectrum_data(spectrum_data):
     """
     Calculate the SHA256 hash of spectrum data.
@@ -38,26 +26,23 @@ def hash_spectrum_data(spectrum_data):
     spectrum_string = str(spectrum_data)
 
     inchikey = re.search(inchikey_update_pattern, spectrum_string)
-    key = get_peak_list_key(spectrum_data)
-    if key:
-        peak_list = str(spectrum_data[key])
 
-        if inchikey:
-            inchikey = inchikey.group(1)
+    peak_list = str(spectrum_data["PEAKS_LIST"])
 
-        if inchikey and peak_list:
-            spectrum_string = inchikey+"\n"+peak_list
+    if inchikey:
+        inchikey = inchikey.group(1)
 
-        # Créer un objet sha256
-        sha256 = hashlib.sha256()
+    if inchikey and peak_list:
+        spectrum_string = inchikey+"\n"+peak_list
 
-        # Fournir les données de spectre à sha256
-        sha256.update(spectrum_string.encode('utf-8'))
+    # Create a sha256 object
+    sha256 = hashlib.sha256()
 
-        # Retourner le hash sha256 en hex
-        return sha256.hexdigest()
+    # Provide spectrum data to sha256
+    sha256.update(spectrum_string.encode('utf-8'))
 
-    return None
+    # Return hash sha256 to hex
+    return sha256.hexdigest()
 
 def genrate_fraghubid(spectrum):
     """
@@ -69,11 +54,9 @@ def genrate_fraghubid(spectrum):
     fraghubid = str(hash_spectrum_data(spectrum))
     if not fraghubid:
         return None
-    new_spectrum = {"FRAGHUBID": fraghubid}
-    new_spectrum.update(spectrum)
+    spectrum["FRAGHUBID"] = fraghubid
 
-    return new_spectrum
-
+    return spectrum
 
 def generate_fraghubid_processing(spectrum_list, files):
     """
