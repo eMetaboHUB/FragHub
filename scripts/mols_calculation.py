@@ -3,8 +3,11 @@ from rdkit.Chem.Descriptors import ExactMolWt, MolWt
 from rdkit import RDLogger, Chem
 from tqdm import tqdm
 import pandas as pd
+import re
 
 RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
+
+inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
 
 def apply_transformations(inchi_smiles):
     """
@@ -74,5 +77,8 @@ def mols_derivation_and_calculation(CONCATENATE_DF):
 
     # Using apply to apply the transformations
     CONCATENATE_DF = CONCATENATE_DF.progress_apply(map_transformations, axis=1, args=(unique_transforms,))
+
+    mask = CONCATENATE_DF['INCHIKEY'].str.contains(inchikey_pattern, na=False)
+    CONCATENATE_DF = CONCATENATE_DF[mask]
 
     return CONCATENATE_DF
