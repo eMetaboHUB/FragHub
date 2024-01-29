@@ -44,13 +44,17 @@ if __name__ == "__main__":
     # GUI execution
     build_window()
 
+    profile_name = parameters_dict["selected_profile"]
+
     if parameters_dict['reset_updates'] == 1.0:
-        reset_updates()
+        reset_updates(profile_name)
+
+    init_profile(profile_name)
 
     start_time = time.time()
 
     input_path = os.path.abspath(r"../INPUT")
-    output_path = os.path.abspath(r"../OUTPUT")
+    output_path = os.path.abspath(rf"../OUTPUT/{profile_name}")
 
     # STEP 1: convert files to json if needed (Multithreaded)
     FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = convert_to_json(input_path)
@@ -90,7 +94,7 @@ if __name__ == "__main__":
     time.sleep(0.01)
     print("{:>70}".format(f"-- CHECKING FOR UPDATES --"))
     time.sleep(0.01)
-    spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list)
+    spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list, profile_name)
 
     if not spectrum_list:
         sys.exit("There is no new spectrums to clean from databases. Exiting code !")
@@ -145,34 +149,32 @@ if __name__ == "__main__":
     time.sleep(0.01)
     print("{:>70}".format("-- REMOVING DUPLICATAS --"))
     time.sleep(0.01)
-    POS_LC_df, POS_LC_df_insilico, POS_GC_df, POS_GC_df_insilico, NEG_LC_df, NEG_LC_df_insilico, NEG_GC_df, NEG_GC_df_insilico = remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, first_run, update)
+    POS_LC_df, POS_LC_df_insilico, POS_GC_df, POS_GC_df_insilico, NEG_LC_df, NEG_LC_df_insilico, NEG_GC_df, NEG_GC_df_insilico = remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, first_run, profile_name, update)
 
     if parameters_dict["msp"] == 1.0:
         time.sleep(0.01)
         print("{:>70}".format("-- CONVERTING CSV TO MSP --"))
         time.sleep(0.01)
-        POS_LC_df, POS_LC, POS_LC_df_insilico, POS_LC_insilico, POS_GC_df, POS_GC, POS_GC_df_insilico, POS_GC_insilico, NEG_LC_df, NEG_LC, NEG_LC_df_insilico, NEG_LC_insilico, NEG_GC_df, NEG_GC, NEG_GC_df_insilico, NEG_GC_insilico = csv_to_msp(POS_LC_df, POS_LC_df_insilico, POS_GC_df,
-                                                                                                                                                                                                                                                    POS_GC_df_insilico, NEG_LC_df, NEG_LC_df_insilico,
-                                                                                                                                                                                                                                                    NEG_GC_df, NEG_GC_df_insilico)
+        POS_LC_df, POS_LC, POS_LC_df_insilico, POS_LC_insilico, POS_GC_df, POS_GC, POS_GC_df_insilico, POS_GC_insilico, NEG_LC_df, NEG_LC, NEG_LC_df_insilico, NEG_LC_insilico, NEG_GC_df, NEG_GC, NEG_GC_df_insilico, NEG_GC_insilico = csv_to_msp(POS_LC_df, POS_LC_df_insilico, POS_GC_df, POS_GC_df_insilico, NEG_LC_df, NEG_LC_df_insilico, NEG_GC_df, NEG_GC_df_insilico)
 
     # STEP 7: writting output files
     if parameters_dict["csv"] == 1.0:
         time.sleep(0.01)
         print("{:>70}".format("-- WRITING CSV --"))
         time.sleep(0.01)
-        writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, update)
+        writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update)
 
     if parameters_dict["msp"] == 1.0:
         time.sleep(0.01)
         print("{:>70}".format("-- WRITING MSP --"))
         time.sleep(0.01)
-        writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, update)
+        writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, profile_name, update)
 
     if parameters_dict["json"] == 1.0:
         time.sleep(0.01)
         print("{:>70}".format("-- WRITING JSON --"))
         time.sleep(0.01)
-        writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico)
+        writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, profile_name)
 
     time.sleep(0.01)
     print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
