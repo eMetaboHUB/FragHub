@@ -96,8 +96,9 @@ def addClassyfire(dfcpd,InChIKey_col_name):
 
 res = []
 
-dfcpd = pd.read_excel(r"C:\Users\Axel\Documents\Présentations\FragBank\Publication\Diagrammes\Sunburst\MSP_inchikeys_classyfire.xlsx")
+dfcpd = pd.read_excel(r"C:\Users\Axel\Documents\Présentations\FragBank\Publication\Diagrammes\Sunburst\MSP_inchikeys_classyfire_null.xlsx")
 InChIKey_col_name = "INCHIKEY"
+
 pathfinalfile=r"C:\Users\Axel\Documents\Présentations\FragBank\Publication\Diagrammes\Sunburst\MSP_inchikeys_classyfire_complete.json"
 
 lenghtdf = len(dfcpd)
