@@ -60,8 +60,8 @@ def getClassyfireFromInChIKey(InChIKey):
         - "Classyfire_Subclass": The subclass classification of the substance.
         - "direct_parent": The direct parent classification of the substance.
     """
-    r = get_urlRequest("http://classyfire.wishartlab.com/entities/%s.json?"%(InChIKey))
-    print(r)
+    r = get_urlRequest(f"http://classyfire.wishartlab.com/entities/{InChIKey}.json?")
+
     if r ==False or r==None:
         return {"Classyfire_kingdom":None, "Classyfire_Superclass":None, "Classyfire_class":None, "Classyfire_Subclass":None, "direct_parent":None}
 
@@ -99,7 +99,7 @@ res = []
 dfcpd = pd.read_excel(r"C:\Users\Axel\Documents\Data_publi\SunBurst\MSP_inchikeys_classyfire_null.xlsx")
 InChIKey_col_name = "INCHIKEY"
 
-pathfinalfile=r"C:\Users\Axel\Documents\Data_publi\SunBurst\MSP_inchikeys_classyfire_complete.json"
+pathfinalfile = r"C:\Users\Axel\Documents\Data_publi\SunBurst\MSP_inchikeys_classyfire_complete.json"
 
 lenghtdf = len(dfcpd)
 print(lenghtdf)
