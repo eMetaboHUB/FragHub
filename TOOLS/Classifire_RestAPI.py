@@ -6,13 +6,11 @@ import time
 
 
 def checkRequest(r):
-    """[Check if API response is OK (status code 200)]
+    """
+    Check the status code of a request.
 
-    Args:
-        r ([type]): API response
-
-    Returns:
-        [bool]: [False if status code is different than 200 else True]
+    :param r: The response object returned from the request.
+    :return: True if the status code is 200, False otherwise.
     """
     if r.status_code !=200 :
         print(r.status_code)
@@ -21,6 +19,14 @@ def checkRequest(r):
     return True
 
 def get_urlRequest(url):
+    """
+    Makes a GET request to the specified URL and returns the response content as JSON if the status code is 200.
+    If the status code is 429, it sleeps for 60 seconds and retries the request.
+    If the status code is neither 200 nor 429, it returns False.
+
+    :param url: The URL to make the GET request to.
+    :return: The response content as JSON if the status code is 200, False otherwise.
+    """
     r = get(url)
     if r.status_code == 429:
         time.sleep(60)
@@ -32,6 +38,12 @@ def get_urlRequest(url):
         return False
 
 def readlvlname(reslvl):
+    """
+    Extracts the level name from a dictionary.
+
+    :param reslvl: A dictionary containing the level's information.
+    :return: The name of the level, or None if not found.
+    """
     try:
         res=reslvl["name"]
     except:
@@ -39,6 +51,15 @@ def readlvlname(reslvl):
     return res
 
 def getClassyfireFromInChIKey(InChIKey):
+    """
+    :param InChIKey: The InChIKey is a unique identifier for chemical substances. It is used to retrieve classification information from the Classyfire database.
+    :return: A dictionary containing the classification information for the given InChIKey. The dictionary includes the following keys:
+        - "Classyfire_kingdom": The kingdom classification of the substance.
+        - "Classyfire_Superclass": The superclass classification of the substance.
+        - "Classyfire_class": The class classification of the substance.
+        - "Classyfire_Subclass": The subclass classification of the substance.
+        - "direct_parent": The direct parent classification of the substance.
+    """
     r = get_urlRequest("http://classyfire.wishartlab.com/entities/%s.json?"%(InChIKey))
     print(r)
     if r ==False or r==None:
@@ -60,27 +81,28 @@ def getClassyfireFromInChIKey(InChIKey):
     return res
 
 def addClassyfire(dfcpd,InChIKey_col_name):
+    """
+    Add Classyfire annotations to a dataframe.
+
+    :param dfcpd: A pandas DataFrame containing chemical compounds.
+    :param InChIKey_col_name: The name of the column that contains the InChIKeys of the compounds.
+    :return: The input dataframe with additional columns containing Classyfire annotations.
+    """
     for ind in dfcpd.index:
         ClassyfireResults=getClassyfireFromInChIKey(dfcpd[InChIKey_col_name][ind])
         for key in ClassyfireResults.keys():
             dfcpd[key]=ClassyfireResults[key]
     return dfcpd
 
-
-## test script
-#dfcpd = pd.read_csv("/home/solweig/Thèse/chemomaps/pharmakon/input/testPharmakon0706.csv",sep =";")
-res=[]
-#InChIKey_col_name = "Smiles (InChiKey)"
-#pathfinalfile="/home/solweig/Thèse/chemomaps/pharmakon/input/Classyfire/testres.json"
-
-
 dfcpd = pd.read_excel(r"C:\Users\Axel\Documents\Présentations\FragBank\Publication\Diagrammes\Sunburst\MSP_inchikeys_classyfire.xlsx")
 InChIKey_col_name = "INCHIKEY"
-pathfinalfile=r"C:\Users\Axel\Documents\Présentations\FragBank\Publication\Diagrammes\Sunburst\MSP_inchikeys_classyfire_complete.xlsx"
+pathfinalfile=r"C:\Users\Axel\Documents\Présentations\FragBank\Publication\Diagrammes\Sunburst\MSP_inchikeys_classyfire_complete.json"
+
 lenghtdf = len(dfcpd)
-# print(lenghtdf)
+print(lenghtdf)
+
 for ind in tqdm(range(lenghtdf), total=lenghtdf, colour="green"):
-    r=getClassyfireFromInChIKey(dfcpd[InChIKey_col_name][ind])
+    r = getClassyfireFromInChIKey(dfcpd[InChIKey_col_name][ind])
     
     res.append(r)
 
