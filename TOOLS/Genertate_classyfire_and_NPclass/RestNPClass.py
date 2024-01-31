@@ -1,7 +1,6 @@
 from requests import get
-import json
 import pandas as pd
-
+import json
 
 def checkRequest(r):
     """
@@ -64,21 +63,7 @@ def addNPClassif(dfcpd, SMILES_col_name="First(Smiles (canonical SMILES))"):
         for key in NPCresults.keys():
             dfcpd[key]=NPCresults[key]
     return dfcpd
-        
-"""
-def addNPclassif(dfcpd):
-    for ind in dfcpd.index:
-        NPCresults=getNPClassifFromSmile(dfcpd["First(Smiles (canonical SMILES))"][ind])
-        if NPCresults == False:
-            NPCresults = {'class_results': None, 'superclass_results': None, 'pathway_results': None, 'isglycoside': None}
-            #convertlist2singlestring(convertstr2list(NPCresults['class_results']))
-        dfcpd["ClassNP"][ind]=convertlist2singlestring(convertstr2list(NPCresults['class_results']))
-        dfcpd["SuperClassNP"][ind]=convertlist2singlestring(convertstr2list(NPCresults['superclass_results']))
-        dfcpd["PathwayNP"][ind]=convertlist2singlestring(convertstr2list(NPCresults['pathway_results']))
-        dfcpd["IsGlycoNP"][ind]=convertlist2singlestring(convertstr2list(NPCresults['isglycoside']))
-        print(ind,"/",len(dfcpd.index))
-    return dfcpd
-"""
+
 def convertstr2list(string):
     """
     Convert a string representation of a list to a list.
