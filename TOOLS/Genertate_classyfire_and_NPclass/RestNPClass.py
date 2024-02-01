@@ -1,4 +1,5 @@
 from requests import get
+from tqdm import tqdm
 import pandas as pd
 import json
 
@@ -96,13 +97,16 @@ def convertlist2singlestring(list):
 
 
 ## test script
-dfcpd = pd.read_csv("/home/solweig/Thèse/chemomaps/pharmakon/input/testPharmakon0706.csv",sep =";")
-res=[]
-SMILES_col_name = "canonical SMILES"
-for ind in range(100):
-    r=readNPClassif(getNPClassifFromSmile(dfcpd[SMILES_col_name][ind]))
+dfcpd = pd.read_excel(r"C:\Users\Axel\Documents\Data_publi\SunBurst\MSP_smiles_npclass_null.xlsx")
+res = []
+SMILES_col_name = "SMILES"
+lenghtdf = len(dfcpd)
 
+for ind in tqdm(range(lenghtdf), total=lenghtdf, colour="green"):
+    r = readNPClassif(getNPClassifFromSmile(dfcpd[SMILES_col_name][ind]))
+    # print(r)
     res.append(r)
-with open("/home/solweig/Thèse/chemomaps/pharmakon/input/NPClassifier/testres.json","w") as jsonFile:
+
+with open(r"C:\Users\Axel\Documents\Data_publi\SunBurst\MSP_smiles_NPclass_complete.json","w") as jsonFile:
     json.dump(res,jsonFile,indent=4)
     jsonFile.close
