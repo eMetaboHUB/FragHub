@@ -1,3 +1,4 @@
+from rdkit.Chem.Descriptors import ExactMolWt
 from values_normalizer import *
 from ast import literal_eval
 import concurrent.futures
@@ -14,6 +15,10 @@ np.set_printoptions(suppress=True)
 
 global float_check_pattern
 float_check_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
+
+global adduct_massdiff_dict
+adduct_dataframe = pd.read_csv(os.path.abspath("../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
+adduct_massdiff_dict = dict(zip(adduct_dataframe['fraghub_default'], adduct_dataframe['massdiff']))
 
 def peak_list_to_np_array(peak_list, precursormz):
     """
@@ -47,12 +52,69 @@ def peak_list_to_str(peak_list_np):
 
     return peak_list_np
 
+def precursor_mz_re_calculation(mols, mass_diff):
+    """
+    Calculate the precursor m/z (mass-to-charge ratio) for a given molecular structure and a mass difference.
+
+    :param mols: The molecular structure represented as a SMILES or InChI string.
+    :param mass_diff: The mass difference to be added to the exact mass of the molecular structure.
+    :return: The calculated precursor m/z value or None if the molecular structure is invalid.
+
+    Note: This function assumes the presence of the RDKit (Chem) library for molecular structure manipulation and mass calculation.
+    """
+    if isinstance(mols, str):
+        mols = Chem.MolFromInchi(mols) if 'InChI=' in mols else Chem.MolFromSmiles(mols)
+        if mols:
+            exact_mass = ExactMolWt(mols)
+            precursor_mz = exact_mass + mass_diff
+
+            return precursor_mz
+        return None
+
+    return None
+
 def spectrum_cleaning(spectrum):
     """
-    Parse the given spectrum to extract metadata and peak list.
+    :param spectrum: a dictionary containing information about a spectrum
+    :return: the cleaned spectrum dictionary or None if cleaning could not be performed
 
-    :param spectrum: The spectrum data to be parsed.
-    :return: The parsed metadata with peak list.
+    This method performs cleaning on a spectrum by normalizing values, recalculating the precursor mass if necessary,
+    and converting the peak list format.
+
+    The `spectrum` parameter should be a dictionary with the following keys:
+    - "PEAKS_LIST": a list of peaks
+    - "PRECURSORMZ": the precursor mass-to-charge ratio
+    - "PRECURSORTYPE": the type of precursor ion
+    - "INCHI": the InChI representation of the molecule
+    - "SMILES": the SMILES representation of the molecule
+
+    If the `PEAKS_LIST` key does not exist or is empty, the method returns None.
+
+    If normalization fails or the normalized spectrum is empty, the method returns None.
+
+    If the "PRECURSORMZ" key exists and the value is a valid floating-point number, the method performs the following steps:
+    1. Extracts the float value from the string representation of the precursor mass.
+    2. Checks if the float value is less than or equal to 0.0. If true, returns None.
+    3. Converts the peak list to a numpy array using the float value as the precursor mass-to-charge ratio.
+    4. Checks if the peak list numpy array is empty. If true, returns None.
+    5. Updates the "NUM PEAKS" key in the spectrum dictionary to the number of peaks in the peak list numpy array.
+    6. Converts the peak list numpy array to a string representation and updates the "PEAKS_LIST" key in the spectrum dictionary.
+
+    If the "PRECURSORMZ" key does not exist or the value is not a valid floating-point number, the method performs the following steps:
+    1. Checks if the "PRECURSORTYPE" key exists and has a corresponding mass difference value in the `adduct_massdiff_dict` dictionary.
+    2. If true, retrieves the mass difference for the precursor type.
+    3. Checks if the "INCHI" or "SMILES" key exists in the spectrum dictionary.
+    4. If true, recalculates the precursor mass using the molecule representation and the mass difference.
+    5. Checks if the recalculated precursor mass is a valid floating-point number. If not, returns None.
+    6. Converts the peak list to a numpy array using the recalculated precursor mass.
+    7. Checks if the peak list numpy array is empty. If true, returns None.
+    8. Updates the "NUM PEAKS" key in the spectrum dictionary to the number of peaks in the peak list numpy array.
+    9. Converts the peak list numpy array to a string representation and updates the "PEAKS_LIST" key in the spectrum dictionary.
+
+    If none of the above conditions are met, the method returns None.
+
+    Example usage:
+    cleaned_spectrum = spectrum_cleaning(spectrum)
     """
     peak_list = spectrum["PEAKS_LIST"]
 
@@ -78,6 +140,31 @@ def spectrum_cleaning(spectrum):
             spectrum["PEAKS_LIST"] = peak_list_np
             return spectrum
         else:
+            # re calculer la masse de l'ion precurseur
+            if "PRECURSORTYPE" in spectrum:
+                if spectrum["PRECURSORTYPE"] in adduct_massdiff_dict:
+                    mass_diff = float(adduct_massdiff_dict[spectrum["PRECURSORTYPE"]])
+                    mols = None
+                    if spectrum["INCHI"]:
+                        mols = spectrum["INCHI"]
+                    elif spectrum["SMILES"]:
+                        mols = spectrum["SMILES"]
+                    if mols:
+                        spectrum["PRECURSORMZ"] = str(precursor_mz_re_calculation(mols, mass_diff))
+
+                        if re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])):
+                            spectrum["PRECURSORMZ"] = re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])).group(1)
+                            float_precursor_mz = float(spectrum["PRECURSORMZ"].replace(",", "."))
+                            if float_precursor_mz <= 0.0:
+                                return None
+                            peak_list_np = peak_list_to_np_array(peak_list, float_precursor_mz)
+                            if peak_list_np.size == 0:
+                                return None
+                            spectrum["NUM PEAKS"] = str(peak_list_np.shape[0])
+                            peak_list_np = peak_list_to_str(peak_list_np)
+                            spectrum["PEAKS_LIST"] = peak_list_np
+                            return spectrum
+
             return None
 
     return spectrum
