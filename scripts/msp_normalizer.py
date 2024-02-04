@@ -52,7 +52,7 @@ def peak_list_to_str(peak_list_np):
 
     return peak_list_np
 
-def precursor_mz_re_calculation(mols, mass_diff):
+def precursor_mz_re_calculation(spectrum, mass_diff):
     """
     Calculate the precursor m/z (mass-to-charge ratio) for a given molecular structure and a mass difference.
 
@@ -62,6 +62,12 @@ def precursor_mz_re_calculation(mols, mass_diff):
 
     Note: This function assumes the presence of the RDKit (Chem) library for molecular structure manipulation and mass calculation.
     """
+    mols = None
+    if spectrum["INCHI"]:
+        mols = spectrum["INCHI"]
+    elif spectrum["SMILES"]:
+        mols = spectrum["SMILES"]
+
     if isinstance(mols, str):
         mols = Chem.MolFromInchi(mols) if 'InChI=' in mols else Chem.MolFromSmiles(mols)
         if mols:
@@ -131,6 +137,23 @@ def spectrum_cleaning(spectrum):
             spectrum["PRECURSORMZ"] = re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])).group(1)
             float_precursor_mz = float(spectrum["PRECURSORMZ"].replace(",", "."))
             if float_precursor_mz <= 0.0:
+                if "PRECURSORTYPE" in spectrum:
+                    if spectrum["PRECURSORTYPE"] in adduct_massdiff_dict:
+                        mass_diff = float(adduct_massdiff_dict[spectrum["PRECURSORTYPE"]])
+                        spectrum["PRECURSORMZ"] = precursor_mz_re_calculation(spectrum, mass_diff)
+                        if spectrum["PRECURSORMZ"]:
+                            if re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])):
+                                spectrum["PRECURSORMZ"] = re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])).group(1)
+                                float_precursor_mz = float(spectrum["PRECURSORMZ"].replace(",", "."))
+                                if float_precursor_mz <= 0.0:  # normalement impossible dans ce else puisqu'il a été recalculer
+                                    return None
+                                peak_list_np = peak_list_to_np_array(peak_list, float_precursor_mz)
+                                if peak_list_np.size == 0:
+                                    return None
+                                spectrum["NUM PEAKS"] = str(peak_list_np.shape[0])
+                                peak_list_np = peak_list_to_str(peak_list_np)
+                                spectrum["PEAKS_LIST"] = peak_list_np
+                                return spectrum
                 return None
             peak_list_np = peak_list_to_np_array(peak_list, float_precursor_mz)
             if peak_list_np.size == 0:
@@ -144,18 +167,12 @@ def spectrum_cleaning(spectrum):
             if "PRECURSORTYPE" in spectrum:
                 if spectrum["PRECURSORTYPE"] in adduct_massdiff_dict:
                     mass_diff = float(adduct_massdiff_dict[spectrum["PRECURSORTYPE"]])
-                    mols = None
-                    if spectrum["INCHI"]:
-                        mols = spectrum["INCHI"]
-                    elif spectrum["SMILES"]:
-                        mols = spectrum["SMILES"]
-                    if mols:
-                        spectrum["PRECURSORMZ"] = str(precursor_mz_re_calculation(mols, mass_diff))
-
+                    spectrum["PRECURSORMZ"] = precursor_mz_re_calculation(spectrum, mass_diff)
+                    if spectrum["PRECURSORMZ"]:
                         if re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])):
                             spectrum["PRECURSORMZ"] = re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])).group(1)
                             float_precursor_mz = float(spectrum["PRECURSORMZ"].replace(",", "."))
-                            if float_precursor_mz <= 0.0:
+                            if float_precursor_mz <= 0.0: # normalement impossible dans ce else puisqu'il a été recalculer
                                 return None
                             peak_list_np = peak_list_to_np_array(peak_list, float_precursor_mz)
                             if peak_list_np.size == 0:
