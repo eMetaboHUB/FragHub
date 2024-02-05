@@ -216,6 +216,8 @@ def normalize_ms_level(metadata_dict):
                 metadata_dict["MSLEVEL"] = f"{ms_level[0]}-{ms_level[1]}"
         else:
             metadata_dict["MSLEVEL"] = "2" # Init MSLEVEL to 2 by default
+    else:
+        metadata_dict["MSLEVEL"] = "2"  # Init MSLEVEL to 2 by default
 
     return metadata_dict
 
