@@ -39,7 +39,6 @@ def on_done_button_clicked():
 
     root.destroy()
 
-
 def build_window():
     """
     Builds a window for setting filters parameters.
@@ -162,7 +161,6 @@ def build_window():
     Button(root, text="Done", command=on_done_button_clicked).pack()
 
     root.mainloop()
-
 
 def remove_files(directory):
     """
