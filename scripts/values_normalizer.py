@@ -294,7 +294,7 @@ def precursor_mz_need_re_calculation(metadata_dict):
     """
     if not re.search(float_check_pattern, str(metadata_dict["PRECURSORMZ"])):
         return True
-    elif float(metadata_dict["PRECURSORMZ"].replace(",", ".")) <= 0.0:
+    elif float(re.search(float_check_pattern, str(metadata_dict["PRECURSORMZ"])).group(1).replace(",", ".")) <= 0.0:
         return True
 
     return False
