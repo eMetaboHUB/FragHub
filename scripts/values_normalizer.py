@@ -63,7 +63,7 @@ global float_check_pattern
 float_check_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 global ionization_mode_pattern
-ionization_mode_pattern = re.compile(r"((^|\b)APCI(\b|$))|((^|\b)APPI(\b|$))|((^|\b)EI(\b|$))|((^|\b)ESI(\b|$))|((^|\b)FAB(\b|$))|((^|\b)MALDI(\b|$))",flags=re.IGNORECASE)
+ionization_mode_pattern = re.compile(r"((?:^|\b)?APCI(?:\b|$)?)|((?:^|\b)?ACPI(?:\b|$)?)|((?:^|\b)?APPI(?:\b|$)?)|((?:^|\b)?EI(?:\b|$)?)|((?:^|\b)?ESI(?:\b|$)?)|((?:^|\b)?FAB(?:\b|$)?)|((?:^|\b)?MALDI(?:\b|$)?)",flags=re.IGNORECASE)
 
 def normalize_empties(metadata_dict):
     """
@@ -372,11 +372,17 @@ def normalize_ionization(metadata_dict):
     ionization_mode = re.search(ionization_mode_pattern, metadata_dict["IONIZATION"])
 
     if ionization_mode:
-        metadata_dict["IONIZATION"] = ionization_mode.group(1)
+        ionization_mode = ionization_mode.group(1)
+        if ionization_mode == "ACPI":
+            ionization_mode = "APCI"
+        metadata_dict["IONIZATION"] = ionization_mode
     else:
         ionization_mode_in_INSTRUMENTTYPE = re.search(ionization_mode_pattern, metadata_dict["INSTRUMENTTYPE"])
         if ionization_mode_in_INSTRUMENTTYPE:
-            metadata_dict["IONIZATION"] = ionization_mode_in_INSTRUMENTTYPE.group(1)
+            ionization_mode_in_INSTRUMENTTYPE = ionization_mode_in_INSTRUMENTTYPE.group(1)
+            if ionization_mode_in_INSTRUMENTTYPE == "ACPI":
+                ionization_mode_in_INSTRUMENTTYPE = "APCI"
+            metadata_dict["IONIZATION"] = ionization_mode_in_INSTRUMENTTYPE
         else:
             metadata_dict["IONIZATION"] = "UNKNOWN"
 
