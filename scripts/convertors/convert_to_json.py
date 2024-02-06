@@ -59,7 +59,7 @@ def concatenate_csv(csv_list):
     df_list = []
 
     for file in csv_list:
-        df = pd.read_csv(file, sep=";", quotechar='"', encoding="UTF-8")
+        df = pd.read_csv(file, sep=";", quotechar='"', encoding="UTF-8", dtype=str)
         df['filename'] = os.path.basename(file)
 
         df.columns = df.columns.str.lower()

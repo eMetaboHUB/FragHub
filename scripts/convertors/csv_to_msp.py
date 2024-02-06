@@ -12,7 +12,7 @@ def format_comments(DF_row):
     :return: A formatted string containing information from the row.
     :rtype: str
     """
-    return f'FILENAME={DF_row["FILENAME"]}; PREDICTED={DF_row["PREDICTED"]}; FRAGHUBID={DF_row["FRAGHUBID"]}; SPECTRUMID={DF_row["SPECTRUMID"]}; RESOLUTION={DF_row["RESOLUTION"]}; SYNON={DF_row["SYNON"]}; IONIZATION={DF_row["IONIZATION"]}; MSLEVEL={DF_row["MSLEVEL"]}; FRAGMENTATIONMODE={DF_row["FRAGMENTATIONMODE"]}; EXACTMASS={DF_row["EXACTMASS"]}; AVERAGEMASS={DF_row["AVERAGEMASS"]}'
+    return f'FILENAME={DF_row["FILENAME"]}; PREDICTED={DF_row["PREDICTED"]}; FRAGHUBID={DF_row["FRAGHUBID"]}; SPECTRUMID={DF_row["SPECTRUMID"]}; RESOLUTION={DF_row["RESOLUTION"]}; SYNON={DF_row["SYNON"]}; FRAGMENTATIONMODE={DF_row["FRAGMENTATIONMODE"]}; AVERAGEMASS={DF_row["AVERAGEMASS"]}'
 
 def dataframe_to_msp(dataframe, name):
     """
@@ -55,6 +55,9 @@ def dataframe_to_msp(dataframe, name):
         SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] + "\n"
         SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] + "\n"
         SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] + "\n"
+        SPECTRUM = SPECTRUM + "EXACTMASS: " + str(row["EXACTMASS"]) + "\n"
+        SPECTRUM = SPECTRUM + "IONIZATION: " + row["IONIZATION"] + "\n"
+        SPECTRUM = SPECTRUM + "MSLEVEL: " + str(row["MSLEVEL"]) + "\n"
         SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS + "\n"
         SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] + "\n"
         SPECTRUM = SPECTRUM + "\n".join(["\t".join(map(str, sub_list)) for sub_list in peak_list]) + "\n"
