@@ -62,6 +62,9 @@ sub_adduct_pattern = re.compile(r"\(|\)|(.*\[)|(\]([\d\+\-\*]*)?)")
 global float_check_pattern
 float_check_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
+global ionization_mode_pattern
+ionization_mode_pattern = re.compile(r"((^|\b)APCI(\b|$))|((^|\b)APPI(\b|$))|((^|\b)EI(\b|$))|((^|\b)ESI(\b|$))|((^|\b)FAB(\b|$))|((^|\b)MALDI(\b|$))",flags=re.IGNORECASE)
+
 def normalize_empties(metadata_dict):
     """
     Normalizes empties in a metadata dictionary.
@@ -357,6 +360,28 @@ def missing_precursormz_re_calculation(metadata_dict):
 
     return metadata_dict
 
+def normalize_ionization(metadata_dict):
+    """
+    Normalize the ionization mode in the given metadata dictionary.
+
+    :param metadata_dict: A dictionary containing metadata.
+    :type metadata_dict: dict
+    :return: The modified metadata dictionary.
+    :rtype: dict
+    """
+    ionization_mode = re.search(ionization_mode_pattern, metadata_dict["IONIZATION"])
+
+    if ionization_mode:
+        metadata_dict["IONIZATION"] = ionization_mode.group(1)
+    else:
+        ionization_mode_in_INSTRUMENTTYPE = re.search(ionization_mode_pattern, metadata_dict["INSTRUMENTTYPE"])
+        if ionization_mode_in_INSTRUMENTTYPE:
+            metadata_dict["IONIZATION"] = ionization_mode_in_INSTRUMENTTYPE.group(1)
+        else:
+            metadata_dict["IONIZATION"] = "UNKNOWN"
+
+    return metadata_dict
+
 def normalize_values(metadata_dict):
     """
     :param metadata_dict: A dictionary containing metadata information.
@@ -375,5 +400,6 @@ def normalize_values(metadata_dict):
         metadata_dict = normalize_ms_level(metadata_dict)
         metadata_dict = normalize_predicted(metadata_dict)
         metadata_dict = normalize_retentiontime(metadata_dict)
+        metadata_dict = normalize_ionization(metadata_dict)
 
     return metadata_dict
