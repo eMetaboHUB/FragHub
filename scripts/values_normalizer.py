@@ -1,3 +1,4 @@
+from fuzzywuzzy import process
 from mols_calculation import *
 import numpy as np
 import re
@@ -55,6 +56,15 @@ adduct_dict = dict(zip(adduct_dataframe['known_adduct'], adduct_dataframe['fragh
 global adduct_massdiff_dict
 adduct_dataframe = pd.read_csv(os.path.abspath("../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
 adduct_massdiff_dict = dict(zip(adduct_dataframe['fraghub_default'], adduct_dataframe['massdiff']))
+
+global instruments_list
+instruments_list = pd.read_csv(os.path.abspath("../datas/instruments_catalogue.csv"), sep=";", encoding="UTF-8")
+instruments_list = instruments_list['INIT_INSTRUMENT'].str.lower().sort_values().unique()
+
+global instruments_dict
+instruments_dict = pd.read_csv(os.path.abspath("../datas/instruments_catalogue.csv"), sep=";", encoding="UTF-8")
+instruments_dict['INIT_INSTRUMENT'] = instruments_dict['INIT_INSTRUMENT'].str.lower()
+instruments_dict = instruments_dict.set_index('INIT_INSTRUMENT').T.to_dict('dict')
 
 global sub_adduct_pattern
 sub_adduct_pattern = re.compile(r"\(|\)|(.*\[)|(\]([\d\+\-\*]*)?)")
@@ -386,6 +396,38 @@ def normalize_ionization(metadata_dict):
 
     return metadata_dict
 
+def get_closest_match(instrument_name, instrument_list):
+    """
+    Find the closest match for the given instrument name in the given instrument list.
+
+    :param instrument_name: The name of the instrument to find the closest match for.
+    :param instrument_list: The list of instruments to search for a match in.
+
+    :return: A tuple containing the closest match, if the similarity score is greater than or equal to 80. Otherwise, returns None.
+    """
+    closest_match = process.extractOne(instrument_name, instrument_list)
+    if closest_match[1] < 80:  # si le score de similarité est inférieur à 80
+        return None
+    return closest_match[0]
+
+def normalize_instruments(metadata_dict):
+    """
+    Normalize the instrument metadata in the given dictionary.
+
+    :param metadata_dict: A dictionary containing the instrument metadata.
+    :return: The normalized instrument metadata dictionary.
+    """
+    if metadata_dict["INSTRUMENT"]:
+        metadata_dict_instrument = metadata_dict["INSTRUMENT"].lower()
+        closest_instrument = get_closest_match(metadata_dict_instrument, instruments_list)
+        if closest_instrument:
+            metadata_dict["INSTRUMENT"] = f"{instruments_dict[closest_instrument]["REF_INSTRUMENT"]}-{instruments_dict[closest_instrument]["REF_MODELE"]}"
+            metadata_dict["INSTRUMENTTYPE"] = f"{instruments_dict[closest_instrument]["REF_SPECTRUM_TYPE"]}-{instruments_dict[closest_instrument]["REF_IONISATION"]}-{instruments_dict[closest_instrument]["QTOF"]}"
+            return metadata_dict
+
+    return metadata_dict
+
+
 def normalize_values(metadata_dict):
     """
     :param metadata_dict: A dictionary containing metadata information.
@@ -405,5 +447,6 @@ def normalize_values(metadata_dict):
         metadata_dict = normalize_predicted(metadata_dict)
         metadata_dict = normalize_retentiontime(metadata_dict)
         metadata_dict = normalize_ionization(metadata_dict)
+        metadata_dict = normalize_instruments(metadata_dict)
 
     return metadata_dict
