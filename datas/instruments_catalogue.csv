@@ -1,0 +1,541 @@
+INIT+AF8-INTRUMENT+ADs-INIT+AF8-INTRUMENT+AF8-TYPE+ADs-REF+AF8-SPECTRUM+AF8-TYPE+ADs-REF+AF8-INTRUMENT+ADs-REF+AF8-INTRUMENT+AF8-TYPE+ADs-REF+AF8-MODELE+ADs-REF+AF8-RESOLUTION+ADs-REF+AF8-IONISATION
+Acquity UPLC Peptide BEH C18 column (50 x 2.1 mm+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-
+None+ADs-LC+AC0-ESI+AC0-IT (LC/MSD Trap XCT, Agilent Technologies)+ADs-LC+ADs-Agilent instrument model+ADs-IT+ADs-LC/MSD Trap XCT+ADs-LOW+ADs-ESI
+None+ADs-Flow+AC0-injection QqQ/MS+ADs-LC+ADs-Unknown instrument model+ADs-QQQ+ADs-TODELETE+ADs-LOW+ADs-ESI
+6530 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6530+ADs-HIGH+ADs-ESI
+LC+AC0-MS2010A, Shimadzu+ADs-LC+AC0-ESI+AC0-Q+ADs-LC+ADs-Shimadzu instrument model+ADs-Q+ADs-LCMS+AC0-2010A+ADs-LOW+ADs-ESI
+None+ADs-Linear Ion Trap+ADs-LC+ADs-Unknown instrument model+ADs-IT+ADs-TODELETE+ADs-LOW+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-Q+AC0-FT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive+ADs-HIGH+ADs-ESI
+Agilent 6550 iFunnel+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6550+ADs-HIGH+ADs-ESI
+None+ADs-DI+AC0-ESI+AC0-Ion Trap+ADs-DI+ADs-Unknown instrument model+ADs-IT+ADs-TODELETE+ADs-LOW+ADs-ESI
+API QSTAR+ADs-QIT+ADs-LC+ADs-SCIEX instrument model+ADs-QIT+ADs-+ADs-LOW+ADs-ESI
+6664 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6664+ADs-HIGH+ADs-ESI
+6601 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6601+ADs-HIGH+ADs-ESI
+6641 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6641+ADs-HIGH+ADs-ESI
+6679 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6679+ADs-HIGH+ADs-ESI
+6615 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6615+ADs-HIGH+ADs-ESI
+APCI+AC0-ITFT+ADs-ESI+AC0-APCI+AC0-ITFT+ADs-LC+ADs-Unknown instrument model+ADs-ITFT+ADs-+ADs-HIGH+ADs-APCI
+6572 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6572+ADs-HIGH+ADs-ESI
+6599 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6599+ADs-HIGH+ADs-ESI
+None+ADs-APCI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs- Orbitrap+ADs-HIGH+ADs-APCI
+None+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Unknown instrument model+ADs-QQ+ADs-TODELETE+ADs-LOW+ADs-ESI
+LCMS+AC0-8045 (Shimadzu, Kyoto, Japan)+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Shimadzu instrument model+ADs-QQ+ADs-LCMS+AC0-8045+ADs-HIGH+ADs-ESI
+6597 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6597+ADs-HIGH+ADs-ESI
+6557 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6557+ADs-HIGH+ADs-ESI
+TSQ 7000+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QQ+ADs-TSQ 7000+ADs-LOW+ADs-ESI
+6562 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6562+ADs-HIGH+ADs-ESI
+SCIEX 5600+ADs-in+AC0-silico QTOF+ADs-LC+ADs-SCIEX instrument model+ADs-QTOF+ADs-5600 PlusTripleTOF +ADs-HIGH+ADs-ESI
+JEOL JMS DX+AC0-300+ADs-FAB+AC0-B+ADs-LC+ADs-JEOL Ltd instrument model+ADs-B+ADs-JMS DX+AC0-300+ADs-LOW+ADs-FAB
+LTQ Orbitrap Fusion Tribrid, Thermo Scientfic+ADs-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Orbitrap Fusion Tribrid +ADs-HIGH+ADs-ESI
+Agilent 6530 QTOF+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6530+ADs-HIGH+ADs-ESI
+XEVO+AC0-G2S+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-Xevo G2+AC0-S+ADs-HIGH+ADs-ESI
+6578 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6578+ADs-HIGH+ADs-ESI
+Thermo Scientific LTQ+AC0-XL (San Jose, CA, USA)+ADs-LC+AC0-ESI+AC0-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LTQ XL+ADs-LOW+ADs-ESI
+VARIAN MAT+AC0-44+ADs-CI+AC0-B+ADs-GC+ADs-Thermo Fisher Scientific instrument model+ADs-B+ADs- GC +AC0- Varian MAT 44+ADs-LOW+ADs-CI
+None+ADs-CE+AC0-ESI+AC0-TOF (CE+AC0-system connected to 6210 Time+AC0-of+AC0-Flight MS, Agilent)+ADs-CE+ADs-Agilent instrument model+ADs-TOF+ADs-6210+ADs-HIGH+ADs-ESI
+Agilent 6550 iFunnel+ADs-Q+AC0-TOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6550+ADs-HIGH+ADs-ESI
+6625 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6625+ADs-HIGH+ADs-ESI
+None+ADs-QIT+AC0-TOF+ADs-LC+ADs-Unknown instrument model+ADs-QITTOF+ADs-+ADs-HIGH+ADs-ESI
+6677 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6677+ADs-HIGH+ADs-ESI
+LCQ Deca XPplus+ADs-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LCQ Deca XP plus+ADs-LOW+ADs-ESI
+Waters Xevo G2 Q+AC0-Tof+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-Xevo G2+ADs-HIGH+ADs-ESI
+Orbitrap+ADs-DI+AC0-ESI+AC0-FT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Orbitrap+ADs-HIGH+ADs-ESI
+AXIMA QIT (Shimadzu)+ADs-MALDI+AC0-QIT+ADs-LC+ADs-Shimadzu instrument model+ADs-QIT+ADs-Axima+ADs-LOW+ADs-MALDI
+6637 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6637+ADs-HIGH+ADs-ESI
+6654 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6654+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-ITTOF (LCMS+AC0-IT+AC0-TOF)+ADs-LC+ADs-Unknown instrument model+ADs-ITTOF+ADs-+ADs-HIGH+ADs-ESI
+qTof+ADs-ESI+AC0-qTof+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+6658 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6658+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Orbitrap Thermo Scientific+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Orbitrap+ADs-HIGH+ADs-ESI
+HPLC+AC0-ESI+AC0-TOF+ADs-ESI+AC0-HPLC+AC0-ESI+AC0-TOF+ADs-LC+ADs-Unknown instrument model+ADs-TOF+ADs-+ADs-HIGH+ADs-ESI
+6676 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6676+ADs-HIGH+ADs-ESI
+UPLC+AC0-ESI+AC0-QTOF+ADs-ESI+AC0-UPLC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-Q+AC0-TOF/MS+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+ESI+AC0-QTOF+ADs-N/A+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+None+ADs-CI+AC0-B (Unknown)+ADs-GC+ADs-Unknown instrument model+ADs-B+ADs-TODELETE+ADs-LOW+ADs-CI
+6580 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6580+ADs-HIGH+ADs-ESI
+6644 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6644+ADs-HIGH+ADs-ESI
+Shimadzu LC18A+AC0-IT+AC0-TOFMS+ADs-LC+AC0-ESI+AC0-ITTOF+ADs-LC+ADs-Shimadzu instrument model+ADs-ITTOF+ADs-LCMS+AC0-18A+ADs-HIGH+ADs-ESI
+None+ADs-MALDI+AC0-QIT+ADs-LC+ADs-Unknown instrument model+ADs-QIT+ADs-TODELETE+ADs-LOW+ADs-MALDI
+Q+AC0-Exactive Orbitrap Thermo Scientific+ADs-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Orbitrap+ADs-HIGH+ADs-ESI
+6589 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6589+ADs-HIGH+ADs-ESI
+Agilent QTOF 6550+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6550+ADs-HIGH+ADs-ESI
+None+ADs-FAB+AC0-BE+ADs-LC+ADs-Unknown instrument model+ADs-BE+ADs-TODELETE+ADs-HIGH+ADs-FAB
+6612 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6612+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-Ion Trap+ADs-LC+ADs-Unknown instrument model+ADs-IT+ADs-TODELETE+ADs-LOW+ADs-ESI
+Agilent LC QTOF+ADs-None+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+LC+AC0-ESI+AC0-ITTOF+ADs-LC+AC0-ESI+AC0-ITTOF+AC0-LC+AC0-ESI+AC0-ITTOF+ADs-LC+ADs-Unknown instrument model+ADs-ITTOF+ADs-+ADs-HIGH+ADs-ESI
+TSQ Vantage, Thermo Scientific coupled to Nexera, Shimadzu+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QQ+ADs-TSQ Vantage+ADs-LOW+ADs-ESI
+None+ADs-CE+AC0-QTOF+AC0-MS system (Agilent 7100 CE  6550 QTOF)+ADs-CE+ADs-Agilent instrument model+ADs-QTOF+ADs-6550+ADs-HIGH+ADs-ESI
+Bruker Esquire3000plus(Bruker+AC0-Franzen Analytik, Bremen, Germany)+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-
+None+ADs-ESI+AC0-QFT+ADs-LC+ADs-Unknown instrument model+ADs-QFT+ADs-Q+AC0-Exactive+ADs-HIGH+ADs-ESI
+6553 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6553+ADs-HIGH+ADs-ESI
+6604 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6604+ADs-HIGH+ADs-ESI
+None+ADs-Flow+AC0-injection QqQ/MS+ADs-LC+ADs-Unknown instrument model+ADs-QQQ+ADs-TODELETE+ADs-LOW+ADs-ESI
+qTOF+ADs-ESI+AC0-qTOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+6534 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6534+ADs-HIGH+ADs-ESI
+ESI+AC0-QFT+ADs-N/A+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive+ADs-HIGH+ADs-ESI
+2695 HPLC Quadro Micro API, Waters+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-Micromass Quatro Micro API+ADs-LOW+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-ITFT (LTQ FT XL Thermo Scientific)+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ FT XL Orbitrap+ADs-HIGH+ADs-ESI
+QExactive Orbitrap HF+AC0-X (Thermo Scientific)+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Q+AC0-Exactive Orbitrap HF+AC0-X+ADs-HIGH+ADs-ESI
+Thermo Fisher Scientific Trace 1310 Gas Chromatograph+ADs-None+ADs-GC+ADs-Thermo Fisher Scientific instrument model+ADs-UNKNOWN+ADs-TODELETE+ADs-HIGH+ADs-ESI
+6608 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6608+ADs-HIGH+ADs-ESI
+Quattro Premier, Micromass. Alliance HT 2795,Waters+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-Micromass Quattro Premier+ADs-LOW+ADs-ESI
+None+ADs-CI+AC0-B (HITACHI M+AC0-80)+ADs-GC+ADs-Hitachi High+AC0-Tech instrument model+ADs-B+ADs-TODELETE+ADs-LOW+ADs-CI
+6629 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6629+ADs-HIGH+ADs-ESI
+qToF+ADs-LC+AC0-ESI+AC0-qToF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+LTQ Orbitrap XL Thermo Scientific+ADs-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap XL+ADs-HIGH+ADs-ESI
+LTQ+AC0-Orbitrap XL+ADs-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap XL+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Plus Orbitrap Res 70k+ADs-LC+AC0-ESI+AC0-Q+AC0-Exactive Plus FT Res 70k+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Q+AC0-Exactive Plus Orbitrap+ADs-HIGH+ADs-ESI
+6609 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6609+ADs-HIGH+ADs-ESI
+6588 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6588+ADs-HIGH+ADs-ESI
+QQQ+ADs-LC+AC0-ESI+AC0-QQQ+ADs-LC+ADs-Unknown instrument model+ADs-QQQ+ADs-+ADs-LOW+ADs-ESI
+6673 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6673+ADs-HIGH+ADs-ESI
+Exploris 240 Orbitrap Thermo Scientific+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Exploris 240 Orbitrap+ADs-HIGH+ADs-ESI
+Vanquish Horizon UHPLC Thermo Scientific+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-
+QTOF 6530, Agilent Technologies.+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6530+ADs-HIGH+ADs-ESI
+QTOF Premier+ADs-Q+AC0-TOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-QTOF Premier+ADs-HIGH+ADs-ESI
+SCIEX TripleTOF 6600+ADs-None+ADs-LC+ADs-SCIEX instrument model+ADs-TOF+ADs-triple ToF 6600+ADs-HIGH+ADs-ESI
+6545 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6545+ADs-HIGH+ADs-ESI
+API QSTAR Pulsar i+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-SCIEX instrument model+ADs-QTOF+ADs-API QSTAR Pulsar i+ADs-LOW+ADs-ESI
+6628 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6628+ADs-HIGH+ADs-ESI
+CE+AC0-system connected to 6210 Time+AC0-of+AC0-Flight MS, Agilent+ADs-CE+AC0-ESI+AC0-TOF+ADs-CE+ADs-Agilent instrument model+ADs-TOF+ADs-6210+ADs-HIGH+ADs-ESI
+Esquire 3000plus+ADs-QIT+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QIT+ADs-Esquire 3000 plus+ADs-HIGH+ADs-ESI
+None+ADs-QqQ+ADs-LC+ADs-Unknown instrument model+ADs-QQQ+ADs-TODELETE+ADs-LOW+ADs-ESI
+qTof+ADs-APCI+AC0-qTof+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-APCI
+6617 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6617+ADs-HIGH+ADs-ESI
+Maxis HD qTOF+ADs-Maxis HD qTOF+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QTOF+ADs-Maxis HD+ADs-HIGH+ADs-ESI
+6623 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6623+ADs-HIGH+ADs-ESI
+Orbitrap Fusion, Thermo Scientific.+ADs-ESI+AC0-FT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Orbitrap Fusion+ADs-HIGH+ADs-ESI
+6566 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6566+ADs-HIGH+ADs-ESI
+6643 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6643+ADs-HIGH+ADs-ESI
+Xevo G2 XS QTOF, waters+ADs-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-Xevo G2+AC0-S+ADs-HIGH+ADs-ESI
+None+ADs-Q+AC0-Exactive HF+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Q+AC0-Exactive HF+ADs-HIGH+ADs-ESI
+VG Platform+ADs-LC+AC0-APCI+AC0-Q+ADs-LC+ADs-Waters instrument model+ADs-Q+ADs-VG platform+ADs-LOW+ADs-APCI
+Thermo Q+AC0-Exactive Plus+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive Plus+ADs-HIGH+ADs-ESI
+6574 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6574+ADs-HIGH+ADs-ESI
+Quattro+AF8-QQQ:40eV+ADs-Negative+AC0-Quattro+AF8-QQQ:40eV+ADs-LC+ADs-Waters instrument model+ADs-QQQ+ADs-Quattro micro+ADs-LOW+ADs-UNKNOWN
+ACQUITY UPLC system (Waters Co., MA, USA)+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+Xevo TQS micro (Waters, MA, USA)+ADs-ESI+AC0-QQ+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-Xevo TQS Micro+ADs-LOW+ADs-ESI
+Ion Trap+ADs-APCI+AC0-Ion Trap+ADs-LC+ADs-Unknown instrument model+ADs-IT+ADs-+ADs-LOW+ADs-APCI
+6563 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6563+ADs-HIGH+ADs-ESI
+6671 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6671+ADs-HIGH+ADs-ESI
+6618 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6618+ADs-HIGH+ADs-ESI
+None+ADs-FAB+AC0-EBEB (JMS+AC0-HX/HX 110A, JEOL)+ADs-LC+ADs-JEOL Ltd instrument model+ADs-EBEB+ADs-JMS+AC0-HX/HX 110A+ADs-LOW+ADs-FAB
+None+ADs-DI+AC0-ESI+AC0-Hybrid FT+ADs-DI+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Orbitrap+ADs-HIGH+ADs-ESI
+QTOF, SYNAPT, Waters+ADs-None+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-SYNAPT+ADs-HIGH+ADs-?
+JMS DX+AC0-300/JMS+AC0-3500 data system, Japan Electron Optics Laboratory, Japan+ADs-FD+AC0-B+ADs-LC+ADs-JEOL Ltd instrument model+ADs-B+ADs-JMS DX+AC0-300+ADs-LOW+ADs-FD
+Q+AC0-Exactive Plus+ADs-LC+AC0-ESI+AC0-Q+AC0-Exactive Plus+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Q+AC0-Exactive Plus+ADs-HIGH+ADs-ESI
+LC+AC0-ESI+AC0-Q+ADs-ESI+AC0-LC+AC0-ESI+AC0-Q+ADs-LC+ADs-Unknown instrument model+ADs-Q+ADs-+ADs-LOW+ADs-ESI
+N/A+ADs-ESI+AC0-QTOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-ITFT (LTQ FT XL, Thermo Scientfic)+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap XL+ADs-HIGH+ADs-ESI
+None+ADs-FAB+AC0-EBEB+ADs-LC+ADs-Unknown instrument model+ADs-EBEB+ADs-JMS+AC0-HX/HX 110A+ADs-HIGH+ADs-FAB
+JEOL JMS+AC0-HX 110+ADs-FAB+AC0-EB+ADs-LC+ADs-JEOL Ltd instrument model+ADs-EB+ADs-JMS+AC0-HX 110+ADs-LOW+ADs-FAB
+Q+AC0-Exactive+ADs-DI+AC0-ESI+AC0-Q+AC0-Exactive+ADs-DI+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive+ADs-HIGH+ADs-ESI
+6584 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6584+ADs-HIGH+ADs-ESI
+LCMS+AC0-2020 (SHIMADZU Corp., Kyoto, Japan)+ADs-APCI+AC0-Q+ADs-LC+ADs-Shimadzu instrument model+ADs-Q+ADs-LCMS+AC0-2020+ADs-LOW+ADs-APCI
+None+ADs-ESI+AC0-ITTOF+ADs-LC+ADs-Unknown instrument model+ADs-ITTOF+ADs-+ADs-HIGH+ADs-ESI
+6564 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6564+ADs-HIGH+ADs-ESI
+Thermo Fisher Scientific Q+AC0-Exactive GC Orbitrap GC+AC0-MS/MS+ADs-None+ADs-GC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-TODELETE+ADs-HIGH+ADs-ESI
+Thermo QExactive+AC0-HF+ADs-None+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs- Q+AC0-Exactive HF+ADs-HIGH+ADs-ESI
+LCMS+AC0-IT+AC0-TOF (Shimadzu)+ADs-APCI+AC0-ITTOF+ADs-LC+ADs-Shimadzu instrument model+ADs-ITTOF+ADs-+ADs-HIGH+ADs-APCI
+Q+AC0-Exactive Plus Orbitrap Res 70k+ADs-+AC0-Q+AC0-Exactive Plus FT Res 70k+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Q+AC0-Exactive Plus Orbitrap+ADs-HIGH+ADs-ESI
+6611 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6611+ADs-HIGH+ADs-ESI
+6662 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6662+ADs-HIGH+ADs-ESI
+Xevo G2+AC0-S QtOF, Waters (USA) coupled to ACQUITY UPLC, Waters (USA).+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-Xevo G2+AC0-S+ADs-HIGH+ADs-ESI
+6540 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6540+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-QQ (UPLC Waters, Quattro Ultima Pt Micromass)+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-Micromass Quattro Ultima+ADs-LOW+ADs-ESI
+Agilent 1200 RRLC+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-
+None+ADs-CI+AC0-B (HITACHI M+AC0-60)+ADs-LC+ADs-Hitachi High+AC0-Tech instrument model+ADs-B+ADs-M+AC0-60+ADs-LOW+ADs-CI
+None+ADs-Q+AC0-Exactive Focus Hybrid Quadrupole FT Mass Spectrometer (Thermo Fisher Scientific)+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-UNKNOWN+ADs-Q+AC0-Exactive Focus Hybrid+ADs-HIGH+ADs-UNKNOWN
+6595 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6595+ADs-HIGH+ADs-ESI
+LC, Waters Acquity UPLC System+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-
+QQQ+ADs-APCI+AC0-QQQ+ADs-LC+ADs-Unknown instrument model+ADs-QQQ+ADs-TODELETE+ADs-LOW+ADs-APCI
+LTQ XL, Thermo Finnigan+ADs-LC+AC0-ESI+AC0-IT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-IT+ADs-LTQ XL+ADs-LOW+ADs-ESI
+LTQ+ADs-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LTQ+ADs-LOW+ADs-UNKNOWN
+Unknown+ADs-FD+AC0-B+ADs-LC+ADs-Unknown instrument model+ADs-B+ADs-TODELETE+ADs-HIGH+ADs-FD
+6651 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6651+ADs-HIGH+ADs-ESI
+LCQ+ADs-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LCQ+ADs-LOW+ADs-ESI
+Agilent 6530+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6530+ADs-HIGH+ADs-ESI
+6544 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6544+ADs-HIGH+ADs-ESI
+Xevo G2 XS QTOF waters+ADs-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-Xevo G2+AC0-XS+ADs-HIGH+ADs-ESI
+6531 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6531+ADs-HIGH+ADs-ESI
+6603 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6603+ADs-HIGH+ADs-ESI
+6570 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6570+ADs-HIGH+ADs-ESI
+LC+AC0-ESI+AC0-IT+ADs-LC+AC0-ESI+AC0-IT+AC0-LC+AC0-ESI+AC0-IT+ADs-LC+ADs-Unknown instrument model+ADs-IT+ADs-TODELETE+ADs-LOW+ADs-ESI
+Esquire 3000+ADs-QIT+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QIT+ADs-Esquire 3000+ADs-LOW+ADs-ESI
+6530 QTOF LC/MS Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6530+ADs-HIGH+ADs-ESI
+Q+AC0-TOF SYNAPT, Waters+ADs-None+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-SYNAPT+ADs-HIGH+ADs-ESI
+LC+AC0-APPI+AC0-QQ+ADs-ESI+AC0-LC+AC0-APPI+AC0-QQ+ADs-LC+ADs-Unknown instrument model+ADs-QQ+ADs-TODELETE+ADs-LOW+ADs-APPI
+Waters QTof+AC0-Micro+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-QTOF Micro+ADs-HIGH+ADs-ESI
+6672 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6672+ADs-HIGH+ADs-ESI
+None+ADs-CI+AC0-B (FINNIGAN+AC0-MAT 4500)+ADs-GC+ADs-Thermo Fisher Scientific instrument model+ADs- B+ADs- Finnigan MAT 4500+ADs-HIGH+ADs-CI
+SHIMADZU LKB+AC0-9000+ADs-CI+AC0-B+ADs-GC+ADs-Shimadzu instrument model+ADs-B+ADs-LKB+AC0-9000+ADs-HIGH+ADs-CI
+Thermo Q+AC0-Exactive HF+ADs-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Q+AC0-Exactive HF+ADs-HIGH+ADs-ESI
+LCQ Deca XP+ADs-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LCQ Deca XP+ADs-HIGH+ADs-ESI
+Waters Q+AC0-TOF SYNAPT+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-SYNAPT+ADs-HIGH+ADs-ESI
+Waters2690+ADs-QqQ+ADs-LC+ADs-Waters instrument model+ADs-QQQ+ADs-2690+ADs-LOW+ADs-ESI
+6666 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6666+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-TOF+ADs-LC+ADs-Unknown instrument model+ADs-TOF+ADs-+ADs-HIGH+ADs-ESI
+Q+AC0-TOF+ADs-ESI+AC0-Q+AC0-TOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+6538 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6538+ADs-HIGH+ADs-ESI
+API3000, Applied Biosystems+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Applied Biosystems instrument model+ADs-QQ+ADs-API 3000+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Plus Orbitrap Thermo Scientific+ADs-None+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Q+AC0-Exactive Plus Orbitrap+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+None+ADs-DI+AC0-ESI+AC0-qTof+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+Quattro+AF8-QQQ:25eV+ADs-Negative+AC0-Quattro+AF8-QQQ:25eV+ADs-LC+ADs-Waters instrument model+ADs-QQQ+ADs-Quattro+ADs-LOW+ADs-ESI
+None+ADs-SI+AC0-BE+ADs-LC+ADs-Unknown instrument model+ADs-BE+ADs-TODELETE+ADs-HIGH+ADs-SI
+Waters QTOF SYNAPT+ADs-None+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-SYNAPT+ADs-HIGH+ADs-ESI
+6667 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6667+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Orbitrap+ADs-HIGH+ADs-ESI
+maXis plus UHR+AC0-ToF+AC0-MS, Bruker Daltonics+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QTOF+ADs-Maxis plus HD+ADs-HIGH+ADs-ESI
+LCT Micromass+ADs-LC+AC0-ESI+AC0-TOF+ADs-LC+ADs-Waters instrument model+ADs-TOF+ADs-LCT Micromass+ADs-HIGH+ADs-ESI
+None+ADs-Quattro+AF8-QQQ+ADs-LC+ADs-Waters instrument model+ADs-QQQ+ADs-Quattro+ADs-LOW+ADs-ESI
+qToF+ADs-ESI+AC0-qToF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-Unknown+ADs-HIGH+ADs-ESI
+Thermo Q+AC0-Exactive HF+ADs-None+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive HF+ADs-HIGH+ADs-ESI
+QTOF Ultima API+ADs-Q+AC0-TOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-Ultima API+ADs-HIGH+ADs-ESI
+6535 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6535+ADs-HIGH+ADs-ESI
+JMS+AC0-T100LP, JEOL+ADs-LC+AC0-ESI+AC0-TOF+ADs-LC+ADs-JEOL Ltd instrument model+ADs-TOF+ADs-JMS+AC0-T100LP+ADs-HIGH+ADs-ESI
+impact HD+ADs-LC+AC0-ESI+AC0- impact HD+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QTOF+ADs-Impact HD+ADs-HIGH+ADs-ESI
+Unknown+ADs-CI+AC0-B+ADs-GC+ADs-Unknown instrument model+ADs-B+ADs-TODELETE+ADs-HIGH+ADs-CI
+Agilent 6530 Q+AC0-TOF+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6530+ADs-HIGH+ADs-ESI
+Linear Ion Trap+ADs-N/A+AC0-Linear Ion Trap+ADs-LC+ADs-Unknown instrument model+ADs-IT+ADs-TODELETE+ADs-HIGH+ADs-ESI
+LTQ Orbitrap XL, Thermo Scientfic+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-
+Thermo Q+AC0-Exactive+ADs-LC+AC0-ESI+AC0-Q+AC0-FT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive+ADs-HIGH+ADs-ESI
+6569 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6569+ADs-HIGH+ADs-ESI
+6630 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6630+ADs-HIGH+ADs-ESI
+6560 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6560+ADs-HIGH+ADs-ESI
+6669 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6669+ADs-HIGH+ADs-ESI
+None+ADs-Thermo LTQ+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LTQ+ADs-LOW+ADs-ESI
+API QSTAR+ADs-Q+AC0-TOF+ADs-LC+ADs-SCIEX instrument model+ADs-IT+ADs-QSTAR+ADs-HIGH+ADs-ESI
+LC+AC0-ESI+AC0-QQ+ADs-LC+AC0-ESI+AC0-QQ+AC0-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Unknown instrument model+ADs-QQ+ADs-+ADs-HIGH+ADs-ESI
+None+ADs-Q+AC0-TOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+Sciex TripleTOF5600+ADs-LC+AC0-QTOF+ADs-LC+ADs-SCIEX instrument model+ADs-TOF+ADs-5600 TripleTOF +ADs-HIGH+ADs-ESI
+APEX+AC0-II FT+AC0-ICR (Bruker Daltonics)+ADs-ESI+AC0-ITFT+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-ITFT+ADs-APEX II+ADs-HIGH+ADs-ESI
+6648 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6648+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Orbitrap Thermo Scientific+ADs-LC+AC0-ESI+AC0-HRMS+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Q+AC0-Exactive Orbitrap+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-qTof+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+6547 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6547+ADs-HIGH+ADs-ESI
+LC+AC0-ESI+AC0-QTOF+ADs-ESI+AC0-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+Sciex 6600 TTOF+ADs-None+ADs-LC+ADs-SCIEX instrument model+ADs-TOF+ADs-6600 TripleTOF+ADs-HIGH+ADs-ESI
+Ion Trap+ADs-LC+AC0-ESI+AC0-Ion Trap+ADs-LC+ADs-Unknown instrument model+ADs-IT+ADs-TODELETE+ADs-LOW+ADs-ESI
+LC/MSD Trap XCT, Agilent Technologies+ADs-LC+AC0-ESI+AC0-IT+ADs-LC+ADs-Agilent instrument model+ADs-IT+ADs-LC/MSD Trap XCT+ADs-LOW+ADs-ESI
+ACQUITY UPLC System, Waters+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+6537 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6537+ADs-HIGH+ADs-ESI
+Agilent 6530+ADs-LC+AC0-ESI+AC0-QEHF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6530+ADs-HIGH+ADs-ESI
+QExactive Orbitrap HF+AC0-X (Thermo Scientific)+ADs-LC+AC0-APCI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive Orbitrap HF+AC0-X+ADs-HIGH+ADs-APCI
+API 3000+ADs-QqQ+ADs-LC+ADs-SCIEX instrument model+ADs-QQQ+ADs-API3000+ADs-HIGH+ADs-ESI
+6592 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6592+ADs-HIGH+ADs-ESI
+N/A+ADs-N/A+AC0-N/A+ADs-LC+ADs-Unknown instrument model+ADs-Unknown+ADs-TODELETE+ADs-HIGH+ADs-ESI
+LTQ Orbitrap XL hybrid iontrap+AC0-Orbitrap (Thermo Fisher Scientific, San Jose, CA, USA)+ADs-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap XL hybrid+ADs-HIGH+ADs-ESI
+QTRAP+ADs-QqQ+ADs-LC+ADs-Unknown instrument model+ADs-QQQ+ADs-+ADs-HIGH+ADs-ESI
+6635 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6635+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Orbitrap (Thermo Scientific)+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive Orbitrap+ADs-HIGH+ADs-ESI
+LC/MSD trap+ADs-QIT+ADs-LC+ADs-Agilent instrument model+ADs-QIT+ADs-LC/MSD Trap+ADs-LOW+ADs-ESI
+Thermo Q+AC0-Exactive HF+ADs-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive HF+ADs-HIGH+ADs-ESI
+6621 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6621+ADs-HIGH+ADs-ESI
+6567 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6567+ADs-HIGH+ADs-ESI
+None+ADs-MALDI+AC0-QITTOF+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QITTOF+ADs-+ADs-HIGH+ADs-MALDI
+LTQ+AC0-FT+ADs-QIT+AC0-FT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ FT+ADs-HIGH+ADs-ESI
+6653 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6653+ADs-HIGH+ADs-ESI
+Orbitrap+ADs-LC+AC0-ESI+AC0-FT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Orbitrap+ADs-HIGH+ADs-ESI
+LC+AC0-ESI+AC0-QFT+ADs-ESI+AC0-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Unknown instrument model+ADs-QFT+ADs-Exactive+ADs-HIGH+ADs-ESI
+Orbitrap Fusion Tribrid Thermo Fisher Scientific+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Orbitrap Fusion Tribrid+ADs-HIGH+ADs-ESI
+LC+AC0-ESI+AC0-QQ+ADs-ESI+AC0-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Unknown instrument model+ADs-QQ+ADs-TODELETE+ADs-LOW+ADs-ESI
+Orbitrap Exploris 120+ADs-None+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Orbitrap Exploris 120+ADs-HIGH+ADs-ESI
+LC+AC0-Q+AC0-TOF/MS+ADs-ESI+AC0-LC+AC0-Q+AC0-TOF/MS+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+6543 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6543+ADs-HIGH+ADs-ESI
+HITACHI M+AC0-80+ADs-CI+AC0-B+ADs-GC+ADs-Hitachi High+AC0-Tech instrument model+ADs-B+ADs-M+AC0-80+ADs-LOW+ADs-CI
+6674 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6674+ADs-HIGH+ADs-ESI
+6575 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6575+ADs-HIGH+ADs-ESI
+Flow+AC0-injection QqQ/MS+ADs-ESI+AC0-Flow+AC0-injection QqQ/MS+ADs-LC+ADs-Unknown instrument model+ADs-NA+ADs-TODELETE+ADs-HIGH+ADs-ESI
+AB Sciex TripleTOF 5600 system (Q+AC0-TOF) equipped with a DuoSpray ion source+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-SCIEX instrument model+ADs-QTOF+ADs-5600+ADs-HIGH+ADs-ESI
+Hybrid FT+ADs-DI+AC0-ESI+AC0-Hybrid FT+ADs-LC+ADs-Unknown instrument model+ADs-FT+ADs-Exactive+ADs-HIGH+ADs-ESI
+None+ADs-in+AC0-silico QTOF+ADs-LC+ADs-Unknown instrument model+ADs-NA+ADs-TODELETE+ADs-HIGH+ADs-ESI
+6552 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6552+ADs-HIGH+ADs-ESI
+LCMS+AC0-IT+AC0-TOF+ADs-LC+AC0-ESI+AC0-ITTOF+ADs-LC+ADs-Unknown instrument model+ADs-ITQTOF+ADs-+ADs-HIGH+ADs-ESI
+QQQ+ADs-ESI+AC0-QQQ+ADs-LC+ADs-Unknown instrument model+ADs-QQQ+ADs-+ADs-LOW+ADs-ESI
+None+ADs-Waters SYNAPT+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-SYNAPT+ADs-HIGH+ADs-ESI
+6550 Q+AC0-TOF (Agilent Technologies)+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6550+ADs-HIGH+ADs-ESI
+Unknown+ADs-FAB+AC0-EB+ADs-LC+ADs-Unknown instrument model+ADs-EB+ADs-TODELETE+ADs-HIGH+ADs-FAB
+6627 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6627+ADs-HIGH+ADs-ESI
+6631 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6631+ADs-HIGH+ADs-ESI
+6586 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6586+ADs-HIGH+ADs-ESI
+Agilent 6560+ADs-LC+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6560+ADs-HIGH+ADs-ESI
+API 2000 ESI+AC0-MS/MS system triple quadrupole mass spectrometer (Sciex Applied Biosystems, Toronto, Canada)+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-SCIEX instrument model+ADs-QQ+ADs-+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-ITFT (LTQ FT XL, Thermo Scientific )+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ FT XL+ADs-HIGH+ADs-ESI
+6607 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6607+ADs-HIGH+ADs-ESI
+6663 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6663+ADs-HIGH+ADs-ESI
+None+ADs-QTOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-LOW+ADs-ESI
+PTR+AC0-QMS 500 (IONICON Analytik GmbH, Innsbruck, Austria)+ADs-CI+AC0-Q+ADs-GC+ADs-IONICON Analytik GmbH instrument model+ADs-CI+AC0-Q+ADs-TODELETE+ADs-LOW+ADs-CI
+6546 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6546+ADs-HIGH+ADs-ESI
+6655 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6655+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive+ADs-None+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Q+AC0-Exactive+ADs-HIGH+ADs-ESI
+6550 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6550+ADs-HIGH+ADs-ESI
+6573 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6573+ADs-HIGH+ADs-ESI
+API2000, Applied+ADs-LC+AC0-APPI+AC0-QQ+ADs-LC+ADs-Applied Biosystems instrument model+ADs-QQ+ADs-API 2000+ADs-HIGH+ADs-APPI
+6541 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6541+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-Q+ADs-LC+ADs-Unknown instrument model+ADs-Q+ADs-TODELETE+ADs-LOW+ADs-ESI
+Waters SYNAPT+AC0-G2 QTOF+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-SYNAPT+AC0-G2+ADs-HIGH+ADs-ESI
+6646 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6646+ADs-HIGH+ADs-ESI
+6665 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6665+ADs-HIGH+ADs-ESI
+6571 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6571+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-QQ (API3000, Applied Biosystems)+ADs-LC+ADs-Applied Biosystems instrument model+ADs-QQ+ADs-API 3000+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-QIT (4000Q TRAP, Applied Biosystems)+ADs-LC+ADs-Applied Biosystems instrument model+ADs-QIT+ADs-4000 Q+ADs-HIGH+ADs-ESI
+6626 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6626+ADs-HIGH+ADs-ESI
+6539 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6539+ADs-HIGH+ADs-ESI
+JMS+AC0-T100LP, JEOL Ltd.+ADs-LC+AC0-ESI+AC0-TOF+ADs-LC+ADs-JEOL Ltd instrument model+ADs-TOF+ADs-JMS+AC0-T100LP+ADs-HIGH+ADs-esi
+Bruker micrOTOF+AC0-Q+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QTOF+ADs-micrOTOF+AC0-Q+ADs-HIGH+ADs-ESI
+LC+AC0-ESI+AC0-ITFT+ADs-LC+AC0-ESI+AC0-ITFT+AC0-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Unknown instrument model+ADs-ITFT+ADs-Orbitrap+ADs-LOW+ADs-ESI
+Bruker maXis ESI+AC0-QTOF+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QTOF+ADs-Maxis HD+ADs-HIGH+ADs-ESI
+Triple Quad 4500 (AB Sciex Pte. Ltd., USA)+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-SCIEX instrument model+ADs-QQ+ADs-+ADs-HIGH+ADs-ESI
+LTQ Orbitrap XL, Thermo Scientfic+ADs-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap XL+ADs-HIGH+ADs-ESI
+Thermo Q+AC0-Exactive+ADs-None+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Q+AC0-Exactive+ADs-HIGH+ADs-ESI
+6587 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6587+ADs-HIGH+ADs-ESI
+6632 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6632+ADs-HIGH+ADs-ESI
+Quattro II+ADs-QqQ+ADs-LC+ADs-Waters instrument model+ADs-QQQ+ADs-Quattro II+ADs-LOW+ADs-ESI
+LTQ Orbitrap XL Thermo Scientific+ADs-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap XL+ADs-HIGH+ADs-ESI
+6680 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6680+ADs-HIGH+ADs-ESI
+Q+AC0-Tof Premier, Waters+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-QTOF Premier+ADs-HIGH+ADs-ESI
+6622 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6622+ADs-HIGH+ADs-ESI
+None+ADs-None+ADs-LC+ADs-Unknown instrument model+ADs-Unknown+ADs-TODELETE+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive HF, Thermo Scientific +AFs-MS:1002523+AF0-+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive HF+ADs-HIGH+ADs-ESI
+6554 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6554+ADs-HIGH+ADs-ESI
+QTFO SYNAPT, Waters+ADs-None+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-SYNAPT+ADs-HIGH+ADs-ESI
+6556 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6556+ADs-HIGH+ADs-ESI
+LCQ mass spectrometer (Finnigan MAT, San Jose, CA, USA)+ADs-LC+AC0-ESI+AC0-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LCQ+ADs-LOW+ADs-ESI
+None+ADs-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Orbitrap+ADs-HIGH+ADs-ESI
+6650 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6650+ADs-HIGH+ADs-ESI
+Micromass Q+AC0-TOF II+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-Micromass QTOF II+ADs-HIGH+ADs-ESI
+Agilent 6560 QTOF+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6560+ADs-HIGH+ADs-ESI
+Quattro Premier XE+ADs-QIT+ADs-LC+ADs-Waters instrument model+ADs-QIT+ADs-Quattro Premier XE+ADs-LOW+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-qToF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-LOW+ADs-ESI
+None+ADs-CI+AC0-B (JEOL JMS+AC0-D+AC0-300)+ADs-GC+ADs-JEOL Ltd instrument model+ADs-B+ADs-JMS D+AC0-300+ADs-LOW+ADs-CI
+Waters SYNAPT QTOF+ADs-None+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-SYNAPT+ADs-HIGH+ADs-ESI
+LCQ Deca+ADs-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LCQ Deca+ADs-LOW+ADs-ESI
+6668 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6668+ADs-HIGH+ADs-ESI
+Quattro+AF8-QQQ:40eV+ADs-Positive+AC0-Quattro+AF8-QQQ:40eV+ADs-LC+ADs-Waters instrument model+ADs-QQQ+ADs-Quattro+ADs-LOW+ADs-ESI
+Micromass Quattromicro+ADs-QqQ+ADs-LC+ADs-Waters instrument model+ADs-QQQ+ADs-Micromass Quattro Micro+ADs-LOW+ADs-ESI
+FAB+AC0-EBEB+ADs-ESI+AC0-FAB+AC0-EBEB+ADs-LC+ADs-Unknown instrument model+ADs-EBEB+ADs-+ADs-HIGH+ADs-ESI
+ACQUITY UPLC H+AC0-Class/Xevo TQD (Waters, Milford, USA)+ADs-ESI+AC0-QQ+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-Xevo TQD+ADs-LOW+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-ITTOF+ADs-LC+ADs-Unknown instrument model+ADs-ITTOF+ADs-+ADs-HIGH+ADs-ESI
+6620 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6620+ADs-HIGH+ADs-ESI
+6605 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6605+ADs-HIGH+ADs-ESI
+6577 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6577+ADs-HIGH+ADs-ESI
+Thermo Finnigan LTQ+ADs-Linear Ion Trap+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LTQ+ADs-LOW+ADs-ESI
+6619 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6619+ADs-HIGH+ADs-ESI
+None+ADs-ESI+AC0-QTOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-TODELETE+ADs-HIGH+ADs-ESI
+Hybrid Ft+ADs-LC+AC0-ESI+AC0-Hybrid Ft+ADs-LC+ADs-Unknown instrument model+ADs-FT+ADs-Orbitrap+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Orbitrap Thermo Scientific+ADs-LC+AC0-ESI+AC0-HRMS+AC0-FT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive Orbitrap+ADs-HIGH+ADs-ESI
+6636 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6636+ADs-HIGH+ADs-ESI
+6652 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6652+ADs-HIGH+ADs-ESI
+TripleTOF 5600+SCL//Q-+ADs-ESI+AC0-QTOF+ADs-LC+ADs-SCIEX instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+6598 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6598+ADs-HIGH+ADs-ESI
+ExionLC AD, AB Sciex LLC, USA+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-
+None+ADs-LC+AC0-ESI+AC0-QQQ+ADs-LC+ADs-Unknown instrument model+ADs-QQQ+ADs-TODELETE+ADs-LOW+ADs-ESI
+None+ADs-MALDI+AC0-TOF (Voyager DE+AC0-PRO, Applied Biosystems)+ADs-LC+ADs-Applied Biosystems instrument model+ADs-TOF+ADs-Voyager DE PRO+ADs-HIGH+ADs-MALDI
+6542 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6542+ADs-HIGH+ADs-ESI
+Quantum Ultra AM+ADs-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-Quantum Ultra AM+ADs-HIGH+ADs-ESI
+6661 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6661+ADs-HIGH+ADs-ESI
+Orbitrap Exploris 240 Thermo Scientific+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Orbitrap Exploris 240+ADs-HIGH+ADs-ESI
+Agilent qTOF 6545+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6545+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Orbitrap Plus Thermo Scientific+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive Plus Orbitrap+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-APCI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Orbitrap+ADs-HIGH+ADs-APCI
+6656 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6656+ADs-HIGH+ADs-ESI
+LC+AC0-10ADVPmicro HPLC, Shimadzu+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-
+UPLC Q+AC0-Tof Premier, Waters+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-QTOF Premier+ADs-HIGH+ADs-ESI
+JEOL AX+AC0-505HA+ADs-CI+AC0-B+ADs-GC+ADs-JEOL Ltd instrument model+ADs-B+ADs-JMS AX+AC0-505 HA+ADs-LOW+ADs-CI
+6640 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6640+ADs-HIGH+ADs-ESI
+LCQ Duo+ADs-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LCQ Duo+ADs-HIGH+ADs-ESI
+micrOTOF+AC0-Q+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QTOF+ADs-micrOTOF+AC0-Q+ADs-HIGH+ADs-ESI
+Orbitrap Classic, Thermo Scientific+ADs-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Orbitrap Classic+ADs-HIGH+ADs-ESI
+6649 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6649+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive+ADs-HIGH+ADs-ESI
+Voyager DE+AC0-PRO, Applied Biosystems+ADs-MALDI+AC0-TOF+ADs-LC+ADs-Applied Biosystems instrument model+ADs-TOF+ADs-Voyager DE PRO+ADs-HIGH+ADs-MALDI
+LC+AC0-ESI+AC0-QTOF+ADs-LC+AC0-ESI+AC0-QTOF+AC0-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+LCMS+AC0-ITTOF, Shimadzu+ADs-LC+AC0-ESI+AC0-ITTOF+ADs-LC+ADs-Shimadzu instrument model+ADs-ITTOF+ADs-+ADs-HIGH+ADs-ESI
+6565 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6565+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-ITTOF (Shimadzu LC20A+AC0-IT+AC0-TOFMS)+ADs-LC+ADs-Shimadzu instrument model+ADs-ITTOF+ADs-+ADs-HIGH+ADs-ESI
+6657 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6657+ADs-HIGH+ADs-ESI
+TQD, Waters+ADs-Flow+AC0-injection QqQ/MS+ADs-LC+ADs-Waters instrument model+ADs-Unknown+ADs-TODELETE+ADs-LOW+ADs-ESI
+LC+AC0-IT+AC0-TOF (Shimadzu)+ADs-ESI+AC0-ITTOF+ADs-LC+ADs-Shimadzu instrument model+ADs-ITTOF+ADs-+ADs-HIGH+ADs-ESI
+TQD, Waters+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-TODELETE+ADs-LOW+ADs-ESI
+LTQ Orbitrap Velos Thermo Scientific+ADs-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap Velos+ADs-HIGH+ADs-ESI
+Maxis HD qTOF+ADs-LC+AC0-ESI+AC0-Maxis HD qTOF+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QTOF+ADs-Maxis HD+ADs-HIGH+ADs-ESI
+6532 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6532+ADs-HIGH+ADs-ESI
+LTQ+AC0-Orbitrap+ADs-APCI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap+ADs-HIGH+ADs-APCI
+QTRAP+ADs-LIT+ADs-LC+ADs-Unknown instrument model+ADs-NA+ADs-TODELETE+ADs-+ADs-
+API2000+ADs-LC+AC0-APPI+AC0-QQ+ADs-LC+ADs-SCIEX instrument model+ADs-QQQ+ADs-API2000+ADs-LOW+ADs-APPI
+None+ADs-LC+AC0-ESI+AC0-QTOF (UPLC Q+AC0-Tof Premier, Waters)+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-QTOF Premier+ADs-HIGH+ADs-ESI
+Xevo TQ, Waters+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-Xevo TQ+ADs-LOW+ADs-ESI
+Agilent 6530 Q+AC0-TOF+ADs-None+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6530+ADs-HIGH+ADs-ESI
+Bruker MicrOTOF+AC0-Q+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QTOF+ADs-micrOTOF+AC0-Q+ADs-HIGH+ADs-ESI
+6549 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6549+ADs-HIGH+ADs-ESI
+Orbitrap+ADs-APCI+AC0-FT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Orbitrap+ADs-HIGH+ADs-APCI
+Acquity UPLC and a Xevo TQ (Waters)+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-Xevo TQ+ADs-LOW+ADs-ESI
+JMS+AC0-S3000+ADs-MALDI+AC0-TOFTOF+ADs-LC+ADs-JEOL Ltd instrument model+ADs-TOF+ADs-JMS+AC0-S3000+ADs-HIGH+ADs-
+M+AC0-4100 (Hitachi, Tokyo, Japan).+ADs-SI+AC0-BE+ADs-LC+ADs-Hitachi High+AC0-Tech instrument model+ADs-BE+ADs-TODELETE+ADs-LOW+ADs-ESI
+TSQ QUANTUM AM+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QQQ+ADs-TSQ QUANTUM AM+ADs-HIGH+ADs-ESI
+LCQ classic+ADs-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LCQ classic+ADs-LOW+ADs-ESI
+JMS+AC0-HX/HX 110A, JEOL+ADs-FAB+AC0-EBEB+ADs-LC+ADs-JEOL Ltd instrument model+ADs-EBEB+ADs-JMS+AC0-HX/HX 110A+ADs-LOW+ADs-FAB
+None+ADs-LC+AC0-ESI+AC0-QIT+ADs-LC+ADs-Unknown instrument model+ADs-QIT+ADs-TODELETE+ADs-HIGH+ADs-ESI
+6660 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6660+ADs-HIGH+ADs-ESI
+Xevo TQS micro (Waters, MA, USA) coupled to ACQUITY UPLC H+AC0-Class (Waters, MA, USA)+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-Xevo TQS+ADs-LOW+ADs-ESI
+LTQ Orbitap Velos (Thermofisher Scientific)+ADs-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitap Velos+ADs-HIGH+ADs-ESI
+None+ADs-NA+ADs-LC+ADs-Unknown instrument model+ADs-Unknown+ADs-TODELETE+ADs-HIGH+ADs-ESI
+None+ADs-MALDI+AC0-TOFTOF+ADs-LC+ADs-Unknown instrument model+ADs-TOF+ADs-TODELETE+ADs-HIGH+ADs-MALDI
+LCMS+AC0-2020 (SHIMADZU Corp., Kyoto, Japan) coupled to Vapur Interface (AMR. Inc., Tokyo, Japan).+ADs-APCI+AC0-Q+ADs-LC+ADs-Shimadzu instrument model+ADs-Q+ADs-+ADs-HIGH+ADs-APCI
+6670 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6670+ADs-HIGH+ADs-ESI
+LC+AC0-ESI+AC0-ITTOF+ADs-ESI+AC0-LC+AC0-ESI+AC0-ITTOF+ADs-LC+ADs-Unknown instrument model+ADs-ITTOF+ADs-+ADs-HIGH+ADs-ESI
+UPLC Waters, Quattro Ultima Pt Micromass+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-Micromass Quattro Ultima+ADs-LOW+ADs-ESI
+Quattro+AF8-QQQ:10eV+ADs-Negative+AC0-Quattro+AF8-QQQ:10eV+ADs-LC+ADs-Waters instrument model+ADs-QQQ+ADs-Quattro+ADs-LOW+ADs-ESI
+qTof+ADs-LC+AC0-APCI+AC0-qTof+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-APCI
+LCQ Deca Xpplus+ADs-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LCQ Deca XP plus+ADs-LOW+ADs-ESI
+None+ADs-FT+ADs-LC+ADs-Unknown instrument model+ADs-FT+ADs-+ADs-HIGH+ADs-UNKNOWN
+6559 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6559+ADs-HIGH+ADs-ESI
+Agilent 6530 QTOF+ADs-None+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6530+ADs-HIGH+ADs-ESI
+None+ADs-LIT+ADs-LC+ADs-Unknown instrument model+ADs-IT+ADs-TODELETE+ADs-HIGH+ADs-ESI
+6593 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6593+ADs-HIGH+ADs-ESI
+Waters Synapt QTOF+ADs-None+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-SYNAPT+ADs-HIGH+ADs-??
+6555 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6555+ADs-HIGH+ADs-ESI
+Quattro Premier, Micromass (USA) coupled to Alliance HT 2795, Waters (USA).+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-Micromass Quattro Premier+ADs-LOW+ADs-ESI
+LC+AC0-ESI+AC0-IT+ADs-ESI+AC0-LC+AC0-ESI+AC0-IT+ADs-LC+ADs-Unknown instrument model+ADs-IT+ADs-+ADs-HIGH+ADs-ESI
+LC+AC0-ESI+AC0-ITFT+ADs-ESI+AC0-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Unknown instrument model+ADs-ITFT+ADs-+ADs-HIGH+ADs-ESI
+XCT+ADs-QIT+ADs-LC+ADs-Agilent instrument model+ADs-QIT+ADs-LC/MSD Trap XCT+ADs-LOW+ADs-ESI
+Q+AC0-Exactive  Thermo Scientific+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive plus+ADs-HIGH+ADs-ESI
+UHPLC+AC0-ESI+AC0-QTof XEVO G2+AC0-S QTof+ADs-None+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-Xevo G2+AC0-S+ADs-HIGH+ADs-ESI
+None+ADs-SYNAPT QTOF, Waters+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-SYNAPT+ADs-HIGH+ADs-ESI
+6602 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6602+ADs-HIGH+ADs-ESI
+6645 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6645+ADs-HIGH+ADs-ESI
+None+ADs-n/a+ADs-LC+ADs-Unknown instrument model+ADs-Unknown+ADs-TODELETE+ADs-HIGH+ADs-ESI
+Q+AC0-Tof Premier, Waters+ADs-LC+AC0-Q+AC0-TOF/MS+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-QTOF Premier+ADs-HIGH+ADs-ESI
+LCQ Advantage+ADs-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LCQ Advantage+ADs-LOW+ADs-ESI
+6606 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6606+ADs-HIGH+ADs-ESI
+Bruker maXis Impact+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QTOF+ADs-Impact HD+ADs-HIGH+ADs-ESI
+6675 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6675+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Thermo Scientific+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive+ADs-HIGH+ADs-ESI
+6561 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6561+ADs-HIGH+ADs-ESI
+Sciex Triple TOF 6600+ADs-None+ADs-LC+ADs-SCIEX instrument model+ADs-Unknown+ADs-TODELETE+ADs-HIGH+ADs-ESI
+maXis (Bruker Daltonics)+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QTOF+ADs-Maxis+ADs-HIGH+ADs-ESI
+JMS DX+AC0-300/JMS+AC0-3500 data system, Japan Electron Optics Laboratory, Japan+ADs-FAB+AC0-B+ADs-LC+ADs-JEOL Ltd instrument model+ADs-B+ADs-JMS DX+AC0-300+ADs-LOW+ADs-FAB
+6614 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6614+ADs-HIGH+ADs-ESI
+6583 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6583+ADs-HIGH+ADs-ESI
+Thermo Scientific Orbitrap ID+AC0-X+ADs-LC+AC0-ESI+AC0-FT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Orbitrap ID+AC0-X+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-APPI+AC0-QQ (API2000)+ADs-LC+ADs-SCIEX instrument model+ADs-QQQ+ADs-API2000+ADs-LOW+ADs-appi
+Shimadzu LC20A+AC0-IT+AC0-TOFMS+ADs-LC+AC0-ESI+AC0-ITTOF+ADs-LC+ADs-Shimadzu instrument model+ADs-ITTOF+ADs-+ADs-HIGH+ADs-ESI
+6550 QTOF (Agilent Technologies)+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6550+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Plus Orbitrap Thermo Scientific+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive Plus Orbitrap+ADs-HIGH+ADs-ESI
+6594 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6594+ADs-HIGH+ADs-ESI
+Quattro+AF8-QQQ:10eV+ADs-Positive+AC0-Quattro+AF8-QQQ:10eV+ADs-LC+ADs-Waters instrument model+ADs-QQQ+ADs-Quattro+ADs-LOW+ADs-ESI
+6558 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6558+ADs-HIGH+ADs-ESI
+JEOL JMS+AC0-D+AC0-300+ADs-CI+AC0-B+ADs-GC+ADs-JEOL Ltd instrument model+ADs-B+ADs-TODELETE+ADs-LOW+ADs-CI
+Xevo TQ MS (Waters)+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-Xevo TQ+ADs-LOW+ADs-ESI
+HITACHI RMU+AC0-6D+ADs-CI+AC0-B+ADs-GC+ADs-Hitachi High+AC0-Tech instrument model+ADs-B+ADs-TODELETE+ADs-LOW+ADs-CI
+6581 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6581+ADs-HIGH+ADs-ESI
+Dionex U3000 and Exactive Orbitrap (Thermofisher Scientific)+ADs-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Exactive Orbitrap+ADs-HIGH+ADs-ESI
+6551 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6551+ADs-HIGH+ADs-ESI
+Quattro+AF8-QQQ:25eV+ADs-Positive+AC0-Quattro+AF8-QQQ:25eV+ADs-LC+ADs-Waters instrument model+ADs-QQQ+ADs-Quattro+ADs-LOW+ADs-ESI
+API 365+ADs-QqQ+ADs-LC+ADs-SCIEX instrument model+ADs-Unknown+ADs-TODELETE+ADs-HIGH+ADs-ESI
+6642 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6642+ADs-HIGH+ADs-ESI
+Agilent QTof 6545, Agilent Technologies +AFs-MS:1000490+AF0-+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6545+ADs-HIGH+ADs-ESI
+Micromass (Altrincham, UK) QuattroII triple+AC0-quadrupole mass spectrometer, JASCO(Tokyo, Japan) model 980 LC+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-Micromass Quattro II+ADs-LOW+ADs-ESI
+Q+AC0-Exactive Plus Orbitrap Res 14k+ADs-+AC0-Q+AC0-Exactive Plus FT Res 14k+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-LC+AC0-ESI+AC0-QFT+ADs-Q+AC0-Exactive Plus Orbitrap+ADs-HIGH+ADs-ESI
+Ion Trap+ADs-ESI+AC0-Ion Trap+ADs-LC+ADs-Unknown instrument model+ADs-IT+ADs-+ADs-HIGH+ADs-ESI
+API 3000 triple+AC0-quadrupole mass spectrometer (PerkinElmer Sciex, Concord, ON, Canada)+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-SCIEX instrument model+ADs-QQ+ADs-+ADs-HIGH+ADs-ESI
+Maxis II HD Q+AC0-TOF Bruker+ADs-LC+AC0-ESI+AC0-Maxis II HD Q+AC0-TOF Bruker+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QTOF+ADs-Maxis II HD+ADs-HIGH+ADs-ESI
+QTOF SYNAPT, Waters+ADs-None+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-SYNAPT+ADs-HIGH+ADs-ESI
+MALDI+AC0-QITTOF noncommercial prototype model (Shimadzu Corporation, Kyoto, Japan)+ADs-MALDI+AC0-QITTOF+ADs-LC+ADs-Shimadzu instrument model+ADs-QITTOF+ADs-+ADs-HIGH+ADs-MALDI
+6610 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6610+ADs-HIGH+ADs-ESI
+None+ADs-IT+ADs-LC+ADs-Unknown instrument model+ADs-IT+ADs-TODELETE+ADs-HIGH+ADs-UNKNOWN
+Bruker Apex QE 12T FT+AC0-ICR+ADs-ESI+AC0-ITFT+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-ITFT+ADs-APEX QE+ADs-HIGH+ADs-ESI
+FINNIGAN+AC0-MAT 4500+ADs-CI+AC0-B+ADs-GC+ADs-Thermo Fisher Scientific instrument model+ADs-B+ADs-Finnigan MAT 4500+ADs-LOW+ADs-CI
+ESI+AC0-FTICR+ADs-ESI+AC0-ESI+AC0-FTICR+ADs-LC+ADs-Unknown instrument model+ADs-FT+ADs-Orbitrap+ADs-HIGH+ADs-ESI
+6678 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6678+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Orbitrap Thermo Scientific+ADs-LC+AC0-APCI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Q+AC0-Exactive Orbitrap+ADs-HIGH+ADs-APCI
+Ion Trap+ADs-DI+AC0-ESI+AC0-Ion Trap+ADs-DI+ADs-Unknown instrument model+ADs-IT+ADs-TODELETE+ADs-HIGH+ADs-ESI
+6550 Q+AC0-TOF (Agilent Technologies)+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6550+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-APPI+AC0-QQ+ADs-LC+ADs-Unknown instrument model+ADs-QQ+ADs-TODELETE+ADs-HIGH+ADs-APPI
+6634 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6634+ADs-HIGH+ADs-ESI
+qTOF+ADs-LC+AC0-ESI+AC0-qTOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+LTQ Orbitrap Fusion Tribrid+ADs-None+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap Fusion Tribrid+ADs-HIGH+ADs-ESI
+Thermo QExactive+AC0-HF+ADs-LC+AC0-ESI+AC0-QEHF+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Q+AC0-Exactive HF+ADs-HIGH+ADs-ESI
+JEOL JMS+AC0-DX+AC0-300+ADs-CI+AC0-B+ADs-GC+ADs-JEOL Ltd instrument model+ADs-B+ADs-JMS DX+AC0-300+ADs-LOW+ADs-CI
+HITACHI M+AC0-60+ADs-CI+AC0-B+ADs-GC+ADs-Hitachi High+AC0-Tech instrument model+ADs-B+ADs-M+AC0-60+ADs-LOW+ADs-CI
+LTQ Orbitrap XL, Thermo Scientific+ADs-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap XL+ADs-HIGH+ADs-ESI
+JMS+AC0-700, JEOL+ADs-FAB+AC0-BE+ADs-LC+ADs-JEOL Ltd instrument model+ADs-EB+ADs-JMS+AC0-700+ADs-LOW+ADs-FAB
+LC+AC0-ITTOF+AC0-MS (Shimadzu, Kyoto, Japan)+ADs-ESI+AC0-ITTOF+ADs-LC+ADs-Shimadzu instrument model+ADs-ITTOF+ADs-+ADs-HIGH+ADs-ESI
+6647 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6647+ADs-HIGH+ADs-ESI
+4000 Q TRAP+ADs-Q IT+ADs-LC+ADs-Applied Biosystems instrument model+ADs-QIT+ADs-4000+ADs-HIGH+ADs-ESI
+Micromass Quattromicro+ADs-in source CID+ADs-LC+ADs-Waters instrument model+ADs-QQQ+ADs-Quattro micro+ADs-LOW+ADs-ESI
+Esquire+ADs-QIT+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QIT+ADs-Esquire+ADs-HIGH+ADs-ESI
+LTQ+AC0-Orbitrap+ADs-LC+AC0-APCI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap+ADs-HIGH+ADs-APCI
+DIRECT INFUSION NANOESI+AC0-ION TRAP+ADs-DIRECT INFUSION NANOESI+AC0-ION TRAP+AC0-DIRECT INFUSION NANOESI+AC0-ION TRAP+ADs-DI+ADs-Unknown instrument model+ADs-Unknown+ADs-TODELETE+ADs-HIGH+ADs-ESI
+Xevo QTOF (Waters)+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-Xevo+ADs-HIGH+ADs-ESI
+X500R QTOF (AB Sciex Pte. Ltd, USA)+ADs-ESI+AC0-QTOF+ADs-LC+ADs-SCIEX instrument model+ADs-QTOF+ADs-X500R+ADs-HIGH+ADs-ESI
+LCQ Deca XP+ADs-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LCQ Deca XP+ADs-LOW+ADs-ESI
+Hybrid FT+ADs-ESI+AC0-Hybrid FT+ADs-LC+ADs-Unknown instrument model+ADs-FT+ADs-+ADs-HIGH+ADs-ESI
+Agilent (Waldbronn, Germany) Model 1100+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-
+6659 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6659+ADs-HIGH+ADs-ESI
+QQQ+ADs-DI+AC0-ESI+AC0-QQQ+ADs-LC+ADs-Unknown instrument model+ADs-QQQ+ADs-TODELETE+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Plus+ADs-DI+AC0-ESI+AC0-Q+AC0-Exactive Plus+ADs-DI+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive plus+ADs-HIGH+ADs-ESI
+Bruker impact HD+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QTOF+ADs-Impact HD+ADs-HIGH+ADs-ESI
+LTQ Orbitrap XL Thermo Scientific+ADs-APCI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap XL+ADs-HIGH+ADs-APCI
+Esquire 4000+ADs-QIT+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QIT+ADs-Esquire 4000+ADs-HIGH+ADs-ESI
+6585 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6585+ADs-HIGH+ADs-ESI
+6596 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6596+ADs-HIGH+ADs-ESI
+None+ADs-QIT+ADs-LC+ADs-Unknown instrument model+ADs-QIT+ADs-TODELETE+ADs-HIGH+ADs-UNKNOWN
+6591 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6591+ADs-HIGH+ADs-ESI
+6568 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6568+ADs-HIGH+ADs-ESI
+LTQ+AC0-XL+ADs-QIT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QIT+ADs-LTQ XL+ADs-HIGH+ADs-ESI
+ESI+AC0-ITFT+ADs-ESI+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Unknown instrument model+ADs-ITFT+ADs-+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-IT+ADs-LC+ADs-Unknown instrument model+ADs-IT+ADs-+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-QTOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+ZQ, Waters+ADs-LC+AC0-ESI+AC0-Q+ADs-LC+ADs-Waters instrument model+ADs-Q+ADs-ZQ+ADs-LOW+ADs-ESI
+4000Q TRAP, Applied Biosystems+ADs-LC+AC0-ESI+AC0-QIT+ADs-LC+ADs-Applied Biosystems instrument model+ADs-QIT+ADs-4000+ADs-HIGH+ADs-ESI
+LTQ Orbitrap XL Thermo Fisher Scientific+ADs-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap XL+ADs-HIGH+ADs-ESI
+Thermo Q+AC0-Exactive HF+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive HF+ADs-HIGH+ADs-ESI
+G2445A+ADs-QIT+ADs-LC+ADs-Agilent instrument model+ADs-QIT+ADs- LC/MSD Ion Trap G2445A+ADs-LOW+ADs-ESI
+qTof+ADs-LC+AC0-ESI+AC0-qTof+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+6548 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6548+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Plus Orbitrap Res 14k+ADs-LC+AC0-ESI+AC0-Q+AC0-Exactive Plus FT Res 14k+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive Plus Orbitrap+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Orbitrap Thermo Scientific+ADs-LC+AC0-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-Q+AC0-Exactive Orbitrap+ADs-HIGH+ADs-ESI
+X500R QTOF (AB Sciex LLC, USA)+ADs-ESI+AC0-QTOF+ADs-LC+ADs-SCIEX instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+6633 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6633+ADs-HIGH+ADs-ESI
+X500R QTOF ( AB Sciex LLC, USA)+ADs-ESI+AC0-QTOF+ADs-LC+ADs-SCIEX instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+micrOTOF+AC0-Q+ADs-ESI+AC0-TOF+ADs-LC+ADs-Bruker Daltonics instrument model+ADs-QTOF+ADs-micrOTOF+AC0-Q+ADs-HIGH+ADs-ESI
+6576 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6576+ADs-HIGH+ADs-ESI
+LTQ Orbitrap XL hybrid iontrap+AC0-Orbitrap (Thermo Fisher Scientific, San Jose, CA, USA)+ADs-ESI+AC0-ITFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-ITFT+ADs-LTQ Orbitrap XL hybrid+ADs-HIGH+ADs-ESI
+API III+ADs-QqQ+ADs-LC+ADs-SCIEX instrument model+ADs-QQQ+ADs-API III+ADs-LOW+ADs-ESI
+6624 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6624+ADs-HIGH+ADs-ESI
+Orbitrap+ADs-ESI+AC0-FT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Orbitrap+ADs-HIGH+ADs-ESI
+Dionex Ultimate 3000 UHPLC Thermo Scientific+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-
+6533 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6533+ADs-HIGH+ADs-ESI
+Fisons VG Platform+ADs-LC+AC0-ESI+AC0-Q+ADs-LC+ADs-Waters instrument model+ADs-Q+ADs-Fisons VG Platform+ADs-LOW+ADs-ESI
+None+ADs-FD+AC0-B (Unknown)+ADs-LC+ADs-Unknown instrument model+ADs-B+ADs-TODELETE+ADs-LOW+ADs-FAB
+JEOL JMS DX+AC0-303+ADs-FAB+AC0-B+ADs-LC+ADs-JEOL Ltd instrument model+ADs-B+ADs-JMS DX+AC0-303+ADs-LOW+ADs-FAB
+None+ADs-LC+AC0-ESI+AC0-QTOF (ACQUITY UPLC System, Waters)+ADs-LC+ADs-Waters instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+6639 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6639+ADs-HIGH+ADs-ESI
+ABSciex API3200 LC/MS system+ADs-LC+AC0-ESI+AC0-QQQ+ADs-LC+ADs-SCIEX instrument model+ADs-QQQ+ADs-3200+ADs-LOW+ADs-ESI
+6613 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6613+ADs-HIGH+ADs-ESI
+None+ADs-EBE+ADs-LC+ADs-Unknown instrument model+ADs-EBE+ADs-TODELETE+ADs-HIGH+ADs-??
+None+ADs-ESI+AC0-TOF+ADs-LC+ADs-Unknown instrument model+ADs-TOF+ADs-+ADs-HIGH+ADs-ESI
+SHIMADZU LKB+AC0-9000B+ADs-CI+AC0-B+ADs-GC+ADs-Shimadzu instrument model+ADs-B+ADs-LKB+AC0-9000B+ADs-LOW+ADs-CI
+6638 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6638+ADs-HIGH+ADs-ESI
+None+ADs-in source CID+ADs-LC+ADs-Unknown instrument model+ADs-Unknown+ADs-TODELETE+ADs-HIGH+ADs-ESI
+6582 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6582+ADs-HIGH+ADs-ESI
+LCQ ion+AC0-trap instrument (Finngan MAT, San Jose, CA, USA)+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-+ADs-
+MSD 1100+ADs-QIT+ADs-LC+ADs-Agilent instrument model+ADs-QIT+ADs-MSD 1100+ADs-LOW+ADs-ESI
+Agilent 6410 Triple Quadrupole LC/MS system+ADs-LC+AC0-ESI+AC0-QQQ+ADs-LC+ADs-Agilent instrument model+ADs-QQQ+ADs-6410+ADs-LOW+ADs-ESI
+qTof+ADs-DI+AC0-ESI+AC0-qTof+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-TODELETE+ADs-HIGH+ADs-ESI
+Q+AC0-Exactive Thermo Fisher Scientific+ADs-LC+AC0-ESI+AC0-QFT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-QFT+ADs-Q+AC0-Exactive+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-qTOF+ADs-LC+ADs-Unknown instrument model+ADs-QTOF+ADs-+ADs-HIGH+ADs-ESI
+Hybrid FT+ADs-LC+AC0-ESI+AC0-Hybrid FT+ADs-LC+ADs-Unknown instrument model+ADs-FT+ADs-Orbitrap+ADs-HIGH+ADs-ESI
+6616 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6616+ADs-HIGH+ADs-ESI
+None+ADs-LC+AC0-ESI+AC0-Hybrid FT+ADs-LC+ADs-Thermo Fisher Scientific instrument model+ADs-FT+ADs-Orbitrap+ADs-HIGH+ADs-ESI
+QuattroPremier XE, Waters+ADs-LC+AC0-ESI+AC0-QQ+ADs-LC+ADs-Waters instrument model+ADs-QQ+ADs-Quattro Premier XE+ADs-LOW+ADs-ESI
+API 2000+ADs-QqQ+ADs-LC+ADs-SCIEX instrument model+ADs-QQQ+ADs-API 2000+ADs-HIGH+ADs-ESI
+None+ADs-APCI+AC0-ITTOF+ADs-LC+ADs-Unknown instrument model+ADs-ITTOF+ADs-+ADs-HIGH+ADs-APCI
+IT+AC0-TOF+ADs-QIT+ADs-LC+ADs-Unknown instrument model+ADs-QIT+ADs-+ADs-HIGH+ADs-ESI
+LC+AC0-ESI+AC0-ITTOF, Shimadzu+ADs-LC+AC0-ESI+AC0-ITTOF+ADs-LC+ADs-Shimadzu instrument model+ADs-ITTOF+ADs-+ADs-HIGH+ADs-ESI
+6536 QTOF Agilent+ADs-LC+AC0-ESI+AC0-QTOF+ADs-LC+ADs-Agilent instrument model+ADs-QTOF+ADs-6536+ADs-HIGH+ADs-ESI
+Unknown+ADs-FI+AC0-B+ADs-LC+ADs-Unknown instrument model+ADs-B+ADs-TODELETE+ADs-HIGH+ADs-UNKNOWN
