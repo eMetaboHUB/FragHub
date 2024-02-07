@@ -383,8 +383,6 @@ def normalize_ionization(metadata_dict):
             if ionization_mode_in_INSTRUMENTTYPE == "ACPI":
                 ionization_mode_in_INSTRUMENTTYPE = "APCI"
             metadata_dict["IONIZATION"] = ionization_mode_in_INSTRUMENTTYPE
-        else:
-            metadata_dict["IONIZATION"] = "UNKNOWN"
 
     return metadata_dict
 
