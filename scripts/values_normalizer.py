@@ -424,7 +424,7 @@ def normalize_instruments_and_resolution(metadata_dict):
     :return: The normalized instrument metadata dictionary.
     """
     if metadata_dict["INSTRUMENT"]:
-        metadata_dict_instrument = metadata_dict["INSTRUMENT"].lower()
+        metadata_dict_instrument = metadata_dict["INSTRUMENT"].lower()+metadata_dict["INSTRUMENTTYPE"].lower()
         closest_instrument = get_closest_match(metadata_dict_instrument, instruments_list)
         if closest_instrument:
             metadata_dict["INSTRUMENT"] = f"{instruments_dict[closest_instrument]["REF_INSTRUMENT"]}-{instruments_dict[closest_instrument]["REF_MODELE"]}"
