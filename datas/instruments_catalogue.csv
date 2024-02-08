@@ -1,454 +1,454 @@
-INIT_INTRUMENT;REF_SPECTRUM_TYPE;REF_INSTRUMENT;REF_INTRUMENT_TYPE;REF_MODELE;REF_RESOLUTION;REF_IONISATION
-2695 HPLC Quadro Micro API, Waters;LC;Waters;QQ;Micromass Quatro Micro API;LOW;ESI
-4000 Q TRAP;LC;Applied Biosystems;QIT;4000;HIGH;ESI
-4000Q TRAP, Applied Biosystems;LC;Applied Biosystems;QIT;4000;HIGH;ESI
-6530 QTOF Agilent;LC;Agilent;QTOF;6530;HIGH;ESI
-6530 QTOF LC/MS Agilent;LC;Agilent;QTOF;6530;HIGH;ESI
-6531 QTOF Agilent;LC;Agilent;QTOF;6531;HIGH;ESI
-6532 QTOF Agilent;LC;Agilent;QTOF;6532;HIGH;ESI
-6533 QTOF Agilent;LC;Agilent;QTOF;6533;HIGH;ESI
-6534 QTOF Agilent;LC;Agilent;QTOF;6534;HIGH;ESI
-6535 QTOF Agilent;LC;Agilent;QTOF;6535;HIGH;ESI
-6536 QTOF Agilent;LC;Agilent;QTOF;6536;HIGH;ESI
-6537 QTOF Agilent;LC;Agilent;QTOF;6537;HIGH;ESI
-6538 QTOF Agilent;LC;Agilent;QTOF;6538;HIGH;ESI
-6539 QTOF Agilent;LC;Agilent;QTOF;6539;HIGH;ESI
-6540 QTOF Agilent;LC;Agilent;QTOF;6540;HIGH;ESI
-6541 QTOF Agilent;LC;Agilent;QTOF;6541;HIGH;ESI
-6542 QTOF Agilent;LC;Agilent;QTOF;6542;HIGH;ESI
-6543 QTOF Agilent;LC;Agilent;QTOF;6543;HIGH;ESI
-6544 QTOF Agilent;LC;Agilent;QTOF;6544;HIGH;ESI
-6545 QTOF Agilent;LC;Agilent;QTOF;6545;HIGH;ESI
-6546 QTOF Agilent;LC;Agilent;QTOF;6546;HIGH;ESI
-6547 QTOF Agilent;LC;Agilent;QTOF;6547;HIGH;ESI
-6548 QTOF Agilent;LC;Agilent;QTOF;6548;HIGH;ESI
-6549 QTOF Agilent;LC;Agilent;QTOF;6549;HIGH;ESI
-6550 QTOF (Agilent Technologies);LC;Agilent;QTOF;6550;HIGH;ESI
-6550 Q-TOF (Agilent Technologies);LC;Agilent;QTOF;6550;HIGH;ESI
-6550 Q-TOF (Agilent Technologies);LC;Agilent;QTOF;6550;HIGH;ESI
-6550 QTOF Agilent;LC;Agilent;QTOF;6550;HIGH;ESI
-6551 QTOF Agilent;LC;Agilent;QTOF;6551;HIGH;ESI
-6552 QTOF Agilent;LC;Agilent;QTOF;6552;HIGH;ESI
-6553 QTOF Agilent;LC;Agilent;QTOF;6553;HIGH;ESI
-6554 QTOF Agilent;LC;Agilent;QTOF;6554;HIGH;ESI
-6555 QTOF Agilent;LC;Agilent;QTOF;6555;HIGH;ESI
-6556 QTOF Agilent;LC;Agilent;QTOF;6556;HIGH;ESI
-6557 QTOF Agilent;LC;Agilent;QTOF;6557;HIGH;ESI
-6558 QTOF Agilent;LC;Agilent;QTOF;6558;HIGH;ESI
-6559 QTOF Agilent;LC;Agilent;QTOF;6559;HIGH;ESI
-6560 QTOF Agilent;LC;Agilent;QTOF;6560;HIGH;ESI
-6561 QTOF Agilent;LC;Agilent;QTOF;6561;HIGH;ESI
-6562 QTOF Agilent;LC;Agilent;QTOF;6562;HIGH;ESI
-6563 QTOF Agilent;LC;Agilent;QTOF;6563;HIGH;ESI
-6564 QTOF Agilent;LC;Agilent;QTOF;6564;HIGH;ESI
-6565 QTOF Agilent;LC;Agilent;QTOF;6565;HIGH;ESI
-6566 QTOF Agilent;LC;Agilent;QTOF;6566;HIGH;ESI
-6567 QTOF Agilent;LC;Agilent;QTOF;6567;HIGH;ESI
-6568 QTOF Agilent;LC;Agilent;QTOF;6568;HIGH;ESI
-6569 QTOF Agilent;LC;Agilent;QTOF;6569;HIGH;ESI
-6570 QTOF Agilent;LC;Agilent;QTOF;6570;HIGH;ESI
-6571 QTOF Agilent;LC;Agilent;QTOF;6571;HIGH;ESI
-6572 QTOF Agilent;LC;Agilent;QTOF;6572;HIGH;ESI
-6573 QTOF Agilent;LC;Agilent;QTOF;6573;HIGH;ESI
-6574 QTOF Agilent;LC;Agilent;QTOF;6574;HIGH;ESI
-6575 QTOF Agilent;LC;Agilent;QTOF;6575;HIGH;ESI
-6576 QTOF Agilent;LC;Agilent;QTOF;6576;HIGH;ESI
-6577 QTOF Agilent;LC;Agilent;QTOF;6577;HIGH;ESI
-6578 QTOF Agilent;LC;Agilent;QTOF;6578;HIGH;ESI
-6580 QTOF Agilent;LC;Agilent;QTOF;6580;HIGH;ESI
-6581 QTOF Agilent;LC;Agilent;QTOF;6581;HIGH;ESI
-6582 QTOF Agilent;LC;Agilent;QTOF;6582;HIGH;ESI
-6583 QTOF Agilent;LC;Agilent;QTOF;6583;HIGH;ESI
-6584 QTOF Agilent;LC;Agilent;QTOF;6584;HIGH;ESI
-6585 QTOF Agilent;LC;Agilent;QTOF;6585;HIGH;ESI
-6586 QTOF Agilent;LC;Agilent;QTOF;6586;HIGH;ESI
-6587 QTOF Agilent;LC;Agilent;QTOF;6587;HIGH;ESI
-6588 QTOF Agilent;LC;Agilent;QTOF;6588;HIGH;ESI
-6589 QTOF Agilent;LC;Agilent;QTOF;6589;HIGH;ESI
-6591 QTOF Agilent;LC;Agilent;QTOF;6591;HIGH;ESI
-6592 QTOF Agilent;LC;Agilent;QTOF;6592;HIGH;ESI
-6593 QTOF Agilent;LC;Agilent;QTOF;6593;HIGH;ESI
-6594 QTOF Agilent;LC;Agilent;QTOF;6594;HIGH;ESI
-6595 QTOF Agilent;LC;Agilent;QTOF;6595;HIGH;ESI
-6596 QTOF Agilent;LC;Agilent;QTOF;6596;HIGH;ESI
-6597 QTOF Agilent;LC;Agilent;QTOF;6597;HIGH;ESI
-6598 QTOF Agilent;LC;Agilent;QTOF;6598;HIGH;ESI
-6599 QTOF Agilent;LC;Agilent;QTOF;6599;HIGH;ESI
-6601 QTOF Agilent;LC;Agilent;QTOF;6601;HIGH;ESI
-6602 QTOF Agilent;LC;Agilent;QTOF;6602;HIGH;ESI
-6603 QTOF Agilent;LC;Agilent;QTOF;6603;HIGH;ESI
-6604 QTOF Agilent;LC;Agilent;QTOF;6604;HIGH;ESI
-6605 QTOF Agilent;LC;Agilent;QTOF;6605;HIGH;ESI
-6606 QTOF Agilent;LC;Agilent;QTOF;6606;HIGH;ESI
-6607 QTOF Agilent;LC;Agilent;QTOF;6607;HIGH;ESI
-6608 QTOF Agilent;LC;Agilent;QTOF;6608;HIGH;ESI
-6609 QTOF Agilent;LC;Agilent;QTOF;6609;HIGH;ESI
-6610 QTOF Agilent;LC;Agilent;QTOF;6610;HIGH;ESI
-6611 QTOF Agilent;LC;Agilent;QTOF;6611;HIGH;ESI
-6612 QTOF Agilent;LC;Agilent;QTOF;6612;HIGH;ESI
-6613 QTOF Agilent;LC;Agilent;QTOF;6613;HIGH;ESI
-6614 QTOF Agilent;LC;Agilent;QTOF;6614;HIGH;ESI
-6615 QTOF Agilent;LC;Agilent;QTOF;6615;HIGH;ESI
-6616 QTOF Agilent;LC;Agilent;QTOF;6616;HIGH;ESI
-6617 QTOF Agilent;LC;Agilent;QTOF;6617;HIGH;ESI
-6618 QTOF Agilent;LC;Agilent;QTOF;6618;HIGH;ESI
-6619 QTOF Agilent;LC;Agilent;QTOF;6619;HIGH;ESI
-6620 QTOF Agilent;LC;Agilent;QTOF;6620;HIGH;ESI
-6621 QTOF Agilent;LC;Agilent;QTOF;6621;HIGH;ESI
-6622 QTOF Agilent;LC;Agilent;QTOF;6622;HIGH;ESI
-6623 QTOF Agilent;LC;Agilent;QTOF;6623;HIGH;ESI
-6624 QTOF Agilent;LC;Agilent;QTOF;6624;HIGH;ESI
-6625 QTOF Agilent;LC;Agilent;QTOF;6625;HIGH;ESI
-6626 QTOF Agilent;LC;Agilent;QTOF;6626;HIGH;ESI
-6627 QTOF Agilent;LC;Agilent;QTOF;6627;HIGH;ESI
-6628 QTOF Agilent;LC;Agilent;QTOF;6628;HIGH;ESI
-6629 QTOF Agilent;LC;Agilent;QTOF;6629;HIGH;ESI
-6630 QTOF Agilent;LC;Agilent;QTOF;6630;HIGH;ESI
-6631 QTOF Agilent;LC;Agilent;QTOF;6631;HIGH;ESI
-6632 QTOF Agilent;LC;Agilent;QTOF;6632;HIGH;ESI
-6633 QTOF Agilent;LC;Agilent;QTOF;6633;HIGH;ESI
-6634 QTOF Agilent;LC;Agilent;QTOF;6634;HIGH;ESI
-6635 QTOF Agilent;LC;Agilent;QTOF;6635;HIGH;ESI
-6636 QTOF Agilent;LC;Agilent;QTOF;6636;HIGH;ESI
-6637 QTOF Agilent;LC;Agilent;QTOF;6637;HIGH;ESI
-6638 QTOF Agilent;LC;Agilent;QTOF;6638;HIGH;ESI
-6639 QTOF Agilent;LC;Agilent;QTOF;6639;HIGH;ESI
-6640 QTOF Agilent;LC;Agilent;QTOF;6640;HIGH;ESI
-6641 QTOF Agilent;LC;Agilent;QTOF;6641;HIGH;ESI
-6642 QTOF Agilent;LC;Agilent;QTOF;6642;HIGH;ESI
-6643 QTOF Agilent;LC;Agilent;QTOF;6643;HIGH;ESI
-6644 QTOF Agilent;LC;Agilent;QTOF;6644;HIGH;ESI
-6645 QTOF Agilent;LC;Agilent;QTOF;6645;HIGH;ESI
-6646 QTOF Agilent;LC;Agilent;QTOF;6646;HIGH;ESI
-6647 QTOF Agilent;LC;Agilent;QTOF;6647;HIGH;ESI
-6648 QTOF Agilent;LC;Agilent;QTOF;6648;HIGH;ESI
-6649 QTOF Agilent;LC;Agilent;QTOF;6649;HIGH;ESI
-6650 QTOF Agilent;LC;Agilent;QTOF;6650;HIGH;ESI
-6651 QTOF Agilent;LC;Agilent;QTOF;6651;HIGH;ESI
-6652 QTOF Agilent;LC;Agilent;QTOF;6652;HIGH;ESI
-6653 QTOF Agilent;LC;Agilent;QTOF;6653;HIGH;ESI
-6654 QTOF Agilent;LC;Agilent;QTOF;6654;HIGH;ESI
-6655 QTOF Agilent;LC;Agilent;QTOF;6655;HIGH;ESI
-6656 QTOF Agilent;LC;Agilent;QTOF;6656;HIGH;ESI
-6657 QTOF Agilent;LC;Agilent;QTOF;6657;HIGH;ESI
-6658 QTOF Agilent;LC;Agilent;QTOF;6658;HIGH;ESI
-6659 QTOF Agilent;LC;Agilent;QTOF;6659;HIGH;ESI
-6660 QTOF Agilent;LC;Agilent;QTOF;6660;HIGH;ESI
-6661 QTOF Agilent;LC;Agilent;QTOF;6661;HIGH;ESI
-6662 QTOF Agilent;LC;Agilent;QTOF;6662;HIGH;ESI
-6663 QTOF Agilent;LC;Agilent;QTOF;6663;HIGH;ESI
-6664 QTOF Agilent;LC;Agilent;QTOF;6664;HIGH;ESI
-6665 QTOF Agilent;LC;Agilent;QTOF;6665;HIGH;ESI
-6666 QTOF Agilent;LC;Agilent;QTOF;6666;HIGH;ESI
-6667 QTOF Agilent;LC;Agilent;QTOF;6667;HIGH;ESI
-6668 QTOF Agilent;LC;Agilent;QTOF;6668;HIGH;ESI
-6669 QTOF Agilent;LC;Agilent;QTOF;6669;HIGH;ESI
-6670 QTOF Agilent;LC;Agilent;QTOF;6670;HIGH;ESI
-6671 QTOF Agilent;LC;Agilent;QTOF;6671;HIGH;ESI
-6672 QTOF Agilent;LC;Agilent;QTOF;6672;HIGH;ESI
-6673 QTOF Agilent;LC;Agilent;QTOF;6673;HIGH;ESI
-6674 QTOF Agilent;LC;Agilent;QTOF;6674;HIGH;ESI
-6675 QTOF Agilent;LC;Agilent;QTOF;6675;HIGH;ESI
-6676 QTOF Agilent;LC;Agilent;QTOF;6676;HIGH;ESI
-6677 QTOF Agilent;LC;Agilent;QTOF;6677;HIGH;ESI
-6678 QTOF Agilent;LC;Agilent;QTOF;6678;HIGH;ESI
-6679 QTOF Agilent;LC;Agilent;QTOF;6679;HIGH;ESI
-6680 QTOF Agilent;LC;Agilent;QTOF;6680;HIGH;ESI
-AB Sciex TripleTOF 5600 system (Q-TOF) equipped with a DuoSpray ion source;LC;SCIEX;QTOF;5600;HIGH;ESI
-ABSciex API3200 LC/MS system;LC;SCIEX;QQQ;3200;LOW;ESI
-Acquity UPLC and a Xevo TQ (Waters);LC;Waters;QQ;Xevo TQ;LOW;ESI
-ACQUITY UPLC H-Class/Xevo TQD (Waters, Milford, USA);LC;Waters;QQ;Xevo TQD;LOW;ESI
+INIT_INSTRUMENT;REF_SPECTRUM_TYPE;REF_INSTRUMENT;REF_INSTRUMENT_TYPE;REF_MODELE;REF_RESOLUTION;REF_IONISATION
+2695 HPLC Quadro Micro API, Waters;LC;Waters ;QQ;Micromass Quatro Micro API;LOW;ESI
+4000 Q TRAP;LC;Applied Biosystems ;QIT;4000;HIGH;ESI
+4000Q TRAP, Applied Biosystems;LC;Applied Biosystems ;QIT;4000;HIGH;ESI
+6530 QTOF Agilent;LC;Agilent ;QTOF;6530;HIGH;ESI
+6530 QTOF LC/MS Agilent;LC;Agilent ;QTOF;6530;HIGH;ESI
+6531 QTOF Agilent;LC;Agilent ;QTOF;6531;HIGH;ESI
+6532 QTOF Agilent;LC;Agilent ;QTOF;6532;HIGH;ESI
+6533 QTOF Agilent;LC;Agilent ;QTOF;6533;HIGH;ESI
+6534 QTOF Agilent;LC;Agilent ;QTOF;6534;HIGH;ESI
+6535 QTOF Agilent;LC;Agilent ;QTOF;6535;HIGH;ESI
+6536 QTOF Agilent;LC;Agilent ;QTOF;6536;HIGH;ESI
+6537 QTOF Agilent;LC;Agilent ;QTOF;6537;HIGH;ESI
+6538 QTOF Agilent;LC;Agilent ;QTOF;6538;HIGH;ESI
+6539 QTOF Agilent;LC;Agilent ;QTOF;6539;HIGH;ESI
+6540 QTOF Agilent;LC;Agilent ;QTOF;6540;HIGH;ESI
+6541 QTOF Agilent;LC;Agilent ;QTOF;6541;HIGH;ESI
+6542 QTOF Agilent;LC;Agilent ;QTOF;6542;HIGH;ESI
+6543 QTOF Agilent;LC;Agilent ;QTOF;6543;HIGH;ESI
+6544 QTOF Agilent;LC;Agilent ;QTOF;6544;HIGH;ESI
+6545 QTOF Agilent;LC;Agilent ;QTOF;6545;HIGH;ESI
+6546 QTOF Agilent;LC;Agilent ;QTOF;6546;HIGH;ESI
+6547 QTOF Agilent;LC;Agilent ;QTOF;6547;HIGH;ESI
+6548 QTOF Agilent;LC;Agilent ;QTOF;6548;HIGH;ESI
+6549 QTOF Agilent;LC;Agilent ;QTOF;6549;HIGH;ESI
+6550 QTOF (Agilent Technologies);LC;Agilent ;QTOF;6550;HIGH;ESI
+6550 Q-TOF (Agilent Technologies);LC;Agilent ;QTOF;6550;HIGH;ESI
+6550 Q-TOF (Agilent Technologies);LC;Agilent ;QTOF;6550;HIGH;ESI
+6550 QTOF Agilent;LC;Agilent ;QTOF;6550;HIGH;ESI
+6551 QTOF Agilent;LC;Agilent ;QTOF;6551;HIGH;ESI
+6552 QTOF Agilent;LC;Agilent ;QTOF;6552;HIGH;ESI
+6553 QTOF Agilent;LC;Agilent ;QTOF;6553;HIGH;ESI
+6554 QTOF Agilent;LC;Agilent ;QTOF;6554;HIGH;ESI
+6555 QTOF Agilent;LC;Agilent ;QTOF;6555;HIGH;ESI
+6556 QTOF Agilent;LC;Agilent ;QTOF;6556;HIGH;ESI
+6557 QTOF Agilent;LC;Agilent ;QTOF;6557;HIGH;ESI
+6558 QTOF Agilent;LC;Agilent ;QTOF;6558;HIGH;ESI
+6559 QTOF Agilent;LC;Agilent ;QTOF;6559;HIGH;ESI
+6560 QTOF Agilent;LC;Agilent ;QTOF;6560;HIGH;ESI
+6561 QTOF Agilent;LC;Agilent ;QTOF;6561;HIGH;ESI
+6562 QTOF Agilent;LC;Agilent ;QTOF;6562;HIGH;ESI
+6563 QTOF Agilent;LC;Agilent ;QTOF;6563;HIGH;ESI
+6564 QTOF Agilent;LC;Agilent ;QTOF;6564;HIGH;ESI
+6565 QTOF Agilent;LC;Agilent ;QTOF;6565;HIGH;ESI
+6566 QTOF Agilent;LC;Agilent ;QTOF;6566;HIGH;ESI
+6567 QTOF Agilent;LC;Agilent ;QTOF;6567;HIGH;ESI
+6568 QTOF Agilent;LC;Agilent ;QTOF;6568;HIGH;ESI
+6569 QTOF Agilent;LC;Agilent ;QTOF;6569;HIGH;ESI
+6570 QTOF Agilent;LC;Agilent ;QTOF;6570;HIGH;ESI
+6571 QTOF Agilent;LC;Agilent ;QTOF;6571;HIGH;ESI
+6572 QTOF Agilent;LC;Agilent ;QTOF;6572;HIGH;ESI
+6573 QTOF Agilent;LC;Agilent ;QTOF;6573;HIGH;ESI
+6574 QTOF Agilent;LC;Agilent ;QTOF;6574;HIGH;ESI
+6575 QTOF Agilent;LC;Agilent ;QTOF;6575;HIGH;ESI
+6576 QTOF Agilent;LC;Agilent ;QTOF;6576;HIGH;ESI
+6577 QTOF Agilent;LC;Agilent ;QTOF;6577;HIGH;ESI
+6578 QTOF Agilent;LC;Agilent ;QTOF;6578;HIGH;ESI
+6580 QTOF Agilent;LC;Agilent ;QTOF;6580;HIGH;ESI
+6581 QTOF Agilent;LC;Agilent ;QTOF;6581;HIGH;ESI
+6582 QTOF Agilent;LC;Agilent ;QTOF;6582;HIGH;ESI
+6583 QTOF Agilent;LC;Agilent ;QTOF;6583;HIGH;ESI
+6584 QTOF Agilent;LC;Agilent ;QTOF;6584;HIGH;ESI
+6585 QTOF Agilent;LC;Agilent ;QTOF;6585;HIGH;ESI
+6586 QTOF Agilent;LC;Agilent ;QTOF;6586;HIGH;ESI
+6587 QTOF Agilent;LC;Agilent ;QTOF;6587;HIGH;ESI
+6588 QTOF Agilent;LC;Agilent ;QTOF;6588;HIGH;ESI
+6589 QTOF Agilent;LC;Agilent ;QTOF;6589;HIGH;ESI
+6591 QTOF Agilent;LC;Agilent ;QTOF;6591;HIGH;ESI
+6592 QTOF Agilent;LC;Agilent ;QTOF;6592;HIGH;ESI
+6593 QTOF Agilent;LC;Agilent ;QTOF;6593;HIGH;ESI
+6594 QTOF Agilent;LC;Agilent ;QTOF;6594;HIGH;ESI
+6595 QTOF Agilent;LC;Agilent ;QTOF;6595;HIGH;ESI
+6596 QTOF Agilent;LC;Agilent ;QTOF;6596;HIGH;ESI
+6597 QTOF Agilent;LC;Agilent ;QTOF;6597;HIGH;ESI
+6598 QTOF Agilent;LC;Agilent ;QTOF;6598;HIGH;ESI
+6599 QTOF Agilent;LC;Agilent ;QTOF;6599;HIGH;ESI
+6601 QTOF Agilent;LC;Agilent ;QTOF;6601;HIGH;ESI
+6602 QTOF Agilent;LC;Agilent ;QTOF;6602;HIGH;ESI
+6603 QTOF Agilent;LC;Agilent ;QTOF;6603;HIGH;ESI
+6604 QTOF Agilent;LC;Agilent ;QTOF;6604;HIGH;ESI
+6605 QTOF Agilent;LC;Agilent ;QTOF;6605;HIGH;ESI
+6606 QTOF Agilent;LC;Agilent ;QTOF;6606;HIGH;ESI
+6607 QTOF Agilent;LC;Agilent ;QTOF;6607;HIGH;ESI
+6608 QTOF Agilent;LC;Agilent ;QTOF;6608;HIGH;ESI
+6609 QTOF Agilent;LC;Agilent ;QTOF;6609;HIGH;ESI
+6610 QTOF Agilent;LC;Agilent ;QTOF;6610;HIGH;ESI
+6611 QTOF Agilent;LC;Agilent ;QTOF;6611;HIGH;ESI
+6612 QTOF Agilent;LC;Agilent ;QTOF;6612;HIGH;ESI
+6613 QTOF Agilent;LC;Agilent ;QTOF;6613;HIGH;ESI
+6614 QTOF Agilent;LC;Agilent ;QTOF;6614;HIGH;ESI
+6615 QTOF Agilent;LC;Agilent ;QTOF;6615;HIGH;ESI
+6616 QTOF Agilent;LC;Agilent ;QTOF;6616;HIGH;ESI
+6617 QTOF Agilent;LC;Agilent ;QTOF;6617;HIGH;ESI
+6618 QTOF Agilent;LC;Agilent ;QTOF;6618;HIGH;ESI
+6619 QTOF Agilent;LC;Agilent ;QTOF;6619;HIGH;ESI
+6620 QTOF Agilent;LC;Agilent ;QTOF;6620;HIGH;ESI
+6621 QTOF Agilent;LC;Agilent ;QTOF;6621;HIGH;ESI
+6622 QTOF Agilent;LC;Agilent ;QTOF;6622;HIGH;ESI
+6623 QTOF Agilent;LC;Agilent ;QTOF;6623;HIGH;ESI
+6624 QTOF Agilent;LC;Agilent ;QTOF;6624;HIGH;ESI
+6625 QTOF Agilent;LC;Agilent ;QTOF;6625;HIGH;ESI
+6626 QTOF Agilent;LC;Agilent ;QTOF;6626;HIGH;ESI
+6627 QTOF Agilent;LC;Agilent ;QTOF;6627;HIGH;ESI
+6628 QTOF Agilent;LC;Agilent ;QTOF;6628;HIGH;ESI
+6629 QTOF Agilent;LC;Agilent ;QTOF;6629;HIGH;ESI
+6630 QTOF Agilent;LC;Agilent ;QTOF;6630;HIGH;ESI
+6631 QTOF Agilent;LC;Agilent ;QTOF;6631;HIGH;ESI
+6632 QTOF Agilent;LC;Agilent ;QTOF;6632;HIGH;ESI
+6633 QTOF Agilent;LC;Agilent ;QTOF;6633;HIGH;ESI
+6634 QTOF Agilent;LC;Agilent ;QTOF;6634;HIGH;ESI
+6635 QTOF Agilent;LC;Agilent ;QTOF;6635;HIGH;ESI
+6636 QTOF Agilent;LC;Agilent ;QTOF;6636;HIGH;ESI
+6637 QTOF Agilent;LC;Agilent ;QTOF;6637;HIGH;ESI
+6638 QTOF Agilent;LC;Agilent ;QTOF;6638;HIGH;ESI
+6639 QTOF Agilent;LC;Agilent ;QTOF;6639;HIGH;ESI
+6640 QTOF Agilent;LC;Agilent ;QTOF;6640;HIGH;ESI
+6641 QTOF Agilent;LC;Agilent ;QTOF;6641;HIGH;ESI
+6642 QTOF Agilent;LC;Agilent ;QTOF;6642;HIGH;ESI
+6643 QTOF Agilent;LC;Agilent ;QTOF;6643;HIGH;ESI
+6644 QTOF Agilent;LC;Agilent ;QTOF;6644;HIGH;ESI
+6645 QTOF Agilent;LC;Agilent ;QTOF;6645;HIGH;ESI
+6646 QTOF Agilent;LC;Agilent ;QTOF;6646;HIGH;ESI
+6647 QTOF Agilent;LC;Agilent ;QTOF;6647;HIGH;ESI
+6648 QTOF Agilent;LC;Agilent ;QTOF;6648;HIGH;ESI
+6649 QTOF Agilent;LC;Agilent ;QTOF;6649;HIGH;ESI
+6650 QTOF Agilent;LC;Agilent ;QTOF;6650;HIGH;ESI
+6651 QTOF Agilent;LC;Agilent ;QTOF;6651;HIGH;ESI
+6652 QTOF Agilent;LC;Agilent ;QTOF;6652;HIGH;ESI
+6653 QTOF Agilent;LC;Agilent ;QTOF;6653;HIGH;ESI
+6654 QTOF Agilent;LC;Agilent ;QTOF;6654;HIGH;ESI
+6655 QTOF Agilent;LC;Agilent ;QTOF;6655;HIGH;ESI
+6656 QTOF Agilent;LC;Agilent ;QTOF;6656;HIGH;ESI
+6657 QTOF Agilent;LC;Agilent ;QTOF;6657;HIGH;ESI
+6658 QTOF Agilent;LC;Agilent ;QTOF;6658;HIGH;ESI
+6659 QTOF Agilent;LC;Agilent ;QTOF;6659;HIGH;ESI
+6660 QTOF Agilent;LC;Agilent ;QTOF;6660;HIGH;ESI
+6661 QTOF Agilent;LC;Agilent ;QTOF;6661;HIGH;ESI
+6662 QTOF Agilent;LC;Agilent ;QTOF;6662;HIGH;ESI
+6663 QTOF Agilent;LC;Agilent ;QTOF;6663;HIGH;ESI
+6664 QTOF Agilent;LC;Agilent ;QTOF;6664;HIGH;ESI
+6665 QTOF Agilent;LC;Agilent ;QTOF;6665;HIGH;ESI
+6666 QTOF Agilent;LC;Agilent ;QTOF;6666;HIGH;ESI
+6667 QTOF Agilent;LC;Agilent ;QTOF;6667;HIGH;ESI
+6668 QTOF Agilent;LC;Agilent ;QTOF;6668;HIGH;ESI
+6669 QTOF Agilent;LC;Agilent ;QTOF;6669;HIGH;ESI
+6670 QTOF Agilent;LC;Agilent ;QTOF;6670;HIGH;ESI
+6671 QTOF Agilent;LC;Agilent ;QTOF;6671;HIGH;ESI
+6672 QTOF Agilent;LC;Agilent ;QTOF;6672;HIGH;ESI
+6673 QTOF Agilent;LC;Agilent ;QTOF;6673;HIGH;ESI
+6674 QTOF Agilent;LC;Agilent ;QTOF;6674;HIGH;ESI
+6675 QTOF Agilent;LC;Agilent ;QTOF;6675;HIGH;ESI
+6676 QTOF Agilent;LC;Agilent ;QTOF;6676;HIGH;ESI
+6677 QTOF Agilent;LC;Agilent ;QTOF;6677;HIGH;ESI
+6678 QTOF Agilent;LC;Agilent ;QTOF;6678;HIGH;ESI
+6679 QTOF Agilent;LC;Agilent ;QTOF;6679;HIGH;ESI
+6680 QTOF Agilent;LC;Agilent ;QTOF;6680;HIGH;ESI
+AB Sciex TripleTOF 5600 system (Q-TOF) equipped with a DuoSpray ion source;LC;SCIEX ;QTOF;5600;HIGH;ESI
+ABSciex API3200 LC/MS system;LC;SCIEX ;QQQ;3200;LOW;ESI
+Acquity UPLC and a Xevo TQ (Waters);LC;Waters ;QQ;Xevo TQ;LOW;ESI
+ACQUITY UPLC H-Class/Xevo TQD (Waters, Milford, USA);LC;Waters ;QQ;Xevo TQD;LOW;ESI
 Acquity UPLC Peptide BEH C18 column (50 x 2.1 mm;;;;;;
-ACQUITY UPLC system (Waters Co., MA, USA);LC;Waters;QTOF;;HIGH;ESI
-ACQUITY UPLC System, Waters;LC;Waters;QTOF;;HIGH;ESI
+ACQUITY UPLC system (Waters Co., MA, USA);LC;Waters ;QTOF;;HIGH;ESI
+ACQUITY UPLC System, Waters;LC;Waters ;QTOF;;HIGH;ESI
 Agilent (Waldbronn, Germany) Model 1100;;;;;;
 Agilent 1200 RRLC;;;;;;
-Agilent 6410 Triple Quadrupole LC/MS system;LC;Agilent;QQQ;6410;LOW;ESI
-Agilent 6530;LC;Agilent;QTOF;6530;HIGH;ESI
-Agilent 6530;LC;Agilent;QTOF;6530;HIGH;ESI
-Agilent 6530 QTOF;LC;Agilent;QTOF;6530;HIGH;ESI
-Agilent 6530 QTOF;LC;Agilent;QTOF;6530;HIGH;ESI
-Agilent 6530 Q-TOF;LC;Agilent;QTOF;6530;HIGH;ESI
-Agilent 6530 Q-TOF;LC;Agilent;QTOF;6530;HIGH;ESI
-Agilent 6550 iFunnel;LC;Agilent;QTOF;6550;HIGH;ESI
-Agilent 6550 iFunnel;LC;Agilent;QTOF;6550;HIGH;ESI
-Agilent 6560;LC;Agilent;QTOF;6560;HIGH;ESI
-Agilent 6560 QTOF;LC;Agilent;QTOF;6560;HIGH;ESI
-Agilent LC QTOF;LC;Agilent;QTOF;;HIGH;ESI
-Agilent qTOF 6545;LC;Agilent;QTOF;6545;HIGH;ESI
-Agilent QTof 6545, Agilent Technologies [MS:1000490];LC;Agilent;QTOF;6545;HIGH;ESI
-Agilent QTOF 6550;LC;Agilent;QTOF;6550;HIGH;ESI
-APCI-ITFT;LC;Unknown;ITFT;;HIGH;APCI
-APEX-II FT-ICR (Bruker Daltonics);LC;Bruker Daltonics;ITFT;APEX II;HIGH;ESI
-API 2000;LC;SCIEX;QQQ;API 2000;HIGH;ESI
-API 2000 ESI-MS/MS system triple quadrupole mass spectrometer (Sciex Applied Biosystems, Toronto, Canada);LC;SCIEX;QQ;;HIGH;ESI
-API 3000;LC;SCIEX;QQQ;API3000;HIGH;ESI
-API 3000 triple-quadrupole mass spectrometer (PerkinElmer Sciex, Concord, ON, Canada);LC;SCIEX;QQ;;HIGH;ESI
-API 365;LC;SCIEX;;;HIGH;ESI
-API III;LC;SCIEX;QQQ;API III;LOW;ESI
-API QSTAR;LC;SCIEX;QIT;;LOW;ESI
-API QSTAR;LC;SCIEX;IT;QSTAR;HIGH;ESI
-API QSTAR Pulsar i;LC;SCIEX;QTOF;API QSTAR Pulsar i;LOW;ESI
-API2000;LC;SCIEX;QQQ;API2000;LOW;APPI
-API2000, Applied;LC;Applied Biosystems;QQ;API 2000;HIGH;APPI
-API3000, Applied Biosystems;LC;Applied Biosystems;QQ;API 3000;HIGH;ESI
-AXIMA QIT (Shimadzu);LC;Shimadzu;QIT;Axima;LOW;MALDI
-Bruker Apex QE 12T FT-ICR;LC;Bruker Daltonics;ITFT;APEX QE;HIGH;ESI
+Agilent 6410 Triple Quadrupole LC/MS system;LC;Agilent ;QQQ;6410;LOW;ESI
+Agilent 6530;LC;Agilent ;QTOF;6530;HIGH;ESI
+Agilent 6530;LC;Agilent ;QTOF;6530;HIGH;ESI
+Agilent 6530 QTOF;LC;Agilent ;QTOF;6530;HIGH;ESI
+Agilent 6530 QTOF;LC;Agilent ;QTOF;6530;HIGH;ESI
+Agilent 6530 Q-TOF;LC;Agilent ;QTOF;6530;HIGH;ESI
+Agilent 6530 Q-TOF;LC;Agilent ;QTOF;6530;HIGH;ESI
+Agilent 6550 iFunnel;LC;Agilent ;QTOF;6550;HIGH;ESI
+Agilent 6550 iFunnel;LC;Agilent ;QTOF;6550;HIGH;ESI
+Agilent 6560;LC;Agilent ;QTOF;6560;HIGH;ESI
+Agilent 6560 QTOF;LC;Agilent ;QTOF;6560;HIGH;ESI
+Agilent LC QTOF;LC;Agilent ;QTOF;;HIGH;ESI
+Agilent qTOF 6545;LC;Agilent ;QTOF;6545;HIGH;ESI
+Agilent QTof 6545, Agilent Technologies [MS:1000490];LC;Agilent ;QTOF;6545;HIGH;ESI
+Agilent QTOF 6550;LC;Agilent ;QTOF;6550;HIGH;ESI
+APCI-ITFT;LC;Unknown ;ITFT;;HIGH;APCI
+APEX-II FT-ICR (Bruker Daltonics);LC;Bruker Daltonics ;ITFT;APEX II;HIGH;ESI
+API 2000;LC;SCIEX ;QQQ;API 2000;HIGH;ESI
+API 2000 ESI-MS/MS system triple quadrupole mass spectrometer (Sciex Applied Biosystems, Toronto, Canada);LC;SCIEX ;QQ;;HIGH;ESI
+API 3000;LC;SCIEX ;QQQ;API3000;HIGH;ESI
+API 3000 triple-quadrupole mass spectrometer (PerkinElmer Sciex, Concord, ON, Canada);LC;SCIEX ;QQ;;HIGH;ESI
+API 365;LC;SCIEX ;;;HIGH;ESI
+API III;LC;SCIEX ;QQQ;API III;LOW;ESI
+API QSTAR;LC;SCIEX ;QIT;;LOW;ESI
+API QSTAR;LC;SCIEX ;IT;QSTAR;HIGH;ESI
+API QSTAR Pulsar i;LC;SCIEX ;QTOF;API QSTAR Pulsar i;LOW;ESI
+API2000;LC;SCIEX ;QQQ;API2000;LOW;APPI
+API2000, Applied;LC;Applied Biosystems ;QQ;API 2000;HIGH;APPI
+API3000, Applied Biosystems;LC;Applied Biosystems ;QQ;API 3000;HIGH;ESI
+AXIMA QIT (Shimadzu);LC;Shimadzu ;QIT;Axima;LOW;MALDI
+Bruker Apex QE 12T FT-ICR;LC;Bruker Daltonics ;ITFT;APEX QE;HIGH;ESI
 Bruker Esquire3000plus(Bruker-Franzen Analytik, Bremen, Germany);;;;;;
-Bruker impact HD;LC;Bruker Daltonics;QTOF;Impact HD;HIGH;ESI
-Bruker maXis ESI-QTOF;LC;Bruker Daltonics;QTOF;Maxis HD;HIGH;ESI
-Bruker maXis Impact;LC;Bruker Daltonics;QTOF;Impact HD;HIGH;ESI
-Bruker micrOTOF-Q;LC;Bruker Daltonics;QTOF;micrOTOF-Q;HIGH;ESI
-Bruker MicrOTOF-Q;LC;Bruker Daltonics;QTOF;micrOTOF-Q;HIGH;ESI
-CE-system connected to 6210 Time-of-Flight MS, Agilent;CE;Agilent;TOF;6210;HIGH;ESI
-Dionex U3000 and Exactive Orbitrap (Thermofisher Scientific);LC;Thermo Fisher Scientific;ITFT;Exactive Orbitrap;HIGH;ESI
+Bruker impact HD;LC;Bruker Daltonics ;QTOF;Impact HD;HIGH;ESI
+Bruker maXis ESI-QTOF;LC;Bruker Daltonics ;QTOF;Maxis HD;HIGH;ESI
+Bruker maXis Impact;LC;Bruker Daltonics ;QTOF;Impact HD;HIGH;ESI
+Bruker micrOTOF-Q;LC;Bruker Daltonics ;QTOF;micrOTOF-Q;HIGH;ESI
+Bruker MicrOTOF-Q;LC;Bruker Daltonics ;QTOF;micrOTOF-Q;HIGH;ESI
+CE-system connected to 6210 Time-of-Flight MS, Agilent;CE;Agilent ;TOF;6210;HIGH;ESI
+Dionex U3000 and Exactive Orbitrap (Thermofisher Scientific);LC;Thermo Fisher Scientific ;ITFT;Exactive Orbitrap;HIGH;ESI
 Dionex Ultimate 3000 UHPLC Thermo Scientific;;;;;;
-DIRECT INFUSION NANOESI-ION TRAP;DI;Unknown;;;HIGH;ESI
-ESI-FTICR;LC;Unknown;FT;Orbitrap;HIGH;ESI
-ESI-ITFT;LC;Unknown;ITFT;;HIGH;ESI
-ESI-QFT;LC;Thermo Fisher Scientific;QFT;Q-Exactive;HIGH;ESI
-ESI-QTOF;LC;Unknown;QTOF;;HIGH;ESI
-Esquire;LC;Bruker Daltonics;QIT;Esquire;HIGH;ESI
-Esquire 3000;LC;Bruker Daltonics;QIT;Esquire 3000;LOW;ESI
-Esquire 3000plus;LC;Bruker Daltonics;QIT;Esquire 3000 plus;HIGH;ESI
-Esquire 4000;LC;Bruker Daltonics;QIT;Esquire 4000;HIGH;ESI
+DIRECT INFUSION NANOESI-ION TRAP;DI;Unknown ;;;HIGH;ESI
+ESI-FTICR;LC;Unknown ;FT;Orbitrap;HIGH;ESI
+ESI-ITFT;LC;Unknown ;ITFT;;HIGH;ESI
+ESI-QFT;LC;Thermo Fisher Scientific ;QFT;Q-Exactive;HIGH;ESI
+ESI-QTOF;LC;Unknown ;QTOF;;HIGH;ESI
+Esquire;LC;Bruker Daltonics ;QIT;Esquire;HIGH;ESI
+Esquire 3000;LC;Bruker Daltonics ;QIT;Esquire 3000;LOW;ESI
+Esquire 3000plus;LC;Bruker Daltonics ;QIT;Esquire 3000 plus;HIGH;ESI
+Esquire 4000;LC;Bruker Daltonics ;QIT;Esquire 4000;HIGH;ESI
 ExionLC AD, AB Sciex LLC, USA;;;;;;
-Exploris 240 Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific;ITFT;Exploris 240 Orbitrap;HIGH;ESI
-FAB-EBEB;LC;Unknown;EBEB;;HIGH;ESI
-FINNIGAN-MAT 4500;GC;Thermo Fisher Scientific;B;Finnigan MAT 4500;LOW;CI
-Fisons VG Platform;LC;Waters;Q;Fisons VG Platform;LOW;ESI
-Flow-injection QqQ/MS;LC;Unknown;NA;;HIGH;ESI
-G2445A;LC;Agilent;QIT;LC/MSD Ion Trap G2445A;LOW;ESI
-HITACHI M-60;GC;Hitachi High-Tech;B;M-60;LOW;CI
-HITACHI M-80;GC;Hitachi High-Tech;B;M-80;LOW;CI
-HITACHI RMU-6D;GC;Hitachi High-Tech;B;;LOW;CI
-HPLC-ESI-TOF;LC;Unknown;TOF;;HIGH;ESI
-Hybrid FT;LC;Unknown;FT;Exactive;HIGH;ESI
-Hybrid Ft;LC;Unknown;FT;Orbitrap;HIGH;ESI
-Hybrid FT;LC;Unknown;FT;;HIGH;ESI
-Hybrid FT;LC;Unknown;FT;Orbitrap;HIGH;ESI
-impact HD;LC;Bruker Daltonics;QTOF;Impact HD;HIGH;ESI
-Ion Trap;LC;Unknown;IT;;LOW;APCI
-Ion Trap;LC;Unknown;IT;;LOW;ESI
-Ion Trap;LC;Unknown;IT;;HIGH;ESI
-Ion Trap;DI;Unknown;IT;;HIGH;ESI
-IT-TOF;LC;Unknown;QIT;;HIGH;ESI
-JEOL AX-505HA;GC;JEOL Ltd;B;JMS AX-505 HA;LOW;CI
-JEOL JMS DX-300;LC;JEOL Ltd;B;JMS DX-300;LOW;FAB
-JEOL JMS DX-303;LC;JEOL Ltd;B;JMS DX-303;LOW;FAB
-JEOL JMS-D-300;GC;JEOL Ltd;B;;LOW;CI
-JEOL JMS-DX-300;GC;JEOL Ltd;B;JMS DX-300;LOW;CI
-JEOL JMS-HX 110;LC;JEOL Ltd;EB;JMS-HX 110;LOW;FAB
-JMS DX-300/JMS-3500 data system, Japan Electron Optics Laboratory, Japan;LC;JEOL Ltd;B;JMS DX-300;LOW;FD
-JMS DX-300/JMS-3500 data system, Japan Electron Optics Laboratory, Japan;LC;JEOL Ltd;B;JMS DX-300;LOW;FAB
-JMS-700, JEOL;LC;JEOL Ltd;EB;JMS-700;LOW;FAB
-JMS-HX/HX 110A, JEOL;LC;JEOL Ltd;EBEB;JMS-HX/HX 110A;LOW;FAB
-JMS-S3000;LC;JEOL Ltd;TOF;JMS-S3000;HIGH;
-JMS-T100LP, JEOL;LC;JEOL Ltd;TOF;JMS-T100LP;HIGH;ESI
-JMS-T100LP, JEOL Ltd.;LC;JEOL Ltd;TOF;JMS-T100LP;HIGH;esi
+Exploris 240 Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific ;ITFT;Exploris 240 Orbitrap;HIGH;ESI
+FAB-EBEB;LC;Unknown ;EBEB;;HIGH;ESI
+FINNIGAN-MAT 4500;GC;Thermo Fisher Scientific ;B;Finnigan MAT 4500;LOW;CI
+Fisons VG Platform;LC;Waters ;Q;Fisons VG Platform;LOW;ESI
+Flow-injection QqQ/MS;LC;Unknown ;NA;;HIGH;ESI
+G2445A;LC;Agilent ;QIT; LC/MSD Ion Trap G2445A;LOW;ESI
+HITACHI M-60;GC;Hitachi High-Tech ;B;M-60;LOW;CI
+HITACHI M-80;GC;Hitachi High-Tech ;B;M-80;LOW;CI
+HITACHI RMU-6D;GC;Hitachi High-Tech ;B;;LOW;CI
+HPLC-ESI-TOF;LC;Unknown ;TOF;;HIGH;ESI
+Hybrid FT;LC;Unknown ;FT;Exactive;HIGH;ESI
+Hybrid Ft;LC;Unknown ;FT;Orbitrap;HIGH;ESI
+Hybrid FT;LC;Unknown ;FT;;HIGH;ESI
+Hybrid FT;LC;Unknown ;FT;Orbitrap;HIGH;ESI
+impact HD;LC;Bruker Daltonics ;QTOF;Impact HD;HIGH;ESI
+Ion Trap;LC;Unknown ;IT;;LOW;APCI
+Ion Trap;LC;Unknown ;IT;;LOW;ESI
+Ion Trap;LC;Unknown ;IT;;HIGH;ESI
+Ion Trap;DI;Unknown ;IT;;HIGH;ESI
+IT-TOF;LC;Unknown ;QIT;;HIGH;ESI
+JEOL AX-505HA;GC;JEOL Ltd ;B;JMS AX-505 HA;LOW;CI
+JEOL JMS DX-300;LC;JEOL Ltd ;B;JMS DX-300;LOW;FAB
+JEOL JMS DX-303;LC;JEOL Ltd ;B;JMS DX-303;LOW;FAB
+JEOL JMS-D-300;GC;JEOL Ltd ;B;;LOW;CI
+JEOL JMS-DX-300;GC;JEOL Ltd ;B;JMS DX-300;LOW;CI
+JEOL JMS-HX 110;LC;JEOL Ltd ;EB;JMS-HX 110;LOW;FAB
+JMS DX-300/JMS-3500 data system, Japan Electron Optics Laboratory, Japan;LC;JEOL Ltd ;B;JMS DX-300;LOW;FD
+JMS DX-300/JMS-3500 data system, Japan Electron Optics Laboratory, Japan;LC;JEOL Ltd ;B;JMS DX-300;LOW;FAB
+JMS-700, JEOL;LC;JEOL Ltd ;EB;JMS-700;LOW;FAB
+JMS-HX/HX 110A, JEOL;LC;JEOL Ltd ;EBEB;JMS-HX/HX 110A;LOW;FAB
+JMS-S3000;LC;JEOL Ltd ;TOF;JMS-S3000;HIGH;
+JMS-T100LP, JEOL;LC;JEOL Ltd ;TOF;JMS-T100LP;HIGH;ESI
+JMS-T100LP, JEOL Ltd.;LC;JEOL Ltd ;TOF;JMS-T100LP;HIGH;esi
 LC, Waters Acquity UPLC System;;;;;;
-LC/MSD trap;LC;Agilent;QIT;LC/MSD Trap;LOW;ESI
-LC/MSD Trap XCT, Agilent Technologies;LC;Agilent;IT;LC/MSD Trap XCT;LOW;ESI
+LC/MSD trap;LC;Agilent ;QIT;LC/MSD Trap;LOW;ESI
+LC/MSD Trap XCT, Agilent Technologies;LC;Agilent ;IT;LC/MSD Trap XCT;LOW;ESI
 LC-10ADVPmicro HPLC, Shimadzu;;;;;;
-LC-APPI-QQ;LC;Unknown;QQ;;LOW;APPI
-LC-ESI-IT;LC;Unknown;IT;;LOW;ESI
-LC-ESI-IT;LC;Unknown;IT;;HIGH;ESI
-LC-ESI-ITFT;LC;Unknown;ITFT;Orbitrap;LOW;ESI
-LC-ESI-ITFT;LC;Unknown;ITFT;;HIGH;ESI
-LC-ESI-ITTOF;LC;Unknown;ITTOF;;HIGH;ESI
-LC-ESI-ITTOF;LC;Unknown;ITTOF;;HIGH;ESI
-LC-ESI-ITTOF, Shimadzu;LC;Shimadzu;ITTOF;;HIGH;ESI
-LC-ESI-Q;LC;Unknown;Q;;LOW;ESI
-LC-ESI-QFT;LC;Unknown;QFT;Exactive;HIGH;ESI
-LC-ESI-QQ;LC;Unknown;QQ;;HIGH;ESI
-LC-ESI-QQ;LC;Unknown;QQ;;LOW;ESI
-LC-ESI-QTOF;LC;Unknown;QTOF;;HIGH;ESI
-LC-ESI-QTOF;LC;Unknown;QTOF;;HIGH;ESI
-LC-IT-TOF (Shimadzu);LC;Shimadzu;ITTOF;;HIGH;ESI
-LC-ITTOF-MS (Shimadzu, Kyoto, Japan);LC;Shimadzu;ITTOF;;HIGH;ESI
-LC-MS2010A, Shimadzu;LC;Shimadzu;Q;LCMS-2010A;LOW;ESI
-LCMS-2020 (SHIMADZU Corp., Kyoto, Japan);LC;Shimadzu;Q;LCMS-2020;LOW;APCI
-LCMS-2020 (SHIMADZU Corp., Kyoto, Japan) coupled to Vapur Interface (AMR. Inc., Tokyo, Japan).;LC;Shimadzu;Q;;HIGH;APCI
-LCMS-8045 (Shimadzu, Kyoto, Japan);LC;Shimadzu;QQ;LCMS-8045;HIGH;ESI
-LCMS-IT-TOF;LC;Unknown;ITQTOF;;HIGH;ESI
-LCMS-IT-TOF (Shimadzu);LC;Shimadzu;ITTOF;;HIGH;APCI
-LCMS-ITTOF, Shimadzu;LC;Shimadzu;ITTOF;;HIGH;ESI
-LCQ;LC;Thermo Fisher Scientific;QIT;LCQ;LOW;ESI
-LCQ Advantage;LC;Thermo Fisher Scientific;QIT;LCQ Advantage;LOW;ESI
-LCQ classic;LC;Thermo Fisher Scientific;QIT;LCQ classic;LOW;ESI
-LCQ Deca;LC;Thermo Fisher Scientific;QIT;LCQ Deca;LOW;ESI
-LCQ Deca XP;LC;Thermo Fisher Scientific;QIT;LCQ Deca XP;HIGH;ESI
-LCQ Deca XP;LC;Thermo Fisher Scientific;QIT;LCQ Deca XP;LOW;ESI
-LCQ Deca XPplus;LC;Thermo Fisher Scientific;QIT;LCQ Deca XP plus;LOW;ESI
-LCQ Deca Xpplus;LC;Thermo Fisher Scientific;QIT;LCQ Deca XP plus;LOW;ESI
-LCQ Duo;LC;Thermo Fisher Scientific;QIT;LCQ Duo;HIGH;ESI
+LC-APPI-QQ;LC;Unknown ;QQ;;LOW;APPI
+LC-ESI-IT;LC;Unknown ;IT;;LOW;ESI
+LC-ESI-IT;LC;Unknown ;IT;;HIGH;ESI
+LC-ESI-ITFT;LC;Unknown ;ITFT;Orbitrap;LOW;ESI
+LC-ESI-ITFT;LC;Unknown ;ITFT;;HIGH;ESI
+LC-ESI-ITTOF;LC;Unknown ;ITTOF;;HIGH;ESI
+LC-ESI-ITTOF;LC;Unknown ;ITTOF;;HIGH;ESI
+LC-ESI-ITTOF, Shimadzu;LC;Shimadzu ;ITTOF;;HIGH;ESI
+LC-ESI-Q;LC;Unknown ;Q;;LOW;ESI
+LC-ESI-QFT;LC;Unknown ;QFT;Exactive;HIGH;ESI
+LC-ESI-QQ;LC;Unknown ;QQ;;HIGH;ESI
+LC-ESI-QQ;LC;Unknown ;QQ;;LOW;ESI
+LC-ESI-QTOF;LC;Unknown ;QTOF;;HIGH;ESI
+LC-ESI-QTOF;LC;Unknown ;QTOF;;HIGH;ESI
+LC-IT-TOF (Shimadzu);LC;Shimadzu ;ITTOF;;HIGH;ESI
+LC-ITTOF-MS (Shimadzu, Kyoto, Japan);LC;Shimadzu ;ITTOF;;HIGH;ESI
+LC-MS2010A, Shimadzu;LC;Shimadzu ;Q;LCMS-2010A;LOW;ESI
+LCMS-2020 (SHIMADZU Corp., Kyoto, Japan);LC;Shimadzu ;Q;LCMS-2020;LOW;APCI
+LCMS-2020 (SHIMADZU Corp., Kyoto, Japan) coupled to Vapur Interface (AMR. Inc., Tokyo, Japan).;LC;Shimadzu ;Q;;HIGH;APCI
+LCMS-8045 (Shimadzu, Kyoto, Japan);LC;Shimadzu ;QQ;LCMS-8045;HIGH;ESI
+LCMS-IT-TOF;LC;Unknown ;ITQTOF;;HIGH;ESI
+LCMS-IT-TOF (Shimadzu);LC;Shimadzu ;ITTOF;;HIGH;APCI
+LCMS-ITTOF, Shimadzu;LC;Shimadzu ;ITTOF;;HIGH;ESI
+LCQ;LC;Thermo Fisher Scientific ;QIT;LCQ;LOW;ESI
+LCQ Advantage;LC;Thermo Fisher Scientific ;QIT;LCQ Advantage;LOW;ESI
+LCQ classic;LC;Thermo Fisher Scientific ;QIT;LCQ classic;LOW;ESI
+LCQ Deca;LC;Thermo Fisher Scientific ;QIT;LCQ Deca;LOW;ESI
+LCQ Deca XP;LC;Thermo Fisher Scientific ;QIT;LCQ Deca XP;HIGH;ESI
+LCQ Deca XP;LC;Thermo Fisher Scientific ;QIT;LCQ Deca XP;LOW;ESI
+LCQ Deca XPplus;LC;Thermo Fisher Scientific ;QIT;LCQ Deca XP plus;LOW;ESI
+LCQ Deca Xpplus;LC;Thermo Fisher Scientific ;QIT;LCQ Deca XP plus;LOW;ESI
+LCQ Duo;LC;Thermo Fisher Scientific ;QIT;LCQ Duo;HIGH;ESI
 LCQ ion-trap instrument (Finngan MAT, San Jose, CA, USA);;;;;;
-LCQ mass spectrometer (Finnigan MAT, San Jose, CA, USA);LC;Thermo Fisher Scientific;QIT;LCQ;LOW;ESI
-LC-Q-TOF/MS;LC;Unknown;QTOF;;HIGH;ESI
-LCT Micromass;LC;Waters;TOF;LCT Micromass;HIGH;ESI
-Linear Ion Trap;LC;Unknown;IT;;HIGH;ESI
-LTQ;LC;Thermo Fisher Scientific;QIT;LTQ;LOW;
-LTQ Orbitap Velos (Thermofisher Scientific);LC;Thermo Fisher Scientific;ITFT;LTQ Orbitap Velos;HIGH;ESI
-LTQ Orbitrap Fusion Tribrid;LC;Thermo Fisher Scientific;ITFT;LTQ Orbitrap Fusion Tribrid;HIGH;ESI
-LTQ Orbitrap Fusion Tribrid, Thermo Scientfic;LC;Thermo Fisher Scientific;ITFT;Orbitrap Fusion Tribrid;HIGH;ESI
-LTQ Orbitrap Velos Thermo Scientific;LC;Thermo Fisher Scientific;ITFT;LTQ Orbitrap Velos;HIGH;ESI
-LTQ Orbitrap XL hybrid iontrap-Orbitrap (Thermo Fisher Scientific, San Jose, CA, USA);LC;Thermo Fisher Scientific;ITFT;LTQ Orbitrap XL hybrid;HIGH;ESI
-LTQ Orbitrap XL hybrid iontrap-Orbitrap (Thermo Fisher Scientific, San Jose, CA, USA);LC;Thermo Fisher Scientific;ITFT;LTQ Orbitrap XL hybrid;HIGH;ESI
-LTQ Orbitrap XL Thermo Fisher Scientific;LC;Thermo Fisher Scientific;ITFT;LTQ Orbitrap XL;HIGH;ESI
-LTQ Orbitrap XL Thermo Scientific;LC;Thermo Fisher Scientific;ITFT;LTQ Orbitrap XL;HIGH;ESI
-LTQ Orbitrap XL Thermo Scientific;LC;Thermo Fisher Scientific;ITFT;LTQ Orbitrap XL;HIGH;ESI
-LTQ Orbitrap XL Thermo Scientific;LC;Thermo Fisher Scientific;ITFT;LTQ Orbitrap XL;HIGH;APCI
+LCQ mass spectrometer (Finnigan MAT, San Jose, CA, USA);LC;Thermo Fisher Scientific ;QIT;LCQ;LOW;ESI
+LC-Q-TOF/MS;LC;Unknown ;QTOF;;HIGH;ESI
+LCT Micromass;LC;Waters ;TOF;LCT Micromass;HIGH;ESI
+Linear Ion Trap;LC;Unknown ;IT;;HIGH;ESI
+LTQ;LC;Thermo Fisher Scientific ;QIT;LTQ;LOW;
+LTQ Orbitap Velos (Thermofisher Scientific);LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitap Velos;HIGH;ESI
+LTQ Orbitrap Fusion Tribrid;LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitrap Fusion Tribrid;HIGH;ESI
+LTQ Orbitrap Fusion Tribrid, Thermo Scientfic;LC;Thermo Fisher Scientific ;ITFT;Orbitrap Fusion Tribrid ;HIGH;ESI
+LTQ Orbitrap Velos Thermo Scientific;LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitrap Velos;HIGH;ESI
+LTQ Orbitrap XL hybrid iontrap-Orbitrap (Thermo Fisher Scientific, San Jose, CA, USA);LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitrap XL hybrid;HIGH;ESI
+LTQ Orbitrap XL hybrid iontrap-Orbitrap (Thermo Fisher Scientific, San Jose, CA, USA);LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitrap XL hybrid;HIGH;ESI
+LTQ Orbitrap XL Thermo Fisher Scientific;LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitrap XL;HIGH;ESI
+LTQ Orbitrap XL Thermo Scientific;LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitrap XL;HIGH;ESI
+LTQ Orbitrap XL Thermo Scientific;LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitrap XL;HIGH;ESI
+LTQ Orbitrap XL Thermo Scientific;LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitrap XL;HIGH;APCI
 LTQ Orbitrap XL, Thermo Scientfic;;;;;;
-LTQ Orbitrap XL, Thermo Scientfic;LC;Thermo Fisher Scientific;ITFT;LTQ Orbitrap XL;HIGH;ESI
-LTQ Orbitrap XL, Thermo Scientific;LC;Thermo Fisher Scientific;ITFT;LTQ Orbitrap XL;HIGH;ESI
-LTQ XL, Thermo Finnigan;LC;Thermo Fisher Scientific;IT;LTQ XL;LOW;ESI
-LTQ-FT;LC;Thermo Fisher Scientific;ITFT;LTQ FT;HIGH;ESI
-LTQ-Orbitrap;LC;Thermo Fisher Scientific;ITFT;LTQ Orbitrap;HIGH;APCI
-LTQ-Orbitrap;LC;Thermo Fisher Scientific;ITFT;LTQ Orbitrap;HIGH;APCI
-LTQ-Orbitrap XL;LC;Thermo Fisher Scientific;ITFT;LTQ Orbitrap XL;HIGH;ESI
-LTQ-XL;LC;Thermo Fisher Scientific;QIT;LTQ XL;HIGH;ESI
-M-4100 (Hitachi, Tokyo, Japan).;LC;Hitachi High-Tech;BE;;LOW;ESI
-MALDI-QITTOF noncommercial prototype model (Shimadzu Corporation, Kyoto, Japan);LC;Shimadzu;QITTOF;;HIGH;MALDI
-maXis (Bruker Daltonics);LC;Bruker Daltonics;QTOF;Maxis;HIGH;ESI
-Maxis HD qTOF;LC;Bruker Daltonics;QTOF;Maxis HD;HIGH;ESI
-Maxis HD qTOF;LC;Bruker Daltonics;QTOF;Maxis HD;HIGH;ESI
-Maxis II HD Q-TOF Bruker;LC;Bruker Daltonics;QTOF;Maxis II HD;HIGH;ESI
-maXis plus UHR-ToF-MS, Bruker Daltonics;LC;Bruker Daltonics;QTOF;Maxis plus HD;HIGH;ESI
-Micromass (Altrincham, UK) QuattroII triple-quadrupole mass spectrometer, JASCO(Tokyo, Japan) model 980 LC;LC;Waters;QQ;Micromass Quattro II;LOW;ESI
-Micromass Q-TOF II;LC;Waters;QTOF;Micromass QTOF II;HIGH;ESI
-Micromass Quattromicro;LC;Waters;QQQ;Micromass Quattro Micro;LOW;ESI
-Micromass Quattromicro;LC;Waters;QQQ;Quattro micro;LOW;ESI
-micrOTOF-Q;LC;Bruker Daltonics;QTOF;micrOTOF-Q;HIGH;ESI
-micrOTOF-Q;LC;Bruker Daltonics;QTOF;micrOTOF-Q;HIGH;ESI
-MSD 1100;LC;Agilent;QIT;MSD 1100;LOW;ESI
-Orbitrap;LC;Thermo Fisher Scientific;FT;Orbitrap;HIGH;ESI
-Orbitrap;LC;Thermo Fisher Scientific;FT;Orbitrap;HIGH;ESI
-Orbitrap;LC;Thermo Fisher Scientific;FT;Orbitrap;HIGH;APCI
-Orbitrap;LC;Thermo Fisher Scientific;FT;Orbitrap;HIGH;ESI
-Orbitrap Classic, Thermo Scientific;LC;Thermo Fisher Scientific;ITFT;Orbitrap Classic;HIGH;ESI
-Orbitrap Exploris 120;LC;Thermo Fisher Scientific;FT;Orbitrap Exploris 120;HIGH;ESI
-Orbitrap Exploris 240 Thermo Scientific;LC;Thermo Fisher Scientific;QFT;Orbitrap Exploris 240;HIGH;ESI
-Orbitrap Fusion Tribrid Thermo Fisher Scientific;LC;Thermo Fisher Scientific;QFT;Orbitrap Fusion Tribrid;HIGH;ESI
-Orbitrap Fusion, Thermo Scientific.;LC;Thermo Fisher Scientific;FT;Orbitrap Fusion;HIGH;ESI
-PTR-QMS 500 (IONICON Analytik GmbH, Innsbruck, Austria);GC;IONICON Analytik GmbH;CI-Q;;LOW;CI
-Q-Exactive;DI;Thermo Fisher Scientific;QFT;Q-Exactive;HIGH;ESI
-Q-Exactive;LC;Thermo Fisher Scientific;FT;Q-Exactive;HIGH;ESI
-Q-Exactive  Thermo Scientific;LC;Thermo Fisher Scientific;QFT;Q-Exactive plus;HIGH;ESI
-Q-Exactive HF, Thermo Scientific [MS:1002523];LC;Thermo Fisher Scientific;QFT;Q-Exactive HF;HIGH;ESI
-Q-Exactive Orbitrap (Thermo Scientific);LC;Thermo Fisher Scientific;QFT;Q-Exactive Orbitrap;HIGH;ESI
-QExactive Orbitrap HF-X (Thermo Scientific);LC;Thermo Fisher Scientific;ITFT;Q-Exactive Orbitrap HF-X;HIGH;ESI
-QExactive Orbitrap HF-X (Thermo Scientific);LC;Thermo Fisher Scientific;QFT;Q-Exactive Orbitrap HF-X;HIGH;APCI
-Q-Exactive Orbitrap Plus Thermo Scientific;LC;Thermo Fisher Scientific;QFT;Q-Exactive Plus Orbitrap;HIGH;ESI
-Q-Exactive Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific;ITFT;Orbitrap;HIGH;ESI
-Q-Exactive Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific;ITFT;Orbitrap;HIGH;ESI
-Q-Exactive Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific;FT;Q-Exactive Orbitrap;HIGH;ESI
-Q-Exactive Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific;QFT;Q-Exactive Orbitrap;HIGH;ESI
-Q-Exactive Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific;ITFT;Q-Exactive Orbitrap;HIGH;APCI
-Q-Exactive Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific;ITFT;Q-Exactive Orbitrap;HIGH;ESI
-Q-Exactive Plus;LC;Thermo Fisher Scientific;FT;Q-Exactive Plus;HIGH;ESI
-Q-Exactive Plus;DI;Thermo Fisher Scientific;QFT;Q-Exactive plus;HIGH;ESI
-Q-Exactive Plus Orbitrap Res 14k;LC;Thermo Fisher Scientific;LC-ESI-QFT;Q-Exactive Plus Orbitrap;HIGH;ESI
-Q-Exactive Plus Orbitrap Res 14k;LC;Thermo Fisher Scientific;QFT;Q-Exactive Plus Orbitrap;HIGH;ESI
-Q-Exactive Plus Orbitrap Res 70k;LC;Thermo Fisher Scientific;ITFT;Q-Exactive Plus Orbitrap;HIGH;ESI
-Q-Exactive Plus Orbitrap Res 70k;LC;Thermo Fisher Scientific;ITFT;Q-Exactive Plus Orbitrap;HIGH;ESI
-Q-Exactive Plus Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific;ITFT;Q-Exactive Plus Orbitrap;HIGH;ESI
-Q-Exactive Plus Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific;QFT;Q-Exactive Plus Orbitrap;HIGH;ESI
-Q-Exactive Thermo Fisher Scientific;LC;Thermo Fisher Scientific;QFT;Q-Exactive;HIGH;ESI
-Q-Exactive Thermo Scientific;LC;Thermo Fisher Scientific;QFT;Q-Exactive;HIGH;ESI
-QQQ;LC;Unknown;QQQ;;LOW;ESI
-QQQ;LC;Unknown;QQQ;;LOW;APCI
-QQQ;LC;Unknown;QQQ;;LOW;ESI
-QQQ;LC;Unknown;QQQ;;HIGH;ESI
-QTFO SYNAPT, Waters;LC;Waters;QTOF;SYNAPT;HIGH;ESI
-qTof;LC;Unknown;QTOF;;HIGH;ESI
-qTOF;LC;Unknown;QTOF;;HIGH;ESI
-qToF;LC;Unknown;QTOF;;HIGH;ESI
-qTof;LC;Unknown;QTOF;;HIGH;APCI
-qToF;LC;Unknown;QTOF;;HIGH;ESI
-qTof;LC;Unknown;QTOF;;HIGH;APCI
-qTOF;LC;Unknown;QTOF;;HIGH;ESI
-qTof;LC;Unknown;QTOF;;HIGH;ESI
-qTof;LC;Unknown;QTOF;;HIGH;ESI
-Q-TOF;LC;Unknown;QTOF;;HIGH;ESI
-QTOF 6530, Agilent Technologies.;LC;Agilent;QTOF;6530;HIGH;ESI
-QTOF Premier;LC;Waters;QTOF;QTOF Premier;HIGH;ESI
-Q-Tof Premier, Waters;LC;Waters;QTOF;QTOF Premier;HIGH;ESI
-Q-Tof Premier, Waters;LC;Waters;QTOF;QTOF Premier;HIGH;ESI
-QTOF SYNAPT, Waters;LC;Waters;QTOF;SYNAPT;HIGH;ESI
-Q-TOF SYNAPT, Waters;LC;Waters;QTOF;SYNAPT;HIGH;ESI
-QTOF Ultima API;LC;Waters;QTOF;Ultima API;HIGH;ESI
-QTOF, SYNAPT, Waters;LC;Waters;QTOF;SYNAPT;HIGH;?
-QTRAP;LC;Unknown;QQQ;;HIGH;ESI
-QTRAP;LC;Unknown;NA;;;
-Quantum Ultra AM;LC;Thermo Fisher Scientific;QIT;Quantum Ultra AM;HIGH;ESI
-Quattro II;LC;Waters;QQQ;Quattro II;LOW;ESI
-Quattro Premier XE;LC;Waters;QIT;Quattro Premier XE;LOW;ESI
-Quattro Premier, Micromass (USA) coupled to Alliance HT 2795, Waters (USA).;LC;Waters;QQ;Micromass Quattro Premier;LOW;ESI
-Quattro Premier, Micromass. Alliance HT 2795,Waters;LC;Waters;QQ;Micromass Quattro Premier;LOW;ESI
-Quattro_QQQ:10eV;LC;Waters;QQQ;Quattro;LOW;ESI
-Quattro_QQQ:10eV;LC;Waters;QQQ;Quattro;LOW;ESI
-Quattro_QQQ:25eV;LC;Waters;QQQ;Quattro;LOW;ESI
-Quattro_QQQ:25eV;LC;Waters;QQQ;Quattro;LOW;ESI
-Quattro_QQQ:40eV;LC;Waters;QQQ;Quattro micro;LOW;
-Quattro_QQQ:40eV;LC;Waters;QQQ;Quattro;LOW;ESI
-QuattroPremier XE, Waters;LC;Waters;QQ;Quattro Premier XE;LOW;ESI
-SCIEX 5600;LC;SCIEX;QTOF;5600 PlusTripleTOF;HIGH;ESI
-Sciex 6600 TTOF;LC;SCIEX;TOF;6600 TripleTOF;HIGH;ESI
-Sciex Triple TOF 6600;LC;SCIEX;;;HIGH;ESI
-SCIEX TripleTOF 6600;LC;SCIEX;TOF;triple ToF 6600;HIGH;ESI
-Sciex TripleTOF5600;LC;SCIEX;TOF;5600 TripleTOF;HIGH;ESI
-Shimadzu LC18A-IT-TOFMS;LC;Shimadzu;ITTOF;LCMS-18A;HIGH;ESI
-Shimadzu LC20A-IT-TOFMS;LC;Shimadzu;ITTOF;;HIGH;ESI
-SHIMADZU LKB-9000;GC;Shimadzu;B;LKB-9000;HIGH;CI
-SHIMADZU LKB-9000B;GC;Shimadzu;B;LKB-9000B;LOW;CI
-Thermo Finnigan LTQ;LC;Thermo Fisher Scientific;QIT;LTQ;LOW;ESI
-Thermo Fisher Scientific Q-Exactive GC Orbitrap GC-MS/MS;GC;Thermo Fisher Scientific;FT;;HIGH;ESI
-Thermo Fisher Scientific Trace 1310 Gas Chromatograph;GC;Thermo Fisher Scientific;;;HIGH;ESI
-Thermo Q-Exactive;LC;Thermo Fisher Scientific;QFT;Q-Exactive;HIGH;ESI
-Thermo Q-Exactive;LC;Thermo Fisher Scientific;FT;Q-Exactive;HIGH;ESI
-Thermo Q-Exactive HF;LC;Thermo Fisher Scientific;ITFT;Q-Exactive HF;HIGH;ESI
-Thermo Q-Exactive HF;LC;Thermo Fisher Scientific;QFT;Q-Exactive HF;HIGH;ESI
-Thermo Q-Exactive HF;LC;Thermo Fisher Scientific;QFT;Q-Exactive HF;HIGH;ESI
-Thermo Q-Exactive HF;LC;Thermo Fisher Scientific;QFT;Q-Exactive HF;HIGH;ESI
-Thermo Q-Exactive Plus;LC;Thermo Fisher Scientific;QFT;Q-Exactive Plus;HIGH;ESI
-Thermo QExactive-HF;LC;Thermo Fisher Scientific;FT;Q-Exactive HF;HIGH;ESI
-Thermo QExactive-HF;LC;Thermo Fisher Scientific;FT;Q-Exactive HF;HIGH;ESI
-Thermo Scientific LTQ-XL (San Jose, CA, USA);LC;Thermo Fisher Scientific;QIT;LTQ XL;LOW;ESI
-Thermo Scientific Orbitrap ID-X;LC;Thermo Fisher Scientific;FT;Orbitrap ID-X;HIGH;ESI
-TQD, Waters;LC;Waters;;;LOW;ESI
-TQD, Waters;LC;Waters;QQ;;LOW;ESI
-Triple Quad 4500 (AB Sciex Pte. Ltd., USA);LC;SCIEX;QQ;;HIGH;ESI
-TripleTOF 5600??;LC;SCIEX;QTOF;;HIGH;ESI
-TSQ 7000;LC;Thermo Fisher Scientific;QQ;TSQ 7000;LOW;ESI
-TSQ QUANTUM AM;LC;Thermo Fisher Scientific;QQQ;TSQ QUANTUM AM;HIGH;ESI
-TSQ Vantage, Thermo Scientific coupled to Nexera, Shimadzu;LC;Thermo Fisher Scientific;QQ;TSQ Vantage;LOW;ESI
-UHPLC-ESI-QTof XEVO G2-S QTof;LC;Waters;QTOF;Xevo G2-S;HIGH;ESI
-UPLC Q-Tof Premier, Waters;LC;Waters;QTOF;QTOF Premier;HIGH;ESI
-UPLC Waters, Quattro Ultima Pt Micromass;LC;Waters;QQ;Micromass Quattro Ultima;LOW;ESI
-UPLC-ESI-QTOF;LC;Unknown;QTOF;;HIGH;ESI
+LTQ Orbitrap XL, Thermo Scientfic;LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitrap XL;HIGH;ESI
+LTQ Orbitrap XL, Thermo Scientific;LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitrap XL;HIGH;ESI
+LTQ XL, Thermo Finnigan;LC;Thermo Fisher Scientific ;IT;LTQ XL;LOW;ESI
+LTQ-FT;LC;Thermo Fisher Scientific ;ITFT;LTQ FT;HIGH;ESI
+LTQ-Orbitrap;LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitrap;HIGH;APCI
+LTQ-Orbitrap;LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitrap;HIGH;APCI
+LTQ-Orbitrap XL;LC;Thermo Fisher Scientific ;ITFT;LTQ Orbitrap XL;HIGH;ESI
+LTQ-XL;LC;Thermo Fisher Scientific ;QIT;LTQ XL;HIGH;ESI
+M-4100 (Hitachi, Tokyo, Japan).;LC;Hitachi High-Tech ;BE;;LOW;ESI
+MALDI-QITTOF noncommercial prototype model (Shimadzu Corporation, Kyoto, Japan);LC;Shimadzu ;QITTOF;;HIGH;MALDI
+maXis (Bruker Daltonics);LC;Bruker Daltonics ;QTOF;Maxis;HIGH;ESI
+Maxis HD qTOF;LC;Bruker Daltonics ;QTOF;Maxis HD;HIGH;ESI
+Maxis HD qTOF;LC;Bruker Daltonics ;QTOF;Maxis HD;HIGH;ESI
+Maxis II HD Q-TOF Bruker;LC;Bruker Daltonics ;QTOF;Maxis II HD;HIGH;ESI
+maXis plus UHR-ToF-MS, Bruker Daltonics;LC;Bruker Daltonics ;QTOF;Maxis plus HD;HIGH;ESI
+Micromass (Altrincham, UK) QuattroII triple-quadrupole mass spectrometer, JASCO(Tokyo, Japan) model 980 LC;LC;Waters ;QQ;Micromass Quattro II;LOW;ESI
+Micromass Q-TOF II;LC;Waters ;QTOF;Micromass QTOF II;HIGH;ESI
+Micromass Quattromicro;LC;Waters ;QQQ;Micromass Quattro Micro;LOW;ESI
+Micromass Quattromicro;LC;Waters ;QQQ;Quattro micro;LOW;ESI
+micrOTOF-Q;LC;Bruker Daltonics ;QTOF;micrOTOF-Q;HIGH;ESI
+micrOTOF-Q;LC;Bruker Daltonics ;QTOF;micrOTOF-Q;HIGH;ESI
+MSD 1100;LC;Agilent ;QIT;MSD 1100;LOW;ESI
+Orbitrap;LC;Thermo Fisher Scientific ;FT;Orbitrap;HIGH;ESI
+Orbitrap;LC;Thermo Fisher Scientific ;FT;Orbitrap;HIGH;ESI
+Orbitrap;LC;Thermo Fisher Scientific ;FT;Orbitrap;HIGH;APCI
+Orbitrap;LC;Thermo Fisher Scientific ;FT;Orbitrap;HIGH;ESI
+Orbitrap Classic, Thermo Scientific;LC;Thermo Fisher Scientific ;ITFT;Orbitrap Classic;HIGH;ESI
+Orbitrap Exploris 120;LC;Thermo Fisher Scientific ;FT;Orbitrap Exploris 120;HIGH;ESI
+Orbitrap Exploris 240 Thermo Scientific;LC;Thermo Fisher Scientific ;QFT;Orbitrap Exploris 240;HIGH;ESI
+Orbitrap Fusion Tribrid Thermo Fisher Scientific;LC;Thermo Fisher Scientific ;QFT;Orbitrap Fusion Tribrid;HIGH;ESI
+Orbitrap Fusion, Thermo Scientific.;LC;Thermo Fisher Scientific ;FT;Orbitrap Fusion;HIGH;ESI
+PTR-QMS 500 (IONICON Analytik GmbH, Innsbruck, Austria);GC;IONICON Analytik GmbH ;CI-Q;;LOW;CI
+Q-Exactive;DI;Thermo Fisher Scientific ;QFT;Q-Exactive;HIGH;ESI
+Q-Exactive;LC;Thermo Fisher Scientific ;FT;Q-Exactive;HIGH;ESI
+Q-Exactive  Thermo Scientific;LC;Thermo Fisher Scientific ;QFT;Q-Exactive plus;HIGH;ESI
+Q-Exactive HF, Thermo Scientific [MS:1002523];LC;Thermo Fisher Scientific ;QFT;Q-Exactive HF;HIGH;ESI
+Q-Exactive Orbitrap (Thermo Scientific);LC;Thermo Fisher Scientific ;QFT;Q-Exactive Orbitrap;HIGH;ESI
+QExactive Orbitrap HF-X (Thermo Scientific);LC;Thermo Fisher Scientific ;ITFT;Q-Exactive Orbitrap HF-X;HIGH;ESI
+QExactive Orbitrap HF-X (Thermo Scientific);LC;Thermo Fisher Scientific ;QFT;Q-Exactive Orbitrap HF-X;HIGH;APCI
+Q-Exactive Orbitrap Plus Thermo Scientific;LC;Thermo Fisher Scientific ;QFT;Q-Exactive Plus Orbitrap;HIGH;ESI
+Q-Exactive Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific ;ITFT;Orbitrap;HIGH;ESI
+Q-Exactive Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific ;ITFT;Orbitrap;HIGH;ESI
+Q-Exactive Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific ;FT;Q-Exactive Orbitrap;HIGH;ESI
+Q-Exactive Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific ;QFT;Q-Exactive Orbitrap;HIGH;ESI
+Q-Exactive Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific ;ITFT;Q-Exactive Orbitrap;HIGH;APCI
+Q-Exactive Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific ;ITFT;Q-Exactive Orbitrap;HIGH;ESI
+Q-Exactive Plus;LC;Thermo Fisher Scientific ;FT;Q-Exactive Plus;HIGH;ESI
+Q-Exactive Plus;DI;Thermo Fisher Scientific ;QFT;Q-Exactive plus;HIGH;ESI
+Q-Exactive Plus Orbitrap Res 14k;LC;Thermo Fisher Scientific ;LC-ESI-QFT;Q-Exactive Plus Orbitrap;HIGH;ESI
+Q-Exactive Plus Orbitrap Res 14k;LC;Thermo Fisher Scientific ;QFT;Q-Exactive Plus Orbitrap;HIGH;ESI
+Q-Exactive Plus Orbitrap Res 70k;LC;Thermo Fisher Scientific ;ITFT;Q-Exactive Plus Orbitrap;HIGH;ESI
+Q-Exactive Plus Orbitrap Res 70k;LC;Thermo Fisher Scientific ;ITFT;Q-Exactive Plus Orbitrap;HIGH;ESI
+Q-Exactive Plus Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific ;ITFT;Q-Exactive Plus Orbitrap;HIGH;ESI
+Q-Exactive Plus Orbitrap Thermo Scientific;LC;Thermo Fisher Scientific ;QFT;Q-Exactive Plus Orbitrap;HIGH;ESI
+Q-Exactive Thermo Fisher Scientific;LC;Thermo Fisher Scientific ;QFT;Q-Exactive;HIGH;ESI
+Q-Exactive Thermo Scientific;LC;Thermo Fisher Scientific ;QFT;Q-Exactive;HIGH;ESI
+QQQ;LC;Unknown ;QQQ;;LOW;ESI
+QQQ;LC;Unknown ;QQQ;;LOW;APCI
+QQQ;LC;Unknown ;QQQ;;LOW;ESI
+QQQ;LC;Unknown ;QQQ;;HIGH;ESI
+QTFO SYNAPT, Waters;LC;Waters ;QTOF;SYNAPT;HIGH;ESI
+qTof;LC;Unknown ;QTOF;;HIGH;ESI
+qTOF;LC;Unknown ;QTOF;;HIGH;ESI
+qToF;LC;Unknown ;QTOF;;HIGH;ESI
+qTof;LC;Unknown ;QTOF;;HIGH;APCI
+qToF;LC;Unknown ;QTOF;;HIGH;ESI
+qTof;LC;Unknown ;QTOF;;HIGH;APCI
+qTOF;LC;Unknown ;QTOF;;HIGH;ESI
+qTof;LC;Unknown ;QTOF;;HIGH;ESI
+qTof;LC;Unknown ;QTOF;;HIGH;ESI
+Q-TOF;LC;Unknown ;QTOF;;HIGH;ESI
+QTOF 6530, Agilent Technologies.;LC;Agilent ;QTOF;6530;HIGH;ESI
+QTOF Premier;LC;Waters ;QTOF;QTOF Premier;HIGH;ESI
+Q-Tof Premier, Waters;LC;Waters ;QTOF;QTOF Premier;HIGH;ESI
+Q-Tof Premier, Waters;LC;Waters ;QTOF;QTOF Premier;HIGH;ESI
+QTOF SYNAPT, Waters;LC;Waters ;QTOF;SYNAPT;HIGH;ESI
+Q-TOF SYNAPT, Waters;LC;Waters ;QTOF;SYNAPT;HIGH;ESI
+QTOF Ultima API;LC;Waters ;QTOF;Ultima API;HIGH;ESI
+QTOF, SYNAPT, Waters;LC;Waters ;QTOF;SYNAPT;HIGH;?
+QTRAP;LC;Unknown ;QQQ;;HIGH;ESI
+QTRAP;LC;Unknown ;NA;;;
+Quantum Ultra AM;LC;Thermo Fisher Scientific ;QIT;Quantum Ultra AM;HIGH;ESI
+Quattro II;LC;Waters ;QQQ;Quattro II;LOW;ESI
+Quattro Premier XE;LC;Waters ;QIT;Quattro Premier XE;LOW;ESI
+Quattro Premier, Micromass (USA) coupled to Alliance HT 2795, Waters (USA).;LC;Waters ;QQ;Micromass Quattro Premier;LOW;ESI
+Quattro Premier, Micromass. Alliance HT 2795,Waters;LC;Waters ;QQ;Micromass Quattro Premier;LOW;ESI
+Quattro_QQQ:10eV;LC;Waters ;QQQ;Quattro;LOW;ESI
+Quattro_QQQ:10eV;LC;Waters ;QQQ;Quattro;LOW;ESI
+Quattro_QQQ:25eV;LC;Waters ;QQQ;Quattro;LOW;ESI
+Quattro_QQQ:25eV;LC;Waters ;QQQ;Quattro;LOW;ESI
+Quattro_QQQ:40eV;LC;Waters ;QQQ;Quattro micro;LOW;
+Quattro_QQQ:40eV;LC;Waters ;QQQ;Quattro;LOW;ESI
+QuattroPremier XE, Waters;LC;Waters ;QQ;Quattro Premier XE;LOW;ESI
+SCIEX 5600;LC;SCIEX ;QTOF;5600 PlusTripleTOF ;HIGH;ESI
+Sciex 6600 TTOF;LC;SCIEX ;TOF;6600 TripleTOF;HIGH;ESI
+Sciex Triple TOF 6600;LC;SCIEX ;;;HIGH;ESI
+SCIEX TripleTOF 6600;LC;SCIEX ;TOF;triple ToF 6600;HIGH;ESI
+Sciex TripleTOF5600;LC;SCIEX ;TOF;5600 TripleTOF ;HIGH;ESI
+Shimadzu LC18A-IT-TOFMS;LC;Shimadzu ;ITTOF;LCMS-18A;HIGH;ESI
+Shimadzu LC20A-IT-TOFMS;LC;Shimadzu ;ITTOF;;HIGH;ESI
+SHIMADZU LKB-9000;GC;Shimadzu ;B;LKB-9000;HIGH;CI
+SHIMADZU LKB-9000B;GC;Shimadzu ;B;LKB-9000B;LOW;CI
+Thermo Finnigan LTQ;LC;Thermo Fisher Scientific ;QIT;LTQ;LOW;ESI
+Thermo Fisher Scientific Q-Exactive GC Orbitrap GC-MS/MS;GC;Thermo Fisher Scientific ;FT;;HIGH;ESI
+Thermo Fisher Scientific Trace 1310 Gas Chromatograph;GC;Thermo Fisher Scientific ;;;HIGH;ESI
+Thermo Q-Exactive;LC;Thermo Fisher Scientific ;QFT;Q-Exactive;HIGH;ESI
+Thermo Q-Exactive;LC;Thermo Fisher Scientific ;FT;Q-Exactive;HIGH;ESI
+Thermo Q-Exactive HF;LC;Thermo Fisher Scientific ;ITFT;Q-Exactive HF;HIGH;ESI
+Thermo Q-Exactive HF;LC;Thermo Fisher Scientific ;QFT;Q-Exactive HF;HIGH;ESI
+Thermo Q-Exactive HF;LC;Thermo Fisher Scientific ;QFT;Q-Exactive HF;HIGH;ESI
+Thermo Q-Exactive HF;LC;Thermo Fisher Scientific ;QFT;Q-Exactive HF;HIGH;ESI
+Thermo Q-Exactive Plus;LC;Thermo Fisher Scientific ;QFT;Q-Exactive Plus;HIGH;ESI
+Thermo QExactive-HF;LC;Thermo Fisher Scientific ;FT; Q-Exactive HF;HIGH;ESI
+Thermo QExactive-HF;LC;Thermo Fisher Scientific ;FT;Q-Exactive HF;HIGH;ESI
+Thermo Scientific LTQ-XL (San Jose, CA, USA);LC;Thermo Fisher Scientific ;QIT;LTQ XL;LOW;ESI
+Thermo Scientific Orbitrap ID-X;LC;Thermo Fisher Scientific ;FT;Orbitrap ID-X;HIGH;ESI
+TQD, Waters;LC;Waters ;;;LOW;ESI
+TQD, Waters;LC;Waters ;QQ;;LOW;ESI
+Triple Quad 4500 (AB Sciex Pte. Ltd., USA);LC;SCIEX ;QQ;;HIGH;ESI
+TripleTOF 5600??;LC;SCIEX ;QTOF;;HIGH;ESI
+TSQ 7000;LC;Thermo Fisher Scientific ;QQ;TSQ 7000;LOW;ESI
+TSQ QUANTUM AM;LC;Thermo Fisher Scientific ;QQQ;TSQ QUANTUM AM;HIGH;ESI
+TSQ Vantage, Thermo Scientific coupled to Nexera, Shimadzu;LC;Thermo Fisher Scientific ;QQ;TSQ Vantage;LOW;ESI
+UHPLC-ESI-QTof XEVO G2-S QTof;LC;Waters ;QTOF;Xevo G2-S;HIGH;ESI
+UPLC Q-Tof Premier, Waters;LC;Waters ;QTOF;QTOF Premier;HIGH;ESI
+UPLC Waters, Quattro Ultima Pt Micromass;LC;Waters ;QQ;Micromass Quattro Ultima;LOW;ESI
+UPLC-ESI-QTOF;LC;Unknown ;QTOF;;HIGH;ESI
 Vanquish Horizon UHPLC Thermo Scientific;;;;;;
-VARIAN MAT-44;GC;Thermo Fisher Scientific;B;GC - Varian MAT 44;LOW;CI
-VG Platform;LC;Waters;Q;VG platform;LOW;APCI
-Voyager DE-PRO, Applied Biosystems;LC;Applied Biosystems;TOF;Voyager DE PRO;HIGH;MALDI
-Waters QTOF SYNAPT;LC;Waters;QTOF;SYNAPT;HIGH;ESI
-Waters Q-TOF SYNAPT;LC;Waters;QTOF;SYNAPT;HIGH;ESI
-Waters QTof-Micro;LC;Waters;QTOF;QTOF Micro;HIGH;ESI
-Waters SYNAPT QTOF;LC;Waters;QTOF;SYNAPT;HIGH;ESI
-Waters Synapt QTOF;LC;Waters;QTOF;SYNAPT;HIGH;??
-Waters SYNAPT-G2 QTOF;LC;Waters;QTOF;SYNAPT-G2;HIGH;ESI
-Waters Xevo G2 Q-Tof;LC;Waters;QTOF;Xevo G2;HIGH;ESI
-Waters2690;LC;Waters;QQQ;2690;LOW;ESI
-X500R QTOF ( AB Sciex LLC, USA);LC;SCIEX;QTOF;;HIGH;ESI
-X500R QTOF (AB Sciex LLC, USA);LC;SCIEX;QTOF;;HIGH;ESI
-X500R QTOF (AB Sciex Pte. Ltd, USA);LC;SCIEX;QTOF;X500R;HIGH;ESI
-XCT;LC;Agilent;QIT;LC/MSD Trap XCT;LOW;ESI
-Xevo G2 XS QTOF waters;LC;Waters;QTOF;Xevo G2-XS;HIGH;ESI
-Xevo G2 XS QTOF, waters;LC;Waters;QTOF;Xevo G2-S;HIGH;ESI
-Xevo G2-S QtOF, Waters (USA) coupled to ACQUITY UPLC, Waters (USA).;LC;Waters;QTOF;Xevo G2-S;HIGH;ESI
-Xevo QTOF (Waters);LC;Waters;QTOF;Xevo;HIGH;ESI
-Xevo TQ MS (Waters);LC;Waters;QQ;Xevo TQ;LOW;ESI
-Xevo TQ, Waters;LC;Waters;QQ;Xevo TQ;LOW;ESI
-Xevo TQS micro (Waters, MA, USA);LC;Waters;QQ;Xevo TQS Micro;LOW;ESI
-Xevo TQS micro (Waters, MA, USA) coupled to ACQUITY UPLC H-Class (Waters, MA, USA);LC;Waters;QQ;Xevo TQS;LOW;ESI
-XEVO-G2S;LC;Waters;QTOF;Xevo G2-S;HIGH;ESI
-ZQ, Waters;LC;Waters;Q;ZQ;LOW;ESI
+VARIAN MAT-44;GC;Thermo Fisher Scientific ;B; GC - Varian MAT 44;LOW;CI
+VG Platform;LC;Waters ;Q;VG platform;LOW;APCI
+Voyager DE-PRO, Applied Biosystems;LC;Applied Biosystems ;TOF;Voyager DE PRO;HIGH;MALDI
+Waters QTOF SYNAPT;LC;Waters ;QTOF;SYNAPT;HIGH;ESI
+Waters Q-TOF SYNAPT;LC;Waters ;QTOF;SYNAPT;HIGH;ESI
+Waters QTof-Micro;LC;Waters ;QTOF;QTOF Micro;HIGH;ESI
+Waters SYNAPT QTOF;LC;Waters ;QTOF;SYNAPT;HIGH;ESI
+Waters Synapt QTOF;LC;Waters ;QTOF;SYNAPT;HIGH;??
+Waters SYNAPT-G2 QTOF;LC;Waters ;QTOF;SYNAPT-G2;HIGH;ESI
+Waters Xevo G2 Q-Tof;LC;Waters ;QTOF;Xevo G2;HIGH;ESI
+Waters2690;LC;Waters ;QQQ;2690;LOW;ESI
+X500R QTOF ( AB Sciex LLC, USA);LC;SCIEX ;QTOF;;HIGH;ESI
+X500R QTOF (AB Sciex LLC, USA);LC;SCIEX ;QTOF;;HIGH;ESI
+X500R QTOF (AB Sciex Pte. Ltd, USA);LC;SCIEX ;QTOF;X500R;HIGH;ESI
+XCT;LC;Agilent ;QIT;LC/MSD Trap XCT;LOW;ESI
+Xevo G2 XS QTOF waters;LC;Waters ;QTOF;Xevo G2-XS;HIGH;ESI
+Xevo G2 XS QTOF, waters;LC;Waters ;QTOF;Xevo G2-S;HIGH;ESI
+Xevo G2-S QtOF, Waters (USA) coupled to ACQUITY UPLC, Waters (USA).;LC;Waters ;QTOF;Xevo G2-S;HIGH;ESI
+Xevo QTOF (Waters);LC;Waters ;QTOF;Xevo;HIGH;ESI
+Xevo TQ MS (Waters);LC;Waters ;QQ;Xevo TQ;LOW;ESI
+Xevo TQ, Waters;LC;Waters ;QQ;Xevo TQ;LOW;ESI
+Xevo TQS micro (Waters, MA, USA);LC;Waters ;QQ;Xevo TQS Micro;LOW;ESI
+Xevo TQS micro (Waters, MA, USA) coupled to ACQUITY UPLC H-Class (Waters, MA, USA);LC;Waters ;QQ;Xevo TQS;LOW;ESI
+XEVO-G2S;LC;Waters ;QTOF;Xevo G2-S;HIGH;ESI
+ZQ, Waters;LC;Waters ;Q;ZQ;LOW;ESI
