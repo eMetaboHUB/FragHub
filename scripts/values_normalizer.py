@@ -410,7 +410,7 @@ def get_closest_match(instrument_name, instrument_list):
         return None
     return closest_match[0]
 
-def normalize_instruments(metadata_dict):
+def normalize_instruments_and_resolution(metadata_dict):
     """
     Normalize the instrument metadata in the given dictionary.
 
@@ -423,6 +423,7 @@ def normalize_instruments(metadata_dict):
         if closest_instrument:
             metadata_dict["INSTRUMENT"] = f"{instruments_dict[closest_instrument]["REF_INSTRUMENT"]}-{instruments_dict[closest_instrument]["REF_MODELE"]}"
             metadata_dict["INSTRUMENTTYPE"] = f"{instruments_dict[closest_instrument]["REF_SPECTRUM_TYPE"]}-{instruments_dict[closest_instrument]["REF_IONISATION"]}-{instruments_dict[closest_instrument]["REF_INTRUMENT_TYPE"]}"
+            metadata_dict["RESOLUTION"] = f"{instruments_dict[closest_instrument]["REF_RESOLUTION"]}"
             return metadata_dict
 
     return metadata_dict
@@ -446,6 +447,6 @@ def normalize_values(metadata_dict):
         metadata_dict = normalize_predicted(metadata_dict)
         metadata_dict = normalize_retentiontime(metadata_dict)
         metadata_dict = normalize_ionization(metadata_dict)
-        metadata_dict = normalize_instruments(metadata_dict)
+        metadata_dict = normalize_instruments_and_resolution(metadata_dict)
 
     return metadata_dict
