@@ -60,14 +60,14 @@ adduct_massdiff_dict = dict(zip(adduct_dataframe['fraghub_default'], adduct_data
 
 global instruments_list
 instruments_list = pd.read_csv(os.path.abspath("../datas/instruments_catalogue.csv"), sep=";", encoding="UTF-8")
-instrument_types_list = instruments_list['INIT_INSTRUMENT_TYPE'].str.lower()
-instruments_list = instruments_list['INIT_INSTRUMENT'].str.lower()
+instrument_types_list = instruments_list['INIT_INSTRUMENT_TYPE'].str.lower().fillna('')
+instruments_list = instruments_list['INIT_INSTRUMENT'].str.lower().fillna('')
 instruments_list = [''.join(pair) for pair in itertools.zip_longest(instruments_list, instrument_types_list, fillvalue='')]
 
 global instruments_dict
 instruments_dict = pd.read_csv(os.path.abspath("../datas/instruments_catalogue.csv"), sep=";", encoding="UTF-8")
-instruments_dict['INIT_INSTRUMENT'] = instruments_dict['INIT_INSTRUMENT'].str.lower()
-instruments_dict['INIT_INSTRUMENT_TYPE'] = instruments_dict['INIT_INSTRUMENT_TYPE'].str.lower()
+instruments_dict['INIT_INSTRUMENT'] = instruments_dict['INIT_INSTRUMENT'].str.lower().fillna('')
+instruments_dict['INIT_INSTRUMENT_TYPE'] = instruments_dict['INIT_INSTRUMENT_TYPE'].str.lower().fillna('')
 instruments_dict['INDEX'] = instruments_dict['INIT_INSTRUMENT'] + instruments_dict['INIT_INSTRUMENT_TYPE']
 instruments_dict = instruments_dict.set_index('INDEX')
 instruments_dict = instruments_dict.T.to_dict('dict')
