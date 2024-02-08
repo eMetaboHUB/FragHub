@@ -1,6 +1,7 @@
 from fuzzywuzzy import process
 from mols_calculation import *
 import numpy as np
+import itertools
 import re
 import os
 
@@ -59,12 +60,17 @@ adduct_massdiff_dict = dict(zip(adduct_dataframe['fraghub_default'], adduct_data
 
 global instruments_list
 instruments_list = pd.read_csv(os.path.abspath("../datas/instruments_catalogue.csv"), sep=";", encoding="UTF-8")
-instruments_list = instruments_list['INIT_INSTRUMENT'].str.lower().sort_values().unique()
+instrument_types_list = instruments_list['INIT_INSTRUMENT_TYPE'].str.lower()
+instruments_list = instruments_list['INIT_INSTRUMENT'].str.lower()
+instruments_list = [''.join(pair) for pair in itertools.zip_longest(instruments_list, instrument_types_list, fillvalue='')]
 
 global instruments_dict
 instruments_dict = pd.read_csv(os.path.abspath("../datas/instruments_catalogue.csv"), sep=";", encoding="UTF-8")
 instruments_dict['INIT_INSTRUMENT'] = instruments_dict['INIT_INSTRUMENT'].str.lower()
-instruments_dict = instruments_dict.set_index('INIT_INSTRUMENT').T.to_dict('dict')
+instruments_dict['INIT_INSTRUMENT_TYPE'] = instruments_dict['INIT_INSTRUMENT_TYPE'].str.lower()
+instruments_dict['INDEX'] = instruments_dict['INIT_INSTRUMENT'] + instruments_dict['INIT_INSTRUMENT_TYPE']
+instruments_dict = instruments_dict.set_index('INDEX')
+instruments_dict = instruments_dict.T.to_dict('dict')
 
 global sub_adduct_pattern
 sub_adduct_pattern = re.compile(r"\(|\)|(.*\[)|(\]([\d\+\-\*]*)?)")
@@ -418,7 +424,7 @@ def normalize_instruments_and_resolution(metadata_dict):
     :return: The normalized instrument metadata dictionary.
     """
     if metadata_dict["INSTRUMENT"]:
-        metadata_dict_instrument = metadata_dict["INSTRUMENT"].lower()
+        metadata_dict_instrument = metadata_dict["INSTRUMENT"].lower()+metadata_dict["INSTRUMENTTYPE"].lower()
         closest_instrument = get_closest_match(metadata_dict_instrument, instruments_list)
         if closest_instrument:
             metadata_dict["INSTRUMENT"] = f"{instruments_dict[closest_instrument]["REF_INSTRUMENT"]}-{instruments_dict[closest_instrument]["REF_MODELE"]}"
