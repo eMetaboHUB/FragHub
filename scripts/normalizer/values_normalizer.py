@@ -1,14 +1,14 @@
-from normalize_instruments_and_resolution import *
-from missing_precursormz_re_calculation import *
-from delete_no_smiles_no_inchi import *
-from normalize_retentiontime import *
-from repair_mol_descriptors import *
-from normalize_ionization import *
-from normalize_predicted import *
-from normalize_ms_level import *
-from normalize_empties import *
-from normalize_ionmode import *
-from normalize_adduct import *
+from .normalize_instruments_and_resolution import *
+from .missing_precursormz_re_calculation import *
+from .delete_no_smiles_no_inchi import *
+from .normalize_retentiontime import *
+from .repair_mol_descriptors import *
+from .normalize_ionization import *
+from .normalize_predicted import *
+from .normalize_ms_level import *
+from .normalize_empties import *
+from .normalize_ionmode import *
+from .normalize_adduct import *
 
 def normalize_values(metadata_dict):
     """
@@ -29,6 +29,6 @@ def normalize_values(metadata_dict):
         metadata_dict = normalize_predicted(metadata_dict)
         metadata_dict = normalize_retentiontime(metadata_dict)
         metadata_dict = normalize_ionization(metadata_dict)
-        metadata_dict = normalize_instruments_and_resolution(metadata_dict)
+        # metadata_dict = normalize_instruments_and_resolution(metadata_dict)
 
     return metadata_dict
