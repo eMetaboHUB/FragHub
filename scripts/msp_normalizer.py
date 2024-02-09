@@ -1,13 +1,8 @@
-from values_normalizer import *
-from ast import literal_eval
+from normalizer.values_normalizer import *
 import concurrent.futures
 from tqdm import tqdm
 from filters import *
-import pandas as pd
 import numpy as np
-import ijson
-import json
-import os
 import re
 
 np.set_printoptions(suppress=True)
