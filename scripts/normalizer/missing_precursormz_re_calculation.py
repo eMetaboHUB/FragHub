@@ -10,7 +10,7 @@ global float_check_pattern
 float_check_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 global adduct_massdiff_dict
-adduct_dataframe = pd.read_csv(os.path.abspath("../../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
+adduct_dataframe = pd.read_csv(os.path.abspath("../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
 adduct_massdiff_dict = dict(zip(adduct_dataframe['fraghub_default'], adduct_dataframe['massdiff']))
 
 def take_coresponding_mass_diff(metadata_dict):
