@@ -1,3 +1,4 @@
+from normalizer.mols_calculation import *
 from convertors.convert_to_json import *
 from convertors.csv_to_msp import *
 from fraghubid_generator import *

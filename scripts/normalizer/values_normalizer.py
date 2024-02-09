@@ -29,6 +29,6 @@ def normalize_values(metadata_dict):
         metadata_dict = normalize_predicted(metadata_dict)
         metadata_dict = normalize_retentiontime(metadata_dict)
         metadata_dict = normalize_ionization(metadata_dict)
-        # metadata_dict = normalize_instruments_and_resolution(metadata_dict)
+        metadata_dict = normalize_instruments_and_resolution(metadata_dict)
 
     return metadata_dict
