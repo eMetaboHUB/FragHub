@@ -12,7 +12,7 @@ def format_comments(DF_row):
     :return: A formatted string containing information from the row.
     :rtype: str
     """
-    return f'FILENAME={DF_row["FILENAME"]}; PREDICTED={DF_row["PREDICTED"]}; FRAGHUBID={DF_row["FRAGHUBID"]}; SPECTRUMID={DF_row["SPECTRUMID"]}; RESOLUTION={DF_row["RESOLUTION"]}; SYNON={DF_row["SYNON"]}; FRAGMENTATIONMODE={DF_row["FRAGMENTATIONMODE"]}; AVERAGEMASS={DF_row["AVERAGEMASS"]}'
+    return f'FILENAME={DF_row["FILENAME"] if DF_row["FILENAME"] else "N/A"}; PREDICTED={DF_row["PREDICTED"] if DF_row["PREDICTED"] else "N/A"}; FRAGHUBID={DF_row["FRAGHUBID"] if DF_row["FRAGHUBID"] else "N/A"}; SPECTRUMID={DF_row["SPECTRUMID"] if DF_row["SPECTRUMID"] else "N/A"}; RESOLUTION={DF_row["RESOLUTION"] if DF_row["RESOLUTION"] else "N/A"}; SYNON={DF_row["SYNON"] if DF_row["SYNON"] else "N/A"}; FRAGMENTATIONMODE={DF_row["FRAGMENTATIONMODE"] if DF_row["FRAGMENTATIONMODE"] else "N/A"}; AVERAGEMASS={DF_row["AVERAGEMASS"] if DF_row["AVERAGEMASS"] else "N/A"}'
 
 def dataframe_to_msp(dataframe, name):
     """
