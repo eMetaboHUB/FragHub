@@ -51,21 +51,21 @@ global empty_pattern
 empty_pattern = re.compile(r"(^CCS:( .*)?)|(^\$:00in-source( .*)?)|(^0( .*)?)|(^0\.0( .*)?)|(^$)|(^na( .*)?)|(^n/a( .*)?)|(^nan( .*)?)|(^unknown( .*)?)|(^unknow( .*)?)|(^none( .*)?)|(^\?( .*)?)|(^unk( .*)?)|(^x( .*)?)", flags=re.IGNORECASE)
 
 global adduct_dict
-adduct_dataframe = pd.read_csv(os.path.abspath("../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
+adduct_dataframe = pd.read_csv(os.path.abspath("../../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
 adduct_dict = dict(zip(adduct_dataframe['known_adduct'], adduct_dataframe['fraghub_default']))
 
 global adduct_massdiff_dict
-adduct_dataframe = pd.read_csv(os.path.abspath("../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
+adduct_dataframe = pd.read_csv(os.path.abspath("../../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
 adduct_massdiff_dict = dict(zip(adduct_dataframe['fraghub_default'], adduct_dataframe['massdiff']))
 
 global instruments_list
-instruments_list = pd.read_csv(os.path.abspath("../datas/instruments_catalogue.csv"), sep=";", encoding="UTF-8")
+instruments_list = pd.read_csv(os.path.abspath("../../datas/instruments_catalogue.csv"), sep=";", encoding="UTF-8")
 instrument_types_list = instruments_list['INIT_INSTRUMENT_TYPE'].str.lower().fillna('')
 instruments_list = instruments_list['INIT_INSTRUMENT'].str.lower().fillna('')
 instruments_list = [''.join(pair) for pair in itertools.zip_longest(instruments_list, instrument_types_list, fillvalue='')]
 
 global instruments_dict
-instruments_dict = pd.read_csv(os.path.abspath("../datas/instruments_catalogue.csv"), sep=";", encoding="UTF-8")
+instruments_dict = pd.read_csv(os.path.abspath("../../datas/instruments_catalogue.csv"), sep=";", encoding="UTF-8")
 instruments_dict['INIT_INSTRUMENT'] = instruments_dict['INIT_INSTRUMENT'].str.lower().fillna('')
 instruments_dict['INIT_INSTRUMENT_TYPE'] = instruments_dict['INIT_INSTRUMENT_TYPE'].str.lower().fillna('')
 instruments_dict['INDEX'] = instruments_dict['INIT_INSTRUMENT'] + instruments_dict['INIT_INSTRUMENT_TYPE']
