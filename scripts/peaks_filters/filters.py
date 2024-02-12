@@ -1,5 +1,4 @@
 from .check_minimum_of_high_peaks_requiered import *
-from ..set_parameters import parameters_dict
 from .remove_peak_above_precursormz import *
 from .check_minimum_peak_requiered import *
 from .normalize_intensity import *
@@ -7,7 +6,7 @@ from .keep_mz_in_range import *
 from .reduce_peak_list import *
 import numpy as np
 
-def apply_filters(peak_array, precursormz):
+def apply_filters(peak_array, precursormz, parameters_dict):
     """
     :param peak_array: the input numpy array containing peak information
     :param precursormz: the precursor m/z value
