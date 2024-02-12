@@ -1,7 +1,7 @@
 from normalizer.values_normalizer import *
+from peaks_filters.filters import *
 import concurrent.futures
 from tqdm import tqdm
-from filters import *
 import numpy as np
 import re
 
