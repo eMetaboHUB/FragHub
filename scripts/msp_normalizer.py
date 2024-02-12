@@ -1,7 +1,8 @@
 from normalizer.values_normalizer import *
+from set_parameters import parameters_dict
+from peaks_filters.filters import *
 import concurrent.futures
 from tqdm import tqdm
-from filters import *
 import numpy as np
 import re
 
@@ -25,7 +26,7 @@ def peak_list_to_np_array(peak_list, precursormz):
     # Sort the array based on the mz values
     peak_list = peak_list[peak_list[:, 0].argsort()]
 
-    peak_list = apply_filters(peak_list, precursormz)
+    peak_list = apply_filters(peak_list, precursormz, parameters_dict)
 
     return peak_list
 
