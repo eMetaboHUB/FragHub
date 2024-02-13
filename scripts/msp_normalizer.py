@@ -36,10 +36,10 @@ def peak_list_to_str(peak_list_np):
     :return: A string representation of the peak list where each row is formatted as a space-separated string of floating point values.
     """
     # Convert array to list
-    peak_list_np = peak_list_np.tolist()
+    peak_list_np = peak_list_np.round(8).tolist()
 
     # Convert list to JSON string
-    peak_list_np = str(peak_list_np)
+    peak_list_np = "\n".join(" ".join(f"{val:.8f}" for val in sublist) for sublist in peak_list_np)
 
     return peak_list_np
 
