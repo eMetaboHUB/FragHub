@@ -1,6 +1,5 @@
 from tqdm import tqdm
 import pandas as pd
-import ast
 import re
 
 def format_comments(DF_row):
@@ -12,7 +11,7 @@ def format_comments(DF_row):
     :return: A formatted string containing information from the row.
     :rtype: str
     """
-    return f'FILENAME={DF_row["FILENAME"] if DF_row["FILENAME"] else "N/A"}; PREDICTED={DF_row["PREDICTED"] if DF_row["PREDICTED"] else "N/A"}; FRAGHUBID={DF_row["FRAGHUBID"] if DF_row["FRAGHUBID"] else "N/A"}; SPECTRUMID={DF_row["SPECTRUMID"] if DF_row["SPECTRUMID"] else "N/A"}; RESOLUTION={DF_row["RESOLUTION"] if DF_row["RESOLUTION"] else "N/A"}; SYNON={DF_row["SYNON"] if DF_row["SYNON"] else "N/A"}; FRAGMENTATIONMODE={DF_row["FRAGMENTATIONMODE"] if DF_row["FRAGMENTATIONMODE"] else "N/A"}; AVERAGEMASS={DF_row["AVERAGEMASS"] if DF_row["AVERAGEMASS"] else "N/A"}'
+    return f'FILENAME={DF_row["FILENAME"] if DF_row["FILENAME"] else "UNKNOWN"}; PREDICTED={DF_row["PREDICTED"] if DF_row["PREDICTED"] else "UNKNOWN"}; FRAGHUBID={DF_row["FRAGHUBID"] if DF_row["FRAGHUBID"] else "UNKNOWN"}; SPECTRUMID={DF_row["SPECTRUMID"] if DF_row["SPECTRUMID"] else "UNKNOWN"}; RESOLUTION={DF_row["RESOLUTION"] if DF_row["RESOLUTION"] else "UNKNOWN"}; SYNON={DF_row["SYNON"] if DF_row["SYNON"] else "UNKNOWN"}; FRAGMENTATIONMODE={DF_row["FRAGMENTATIONMODE"] if DF_row["FRAGMENTATIONMODE"] else "UNKNOWN"}; AVERAGEMASS={DF_row["AVERAGEMASS"] if DF_row["AVERAGEMASS"] else "UNKNOWN"}'
 
 def dataframe_to_msp(dataframe, name):
     """
@@ -39,28 +38,27 @@ def dataframe_to_msp(dataframe, name):
     spectrum_list = []
     for index, row in tqdm(dataframe.iterrows(), total=len(dataframe), desc="{:>70}".format(name), colour="green", unit=" row"):
         COMMENTS = format_comments(row)
-        peak_list = ast.literal_eval(row["PEAKS_LIST"])
 
         SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "NAME: " + row["NAME"] if row["NAME"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORMZ: " + row["PRECURSORMZ"] if row["PRECURSORMZ"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + row["PRECURSORTYPE"] if row["PRECURSORTYPE"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "FORMULA: " + row["FORMULA"] if row["FORMULA"] else "N/A" + "\n"
+        SPECTRUM = SPECTRUM + "NAME: " + (row["NAME"] if row["NAME"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "PRECURSORMZ: " + (row["PRECURSORMZ"] if row["PRECURSORMZ"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + (row["PRECURSORTYPE"] if row["PRECURSORTYPE"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "FORMULA: " + (row["FORMULA"] if row["FORMULA"] else "UNKNOWN") + "\n"
         # Ontology ???
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + row["INCHIKEY"] if row["INCHIKEY"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + row["INCHI"] if row["INCHI"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + row["SMILES"] if row["SMILES"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "RETENTIONTIME: " + row["RETENTIONTIME"] if row["RETENTIONTIME"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "IONMODE: " + row["IONMODE"] if row["IONMODE"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + row["INSTRUMENTTYPE"] if row["INSTRUMENTTYPE"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + row["INSTRUMENT"] if row["INSTRUMENT"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + row["COLLISIONENERGY"] if row["COLLISIONENERGY"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "EXACTMASS: " + str(row["EXACTMASS"]) if row["EXACTMASS"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "IONIZATION: " + row["IONIZATION"] if row["IONIZATION"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "MSLEVEL: " + str(row["MSLEVEL"]) if row["MSLEVEL"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + COMMENTS if COMMENTS else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "NUM PEAKS: " + row["NUM PEAKS"] if row["NUM PEAKS"] else "N/A" + "\n"
-        SPECTRUM = SPECTRUM + "\n".join(["\t".join(map(str, sub_list)) for sub_list in peak_list]) + "\n"
+        SPECTRUM = SPECTRUM + "INCHIKEY: " + (row["INCHIKEY"] if row["INCHIKEY"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "INCHI: " + (row["INCHI"] if row["INCHI"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "SMILES: " + (row["SMILES"] if row["SMILES"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "RETENTIONTIME: " + (row["RETENTIONTIME"] if row["RETENTIONTIME"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "IONMODE: " + (row["IONMODE"] if row["IONMODE"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + (row["INSTRUMENTTYPE"] if row["INSTRUMENTTYPE"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "INSTRUMENT: " + (row["INSTRUMENT"] if row["INSTRUMENT"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + (row["COLLISIONENERGY"] if row["COLLISIONENERGY"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "EXACTMASS: " + (str(row["EXACTMASS"]) if row["EXACTMASS"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "IONIZATION: " + (row["IONIZATION"] if row["IONIZATION"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "MSLEVEL: " + (str(row["MSLEVEL"]) if row["MSLEVEL"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "COMMENT: " + (COMMENTS if COMMENTS else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + "NUM PEAKS: " + (row["NUM PEAKS"] if row["NUM PEAKS"] else "UNKNOWN") + "\n"
+        SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
         spectrum_list.append(SPECTRUM)
 
     return spectrum_list
