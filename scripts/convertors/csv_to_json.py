@@ -27,7 +27,10 @@ def csv_to_json_processing(FINAL_CSV):
     json_list = FINAL_CSV.to_dict('records')
 
     for row in json_list:
-        row["peaks"] = parse_peak_list(row["peaks"])
+        if "peaks" in row:
+            row["peaks"] = parse_peak_list(row["peaks"])
+        elif "PEAKS_LIST" in row:
+            row["PEAKS_LIST"] = parse_peak_list(row["PEAKS_LIST"])
 
     with tqdm(total=len(json_list), unit=" spectrums", colour="green", desc="{:>70}".format("converting CSV spectrums")) as pbar:
         for i in range(len(json_list)):
