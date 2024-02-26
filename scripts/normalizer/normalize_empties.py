@@ -1,3 +1,4 @@
+import numpy as np
 import re
 
 global empty_pattern
@@ -15,5 +16,7 @@ def normalize_empties(metadata_dict):
         if isinstance(v, str):
             if re.fullmatch(empty_pattern, v):
                 metadata_dict[k] = ''
+        elif isinstance(v, (float, np.float64)) and np.isnan(v):
+            metadata_dict[k] = ''
 
     return metadata_dict
