@@ -8,6 +8,7 @@ import re
 RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
 
 inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
+indigo_smiles_correction_pattern = re.compile(r"\|[\s\S]*")
 
 def apply_transformations(inchi_smiles):
     """
@@ -17,6 +18,9 @@ def apply_transformations(inchi_smiles):
     :return: A dictionary containing the transformed values of the input string.
     """
     transforms = {}
+
+    if 'InChI=' not in inchi_smiles:
+        inchi_smiles = re.sub(indigo_smiles_correction_pattern, "", inchi_smiles)
 
     if isinstance(inchi_smiles, str):
         mol = Chem.MolFromInchi(inchi_smiles) if 'InChI=' in inchi_smiles else Chem.MolFromSmiles(inchi_smiles)
