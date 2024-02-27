@@ -1,16 +1,51 @@
 import json
 import re
 
-
 global instrument_tree
-with open('../../datas/instruments_tree.json', 'r') as f:
+with open('../datas/instruments_tree.json', 'r') as f:
     instrument_tree = json.load(f)
 
+def clean_instrument(instrument):
+    """
+    Clean the instrument name string by removing specific prefixes and modifying the format.
+
+    :param instrument: The instrument name string to be cleaned.
+    :return: The cleaned instrument name string.
+    """
+    instrument = re.sub("-tof", "tof", instrument)
+    instrument = re.sub("q-", "q", instrument)
+
+    return instrument
+
+def clean_instrument_type(instrument_type):
+    """
+    Cleans the given instrument string by removing specific substrings and replacing hyphens with spaces.
+
+    :param instrument_str: The instrument string to be cleaned.
+    :type instrument_str: str
+    :return: The cleaned instrument string.
+    :rtype: str
+    """
+    instrument_type = re.sub("-tof", "tof", instrument_type)
+    instrument_type = re.sub("q-", "q", instrument_type)
+    instrument_type = re.sub("-", " ", instrument_type)
+
+    return instrument_type
+
 def clean_spectrum_instrument_info(metadata_dict):
-    instrument_infos = metadata_dict["INSTRUMENT"] + " " + metadata_dict["INSTRUMENTTYPE"]
-    instrument_infos = instrument_infos.lower()
-    instrument_infos = re.sub("-tof", "tof", instrument_infos)
-    instrument_infos = re.sub("q-", "q", instrument_infos)
+    instrument = metadata_dict['INSTRUMENT'].lower()
+    instrument_type = metadata_dict["INSTRUMENTTYPE"].lower()
+
+    instrument = clean_instrument(instrument)
+    instrument_type = clean_instrument_type(instrument_type)
+
+
+    instrument_infos = instrument + " " + instrument_type
+    instrument_infos = re.sub(r'[^-\w\s]', ' ', instrument_infos)
+    # instrument_infos = instrument_infos.split()
+
+    print(instrument_infos)
+    return instrument_infos
 
 def normalize_instruments_and_resolution(metadata_dict):
     """
@@ -19,14 +54,6 @@ def normalize_instruments_and_resolution(metadata_dict):
     :param metadata_dict: A dictionary containing the instrument metadata.
     :return: The normalized instrument metadata dictionary.
     """
-    if metadata_dict["INSTRUMENT"]:
-        metadata_dict_instrument = ' '.join(re.sub(r'[^\w\s]', ' ', metadata_dict["INSTRUMENT"].lower() + " " + metadata_dict["INSTRUMENTTYPE"].lower()).split())
-        normalized_instrument_name = ''.join(sorted(list(metadata_dict_instrument)))
-
-        if normalized_instrument_name in instruments_dict:
-            metadata_dict["INSTRUMENT"] = f'{instruments_dict[normalized_instrument_name]["REF_INSTRUMENT"]}-{instruments_dict[normalized_instrument_name]["REF_MODELE"]}'
-            metadata_dict["INSTRUMENTTYPE"] = f'{instruments_dict[normalized_instrument_name]["REF_SPECTRUM_TYPE"]}-{instruments_dict[normalized_instrument_name]["REF_IONISATION"]}-{instruments_dict[normalized_instrument_name]["REF_INSTRUMENT_TYPE"]}'
-            metadata_dict["RESOLUTION"] = f'{instruments_dict[normalized_instrument_name]["REF_RESOLUTION"]}'
-            return metadata_dict
+    clean_spectrum_instrument_info(metadata_dict)
 
     return metadata_dict
