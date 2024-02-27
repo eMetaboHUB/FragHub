@@ -18,6 +18,8 @@ def clean_instrument(instrument):
     instrument = re.sub("applied biosystems", "ab sciex", instrument)
     instrument = re.sub(" ab ", " ab sciex ", instrument)
     instrument = re.sub("sciex", " ab sciex ", instrument)
+    instrument = re.sub("triple(-| )?tof", "qqq", instrument)
+    instrument = re.sub("triple(-| )?quad", "qqq", instrument)
 
     return instrument
 
@@ -37,6 +39,8 @@ def clean_instrument_type(instrument_type):
     instrument_type = re.sub("applied biosystems", "ab sciex", instrument_type)
     instrument_type = re.sub(" ab ", " ab sciex ", instrument_type)
     instrument_type = re.sub("sciex", " ab sciex ", instrument_type)
+    instrument_type = re.sub("triple(-| )?tof", "qqq", instrument_type)
+    instrument_type = re.sub("triple(-| )?quad", "qqq", instrument_type)
 
     return instrument_type
 
