@@ -15,6 +15,9 @@ def clean_instrument(instrument):
     instrument = re.sub("-tof", "tof", instrument)
     instrument = re.sub("q-", "q", instrument)
     instrument = re.sub("q exactive", "qexactive", instrument)
+    instrument = re.sub("applied biosystems", "ab sciex", instrument)
+    instrument = re.sub(" ab ", " ab sciex ", instrument)
+    instrument = re.sub("sciex", " ab sciex ", instrument)
 
     return instrument
 
@@ -31,6 +34,9 @@ def clean_instrument_type(instrument_type):
     instrument_type = re.sub("q-", "q", instrument_type)
     instrument_type = re.sub("-", " ", instrument_type)
     instrument_type = re.sub("q exactive", "qexactive", instrument_type)
+    instrument_type = re.sub("applied biosystems", "ab sciex", instrument_type)
+    instrument_type = re.sub(" ab ", " ab sciex ", instrument_type)
+    instrument_type = re.sub("sciex", " ab sciex ", instrument_type)
 
     return instrument_type
 
