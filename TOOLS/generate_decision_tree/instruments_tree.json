@@ -4284,65 +4284,65 @@
       "lc": {
         "ft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-ESI-FT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-ESI-FT, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-UNKNOWN-FT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-UNKNOWN-FT, HIGH"
           }
         },
         "itft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-ESI-ITFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-ESI-ITFT, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-APCI-ITFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-APCI-ITFT, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-UNKNOWN-ITFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-UNKNOWN-ITFT, HIGH"
           }
         },
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-ESI-QFT, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-UNKNOWN-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-UNKNOWN-QFT, HIGH"
           }
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-ESI, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-APCI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-APCI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC, HIGH"
           }
         }
       },
       "gc": {
         "ft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, GC-ESI-FT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, GC-ESI-FT, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, GC-UNKNOWN-FT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, GC-UNKNOWN-FT, HIGH"
           }
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, GC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, GC-ESI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, GC, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, GC, HIGH"
           }
         }
       },
       "unknown": {
         "ft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-ESI-FT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-ESI-FT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, FT, HIGH"
@@ -4350,10 +4350,10 @@
         },
         "itft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-ESI-ITFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-ESI-ITFT, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-APCI-ITFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-APCI-ITFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, ITFT, HIGH"
@@ -4361,7 +4361,7 @@
         },
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-ESI-QFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, QFT, HIGH"
@@ -4369,10 +4369,10 @@
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-ESI, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-APCI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-APCI, HIGH"
           }
         }
       }
@@ -4381,25 +4381,25 @@
       "lc": {
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Focus Hybrid, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Focus Hybrid, LC-ESI-QFT, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Focus Hybrid, LC-UNKNOWN-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Focus Hybrid, LC-UNKNOWN-QFT, HIGH"
           }
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Focus Hybrid, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Focus Hybrid, LC-ESI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Focus Hybrid, LC, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Focus Hybrid, LC, HIGH"
           }
         }
       },
       "unknown": {
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Focus Hybrid, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Focus Hybrid, LC-ESI-QFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, QFT, HIGH"
@@ -4407,7 +4407,7 @@
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Focus Hybrid, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Focus Hybrid, LC-ESI, HIGH"
           }
         }
       }
@@ -4416,33 +4416,33 @@
       "lc": {
         "itft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-ESI-ITFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-ESI-ITFT, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-UNKNOWN-ITFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-UNKNOWN-ITFT, HIGH"
           }
         },
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-ESI-QFT, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-UNKNOWN-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-UNKNOWN-QFT, HIGH"
           }
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-ESI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC, HIGH"
           }
         }
       },
       "unknown": {
         "itft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-ESI-ITFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-ESI-ITFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, ITFT, HIGH"
@@ -4450,7 +4450,7 @@
         },
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-ESI-QFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, QFT, HIGH"
@@ -4458,7 +4458,7 @@
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-ESI, HIGH"
           }
         }
       }
@@ -4467,34 +4467,34 @@
       "lc": {
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-ESI-QFT, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-APCI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-APCI-QFT, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-UNKNOWN-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-UNKNOWN-QFT, HIGH"
           }
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-ESI, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-APCI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-APCI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC, HIGH"
           }
         }
       },
       "unknown": {
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-ESI-QFT, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-APCI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-APCI-QFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, QFT, HIGH"
@@ -4502,10 +4502,10 @@
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-ESI, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-APCI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-APCI, HIGH"
           }
         }
       }
@@ -4514,25 +4514,25 @@
       "lc": {
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Plus Orbitrap, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Plus Orbitrap, LC-ESI-QFT, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Plus Orbitrap, LC-UNKNOWN-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Plus Orbitrap, LC-UNKNOWN-QFT, HIGH"
           }
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Plus Orbitrap, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Plus Orbitrap, LC-ESI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Plus Orbitrap, LC, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Plus Orbitrap, LC, HIGH"
           }
         }
       },
       "unknown": {
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Plus Orbitrap, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Plus Orbitrap, LC-ESI-QFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, QFT, HIGH"
@@ -4540,7 +4540,7 @@
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Plus Orbitrap, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Plus Orbitrap, LC-ESI, HIGH"
           }
         }
       }
@@ -14634,7 +14634,7 @@
       "unknown": {
         "ft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-ESI-FT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-ESI-FT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, FT, HIGH"
@@ -14642,10 +14642,10 @@
         },
         "itft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-ESI-ITFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-ESI-ITFT, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-APCI-ITFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-APCI-ITFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, ITFT, HIGH"
@@ -14653,7 +14653,7 @@
         },
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-ESI-QFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, QFT, HIGH"
@@ -14661,56 +14661,56 @@
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-ESI, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-APCI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-APCI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, UNKNOWN, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, UNKNOWN, HIGH"
           }
         }
       },
       "lc": {
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-ESI, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-APCI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-APCI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC, HIGH"
           }
         },
         "ft": {
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-UNKNOWN-FT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-UNKNOWN-FT, HIGH"
           }
         },
         "itft": {
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-UNKNOWN-ITFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-UNKNOWN-ITFT, HIGH"
           }
         },
         "qft": {
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, LC-UNKNOWN-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, LC-UNKNOWN-QFT, HIGH"
           }
         }
       },
       "gc": {
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, GC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, GC-ESI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, GC, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, GC, HIGH"
           }
         },
         "ft": {
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive, GC-UNKNOWN-FT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive, GC-UNKNOWN-FT, HIGH"
           }
         }
       }
@@ -14719,7 +14719,7 @@
       "unknown": {
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Focus Hybrid, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Focus Hybrid, LC-ESI-QFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, QFT, HIGH"
@@ -14727,25 +14727,25 @@
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Focus Hybrid, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Focus Hybrid, LC-ESI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Focus Hybrid, UNKNOWN, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Focus Hybrid, UNKNOWN, HIGH"
           }
         }
       },
       "lc": {
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Focus Hybrid, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Focus Hybrid, LC-ESI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Focus Hybrid, LC, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Focus Hybrid, LC, HIGH"
           }
         },
         "qft": {
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Focus Hybrid, LC-UNKNOWN-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Focus Hybrid, LC-UNKNOWN-QFT, HIGH"
           }
         }
       }
@@ -14754,7 +14754,7 @@
       "unknown": {
         "itft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-ESI-ITFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-ESI-ITFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, ITFT, HIGH"
@@ -14762,7 +14762,7 @@
         },
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-ESI-QFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, QFT, HIGH"
@@ -14770,30 +14770,30 @@
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-ESI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, UNKNOWN, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, UNKNOWN, HIGH"
           }
         }
       },
       "lc": {
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-ESI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC, HIGH"
           }
         },
         "itft": {
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-UNKNOWN-ITFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-UNKNOWN-ITFT, HIGH"
           }
         },
         "qft": {
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive HF, LC-UNKNOWN-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive HF, LC-UNKNOWN-QFT, HIGH"
           }
         }
       }
@@ -14802,10 +14802,10 @@
       "unknown": {
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-ESI-QFT, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-APCI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-APCI-QFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, QFT, HIGH"
@@ -14813,31 +14813,31 @@
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-ESI, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-APCI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-APCI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, UNKNOWN, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, UNKNOWN, HIGH"
           }
         }
       },
       "lc": {
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-ESI, HIGH"
           },
           "apci": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-APCI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-APCI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC, HIGH"
           }
         },
         "qft": {
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Orbitrap HF-X, LC-UNKNOWN-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Orbitrap HF-X, LC-UNKNOWN-QFT, HIGH"
           }
         }
       }
@@ -14846,7 +14846,7 @@
       "unknown": {
         "qft": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Plus Orbitrap, LC-ESI-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Plus Orbitrap, LC-ESI-QFT, HIGH"
           },
           "unknown": {
             "SOLUTION": "UNKNOWN, QFT, HIGH"
@@ -14854,25 +14854,25 @@
         },
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Plus Orbitrap, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Plus Orbitrap, LC-ESI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Plus Orbitrap, UNKNOWN, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Plus Orbitrap, UNKNOWN, HIGH"
           }
         }
       },
       "lc": {
         "unknown": {
           "esi": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Plus Orbitrap, LC-ESI, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Plus Orbitrap, LC-ESI, HIGH"
           },
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Plus Orbitrap, LC, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Plus Orbitrap, LC, HIGH"
           }
         },
         "qft": {
           "unknown": {
-            "SOLUTION": "Thermo Fisher Scientific  QExactive Plus Orbitrap, LC-UNKNOWN-QFT, HIGH"
+            "SOLUTION": "Thermo Fisher Scientific  Q-Exactive Plus Orbitrap, LC-UNKNOWN-QFT, HIGH"
           }
         }
       }
