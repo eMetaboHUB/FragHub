@@ -14,6 +14,7 @@ def clean_instrument(instrument):
     """
     instrument = re.sub("-tof", "tof", instrument)
     instrument = re.sub("q-", "q", instrument)
+    instrument = re.sub("q exactive", "qexactive", instrument)
 
     return instrument
 
@@ -29,6 +30,7 @@ def clean_instrument_type(instrument_type):
     instrument_type = re.sub("-tof", "tof", instrument_type)
     instrument_type = re.sub("q-", "q", instrument_type)
     instrument_type = re.sub("-", " ", instrument_type)
+    instrument_type = re.sub("q exactive", "qexactive", instrument_type)
 
     return instrument_type
 
