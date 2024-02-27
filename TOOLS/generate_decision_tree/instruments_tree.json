@@ -1174,7 +1174,7 @@
         }
       }
     },
-    "lkb-9000": {
+    "lkb 9000": {
       "gc": {
         "b": {
           "ci": {
@@ -1209,7 +1209,7 @@
         }
       }
     },
-    "lkb-9000b": {
+    "lkb 9000b": {
       "gc": {
         "b": {
           "ci": {
@@ -1629,7 +1629,7 @@
         }
       }
     },
-    "microtof-q": {
+    "microtof q": {
       "lc": {
         "qtof": {
           "esi": {
@@ -1734,7 +1734,7 @@
         }
       }
     },
-    "ptr-qms 500": {
+    "ptr qms 500": {
       "gc": {
         "ci-q": {
           "ci": {
@@ -1769,7 +1769,7 @@
         }
       }
     },
-    "ptr-tof 1000": {
+    "ptr tof 1000": {
       "gc": {
         "ptr-tof": {
           "ptr": {
@@ -1804,7 +1804,7 @@
         }
       }
     },
-    "ptr-tof 1000 utlra": {
+    "ptr tof 1000 utlra": {
       "gc": {
         "ptr-tof": {
           "ptr": {
@@ -1839,7 +1839,7 @@
         }
       }
     },
-    "ptr-tof 10k": {
+    "ptr tof 10k": {
       "gc": {
         "ptr-tof": {
           "ptr": {
@@ -1874,7 +1874,7 @@
         }
       }
     },
-    "ptr-tof 4000": {
+    "ptr tof 4000": {
       "gc": {
         "ptr-tof": {
           "ptr": {
@@ -1909,7 +1909,7 @@
         }
       }
     },
-    "ptr-tof 6000": {
+    "ptr tof 6000": {
       "gc": {
         "ptr-tof": {
           "ptr": {
@@ -1944,7 +1944,7 @@
         }
       }
     },
-    "jms ax-505 ha": {
+    "jms ax 505 ha": {
       "gc": {
         "b": {
           "ci": {
@@ -1979,7 +1979,7 @@
         }
       }
     },
-    "jms d-300": {
+    "jms d 300": {
       "gc": {
         "b": {
           "ci": {
@@ -2014,7 +2014,7 @@
         }
       }
     },
-    "jms dx-300": {
+    "jms dx 300": {
       "lc": {
         "b": {
           "fab": {
@@ -2085,7 +2085,7 @@
         }
       }
     },
-    "jms dx-303": {
+    "jms dx 303": {
       "lc": {
         "b": {
           "fab": {
@@ -2120,7 +2120,7 @@
         }
       }
     },
-    "jms-700": {
+    "jms 700": {
       "lc": {
         "eb": {
           "fab": {
@@ -2155,7 +2155,7 @@
         }
       }
     },
-    "jms-hx 110": {
+    "jms hx 110": {
       "lc": {
         "eb": {
           "fab": {
@@ -2190,7 +2190,7 @@
         }
       }
     },
-    "jms-hx/hx 110a": {
+    "jms hx/hx 110a": {
       "lc": {
         "ebeb": {
           "fab": {
@@ -2225,7 +2225,7 @@
         }
       }
     },
-    "jms-s3000": {
+    "jms s3000": {
       "lc": {
         "tof": {
           "maldi": {
@@ -2260,7 +2260,7 @@
         }
       }
     },
-    "jms-t100lp": {
+    "jms t100lp": {
       "lc": {
         "tof": {
           "esi": {
@@ -2295,7 +2295,7 @@
         }
       }
     },
-    "m-4100": {
+    "m 4100": {
       "lc": {
         "be": {
           "esi": {
@@ -2330,7 +2330,7 @@
         }
       }
     },
-    "m-60": {
+    "m 60": {
       "gc": {
         "b": {
           "ci": {
@@ -2365,7 +2365,7 @@
         }
       }
     },
-    "m-80": {
+    "m 80": {
       "gc": {
         "b": {
           "ci": {
@@ -2400,7 +2400,7 @@
         }
       }
     },
-    "rmu-6d": {
+    "rmu 6d": {
       "gc": {
         "b": {
           "ci": {
@@ -3011,7 +3011,7 @@
         }
       }
     },
-    "synapt-g2": {
+    "synapt g2": {
       "lc": {
         "qtof": {
           "esi": {
@@ -3186,7 +3186,7 @@
         }
       }
     },
-    "xevo g2-s": {
+    "xevo g2 s": {
       "lc": {
         "qtof": {
           "esi": {
@@ -3221,7 +3221,7 @@
         }
       }
     },
-    "xevo g2-xs": {
+    "xevo g2 xs": {
       "lc": {
         "qtof": {
           "esi": {
@@ -4245,7 +4245,7 @@
         }
       }
     },
-    "orbitrap id-x": {
+    "orbitrap id x": {
       "lc": {
         "ft": {
           "esi": {
@@ -4463,7 +4463,7 @@
         }
       }
     },
-    "qexactive orbitrap hf-x": {
+    "qexactive orbitrap hf x": {
       "lc": {
         "qft": {
           "esi": {
@@ -11158,7 +11158,7 @@
         }
       }
     },
-    "lkb-9000": {
+    "lkb 9000": {
       "unknown": {
         "b": {
           "ci": {
@@ -11193,7 +11193,7 @@
         }
       }
     },
-    "lkb-9000b": {
+    "lkb 9000b": {
       "unknown": {
         "b": {
           "ci": {
@@ -11661,7 +11661,7 @@
         }
       }
     },
-    "microtof-q": {
+    "microtof q": {
       "unknown": {
         "qtof": {
           "esi": {
@@ -11804,7 +11804,7 @@
         }
       }
     },
-    "ptr-qms 500": {
+    "ptr qms 500": {
       "unknown": {
         "ci-q": {
           "ci": {
@@ -11839,7 +11839,7 @@
         }
       }
     },
-    "ptr-tof 1000": {
+    "ptr tof 1000": {
       "unknown": {
         "ptr-tof": {
           "ptr": {
@@ -11874,7 +11874,7 @@
         }
       }
     },
-    "ptr-tof 1000 utlra": {
+    "ptr tof 1000 utlra": {
       "unknown": {
         "ptr-tof": {
           "ptr": {
@@ -11909,7 +11909,7 @@
         }
       }
     },
-    "ptr-tof 10k": {
+    "ptr tof 10k": {
       "unknown": {
         "ptr-tof": {
           "ptr": {
@@ -11944,7 +11944,7 @@
         }
       }
     },
-    "ptr-tof 4000": {
+    "ptr tof 4000": {
       "unknown": {
         "ptr-tof": {
           "ptr": {
@@ -11979,7 +11979,7 @@
         }
       }
     },
-    "ptr-tof 6000": {
+    "ptr tof 6000": {
       "unknown": {
         "ptr-tof": {
           "ptr": {
@@ -12084,7 +12084,7 @@
         }
       }
     },
-    "jms ax-505 ha": {
+    "jms ax 505 ha": {
       "unknown": {
         "b": {
           "ci": {
@@ -12119,7 +12119,7 @@
         }
       }
     },
-    "jms d-300": {
+    "jms d 300": {
       "unknown": {
         "b": {
           "ci": {
@@ -12154,7 +12154,7 @@
         }
       }
     },
-    "jms dx-300": {
+    "jms dx 300": {
       "unknown": {
         "b": {
           "fab": {
@@ -12219,7 +12219,7 @@
         }
       }
     },
-    "jms dx-303": {
+    "jms dx 303": {
       "unknown": {
         "b": {
           "fab": {
@@ -12254,7 +12254,7 @@
         }
       }
     },
-    "jms-700": {
+    "jms 700": {
       "unknown": {
         "eb": {
           "fab": {
@@ -12289,7 +12289,7 @@
         }
       }
     },
-    "jms-hx 110": {
+    "jms hx 110": {
       "unknown": {
         "eb": {
           "fab": {
@@ -12324,7 +12324,7 @@
         }
       }
     },
-    "jms-hx/hx 110a": {
+    "jms hx/hx 110a": {
       "unknown": {
         "ebeb": {
           "fab": {
@@ -12359,7 +12359,7 @@
         }
       }
     },
-    "jms-s3000": {
+    "jms s3000": {
       "unknown": {
         "tof": {
           "maldi": {
@@ -12394,7 +12394,7 @@
         }
       }
     },
-    "jms-t100lp": {
+    "jms t100lp": {
       "unknown": {
         "tof": {
           "esi": {
@@ -12459,7 +12459,7 @@
         }
       }
     },
-    "m-4100": {
+    "m 4100": {
       "unknown": {
         "be": {
           "esi": {
@@ -12494,7 +12494,7 @@
         }
       }
     },
-    "m-60": {
+    "m 60": {
       "unknown": {
         "b": {
           "ci": {
@@ -12529,7 +12529,7 @@
         }
       }
     },
-    "m-80": {
+    "m 80": {
       "unknown": {
         "b": {
           "ci": {
@@ -12564,7 +12564,7 @@
         }
       }
     },
-    "rmu-6d": {
+    "rmu 6d": {
       "unknown": {
         "b": {
           "ci": {
@@ -13256,7 +13256,7 @@
         }
       }
     },
-    "synapt-g2": {
+    "synapt g2": {
       "unknown": {
         "qtof": {
           "esi": {
@@ -13431,7 +13431,7 @@
         }
       }
     },
-    "xevo g2-s": {
+    "xevo g2 s": {
       "unknown": {
         "qtof": {
           "esi": {
@@ -13466,7 +13466,7 @@
         }
       }
     },
-    "xevo g2-xs": {
+    "xevo g2 xs": {
       "unknown": {
         "qtof": {
           "esi": {
@@ -14595,7 +14595,7 @@
         }
       }
     },
-    "orbitrap id-x": {
+    "orbitrap id x": {
       "unknown": {
         "ft": {
           "esi": {
@@ -14798,7 +14798,7 @@
         }
       }
     },
-    "qexactive orbitrap hf-x": {
+    "qexactive orbitrap hf x": {
       "unknown": {
         "qft": {
           "esi": {
