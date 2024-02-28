@@ -231,11 +231,17 @@ def normalize_instruments_and_resolution(metadata_dict):
     if not tree_path:
         return metadata_dict
 
-    solution = instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]]["SOLUTION"]
-    solution = solution.split(',')
+    try:
+        solution = instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]]["SOLUTION"]
+        solution = solution.split(',')
+    except:
+        return metadata_dict
 
     metadata_dict["INSTRUMENT"] = solution[0].strip()
     metadata_dict["INSTRUMENTTYPE"] = solution[1].strip()
     metadata_dict["RESOLUTION"] = solution[2].strip()
+
+    if len(solution[1].split('-'))>=2:
+        metadata_dict["IONIZATION"] = solution[1].split('-')[1].strip()
 
     return metadata_dict
