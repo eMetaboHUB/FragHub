@@ -74,13 +74,16 @@ def search_for_brand(tree_path, instrument_infos):
     :param instrument_infos: A string containing information about the instrument.
     :return: The updated tree_path list.
     """
-    for key in instrument_tree.keys():
-        if f" {key} " in instrument_infos:
-            tree_path.append(key)
-            return tree_path
+    try:
+        for key in instrument_tree.keys():
+            if f" {key} " in instrument_infos:
+                tree_path.append(key)
+                return tree_path
 
-    tree_path.append('unknown')
-    return tree_path
+        tree_path.append('unknown')
+        return tree_path
+    except:
+        return None
 
 def search_for_model(tree_path, instrument_infos):
     """
@@ -90,13 +93,16 @@ def search_for_model(tree_path, instrument_infos):
     :param instrument_infos: The instrument infos used to search for the model.
     :return: The updated tree path with the found model or 'unknown' if not found.
     """
-    for key in instrument_tree[tree_path[0]].keys():
-        if f" {key} " in instrument_infos:
-            tree_path.append(key)
-            return tree_path
+    try:
+        for key in instrument_tree[tree_path[0]].keys():
+            if f" {key} " in instrument_infos:
+                tree_path.append(key)
+                return tree_path
 
-    tree_path.append('unknown')
-    return tree_path
+        tree_path.append('unknown')
+        return tree_path
+    except:
+        return None
 
 def search_for_spectrum_type(tree_path, instrument_infos):
     """
@@ -106,13 +112,16 @@ def search_for_spectrum_type(tree_path, instrument_infos):
     :param instrument_infos: String containing instrument information.
     :return: Updated tree path with found spectrum type, or 'unknown' if not found.
     """
-    for key in instrument_tree[tree_path[0]][tree_path[1]].keys():
-        if f" {key} " in instrument_infos:
-            tree_path.append(key)
-            return tree_path
+    try:
+        for key in instrument_tree[tree_path[0]][tree_path[1]].keys():
+            if f" {key} " in instrument_infos:
+                tree_path.append(key)
+                return tree_path
 
-    tree_path.append('unknown')
-    return tree_path
+        tree_path.append('unknown')
+        return tree_path
+    except:
+        return None
 
 def search_for_instrument_type(tree_path, instrument_infos):
     """
@@ -125,13 +134,16 @@ def search_for_instrument_type(tree_path, instrument_infos):
     :return: updated tree_path with the identified instrument type appended, otherwise 'unknown' if not found
     :rtype: list[int]
     """
-    for key in instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]].keys():
-        if f" {key} " in instrument_infos:
-            tree_path.append(key)
-            return tree_path
+    try:
+        for key in instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]].keys():
+            if f" {key} " in instrument_infos:
+                tree_path.append(key)
+                return tree_path
 
-    tree_path.append('unknown')
-    return tree_path
+        tree_path.append('unknown')
+        return tree_path
+    except:
+        return None
 
 def search_for_ionisation(tree_path, instrument_infos):
     """
@@ -143,13 +155,16 @@ def search_for_ionisation(tree_path, instrument_infos):
     If a key is found in the instrument_infos string, it is appended to the tree_path and returned.
     If no matching key is found, 'unknown' is appended to the tree_path and returned.
     """
-    for key in instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]].keys():
-        if f" {key} " in instrument_infos:
-            tree_path.append(key)
-            return tree_path
+    try:
+        for key in instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]].keys():
+            if f" {key} " in instrument_infos:
+                tree_path.append(key)
+                return tree_path
 
-    tree_path.append('unknown')
-    return tree_path
+        tree_path.append('unknown')
+        return tree_path
+    except:
+        return None
 
 def make_tree_path(instrument_infos):
     """
@@ -183,10 +198,20 @@ def make_tree_path(instrument_infos):
     tree_path = []
 
     tree_path = search_for_brand(tree_path, instrument_infos)
+    if not tree_path:
+        return None
     tree_path = search_for_model(tree_path, instrument_infos)
+    if not tree_path:
+        return None
     tree_path = search_for_spectrum_type(tree_path, instrument_infos)
+    if not tree_path:
+        return None
     tree_path = search_for_instrument_type(tree_path, instrument_infos)
+    if not tree_path:
+        return None
     tree_path = search_for_ionisation(tree_path, instrument_infos)
+    if not tree_path:
+        return None
 
     return tree_path
 
@@ -203,6 +228,8 @@ def normalize_instruments_and_resolution(metadata_dict):
     instrument_infos = clean_spectrum_instrument_info(metadata_dict)
 
     tree_path = make_tree_path(instrument_infos)
+    if not tree_path:
+        return metadata_dict
 
     solution = instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]]["SOLUTION"]
     solution = solution.split(',')
