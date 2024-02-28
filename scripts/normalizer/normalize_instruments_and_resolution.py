@@ -56,7 +56,7 @@ def clean_spectrum_instrument_info(metadata_dict):
     instrument_infos = re.sub(r'[^-\w\s]', ' ', instrument_infos)
     # instrument_infos = instrument_infos.split()
 
-    print(instrument_infos)
+    print(instrument_infos+"  \n")
     return instrument_infos
 
 def normalize_instruments_and_resolution(metadata_dict):
