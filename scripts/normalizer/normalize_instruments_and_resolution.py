@@ -20,6 +20,7 @@ def clean_instrument(instrument):
     instrument = re.sub("sciex", " ab sciex ", instrument)
     instrument = re.sub("triple(-| )?tof", "qqq", instrument)
     instrument = re.sub("triple(-| )?quad", "qqq", instrument)
+    instrument = re.sub("... uplc ...", "", instrument)
 
     return instrument
 
@@ -41,6 +42,7 @@ def clean_instrument_type(instrument_type):
     instrument_type = re.sub("sciex", " ab sciex ", instrument_type)
     instrument_type = re.sub("triple(-| )?tof", "qqq", instrument_type)
     instrument_type = re.sub("triple(-| )?quad", "qqq", instrument_type)
+    instrument_type = re.sub("... uplc ...", "", instrument_type)
 
     return instrument_type
 
@@ -54,6 +56,7 @@ def clean_spectrum_instrument_info(metadata_dict):
 
     instrument_infos = instrument + " " + instrument_type
     instrument_infos = re.sub(r'[^-\w\s]', ' ', instrument_infos)
+    instrument_infos = ' '.join(instrument_infos.split()).strip()
     # instrument_infos = instrument_infos.split()
 
     print(instrument_infos+"  \n")
