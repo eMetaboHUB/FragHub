@@ -20,6 +20,12 @@ def clean_instrument(instrument):
     instrument = re.sub("sciex", " ab sciex ", instrument)
     instrument = re.sub("triple(-| )?tof", "qqq", instrument)
     instrument = re.sub("triple(-| )?quad", "qqq", instrument)
+    instrument = re.sub(" ci tof ", " ci-tof ", instrument)
+    instrument = re.sub(" citof ", " ci-tof ", instrument)
+    instrument = re.sub(" ci q ", " ci-q ", instrument)
+    instrument = re.sub(" ciq ", " ci-q ", instrument)
+    instrument = re.sub(" ptr tof ", " ptr-tof ", instrument)
+    instrument = re.sub(" ptrtof ", " ptr-tof ", instrument)
 
     return instrument
 
@@ -41,6 +47,12 @@ def clean_instrument_type(instrument_type):
     instrument_type = re.sub("sciex", " ab sciex ", instrument_type)
     instrument_type = re.sub("triple(-| )?tof", "qqq", instrument_type)
     instrument_type = re.sub("triple(-| )?quad", "qqq", instrument_type)
+    instrument_type = re.sub(" ci tof ", " ci-tof ", instrument_type)
+    instrument_type = re.sub(" citof ", " ci-tof ", instrument_type)
+    instrument_type = re.sub(" ci q ", " ci-q ", instrument_type)
+    instrument_type = re.sub(" ciq ", " ci-q ", instrument_type)
+    instrument_type = re.sub(" ptr tof ", " ptr-tof ", instrument_type)
+    instrument_type = re.sub(" ptrtof ", " ptr-tof ", instrument_type)
 
     return instrument_type
 
