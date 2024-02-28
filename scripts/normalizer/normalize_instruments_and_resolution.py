@@ -47,6 +47,12 @@ def clean_instrument_type(instrument_type):
     return instrument_type
 
 def clean_spectrum_instrument_info(metadata_dict):
+    """
+    Cleans the spectrum instrument information from the given metadata dictionary.
+
+    :param metadata_dict: The dictionary containing the metadata information.
+    :return: The cleaned instrument information.
+    """
     instrument = metadata_dict['INSTRUMENT'].lower()
     instrument_type = metadata_dict["INSTRUMENTTYPE"].lower()
 
@@ -57,9 +63,7 @@ def clean_spectrum_instrument_info(metadata_dict):
     instrument_infos = instrument + " " + instrument_type
     instrument_infos = re.sub(r'[^-\w\s]', ' ', instrument_infos)
     instrument_infos = ' '.join(instrument_infos.split()).strip()
-    # instrument_infos = instrument_infos.split()
 
-    print(instrument_infos+"  \n")
     return instrument_infos
 
 def normalize_instruments_and_resolution(metadata_dict):
