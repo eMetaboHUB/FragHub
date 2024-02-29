@@ -40,24 +40,6 @@
         }
       },
       "lc": {
-        "unknown": {
-          "esi": {
-            "low": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-UNKNOWN, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-UNKNOWN, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "low": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-UNKNOWN-UNKNOWN, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-UNKNOWN-UNKNOWN, UNKNOWN"
-            }
-          }
-        },
         "qtof": {
           "unknown": {
             "unknown": {
@@ -68,11 +50,29 @@
             }
           },
           "esi": {
-            "low": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-QTOF, LOW"
-            },
             "unknown": {
               "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-QTOF, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-QTOF, LOW"
+            }
+          }
+        },
+        "unknown": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-UNKNOWN-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-UNKNOWN-UNKNOWN, UNKNOWN"
+            }
+          },
+          "esi": {
+            "low": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-UNKNOWN, UNKNOWN"
             }
           }
         }
@@ -80,6 +80,24 @@
     },
     "5600 plus qqq": {
       "lc": {
+        "qtof": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-UNKNOWN-QTOF, HIGH"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, HIGH"
+            }
+          }
+        },
         "unknown": {
           "unknown": {
             "high": {
@@ -95,24 +113,6 @@
             },
             "unknown": {
               "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-UNKNOWN, UNKNOWN"
-            }
-          }
-        },
-        "qtof": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, HIGH"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-UNKNOWN-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         }
@@ -146,25 +146,51 @@
             }
           },
           "esi": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, UNKNOWN"
             }
           }
         }
       }
     },
     "zenotof 7600": {
-      "lc": {
-        "unknown": {
+      "unknown": {
+        "qtof": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-QTOF, HIGH"
+            }
+          },
+          "apci": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-QTOF, HIGH"
+            }
+          },
           "unknown": {
             "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-UNKNOWN-UNKNOWN, HIGH"
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, UNKNOWN-UNKNOWN-QTOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-UNKNOWN-UNKNOWN, UNKNOWN"
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, UNKNOWN-UNKNOWN-QTOF, UNKNOWN"
+            }
+          }
+        },
+        "unknown": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-UNKNOWN, HIGH"
             }
           },
           "apci": {
@@ -175,12 +201,40 @@
               "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-UNKNOWN, HIGH"
             }
           },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, UNKNOWN, HIGH"
+            }
+          }
+        }
+      },
+      "lc": {
+        "unknown": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-UNKNOWN-UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-UNKNOWN-UNKNOWN, HIGH"
+            }
+          },
           "esi": {
             "unknown": {
               "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-UNKNOWN, UNKNOWN"
             },
             "high": {
               "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-UNKNOWN, HIGH"
+            }
+          },
+          "apci": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-UNKNOWN, HIGH"
             }
           }
         },
@@ -210,63 +264,9 @@
             }
           }
         }
-      },
-      "unknown": {
-        "unknown": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-UNKNOWN, HIGH"
-            }
-          },
-          "apci": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-UNKNOWN, HIGH"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, UNKNOWN, HIGH"
-            }
-          }
-        },
-        "qtof": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-QTOF, HIGH"
-            }
-          },
-          "apci": {
-            "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-QTOF, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, UNKNOWN-UNKNOWN-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, UNKNOWN-UNKNOWN-QTOF, UNKNOWN"
-            }
-          }
-        }
       }
     },
-    "5600  qqq": {
+    "5600 qqq": {
       "lc": {
         "tof": {
           "esi": {
@@ -344,7 +344,7 @@
         }
       }
     },
-    "6600  qqq": {
+    "6600 qqq": {
       "lc": {
         "tof": {
           "esi": {
@@ -23336,139 +23336,23 @@
     }
   },
   "sciex": {
-    "5600 plus qqq": {
-      "unknown": {
-        "qtof": {
-          "esi": {
-            "high": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, UNKNOWN-UNKNOWN-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, UNKNOWN-UNKNOWN-QTOF, HIGH"
-            }
-          }
-        },
-        "unknown": {
-          "esi": {
-            "high": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-UNKNOWN, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-UNKNOWN, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, UNKNOWN, HIGH"
-            }
-          }
-        }
-      },
-      "lc": {
-        "qtof": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, HIGH"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-UNKNOWN-QTOF, HIGH"
-            }
-          }
-        },
-        "unknown": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-UNKNOWN, HIGH"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-UNKNOWN-UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-UNKNOWN-UNKNOWN, HIGH"
-            }
-          }
-        }
-      }
-    },
     "qstar pulsar i": {
-      "unknown": {
-        "unknown": {
-          "esi": {
-            "low": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-UNKNOWN, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-UNKNOWN, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, UNKNOWN, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, UNKNOWN, LOW"
-            }
-          }
-        },
-        "qtof": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, UNKNOWN-UNKNOWN-QTOF, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, UNKNOWN-UNKNOWN-QTOF, UNKNOWN"
-            }
-          },
-          "esi": {
-            "low": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-QTOF, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-QTOF, UNKNOWN"
-            }
-          }
-        }
-      },
       "lc": {
         "unknown": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-UNKNOWN, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-UNKNOWN, LOW"
-            }
-          },
           "unknown": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-UNKNOWN-UNKNOWN, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-UNKNOWN-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-UNKNOWN-UNKNOWN, UNKNOWN"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-UNKNOWN, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-UNKNOWN, LOW"
             }
           }
         },
@@ -23490,17 +23374,187 @@
             }
           }
         }
+      },
+      "unknown": {
+        "qtof": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, UNKNOWN-UNKNOWN-QTOF, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, UNKNOWN-UNKNOWN-QTOF, UNKNOWN"
+            }
+          },
+          "esi": {
+            "low": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-QTOF, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-QTOF, UNKNOWN"
+            }
+          }
+        },
+        "unknown": {
+          "esi": {
+            "low": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, LC-ESI-UNKNOWN, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, UNKNOWN, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "AB SCIEX QSTAR Pulsar i, UNKNOWN, LOW"
+            }
+          }
+        }
+      }
+    },
+    "5600 plus qqq": {
+      "unknown": {
+        "qtof": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, UNKNOWN-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, UNKNOWN-UNKNOWN-QTOF, HIGH"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, HIGH"
+            }
+          }
+        },
+        "unknown": {
+          "esi": {
+            "high": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-UNKNOWN, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-UNKNOWN, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, UNKNOWN, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, UNKNOWN, UNKNOWN"
+            }
+          }
+        }
+      },
+      "lc": {
+        "qtof": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-UNKNOWN-QTOF, HIGH"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-QTOF, HIGH"
+            }
+          }
+        },
+        "unknown": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-ESI-UNKNOWN, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-UNKNOWN-UNKNOWN, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "AB SCIEX 5600 PlusTripleTOF, LC-UNKNOWN-UNKNOWN, UNKNOWN"
+            }
+          }
+        }
       }
     },
     "zenotof 7600": {
-      "unknown": {
+      "lc": {
+        "unknown": {
+          "apci": {
+            "high": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-UNKNOWN, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-UNKNOWN, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-UNKNOWN-UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-UNKNOWN-UNKNOWN, HIGH"
+            }
+          },
+          "esi": {
+            "high": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-UNKNOWN, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-UNKNOWN, UNKNOWN"
+            }
+          }
+        },
         "qtof": {
+          "apci": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-QTOF, HIGH"
+            }
+          },
           "esi": {
             "unknown": {
               "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-QTOF, UNKNOWN"
             },
             "high": {
               "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-QTOF, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-UNKNOWN-QTOF, UNKNOWN"
+            }
+          }
+        }
+      },
+      "unknown": {
+        "qtof": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, UNKNOWN-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, UNKNOWN-UNKNOWN-QTOF, HIGH"
             }
           },
           "apci": {
@@ -23511,12 +23565,12 @@
               "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-QTOF, HIGH"
             }
           },
-          "unknown": {
+          "esi": {
             "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, UNKNOWN-UNKNOWN-QTOF, UNKNOWN"
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-QTOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, UNKNOWN-UNKNOWN-QTOF, HIGH"
+              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-QTOF, HIGH"
             }
           }
         },
@@ -23546,63 +23600,9 @@
             }
           }
         }
-      },
-      "lc": {
-        "unknown": {
-          "apci": {
-            "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-UNKNOWN, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-UNKNOWN, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-UNKNOWN-UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-UNKNOWN-UNKNOWN, HIGH"
-            }
-          },
-          "esi": {
-            "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-UNKNOWN, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-UNKNOWN, UNKNOWN"
-            }
-          }
-        },
-        "qtof": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-UNKNOWN-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-UNKNOWN-QTOF, UNKNOWN"
-            }
-          },
-          "apci": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-APCI-QTOF, HIGH"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "AB SCIEX ZenoTOF 7600, LC-ESI-QTOF, HIGH"
-            }
-          }
-        }
       }
     },
-    "5600  qqq": {
+    "5600 qqq": {
       "unknown": {
         "unknown": {
           "unknown": {
@@ -23680,7 +23680,7 @@
         }
       }
     },
-    "6600  qqq": {
+    "6600 qqq": {
       "lc": {
         "unknown": {
           "unknown": {
