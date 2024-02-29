@@ -156,7 +156,7 @@ def exclude_useless_rows(df):
 
 if __name__ == '__main__':
     # lire toutes les feuilles du fichier Excel
-    dfs = pd.read_excel(r".\TEST.xlsx", sheet_name=None)
+    dfs = pd.read_excel(r".\Instrument_tree.xlsx", sheet_name=None)
 
     all_dfs = []  # une liste pour stocker tous les DataFrames filtrés
 
@@ -185,7 +185,7 @@ if __name__ == '__main__':
         final_df = pd.concat(all_dfs)
 
     # Écrivez le DataFrame final dans le fichier Excel
-    final_df.to_excel(r".\GRAPH_CONSTRUCT_SOLUTIONS_TEST.xlsx", index=False)
+    final_df.to_excel(r".\GRAPH_CONSTRUCT_SOLUTIONS.xlsx", index=False)
 
 
 
