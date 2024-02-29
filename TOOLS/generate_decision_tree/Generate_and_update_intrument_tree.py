@@ -164,6 +164,9 @@ if __name__ == '__main__':
     for sheet_name, df in dfs.items():
         df = df.astype(str)
 
+        # Appliquer strip à toutes les valeurs de DataFrame
+        df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
+
         # Générer le DataFrame avec les combinaisons manquantes
         df_missing_comb_multi = gen_missing_comb_multi(df)
 
@@ -177,6 +180,9 @@ if __name__ == '__main__':
 
 
         df_filtered['SOLUTION'] = df_filtered.apply(lambda row: format_solution(row, non_unknown_marques), axis=1)
+
+        # Modifier les valeurs dans la colonne MARQUES
+        df_filtered['MARQUES'] = df_filtered['MARQUES'].replace({'AB SCIEX': 'SCIEX', 'Thermo Fisher Scientific': 'Thermo'})
 
         # ajoute le DataFrame filtré à la liste
         all_dfs.append(df_filtered)
