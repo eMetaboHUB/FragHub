@@ -85,14 +85,15 @@ def get_first_non_unknown_marques(df):
     # If there are no non-UNKNOWN marques, just return 'UNKNOWN'
     return 'UNKNOWN'
 
-def remove_all_unknown_rows(df):
+def remove_selected_unknowns(df):
     """
-    Remove all rows that contain only 'UNKNOWN'
+    Remove all rows that have 'UNKNOWN' in the selected columns.
 
     :param df: The DataFrame containing the columns.
-    :return: A new DataFrame without rows with all 'UNKNOWN'.
+    :return: A new DataFrame without rows with 'UNKNOWN' in the selected columns.
     """
-    return df[~(df == 'UNKNOWN').all(axis=1)]
+    cols_to_check = ['MARQUES', 'MODELS', 'SPECTRUM_TYPE', 'INSTRUMENT_TYPE', 'IONISATION']
+    return df[~(df[cols_to_check] == 'UNKNOWN').all(axis=1)]
 
 def exclude_useless_rows(df):
     """
@@ -103,7 +104,7 @@ def exclude_useless_rows(df):
     :return: The DataFrame with useless rows removed.
     :rtype: pandas.DataFrame
     """
-    df = remove_all_unknown_rows(df)
+    df = remove_selected_unknowns(df)
 
     return df
 
