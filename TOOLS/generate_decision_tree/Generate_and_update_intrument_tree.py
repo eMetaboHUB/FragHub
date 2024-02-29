@@ -21,14 +21,6 @@ def gen_missing_comb_multi(df):
                 new_rows.append(new_row)
     return pd.DataFrame(new_rows, columns=df.columns)
 
-df = pd.read_excel(r".\Instrument_tree.xlsx", sheet_name="Agilent")
-df = df.astype(str)
-
-# Generate the DataFrame with missing combinations
-df_missing_comb_multi = gen_missing_comb_multi(df)
-
-df_missing_comb_multi = pd.DataFrame(df_missing_comb_multi, columns=["MARQUES", "MODELS", "SPECTRUM_TYPE", "INSTRUMENT_TYPE", "IONISATION", "RESOLUTION"])
-
 def count_non_unknown(row):
     """
     Count the number of non-UNKNOWN elements in a given row.
@@ -37,12 +29,6 @@ def count_non_unknown(row):
     :return: The number of non-UNKNOWN elements in the row.
     """
     return sum(row != 'UNKNOWN')
-
-# Apply this function to each row
-non_unknown_counts = df_missing_comb_multi.apply(count_non_unknown, axis=1)
-
-# Filter out rows where only 'MODELS' or no columns are not 'UNKNOWN'
-df_missing_comb_multi = df_missing_comb_multi[(non_unknown_counts > 1) | ((non_unknown_counts == 1) & (df_missing_comb_multi['MODELS'] != 'UNKNOWN'))]
 
 def should_exclude_row_2(row):
     """
@@ -58,9 +44,6 @@ def should_exclude_row_2(row):
         return True
     return False
 
-rows_to_exclude = df_missing_comb_multi.apply(should_exclude_row_2, axis=1)
-df_filtered = df_missing_comb_multi.loc[~rows_to_exclude]
-
 def should_exclude_row_resolution(row):
     """
     :param row: A dictionary representing a row in a dataset.
@@ -72,9 +55,6 @@ def should_exclude_row_resolution(row):
     if row['RESOLUTION'] == 'UNKNOWN':
         return True
     return False
-
-rows_to_exclude_resolution = df_filtered.apply(should_exclude_row_resolution, axis=1)
-df_filtered = df_filtered.loc[~rows_to_exclude_resolution]
 
 def should_exclude_row_3(row):
     """
@@ -89,9 +69,6 @@ def should_exclude_row_3(row):
     if len(non_unknown_inds) == 2 and set(non_unknown_inds) != {'MARQUES', 'SPECTRUM_TYPE'}:
         return True
     return False
-
-rows_to_exclude = df_filtered.apply(should_exclude_row_3, axis=1)
-df_filtered = df_filtered.loc[~rows_to_exclude]
 
 def should_exclude_row_4(row):
     """
@@ -108,26 +85,6 @@ def should_exclude_row_4(row):
         return True
     return False
 
-rows_to_exclude = df_filtered.apply(should_exclude_row_4, axis=1)
-df_filtered = df_filtered.loc[~rows_to_exclude]
-
-# def should_exclude_row_5(row):
-#     """
-#     Determines whether row 5 should be excluded based on its values.
-#
-#     :param row: A dictionary containing the values of row 5.
-#     :type row: dict
-#     :return: A boolean indicating whether row 5 should be excluded.
-#     :rtype: bool
-#     """
-#     non_unknown_inds = [index for index, value in row.items() if value != 'UNKNOWN']
-#     if len(non_unknown_inds) == 2 and set(non_unknown_inds) != {'MARQUES', 'IONISATION'}:
-#         return True
-#     return False
-#
-# rows_to_exclude = df_filtered.apply(should_exclude_row_5, axis=1)
-# df_filtered = df_filtered.loc[~rows_to_exclude]
-
 def should_exclude_row_6(row):
     """
     Determines if a given row should be excluded, based on certain conditions.
@@ -142,8 +99,19 @@ def should_exclude_row_6(row):
         return True
     return False
 
-rows_to_exclude = df_filtered.apply(should_exclude_row_6, axis=1)
-df_filtered = df_filtered.loc[~rows_to_exclude]
+# def should_exclude_row_5(row):
+#     """
+#     Determines whether row 5 should be excluded based on its values.
+#
+#     :param row: A dictionary containing the values of row 5.
+#     :type row: dict
+#     :return: A boolean indicating whether row 5 should be excluded.
+#     :rtype: bool
+#     """
+#     non_unknown_inds = [index for index, value in row.items() if value != 'UNKNOWN']
+#     if len(non_unknown_inds) == 2 and set(non_unknown_inds) != {'MARQUES', 'IONISATION'}:
+#         return True
+#     return False
 
 def should_exclude_row_7(row):
     """
@@ -157,9 +125,6 @@ def should_exclude_row_7(row):
     if row['MODELS'] == 'UNKNOWN' and row['INSTRUMENT_TYPE'] == 'UNKNOWN':
         return True
     return False
-
-rows_to_exclude = df_filtered.apply(should_exclude_row_7, axis=1)
-df_filtered = df_filtered.loc[~rows_to_exclude]
 
 def should_exclude_row_8(row):
     """
@@ -178,8 +143,60 @@ def should_exclude_row_8(row):
         return True
     return False
 
-rows_to_exclude = df_filtered.apply(should_exclude_row_8, axis=1)
-df_filtered = df_filtered.loc[~rows_to_exclude]
+# lire toutes les feuilles du fichier Excel
+dfs = pd.read_excel(r".\Instrument_tree.xlsx", sheet_name=None)
 
-# Write to CSV
-df_filtered.to_excel(r".\permutations.xlsx", index=False)
+all_dfs = []  # une liste pour stocker tous les DataFrames filtrés
+
+# dfs est un dictionnaire avec nom de la feuille de calcul en tant que clé et df comme valeur
+for sheet_name, df in dfs.items():
+    df = df.astype(str)
+
+    # Générer le DataFrame avec les combinaisons manquantes
+    df_missing_comb_multi = gen_missing_comb_multi(df)
+
+    df_missing_comb_multi = pd.DataFrame(df_missing_comb_multi, columns=["MARQUES", "MODELS", "SPECTRUM_TYPE", "INSTRUMENT_TYPE", "IONISATION", "RESOLUTION"])
+
+    # Apply this function to each row
+    non_unknown_counts = df_missing_comb_multi.apply(count_non_unknown, axis=1)
+
+    # Filter out rows where only 'MODELS' or no columns are not 'UNKNOWN'
+    df_missing_comb_multi = df_missing_comb_multi[(non_unknown_counts > 1) | ((non_unknown_counts == 1) & (df_missing_comb_multi['MODELS'] != 'UNKNOWN'))]
+
+    rows_to_exclude = df_missing_comb_multi.apply(should_exclude_row_2, axis=1)
+    df_filtered = df_missing_comb_multi.loc[~rows_to_exclude]
+
+    rows_to_exclude_resolution = df_filtered.apply(should_exclude_row_resolution, axis=1)
+    df_filtered = df_filtered.loc[~rows_to_exclude_resolution]
+
+    rows_to_exclude = df_filtered.apply(should_exclude_row_3, axis=1)
+    df_filtered = df_filtered.loc[~rows_to_exclude]
+
+    rows_to_exclude = df_filtered.apply(should_exclude_row_4, axis=1)
+    df_filtered = df_filtered.loc[~rows_to_exclude]
+
+    # rows_to_exclude = df_filtered.apply(should_exclude_row_5, axis=1)
+    # df_filtered = df_filtered.loc[~rows_to_exclude]
+
+    rows_to_exclude = df_filtered.apply(should_exclude_row_6, axis=1)
+    df_filtered = df_filtered.loc[~rows_to_exclude]
+
+    rows_to_exclude = df_filtered.apply(should_exclude_row_7, axis=1)
+    df_filtered = df_filtered.loc[~rows_to_exclude]
+
+    rows_to_exclude = df_filtered.apply(should_exclude_row_8, axis=1)
+    df_filtered = df_filtered.loc[~rows_to_exclude]
+
+    # ajoute le DataFrame filtré à la liste
+    all_dfs.append(df_filtered)
+
+# Concaténez tous les DataFrames en un seul
+final_df = pd.concat(all_dfs)
+
+# Écrivez le DataFrame final dans le fichier Excel
+final_df.to_excel(r".\permutations.xlsx", index=False)
+
+
+
+
+
