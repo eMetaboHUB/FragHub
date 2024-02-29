@@ -85,6 +85,28 @@ def get_first_non_unknown_marques(df):
     # If there are no non-UNKNOWN marques, just return 'UNKNOWN'
     return 'UNKNOWN'
 
+def remove_all_unknown_rows(df):
+    """
+    Remove all rows that contain only 'UNKNOWN'
+
+    :param df: The DataFrame containing the columns.
+    :return: A new DataFrame without rows with all 'UNKNOWN'.
+    """
+    return df[~(df == 'UNKNOWN').all(axis=1)]
+
+def exclude_useless_rows(df):
+    """
+    Remove useless rows from the given DataFrame.
+
+    :param df: The DataFrame to remove useless rows from.
+    :type df: pandas.DataFrame
+    :return: The DataFrame with useless rows removed.
+    :rtype: pandas.DataFrame
+    """
+    df = remove_all_unknown_rows(df)
+
+    return df
+
 if __name__ == '__main__':
     # lire toutes les feuilles du fichier Excel
     dfs = pd.read_excel(r".\TEST.xlsx", sheet_name=None)
@@ -100,14 +122,16 @@ if __name__ == '__main__':
 
         df_missing_comb_multi = pd.DataFrame(df_missing_comb_multi, columns=["MARQUES", "MODELS", "SPECTRUM_TYPE", "INSTRUMENT_TYPE", "IONISATION", "RESOLUTION"])
 
-        non_unknown_marques = get_first_non_unknown_marques(df_missing_comb_multi)
+        df_filtered = exclude_useless_rows(df_missing_comb_multi).copy()
+
+        non_unknown_marques = get_first_non_unknown_marques(df_filtered)
 
         # rajoutons 'SOLUTION' à chaque ligne
-        non_unknown_marques = get_first_non_unknown_marques(df_missing_comb_multi)
-        df_missing_comb_multi['SOLUTION'] = df_missing_comb_multi.apply(lambda row: format_solution(row, non_unknown_marques), axis=1)
+        non_unknown_marques = get_first_non_unknown_marques(df_filtered)
+        df_filtered['SOLUTION'] = df_filtered.apply(lambda row: format_solution(row, non_unknown_marques), axis=1)
 
         # ajoute le DataFrame filtré à la liste
-        all_dfs.append(df_missing_comb_multi)
+        all_dfs.append(df_filtered)
 
         # Concaténez tous les DataFrames en un seul
         final_df = pd.concat(all_dfs)
