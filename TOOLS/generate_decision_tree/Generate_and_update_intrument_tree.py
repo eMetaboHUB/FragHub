@@ -86,9 +86,9 @@ def format_solution(row, non_unknown_marques):
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
         return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-UNKNOWN-UNKNOWN, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
-        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-UNKNOWN, {row['RESOLUTION']}"
+        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
-        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-UNKNOWN-{row["INSTRUMENT_TYPE"]}, {row['RESOLUTION']}"
+        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
         return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-{row["IONISATION"]}-UNKNOWN, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
@@ -102,64 +102,13 @@ def format_solution(row, non_unknown_marques):
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
         return f"UNKNOWN, {row['SPECTRUM_TYPE']}-UNKNOWN-UNKNOWN, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
-        return f"UNKNOWN, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+        return f"UNKNOWN, UNKNOWN-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
         return f"UNKNOWN, UNKNOWN-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
-        return f"UNKNOWN, UNKNOWN-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+        return f"UNKNOWN, UNKNOWN-{row["IONISATION"]}-UNKNOWN, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
         return f"UNKNOWN, UNKNOWN, UNKNOWN"
-
-
-
-
-
-
-
-
-
-def format_solution_old(row, non_unknown_marques):
-    """
-    Format the solution based on the given row and non_unknown_marques.
-
-    :param row: A dictionary representing a row of data.
-    :type row: dict
-    :param non_unknown_marques: A string representing the non-UNKNOWN marques.
-    :type non_unknown_marques: str
-    :return: The formatted solution.
-    :rtype: str
-    """
-    marque = non_unknown_marques if row['MARQUES'] == 'UNKNOWN' and row['MODELS'] != 'UNKNOWN' else row['MARQUES']
-    model = 'instrument' if row['MODELS'] == 'UNKNOWN' and row['MARQUES'] != 'UNKNOWN' else row['MODELS']
-
-    if row['SPECTRUM_TYPE'] == 'UNKNOWN' and row['IONISATION'] != 'UNKNOWN':
-        if row['IONISATION'] in ['ESI', 'APPI', 'APCI', 'MALDI', 'FAB', 'FD', 'EI']:
-            spectrum_type = 'LC'
-        elif row['IONISATION'] in ['CI', 'PTR', 'EI']:
-            spectrum_type = 'GC'
-        else:
-            spectrum_type = row['SPECTRUM_TYPE']
-    else:
-        spectrum_type = row['SPECTRUM_TYPE']
-
-    if row['SPECTRUM_TYPE'] != 'UNKNOWN' and row['IONISATION'] != 'UNKNOWN' and row['INSTRUMENT_TYPE'] == 'UNKNOWN':
-        return f"{marque} {model}, {spectrum_type}-{row['IONISATION']}, {row['RESOLUTION']}"
-    elif row['SPECTRUM_TYPE'] == 'UNKNOWN' and row['IONISATION'] == 'UNKNOWN' and row['INSTRUMENT_TYPE'] != 'UNKNOWN':
-        return f"UNKNOWN, {row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
-    elif row['SPECTRUM_TYPE'] != 'UNKNOWN' and row['IONISATION'] != 'UNKNOWN' and row['INSTRUMENT_TYPE'] != 'UNKNOWN':
-        return f"{marque} {model}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
-    elif row['SPECTRUM_TYPE'] == 'UNKNOWN' and row['IONISATION'] == 'UNKNOWN' and row['INSTRUMENT_TYPE'] != 'UNKNOWN':
-        return f"{marque} {model}, {spectrum_type}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
-    elif row['SPECTRUM_TYPE'] != 'UNKNOWN' and row['IONISATION'] == 'UNKNOWN' and row['INSTRUMENT_TYPE'] == 'UNKNOWN':
-        return f"{marque} {model}, {spectrum_type}, {row['RESOLUTION']}"
-    elif row['SPECTRUM_TYPE'] == 'UNKNOWN' and row['IONISATION'] != 'UNKNOWN' and row['INSTRUMENT_TYPE'] == 'UNKNOWN':
-        return f"{marque} {model}, {spectrum_type}-{row['IONISATION']}, {row['RESOLUTION']}"
-    elif row['SPECTRUM_TYPE'] == 'UNKNOWN' and row['IONISATION'] == 'UNKNOWN' and row['INSTRUMENT_TYPE'] == 'UNKNOWN':
-        return f"{marque} {model}, UNKNOWN, {row['RESOLUTION']}"
-    elif marque == 'UNKNOWN' and model == 'UNKNOWN':
-        return f"UNKNOWN, {spectrum_type}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
-    else:
-        return f"{marque} {model}, {spectrum_type}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
 
 def get_first_non_unknown_marques(df):
     """
