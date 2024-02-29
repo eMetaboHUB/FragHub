@@ -224,7 +224,13 @@ if __name__ == '__main__':
 
         df_filtered['MODELS'] = df_filtered['MODELS'].str.replace("-tof", "tof", regex=True)
         df_filtered['MODELS'] = df_filtered['MODELS'].str.replace("q-", "q", regex=True)
-        df_filtered['MODELS'] = df_filtered['MODELS'].str.replace("q exactive", "qexactive", regex=True)
+        df_filtered['MODELS'] = df_filtered['MODELS'].str.replace("q exactive", " qexactive ", regex=True)
+        df_filtered['MODELS'] = df_filtered['MODELS'].str.replace("-", " ", regex=True)
+        df_filtered['MODELS'] = df_filtered['MODELS'].str.replace("triple(-| )?tof", " qqq ", regex=True)
+        df_filtered['MODELS'] = df_filtered['MODELS'].str.replace("triple(-| )?quad", " qqq ", regex=True)
+
+        # Appliquer strip à toutes les valeurs de DataFrame
+        df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
 
         # trie le DataFrame en fonction de la longueur de la chaîne 'MODELS'
         df_filtered = df_filtered.sort_values(by='MODELS', key=lambda x: x.str.len(), ascending=False)
