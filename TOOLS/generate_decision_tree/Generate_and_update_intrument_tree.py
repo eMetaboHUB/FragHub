@@ -28,6 +28,97 @@ def gen_missing_comb_multi(df):
     return pd.DataFrame(new_rows, columns=df.columns)
 
 def format_solution(row, non_unknown_marques):
+    # complete la marque si on a la modele
+    row['MARQUES'] = non_unknown_marques if row['MARQUES'] == 'UNKNOWN' and row['MODELS'] != 'UNKNOWN' else row['MARQUES']
+
+    # complete 'marque instrument' si on a pas de nom de model
+    row['MODELS'] = 'instrument' if row['MODELS'] == 'UNKNOWN' and row['MARQUES'] != 'UNKNOWN' else row['MODELS']
+
+    # complete LC ou GC si on à la type d'ionisation
+    if row['SPECTRUM_TYPE'] == 'UNKNOWN' and row['IONISATION'] != 'UNKNOWN':
+        if row['IONISATION'] in ['ESI', 'APPI', 'APCI', 'MALDI', 'FAB', 'FD', 'EI']:
+            row['SPECTRUM_TYPE'] = 'LC'
+        elif row['IONISATION'] in ['CI', 'PTR', 'EI']:
+            row['SPECTRUM_TYPE'] = 'GC'
+        else:
+            row['SPECTRUM_TYPE'] = row['SPECTRUM_TYPE']
+    else:
+        row['SPECTRUM_TYPE'] = row['SPECTRUM_TYPE']
+
+    if row["MARQUES"] != 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-UNKNOWN-UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-{row["IONISATION"]}-UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-UNKNOWN-UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-{row["IONISATION"]}-UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-UNKNOWN-UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-UNKNOWN-{row["INSTRUMENT_TYPE"]}, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-{row["IONISATION"]}-UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"UNKNOWN, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"UNKNOWN, {row['SPECTRUM_TYPE']}-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"UNKNOWN, {row['SPECTRUM_TYPE']}-{row["IONISATION"]}-UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"UNKNOWN, {row['SPECTRUM_TYPE']}-UNKNOWN-UNKNOWN, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"UNKNOWN, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
+        return f"UNKNOWN, UNKNOWN-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"UNKNOWN, UNKNOWN-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+    elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+        return f"UNKNOWN, UNKNOWN, UNKNOWN"
+
+
+
+
+
+
+
+
+
+def format_solution_old(row, non_unknown_marques):
     """
     Format the solution based on the given row and non_unknown_marques.
 
@@ -127,8 +218,9 @@ if __name__ == '__main__':
 
         non_unknown_marques = get_first_non_unknown_marques(df_filtered)
 
-        # rajoutons 'SOLUTION' à chaque ligne
-        non_unknown_marques = get_first_non_unknown_marques(df_filtered)
+        # ici competer les infos manquantes
+
+
         df_filtered['SOLUTION'] = df_filtered.apply(lambda row: format_solution(row, non_unknown_marques), axis=1)
 
         # ajoute le DataFrame filtré à la liste
