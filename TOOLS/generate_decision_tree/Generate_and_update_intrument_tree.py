@@ -28,6 +28,12 @@ def gen_missing_comb_multi(df):
     return pd.DataFrame(new_rows, columns=df.columns)
 
 def format_solution(row, non_unknown_marques):
+    """
+    :param row: dictionary containing various attributes
+    :param non_unknown_marques: string representing non-unknown marques
+    :return: formatted solution based on given conditions
+
+    """
     # complete la marque si on a la modele
     row['MARQUES'] = non_unknown_marques if row['MARQUES'] == 'UNKNOWN' and row['MODELS'] != 'UNKNOWN' else row['MARQUES']
 
