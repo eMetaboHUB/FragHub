@@ -214,13 +214,14 @@ if __name__ == '__main__':
 
         non_unknown_marques = get_first_non_unknown_marques(df_filtered)
 
-        # ici competer les infos manquantes
-
-
         df_filtered['SOLUTION'] = df_filtered.apply(lambda row: format_solution(row, non_unknown_marques), axis=1)
 
+        # Modifier certaines valeurs
         # Modifier les valeurs dans la colonne MARQUES
         df_filtered['MARQUES'] = df_filtered['MARQUES'].replace({'AB SCIEX': 'SCIEX', 'Thermo Fisher Scientific': 'Thermo'})
+
+        # trie le DataFrame en fonction de la longueur de la chaîne 'MODELS'
+        df_filtered = df_filtered.sort_values(by='MODELS', key=lambda x: x.str.len(), ascending=False)
 
         # ajoute le DataFrame filtré à la liste
         all_dfs.append(df_filtered)
