@@ -68,15 +68,6 @@ def should_exclude_row_resolution(row):
 
     The `should_exclude_row_resolution` method checks if the resolution value of a given row is 'UNKNOWN'. If it is, the method returns True, indicating that the row should be excluded.
     * Otherwise, it returns False.
-
-    Example usage:
-        >>> row1 = {'RESOLUTION': 'UNKNOWN'}
-        >>> should_exclude_row_resolution(row1)
-        True
-
-        >>> row2 = {'RESOLUTION': 'HIGH'}
-        >>> should_exclude_row_resolution(row2)
-        False
     """
     if row['RESOLUTION'] == 'UNKNOWN':
         return True
