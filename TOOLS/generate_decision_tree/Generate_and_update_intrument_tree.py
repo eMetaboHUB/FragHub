@@ -1,6 +1,8 @@
+from collections import defaultdict
 import pandas as pd
 import itertools
 import copy
+import json
 
 def gen_missing_comb_multi(df):
     """
@@ -84,21 +86,21 @@ def format_solution(row, non_unknown_marques):
     elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
         return f"{row["MARQUES"]} {MODELS}, UNKNOWN, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
-        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+        return f"{MARQUES} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
-        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+        return f"{MARQUES} {row['MODELS']}, {row['SPECTRUM_TYPE']}-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
-        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-UNKNOWN, {row['RESOLUTION']}"
+        return f"{MARQUES} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-UNKNOWN, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
-        return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-UNKNOWN-UNKNOWN, {row['RESOLUTION']}"
+        return f"{MARQUES} {row['MODELS']}, {row['SPECTRUM_TYPE']}-UNKNOWN-UNKNOWN, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
-        return f"{row["MARQUES"]} {row['MODELS']}, {SPECTRUM_TYPE}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+        return f"{MARQUES} {row['MODELS']}, {SPECTRUM_TYPE}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
-        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+        return f"{MARQUES} {row['MODELS']}, UNKNOWN-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
-        return f"{row["MARQUES"]} {row['MODELS']}, {SPECTRUM_TYPE}-{row["IONISATION"]}-UNKNOWN, {row['RESOLUTION']}"
+        return f"{MARQUES} {row['MODELS']}, {SPECTRUM_TYPE}-{row["IONISATION"]}-UNKNOWN, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
-        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN, {row['RESOLUTION']}"
+        return f"{MARQUES} {row['MODELS']}, UNKNOWN, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
         return f"UNKNOWN, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
@@ -154,6 +156,42 @@ def exclude_useless_rows(df):
 
     return df
 
+def process_keys(obj):
+    """
+    Process the keys within a given object.
+
+    :param obj: The object to be processed.
+    :return: The object with the processed keys.
+    """
+    if isinstance(obj, dict):
+        return {key if key == 'SOLUTION' else key.lower().strip(): process_keys(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [process_keys(item) for item in obj]
+    else:
+        return obj
+
+def tree():
+    """
+    Return a `defaultdict` object initialized to a nested tree structure.
+
+    :return: A `defaultdict` object with each key mapping to another nested `defaultdict` object.
+    """
+    return defaultdict(tree)
+
+def dictify(nested_dict):
+    """
+    :param nested_dict: A nested dictionary containing key-value pairs.
+    :return: A flattened dictionary where all the keys from the nested dictionary are merged into one, and the values remain the same.
+
+    """
+    result = {}
+    for key, value in nested_dict.items():
+        if key == "SOLUTION":
+            result[key] = value
+        elif isinstance(value, dict):
+            result[key] = dictify(value)
+    return result
+
 if __name__ == '__main__':
     # lire toutes les feuilles du fichier Excel
     dfs = pd.read_excel(r".\Instrument_tree.xlsx", sheet_name=None)
@@ -192,6 +230,21 @@ if __name__ == '__main__':
 
     # Écrivez le DataFrame final dans le fichier Excel
     final_df.to_excel(r".\GRAPH_CONSTRUCT_SOLUTIONS.xlsx", index=False)
+
+    root = tree()
+    for _, row in final_df.iterrows():
+        node = root
+        for val in row[:-1]:  # Ignore the last value, which is "SOLUTION"
+            node = node[val]
+        node['SOLUTION'] = row['SOLUTION']
+
+    D = dictify(root)
+    D = process_keys(D)  # New line to process keys.
+
+    with open(r'.\instruments_tree.json', 'w') as f:
+        json.dump(D, f, indent=2)
+
+
 
 
 
