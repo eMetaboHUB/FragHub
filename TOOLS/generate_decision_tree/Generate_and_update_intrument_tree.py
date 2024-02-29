@@ -120,22 +120,22 @@ def should_exclude_row_4(row):
 rows_to_exclude = df_filtered.apply(should_exclude_row_4, axis=1)
 df_filtered = df_filtered.loc[~rows_to_exclude]
 
-def should_exclude_row_5(row):
-    """
-    Determines whether row 5 should be excluded based on its values.
-
-    :param row: A dictionary containing the values of row 5.
-    :type row: dict
-    :return: A boolean indicating whether row 5 should be excluded.
-    :rtype: bool
-    """
-    non_unknown_inds = [index for index, value in row.items() if value != 'UNKNOWN']
-    if len(non_unknown_inds) == 2 and set(non_unknown_inds) != {'MARQUES', 'IONISATION'}:
-        return True
-    return False
-
-rows_to_exclude = df_filtered.apply(should_exclude_row_5, axis=1)
-df_filtered = df_filtered.loc[~rows_to_exclude]
+# def should_exclude_row_5(row):
+#     """
+#     Determines whether row 5 should be excluded based on its values.
+#
+#     :param row: A dictionary containing the values of row 5.
+#     :type row: dict
+#     :return: A boolean indicating whether row 5 should be excluded.
+#     :rtype: bool
+#     """
+#     non_unknown_inds = [index for index, value in row.items() if value != 'UNKNOWN']
+#     if len(non_unknown_inds) == 2 and set(non_unknown_inds) != {'MARQUES', 'IONISATION'}:
+#         return True
+#     return False
+#
+# rows_to_exclude = df_filtered.apply(should_exclude_row_5, axis=1)
+# df_filtered = df_filtered.loc[~rows_to_exclude]
 
 def should_exclude_row_6(row):
     """
