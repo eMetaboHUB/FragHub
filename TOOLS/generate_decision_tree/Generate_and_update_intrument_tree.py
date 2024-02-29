@@ -219,6 +219,7 @@ if __name__ == '__main__':
         # Modifier certaines valeurs
         # Modifier les valeurs dans la colonne MARQUES
         df_filtered['MARQUES'] = df_filtered['MARQUES'].replace({'AB SCIEX': 'SCIEX', 'Thermo Fisher Scientific': 'Thermo'})
+        # ici gérer les Q-exactive etc ....
 
         # trie le DataFrame en fonction de la longueur de la chaîne 'MODELS'
         df_filtered = df_filtered.sort_values(by='MODELS', key=lambda x: x.str.len(), ascending=False)
