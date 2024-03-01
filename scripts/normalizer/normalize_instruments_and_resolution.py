@@ -232,7 +232,7 @@ def normalize_instruments_and_resolution(metadata_dict):
 
     instrument_infos = f". {instrument_infos} ."
 
-    tree_path = make_tree_path(instrument_infos,metadata_dict)
+    tree_path = make_tree_path(instrument_infos, metadata_dict)
     if metadata_dict['FRAGHUBID'] == 'cf6a4cfb6680a0fda8cc69d29125b50e01dafc4a8b5060cba8cfd3d445296268':
         print(tree_path)
 
