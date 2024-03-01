@@ -46,6 +46,28 @@ def clean_instrument_type(instrument_type):
 
     return instrument_type
 
+def clean_comment(comment):
+    """
+    Cleans the given comment by removing specific strings and replacing certain characters.
+
+    :param comment: The comment to be cleaned.
+    :type comment: str
+    :return: The cleaned comment.
+    :rtype: str
+    """
+    comment = re.sub("-tof", "tof", comment)
+    comment = re.sub("q-", "q", comment)
+    comment = re.sub("-", " ", comment)
+    comment = re.sub("q exactive", " qexactive ", comment)
+    comment = re.sub("applied biosystems", " sciex ", comment)
+    comment = re.sub(" ab ", " sciex ", comment)
+    comment = re.sub("sciex", " sciex ", comment)
+    comment = re.sub("triple(-| )?tof", " qqq ", comment)
+    comment = re.sub("triple(-| )?quad", " qqq ", comment)
+    comment = re.sub("... uplc ...", " ", comment)
+
+    return comment
+
 def clean_spectrum_instrument_info(metadata_dict):
     """
     Cleans the spectrum instrument information from the given metadata dictionary.
@@ -55,12 +77,14 @@ def clean_spectrum_instrument_info(metadata_dict):
     """
     instrument = metadata_dict['INSTRUMENT'].lower()
     instrument_type = metadata_dict["INSTRUMENTTYPE"].lower()
+    comment = metadata_dict["COMMENT"].lower()
 
     instrument = clean_instrument(instrument)
     instrument_type = clean_instrument_type(instrument_type)
+    comment = clean_comment(comment)
 
 
-    instrument_infos = instrument + " " + instrument_type
+    instrument_infos = instrument + " " + instrument_type + " "+ comment
     instrument_infos = re.sub(r'[^-\w\s]', ' ', instrument_infos)
     instrument_infos = ' '.join(instrument_infos.split()).strip()
 
