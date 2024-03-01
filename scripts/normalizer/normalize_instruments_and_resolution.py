@@ -95,7 +95,7 @@ def search_for_model(tree_path, instrument_infos):
     """
     try:
         for key in instrument_tree[tree_path[0]].keys():
-            if re.search(rf"(\b)?{key}(\b)?",instrument_infos):
+            if re.search(rf"(\b){key}(\b)",instrument_infos):
                 tree_path.append(key)
                 return tree_path
 
@@ -145,7 +145,7 @@ def search_for_instrument_type(tree_path, instrument_infos):
     except:
         return None
 
-def search_for_ionisation(tree_path, instrument_infos, mode):
+def search_for_ionisation(tree_path, instrument_infos):
     """
     :param tree_path: List of indices representing the path in the instrument tree.
     :param instrument_infos: String containing information about instrument.
@@ -166,7 +166,7 @@ def search_for_ionisation(tree_path, instrument_infos, mode):
     except:
         return None
 
-def make_tree_path(instrument_infos, metadata_dict):
+def make_tree_path(instrument_infos):
     """
     :param instrument_infos: A list of dictionaries containing information about instruments
     :return: A list representing the tree path based on the given instrument information
@@ -209,10 +209,7 @@ def make_tree_path(instrument_infos, metadata_dict):
     tree_path = search_for_instrument_type(tree_path, instrument_infos)
     if not tree_path:
         return None
-    if metadata_dict['FRAGHUBID'] == 'cf6a4cfb6680a0fda8cc69d29125b50e01dafc4a8b5060cba8cfd3d445296268':
-        tree_path = search_for_ionisation(tree_path, instrument_infos, True)
-    else:
-        tree_path = search_for_ionisation(tree_path, instrument_infos, False)
+    tree_path = search_for_ionisation(tree_path, instrument_infos)
     if not tree_path:
         return None
 
@@ -232,9 +229,7 @@ def normalize_instruments_and_resolution(metadata_dict):
 
     instrument_infos = f". {instrument_infos} ."
 
-    tree_path = make_tree_path(instrument_infos, metadata_dict)
-    if metadata_dict['FRAGHUBID'] == 'cf6a4cfb6680a0fda8cc69d29125b50e01dafc4a8b5060cba8cfd3d445296268':
-        print(tree_path)
+    tree_path = make_tree_path(instrument_infos)
 
     if not tree_path:
         return metadata_dict
