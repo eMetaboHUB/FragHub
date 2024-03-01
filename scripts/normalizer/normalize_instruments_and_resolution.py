@@ -156,8 +156,6 @@ def search_for_ionisation(tree_path, instrument_infos, mode):
     If no matching key is found, 'unknown' is appended to the tree_path and returned.
     """
     try:
-        if mode:
-            print(instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]])
         for key in instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]].keys():
             if re.search(rf"(\b)?{key}(\b)?",instrument_infos):
                 tree_path.append(key)
@@ -200,32 +198,21 @@ def make_tree_path(instrument_infos, metadata_dict):
     tree_path = []
 
     tree_path = search_for_brand(tree_path, instrument_infos)
-    if metadata_dict['FRAGHUBID'] == 'cf6a4cfb6680a0fda8cc69d29125b50e01dafc4a8b5060cba8cfd3d445296268':
-        print(tree_path)
     if not tree_path:
         return None
     tree_path = search_for_model(tree_path, instrument_infos)
-    if metadata_dict['FRAGHUBID'] == 'cf6a4cfb6680a0fda8cc69d29125b50e01dafc4a8b5060cba8cfd3d445296268':
-        print(tree_path)
     if not tree_path:
         return None
     tree_path = search_for_spectrum_type(tree_path, instrument_infos)
-    if metadata_dict['FRAGHUBID'] == 'cf6a4cfb6680a0fda8cc69d29125b50e01dafc4a8b5060cba8cfd3d445296268':
-        print(tree_path)
     if not tree_path:
         return None
     tree_path = search_for_instrument_type(tree_path, instrument_infos)
-    if metadata_dict['FRAGHUBID'] == 'cf6a4cfb6680a0fda8cc69d29125b50e01dafc4a8b5060cba8cfd3d445296268':
-        print(tree_path)
     if not tree_path:
         return None
     if metadata_dict['FRAGHUBID'] == 'cf6a4cfb6680a0fda8cc69d29125b50e01dafc4a8b5060cba8cfd3d445296268':
         tree_path = search_for_ionisation(tree_path, instrument_infos, True)
     else:
         tree_path = search_for_ionisation(tree_path, instrument_infos, False)
-    if metadata_dict['FRAGHUBID'] == 'cf6a4cfb6680a0fda8cc69d29125b50e01dafc4a8b5060cba8cfd3d445296268':
-        print(instrument_infos)
-        print(tree_path)
     if not tree_path:
         return None
 
@@ -246,11 +233,15 @@ def normalize_instruments_and_resolution(metadata_dict):
     instrument_infos = f". {instrument_infos} ."
 
     tree_path = make_tree_path(instrument_infos,metadata_dict)
+    if metadata_dict['FRAGHUBID'] == 'cf6a4cfb6680a0fda8cc69d29125b50e01dafc4a8b5060cba8cfd3d445296268':
+        print(tree_path)
+
     if not tree_path:
         return metadata_dict
 
     try:
-        solution = instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]]["SOLUTION"]
+        resolution = "high" if "high" in instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]] else "low" if "low" in instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]] else "unknown"
+        solution = instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]][resolution]["SOLUTION"]
         solution = solution.split(',')
     except:
         return metadata_dict
@@ -259,7 +250,7 @@ def normalize_instruments_and_resolution(metadata_dict):
     metadata_dict["INSTRUMENTTYPE"] = solution[1].strip()
     metadata_dict["RESOLUTION"] = solution[2].strip()
 
-    # if len(solution[1].split('-')) >= 2:
-    #     metadata_dict["IONIZATION"] = solution[1].split('-')[1].strip()
+    if len(solution[1].split('-')) >= 2:
+        metadata_dict["IONIZATION"] = solution[1].split('-')[1].strip()
 
     return metadata_dict
