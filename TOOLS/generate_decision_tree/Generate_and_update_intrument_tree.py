@@ -229,6 +229,9 @@ if __name__ == '__main__':
         df_filtered['MODELS'] = df_filtered['MODELS'].str.replace("triple(-| )?tof", " qqq ", regex=True)
         df_filtered['MODELS'] = df_filtered['MODELS'].str.replace("triple(-| )?quad", " qqq ", regex=True)
 
+        # if sheet_name == "Thermo Fisher Scientific":
+        #     df_filtered['MODELS'].to_csv("./test.csv", sep=";", encoding="utf-8", index=False)
+
         # Appliquer strip à toutes les valeurs de DataFrame
         df_filtered = df_filtered.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
 
