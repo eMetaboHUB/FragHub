@@ -1,5 +1,4 @@
 
-
 def remove_peak_above_precursormz(peak_array, precursormz):
     """
     :param peak_array: numpy array containing peak data
