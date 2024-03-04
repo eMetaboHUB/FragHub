@@ -12,7 +12,7 @@ from update import *
 import time
 import sys
 import os
-# test
+
 ordered_columns = ["FILENAME",
                    "PREDICTED",
                    "FRAGHUBID",
