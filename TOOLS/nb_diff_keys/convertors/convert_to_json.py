@@ -103,87 +103,87 @@ def convert_to_json(input_path):
     """
     # JSON
     FINAL_JSON = []
-    json_list = []
-    json_to_do = False
-    json_path = os.path.join(input_path, "JSON")
-    # check if there is a json file into the directory
-    for root, dirs, files in os.walk(json_path):
-        for file in files:
-            if file.endswith(".json"):
-                json_path = os.path.join(root, file)  # Full path to the file
-                json_list.append(json_path)
-                json_to_do = True
-    if json_to_do == True:
-        time.sleep(0.01)
-        print("{:>70}".format("-- CONVERTING JSON TO JSON --"))
-        time.sleep(0.01)
-        # Concatenate all JSON to a list
-        FINAL_JSON = concatenate_JSON(json_list)
-        # Convert all bad structured JSON to pretty structured JSON (Multithreaded)
-        FINAL_JSON = json_to_json_processing(FINAL_JSON)
+    # json_list = []
+    # json_to_do = False
+    # json_path = os.path.join(input_path, "JSON")
+    # # check if there is a json file into the directory
+    # for root, dirs, files in os.walk(json_path):
+    #     for file in files:
+    #         if file.endswith(".json"):
+    #             json_path = os.path.join(root, file)  # Full path to the file
+    #             json_list.append(json_path)
+    #             json_to_do = True
+    # if json_to_do == True:
+    #     time.sleep(0.01)
+    #     print("{:>70}".format("-- CONVERTING JSON TO JSON --"))
+    #     time.sleep(0.01)
+    #     # Concatenate all JSON to a list
+    #     FINAL_JSON = concatenate_JSON(json_list)
+    #     # Convert all bad structured JSON to pretty structured JSON (Multithreaded)
+    #     FINAL_JSON = json_to_json_processing(FINAL_JSON)
 
     # MSP
     FINAL_MSP = []
-    msp_list = []
-    msp_to_do = False
-    msp_path = os.path.join(input_path,"MSP")
-    # check if there is a json file into the directory
-    for root, dirs, files in os.walk(msp_path):
-        for file in files:
-            if file.endswith(".msp"):
-                msp_path = os.path.join(root, file)  # Full path to the file
-                msp_list.append(msp_path)
-                msp_to_do = True
-    if msp_to_do == True:
-        time.sleep(0.01)
-        print("{:>70}".format("-- CONVERTING MSP TO JSON --"))
-        time.sleep(0.01)
-        # Concatenate all MSP to a list
-        FINAL_MSP = concatenate_MSP(msp_list)
-        # Convert all MSP spectrum to JSON spectrum (Multithreaded)
-        FINAL_MSP = msp_to_json_processing(FINAL_MSP)
+    # msp_list = []
+    # msp_to_do = False
+    # msp_path = os.path.join(input_path,"MSP")
+    # # check if there is a json file into the directory
+    # for root, dirs, files in os.walk(msp_path):
+    #     for file in files:
+    #         if file.endswith(".msp"):
+    #             msp_path = os.path.join(root, file)  # Full path to the file
+    #             msp_list.append(msp_path)
+    #             msp_to_do = True
+    # if msp_to_do == True:
+    #     time.sleep(0.01)
+    #     print("{:>70}".format("-- CONVERTING MSP TO JSON --"))
+    #     time.sleep(0.01)
+    #     # Concatenate all MSP to a list
+    #     FINAL_MSP = concatenate_MSP(msp_list)
+    #     # Convert all MSP spectrum to JSON spectrum (Multithreaded)
+    #     FINAL_MSP = msp_to_json_processing(FINAL_MSP)
 
     # MGF
     FINAL_MGF = []
-    mgf_list = []
-    mgf_to_do = False
-    mgf_path = os.path.join(input_path, "MGF")
-    # check if there is a json file into the directory
-    for root, dirs, files in os.walk(mgf_path):
-        for file in files:
-            if file.endswith(".mgf"):
-                mgf_path = os.path.join(root, file)  # Full path to the file
-                mgf_list.append(mgf_path)
-                mgf_to_do = True
-    if mgf_to_do == True:
-        time.sleep(0.01)
-        print("{:>70}".format("-- CONVERTING MGF TO JSON --"))
-        time.sleep(0.01)
-        # Concatenate all MGF to a list
-        FINAL_MGF = concatenate_MGF(mgf_list)
-        # Convert all MGF spectrum to JSON spectrum (Multithreaded)
-        FINAL_MGF = mgf_to_json_processing(FINAL_MGF)
+    # mgf_list = []
+    # mgf_to_do = False
+    # mgf_path = os.path.join(input_path, "MGF")
+    # # check if there is a json file into the directory
+    # for root, dirs, files in os.walk(mgf_path):
+    #     for file in files:
+    #         if file.endswith(".mgf"):
+    #             mgf_path = os.path.join(root, file)  # Full path to the file
+    #             mgf_list.append(mgf_path)
+    #             mgf_to_do = True
+    # if mgf_to_do == True:
+    #     time.sleep(0.01)
+    #     print("{:>70}".format("-- CONVERTING MGF TO JSON --"))
+    #     time.sleep(0.01)
+    #     # Concatenate all MGF to a list
+    #     FINAL_MGF = concatenate_MGF(mgf_list)
+    #     # Convert all MGF spectrum to JSON spectrum (Multithreaded)
+    #     FINAL_MGF = mgf_to_json_processing(FINAL_MGF)
 
     # XML
     FINAL_XML = []
-    xml_list = []
-    xml_to_do = False
-    xml_path = os.path.join(input_path, "XML")
-    # check if there is a xml file into the directory
-    for root, dirs, files in os.walk(xml_path):
-        for file in files:
-            if file.endswith(".xml"):
-                xml_path = os.path.join(root, file)  # Full path to the file
-                xml_list.append(xml_path)
-                xml_to_do = True
-    if xml_to_do == True:
-        time.sleep(0.01)
-        print("{:>70}".format("-- CONVERTING XML TO JSON --"))
-        time.sleep(0.01)
-        # Concatenate all XML to a list
-        FINAL_XML = concatenate_xml(xml_list)
-        # Convert all XML spectrum to XML spectrum (Multithreaded)
-        FINAL_XML = xml_to_json_processing(FINAL_XML)
+    # xml_list = []
+    # xml_to_do = False
+    # xml_path = os.path.join(input_path, "XML")
+    # # check if there is a xml file into the directory
+    # for root, dirs, files in os.walk(xml_path):
+    #     for file in files:
+    #         if file.endswith(".xml"):
+    #             xml_path = os.path.join(root, file)  # Full path to the file
+    #             xml_list.append(xml_path)
+    #             xml_to_do = True
+    # if xml_to_do == True:
+    #     time.sleep(0.01)
+    #     print("{:>70}".format("-- CONVERTING XML TO JSON --"))
+    #     time.sleep(0.01)
+    #     # Concatenate all XML to a list
+    #     FINAL_XML = concatenate_xml(xml_list)
+    #     # Convert all XML spectrum to XML spectrum (Multithreaded)
+    #     FINAL_XML = xml_to_json_processing(FINAL_XML)
 
     # CSV
     FINAL_CSV = []

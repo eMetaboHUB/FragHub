@@ -58,7 +58,7 @@ def convert_keys(dict_list):
 
 
 
-original_db_path = r"C:\Users\Axel\Documents\MSP_DB\ORIGINALS_msp_DB\DB Janvier 2024\DB_publi"
+original_db_path = r"C:\Users\Axel\Documents\PYTHON\FragHub\FragHub\OUTPUT\publi"
 
 FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = convert_to_json(original_db_path)
 
@@ -67,6 +67,7 @@ for sub_list in FINAL_MSP:
     MSP_unique_keys.extend(list(sub_list))
 
 MSP_unique_keys = list(set(MSP_unique_keys))
+print(MSP_unique_keys)
 
 XML_unique_keys = []
 for sub_list in FINAL_XML:
@@ -102,7 +103,7 @@ TOTAL_UNIQUE_KEYS.extend(CSV_unique_keys)
 TOTAL_UNIQUE_KEYS.extend(JSON_unique_keys)
 TOTAL_UNIQUE_KEYS.extend(MGF_unique_keys)
 
-print(TOTAL_UNIQUE_KEYS)
+# print(TOTAL_UNIQUE_KEYS)
 
 print(len(MSP_unique_keys))
 print(len(XML_unique_keys))
