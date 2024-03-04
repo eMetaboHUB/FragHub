@@ -31,7 +31,7 @@ def csv_to_json_processing(FINAL_CSV):
 
     with tqdm(total=len(json_list), unit=" spectrums", colour="green", desc="{:>70}".format("converting CSV spectrums")) as pbar:
         for i in range(len(json_list)):
-            json_list[i] = convert_keys(json_list[i])
+            # json_list[i] = convert_keys(json_list[i])
             pbar.update()
 
-    return json_list
+    return json_list[0].keys()
