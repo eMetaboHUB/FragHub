@@ -1,4 +1,4 @@
-# FragHub  (4.0.0)
+# FragHub  (1.0.0)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![Required_Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)
 
