@@ -1,7 +1,11 @@
 import pandas as pd
 
 global HMDB_df
-HMDB_df = pd.read_csv("../datas/HMDB.csv", sep=";", encoding="UTF-8")
+HMDB_df_1 = pd.read_csv("../datas/HMDB_part1.csv", sep=";", encoding="UTF-8")
+HMDB_df_2 = pd.read_csv("../datas/HMDB_part2.csv", sep=";", encoding="UTF-8")
+HMDB_df_3 = pd.read_csv("../datas/HMDB_part3.csv", sep=";", encoding="UTF-8")
+HMDB_df_4 = pd.read_csv("../datas/HMDB_part4.csv", sep=";", encoding="UTF-8")
+HMDB_df = pd.concat([HMDB_df_1, HMDB_df_2, HMDB_df_3, HMDB_df_4])
 
 def complete_HMDB_spectrum(spectrum):
     """
