@@ -19,7 +19,7 @@ def write_msp(spectrum_list, filename, mode, update, profile_name):
 
     with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>70}".format(f"writting {filename}")) as pbar:
         if not update:
-            with open(output_file_path, 'w') as f:
+            with open(output_file_path, 'w', encoding="UTF-8") as f:
                 for spectrum in spectrum_list:
                     try:
                         f.write(spectrum)
@@ -30,7 +30,7 @@ def write_msp(spectrum_list, filename, mode, update, profile_name):
 
                     pbar.update()
         else:
-            with open(output_file_path, 'a') as f:
+            with open(output_file_path, 'a', encoding="UTF-8") as f:
                 for spectrum in spectrum_list:
                     try:
                         f.write(spectrum)
