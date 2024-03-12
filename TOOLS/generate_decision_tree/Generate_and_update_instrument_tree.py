@@ -53,7 +53,7 @@ def format_solution(row, non_unknown_marques):
     else:
         SPECTRUM_TYPE = row['SPECTRUM_TYPE']
 
-    if row["MODELS"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
+    # if row["MODELS"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
 
 
     if row["MARQUES"] != 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
