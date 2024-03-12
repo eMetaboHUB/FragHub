@@ -195,6 +195,22 @@ def dictify(nested_dict):
             result[key] = dictify(value)
     return result
 
+def fill_unknown_instruments_type(group):
+    """
+
+    :param group: A pandas Series or DataFrame column containing instrument types. It can have the value 'UNKNOWN' for unknown instrument types.
+    :return: The input group after replacing all occurrences of 'UNKNOWN' with the most common non-'UNKNOWN' instrument type.
+
+    """
+    mask = group == 'UNKNOWN'
+    if not group[~mask].empty:
+        # Find the mode(s) of the group
+        modes = group[~mask].mode()
+        # Convert modes to strings and sort them by length
+        selected_value = modes.astype(str).sort_values(key=lambda x: x.str.len()).iloc[0]
+        group[mask] = selected_value
+    return group
+
 if __name__ == '__main__':
     # lire toutes les feuilles du fichier Excel
     dfs = pd.read_excel(r".\Instrument_tree.xlsx", sheet_name=None)
@@ -214,6 +230,9 @@ if __name__ == '__main__':
         df_missing_comb_multi = pd.DataFrame(df_missing_comb_multi, columns=["MARQUES", "MODELS", "SPECTRUM_TYPE", "INSTRUMENT_TYPE", "IONISATION", "RESOLUTION"])
 
         df_filtered = exclude_useless_rows(df_missing_comb_multi).copy()
+
+
+        df_filtered['INSTRUMENT_TYPE'] = df_filtered.groupby('MODELS')['INSTRUMENT_TYPE'].transform(fill_unknown_instruments_type)
 
         non_unknown_marques = get_first_non_unknown_marques(df_filtered)
 
