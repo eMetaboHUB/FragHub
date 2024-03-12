@@ -32,6 +32,13 @@ def apply_transformations(inchi_smiles):
                 'SMILES': Chem.MolToSmiles(mol),
                 'FORMULA': CalcMolFormula(mol),
             }
+        else:
+            transforms = {
+                'INCHI': '',
+                'INCHIKEY': '',
+                'SMILES': '',
+                'FORMULA': '',
+            }
         # Mass calculation
         if transforms:
             mol = Chem.MolFromInchi(transforms['INCHI']) if 'InChI=' in inchi_smiles else Chem.MolFromSmiles(transforms['SMILES'])
@@ -40,7 +47,12 @@ def apply_transformations(inchi_smiles):
                     transforms['EXACTMASS'] = ExactMolWt(mol)
                     transforms['AVERAGEMASS'] = MolWt(mol)
                 except:
+                    transforms['EXACTMASS'] = ''
+                    transforms['AVERAGEMASS'] = ''
                     return transforms
+            else:
+                transforms['EXACTMASS'] = ''
+                transforms['AVERAGEMASS'] = ''
 
     return transforms
 
@@ -84,5 +96,7 @@ def mols_derivation_and_calculation(CONCATENATE_DF):
 
     mask = CONCATENATE_DF['INCHIKEY'].str.fullmatch(inchikey_pattern, na=False)
     CONCATENATE_DF = CONCATENATE_DF[mask]
+
+    CONCATENATE_DF = CONCATENATE_DF.dropna(subset=['EXACTMASS', 'AVERAGEMASS', 'SMILES', 'INCHI', 'INCHIKEY'])
 
     return CONCATENATE_DF
