@@ -257,7 +257,7 @@ if __name__ == '__main__':
         df_filtered['SOLUTION'] = df_filtered.apply(lambda row: format_solution(row, non_unknown_marques), axis=1)
 
         df_filtered.drop('INSTRUMENT_TYPE_2', axis=1, inplace=True)
-        # df_filtered.drop('SPECTRUM_TYPE_2', axis=1, inplace=True)
+        df_filtered.drop('SPECTRUM_TYPE_2', axis=1, inplace=True)
 
         # Modifier certaines valeurs
         # Modifier les valeurs dans la colonne MARQUES
