@@ -64,11 +64,11 @@ def format_solution(row, non_unknown_marques):
     elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
         return f"{row["MARQUES"]} {row['MODELS']}, {SPECTRUM_TYPE}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
-        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+        return f"{row["MARQUES"]} {row['MODELS']}, {row["SPECTRUM_TYPE_2"]}-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
         return f"{row["MARQUES"]} {row['MODELS']}, {SPECTRUM_TYPE}-{row["IONISATION"]}-{row['INSTRUMENT_TYPE_2']}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
-        return f"{row["MARQUES"]} {row['MODELS']}, UNKNOWN, {row['RESOLUTION']}"
+        return f"{row["MARQUES"]} {row['MODELS']}, {row["SPECTRUM_TYPE_2"]}-UNKNOWN-{row['INSTRUMENT_TYPE_2']}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
         return f"{row["MARQUES"]} {MODELS}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
@@ -96,11 +96,11 @@ def format_solution(row, non_unknown_marques):
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
         return f"{MARQUES} {row['MODELS']}, {SPECTRUM_TYPE}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
-        return f"{MARQUES} {row['MODELS']}, UNKNOWN-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+        return f"{MARQUES} {row['MODELS']}, {row["SPECTRUM_TYPE_2"]}-UNKNOWN-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
         return f"{MARQUES} {row['MODELS']}, {SPECTRUM_TYPE}-{row["IONISATION"]}-{row['INSTRUMENT_TYPE_2']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] != 'UNKNOWN' and row["SPECTRUM_TYPE"] == 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] == 'UNKNOWN':
-        return f"{MARQUES} {row['MODELS']}, UNKNOWN, {row['RESOLUTION']}"
+        return f"{MARQUES} {row['MODELS']}, {row["SPECTRUM_TYPE_2"]}-UNKNOWN-{row['INSTRUMENT_TYPE_2']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] != 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
         return f"UNKNOWN, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'UNKNOWN' and row["MODELS"] == 'UNKNOWN' and row["SPECTRUM_TYPE"] != 'UNKNOWN' and row["IONISATION"] == 'UNKNOWN' and row["INSTRUMENT_TYPE"] != 'UNKNOWN':
@@ -194,10 +194,8 @@ def dictify(nested_dict):
 
 def fill_unknown_instruments_type(group):
     """
-
     :param group: A pandas Series or DataFrame column containing instrument types. It can have the value 'UNKNOWN' for unknown instrument types.
     :return: The input group after replacing all occurrences of 'UNKNOWN' with the most common non-'UNKNOWN' instrument type.
-
     """
     mask = group == 'UNKNOWN'
     if not group[~mask].empty:
