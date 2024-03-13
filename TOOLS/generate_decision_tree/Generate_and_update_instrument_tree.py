@@ -208,6 +208,17 @@ def fill_unknown_instruments_type(group):
         group[mask] = selected_value
     return group
 
+def replace_values(row):
+    """
+    :param row: A dictionary representing a row of data with keys 'MODELS' and 'SPECTRUM_TYPE'.
+    :return: The value of 'SPECTRUM_TYPE' if 'MODELS' is 'UNKNOWN' or 'SPECTRUM_TYPE' is not 'UNKNOWN',
+            otherwise the value associated with 'MODELS' in the dictionary `model_spectrum_mode`.
+    """
+    if row['MODELS'] != 'UNKNOWN' and row['SPECTRUM_TYPE'] == 'UNKNOWN' and row['MODELS'] in model_spectrum_mode:
+        return model_spectrum_mode[row['MODELS']]
+    else:
+        return row['SPECTRUM_TYPE_2']
+
 if __name__ == '__main__':
     # lire toutes les feuilles du fichier Excel
     dfs = pd.read_excel(r".\Instrument_tree.xlsx", sheet_name=None)
@@ -228,14 +239,27 @@ if __name__ == '__main__':
 
         df_filtered = exclude_useless_rows(df_missing_comb_multi).copy()
 
-
         df_filtered['INSTRUMENT_TYPE_2'] = df_filtered.groupby('MODELS')['INSTRUMENT_TYPE'].transform(fill_unknown_instruments_type)
+
+        # =========================
+        # Créer une copie de SPECTRUM_TYPE dans SPECTRUM_TYPE_2
+        df_filtered['SPECTRUM_TYPE_2'] = df_filtered['SPECTRUM_TYPE']
+
+        # Filtrer les données où MODELS et SPECTRUM_TYPE ne sont pas 'unknown'
+        filtered_df = df_filtered[(df_filtered['MODELS'] != 'UNKNOWN') & (df_filtered['SPECTRUM_TYPE'] != 'UNKNOWN')]
+
+        # Trouver le mode de 'SPECTRUM_TYPE' pour chaque 'MODELS'
+        model_spectrum_mode = filtered_df.groupby('MODELS')['SPECTRUM_TYPE'].apply(lambda x: x.mode()[0])
+
+        df_filtered['SPECTRUM_TYPE_2'] = df_filtered.apply(replace_values, axis=1)
+        # =========================
 
         non_unknown_marques = get_first_non_unknown_marques(df_filtered)
 
         df_filtered['SOLUTION'] = df_filtered.apply(lambda row: format_solution(row, non_unknown_marques), axis=1)
 
         df_filtered.drop('INSTRUMENT_TYPE_2', axis=1, inplace=True)
+        # df_filtered.drop('SPECTRUM_TYPE_2', axis=1, inplace=True)
 
         # Modifier certaines valeurs
         # Modifier les valeurs dans la colonne MARQUES
