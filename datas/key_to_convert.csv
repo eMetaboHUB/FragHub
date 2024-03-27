@@ -135,6 +135,7 @@ ionization-mode;ionmode
 ionmode;ionmode
 ionpol;ionmode
 ionpolarity;ionmode
+polarity;ionmode
 isolation_width;isolationwindowtargetmz
 isolationwidth;isolationwindowtargetmz
 isolwidth;isolationwindowtargetmz
