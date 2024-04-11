@@ -34,10 +34,11 @@ def check_for_update(spectrum):
 
 def check_for_update_processing(spectrum_list, profile_name):
     """
+    This method checks for updates in the given spectrum list using a profile name.
 
     :param spectrum_list: A list of spectrums to check for updates.
-    :return: A list of spectrums that have been updated.
-
+    :param profile_name: The name of the profile to use for checking updates.
+    :return: A tuple containing the updated spectrum list, a flag indicating if an update was found, and the first run flag.
     """
     global json_update_file
 
