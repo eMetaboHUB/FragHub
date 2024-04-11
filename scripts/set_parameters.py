@@ -192,6 +192,12 @@ def reset_updates(profile_name):
         remove_files(ouput_path)
 
 def init_profile(profile_name):
+    """
+    Initializes the profile with the given profile name.
+
+    :param profile_name: The name of the profile to initialize.
+    :return: None
+    """
     # Get the file path
     updates_file_path = os.path.join("../datas/updates", profile_name + ".json")
     output_directory = os.path.join("../OUTPUT", profile_name)
