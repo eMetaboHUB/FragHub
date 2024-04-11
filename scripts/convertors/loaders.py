@@ -10,12 +10,6 @@ def load_spectrum_list_from_msp(msp_file_path):
     :param msp_file_path: The path to the MSP file.
     :return: The list of spectra read from the file. Each spectrum is represented as a string.
 
-    Example usage:
-    ```
-    msp_file_path = "path/to/spectrum.msp"
-    spectrum_list = load_spectrum_list(msp_file_path)
-    print(spectrum_list)
-    ```
     """
     filename = os.path.basename(msp_file_path)
     spectrum_list = []
@@ -43,12 +37,6 @@ def load_spectrum_list_from_mgf(mgf_file_path):
     :param mgf_file_path: The path to the MGF file.
     :return: The list of spectra read from the file. Each spectrum is represented as a string.
 
-    Example usage:
-    ```
-    mgf_file_path = "path/to/spectrum.mgf"
-    spectrum_list = load_spectrum_list_from_mgf(mgf_file_path)
-    print(spectrum_list)
-    ```
     """
     filename = os.path.basename(mgf_file_path)
     spectrum_list = []
