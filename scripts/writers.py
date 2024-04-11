@@ -8,11 +8,13 @@ import re
 
 def write_msp(spectrum_list, filename, mode, update, profile_name):
     """
-    Write the given spectrum list to a file in MSP format.
+    Write MSP file.
 
-    :param spectrum_list: A list of spectrum strings.
+    :param spectrum_list: A list of spectra to be written to the MSP file.
     :param filename: The name of the output file.
-    :param mode: The mode to write the file in.
+    :param mode: The mode of writing (either 'w' for write or 'a' for append).
+    :param update: Boolean value indicating whether to update the existing file or create a new one.
+    :param profile_name: The name of the profile being used.
     :return: None
     """
     output_file_path = os.path.join(f"../OUTPUT/{profile_name}/MSP/{mode}", filename)
@@ -45,16 +47,18 @@ def write_msp(spectrum_list, filename, mode, update, profile_name):
 
 def writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_insilico,NEG_GC,NEG_GC_insilico, profile_name, update=False):
     """
-    Writes the content of the given parameters to separate MSP files.
+    Write MSP files for positive and negative LC and GC data.
 
-    :param POS_LC: The content to write to the "POS_LC.msp" file.
-    :param POS_LC_insilico: The content to write to the "POS_LC_insilico.msp" file.
-    :param POS_GC: The content to write to the "POS_GC.msp" file.
-    :param POS_GC_insilico: The content to write to the "POS_GC_insilico.msp" file.
-    :param NEG_LC: The content to write to the "NEG_LC.msp" file.
-    :param NEG_LC_insilico: The content to write to the "NEG_LC_insilico.msp" file.
-    :param NEG_GC: The content to write to the "NEG_GC.msp" file.
-    :param NEG_GC_insilico: The content to write to the "NEG_GC_insilico.msp" file.
+    :param POS_LC: positive LC data
+    :param POS_LC_insilico: positive LC data insilico
+    :param POS_GC: positive GC data
+    :param POS_GC_insilico: positive GC data insilico
+    :param NEG_LC: negative LC data
+    :param NEG_LC_insilico: negative LC data insilico
+    :param NEG_GC: negative GC data
+    :param NEG_GC_insilico: negative GC data insilico
+    :param profile_name: name of the profile
+    :param update: (optional) update flag, defaults to False
     :return: None
     """
     time.sleep(0.1)
@@ -84,12 +88,25 @@ def writting_msp(POS_LC,POS_LC_insilico,POS_GC,POS_GC_insilico,NEG_LC,NEG_LC_ins
 
 def write_csv(df, filename, mode, update, first_run, profile_name):
     """
-    :param df: pandas DataFrame object containing the data to be written to CSV.
-    :param filename: string representing the name of the output file. The extension ".msp" in the filename will be replaced by ".csv".
+    :param df: pandas DataFrame object containing the data to be written to CSV
+    :param filename: name of the CSV file to be created
+    :param mode: mode in which the file should be opened ('w' for write, 'a' for append)
+    :param update: boolean indicating whether the file should be updated or created from scratch
+    :param first_run: boolean indicating whether it's the first run and headers need to be written
+    :param profile_name: name of the profile associated with the CSV file
     :return: None
 
-    This method writes a pandas DataFrame object to a CSV file. The output file is saved in the "../OUTPUT/CSV/POS" directory with the same name as the input file, but with the extension
-    * changed to ".csv". The data is written in chunks of 5000 rows to improve efficiency. The progress of writing is displayed with a progress bar.
+    This method writes a pandas DataFrame to a CSV file. The data is written in chunks, specified by the chunk_size parameter. The method uses a progress bar to track the progress of the write operation.
+
+    The method takes the following parameters:
+    - df: pandas DataFrame object containing the data to be written
+    - filename: name of the CSV file to be created
+    - mode: mode in which the file should be opened ('w' for write, 'a' for append)
+    - update: boolean indicating whether the file should be updated or created from scratch
+    - first_run: boolean indicating whether it's the first run and headers need to be written
+    - profile_name: name of the profile associated with the CSV file
+
+    The method does not return anything.
     """
     output_file_path = os.path.join(f"../OUTPUT/{profile_name}/CSV/{mode}",filename)
 
@@ -111,16 +128,19 @@ def write_csv(df, filename, mode, update, first_run, profile_name):
 
 def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_GC_df_insilico,NEG_LC_df_insilico,NEG_GC_df_insilico, first_run, profile_name, update=False):
     """
-    Writes the given dataframes to CSV files with specific file names.
+    Write dataframes to CSV files.
 
-    :param POS_LC_df: DataFrame containing positive LC data
-    :param POS_GC_df: DataFrame containing positive GC data
-    :param NEG_LC_df: DataFrame containing negative LC data
-    :param NEG_GC_df: DataFrame containing negative GC data
-    :param POS_LC_df_insilico: DataFrame containing positive LC In Silico data
-    :param POS_GC_df_insilico: DataFrame containing positive GC In Silico data
-    :param NEG_LC_df_insilico: DataFrame containing negative LC In Silico data
-    :param NEG_GC_df_insilico: DataFrame containing negative GC In Silico data
+    :param POS_LC_df: Pandas DataFrame containing positive LC data
+    :param POS_GC_df: Pandas DataFrame containing positive GC data
+    :param NEG_LC_df: Pandas DataFrame containing negative LC data
+    :param NEG_GC_df: Pandas DataFrame containing negative GC data
+    :param POS_LC_df_insilico: Pandas DataFrame containing positive LC In Silico data
+    :param POS_GC_df_insilico: Pandas DataFrame containing positive GC In Silico data
+    :param NEG_LC_df_insilico: Pandas DataFrame containing negative LC In Silico data
+    :param NEG_GC_df_insilico: Pandas DataFrame containing negative GC In Silico data
+    :param first_run: Boolean indicating if it is the first run
+    :param profile_name: Name of the profile
+    :param update: Boolean indicating if the CSV files should be updated or overwritten (optional, default=False)
     :return: None
     """
     time.sleep(0.1)
@@ -150,11 +170,17 @@ def writting_csv(POS_LC_df,POS_GC_df,NEG_LC_df,NEG_GC_df,POS_LC_df_insilico,POS_
 
 def write_json(df, filename, mode, profile_name):
     """
-    :param df: pandas DataFrame object containing the data to be written to JSON.
-    :param filename: string representing the name of the output file. The extension ".csv" in the filename will be replaced by ".json".
+    Write DataFrame to a JSON file.
+
+    :param df: The DataFrame to be written.
+    :type df: pandas.DataFrame
+    :param filename: The name of the output file.
+    :type filename: str
+    :param mode: The mode for opening the output file. e.g., 'w', 'a'.
+    :type mode: str
+    :param profile_name: The name of the profile.
+    :type profile_name: str
     :return: None
-    This method writes a pandas DataFrame object to a JSON array in file. The output file is saved in the "../OUTPUT/JSON/{mode}" directory with the same name as the input file,
-    but with the extension changed to ".json".
     """
     output_file_path = os.path.join(f"../OUTPUT/{profile_name}/JSON/{mode}", filename)
 
@@ -174,16 +200,17 @@ def write_json(df, filename, mode, profile_name):
 
 def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, profile_name):
     """
-    Write JSON files for the given data frames.
+    Write dataframes to JSON files.
 
-    :param POS_LC_df: Positive LC data frame
-    :param POS_GC_df: Positive GC data frame
-    :param NEG_LC_df: Negative LC data frame
-    :param NEG_GC_df: Negative GC data frame
-    :param POS_LC_df_insilico: Positive LC In Silico data frame
-    :param POS_GC_df_insilico: Positive GC In Silico data frame
-    :param NEG_LC_df_insilico: Negative LC In Silico data frame
-    :param NEG_GC_df_insilico: Negative GC In Silico data frame
+    :param POS_LC_df: Positive LC dataframe
+    :param POS_GC_df: Positive GC dataframe
+    :param NEG_LC_df: Negative LC dataframe
+    :param NEG_GC_df: Negative GC dataframe
+    :param POS_LC_df_insilico: Positive LC In Silico dataframe
+    :param POS_GC_df_insilico: Positive GC In Silico dataframe
+    :param NEG_LC_df_insilico: Negative LC In Silico dataframe
+    :param NEG_GC_df_insilico: Negative GC In Silico dataframe
+    :param profile_name: Name of the profile
     :return: None
     """
     time.sleep(0.1)
