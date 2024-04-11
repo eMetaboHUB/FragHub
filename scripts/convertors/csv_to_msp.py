@@ -4,13 +4,17 @@ import re
 
 def format_comments(DF_row):
     """
-    Format comments based on the given row of a DataFrame.
+    Format the comments from a DataFrame row.
 
-    :param DF_row: A row of a DataFrame.
+    :param DF_row: A row from a DataFrame.
     :type DF_row: pandas.Series
-    :return: A formatted string containing information from the row.
+    :return: The formatted comments string.
     :rtype: str
     """
+
+    # Use a formatted string (f-string) to create the output string.
+    # For each attribute, use a ternary conditional operator to check if the attribute value exists in the row.
+    # If it exists, include the attribute value. If not, include 'UNKNOWN'.
     return f'FILENAME={DF_row["FILENAME"] if DF_row["FILENAME"] else "UNKNOWN"}; PREDICTED={DF_row["PREDICTED"] if DF_row["PREDICTED"] else "UNKNOWN"}; FRAGHUBID={DF_row["FRAGHUBID"] if DF_row["FRAGHUBID"] else "UNKNOWN"}; SPECTRUMID={DF_row["SPECTRUMID"] if DF_row["SPECTRUMID"] else "UNKNOWN"}; RESOLUTION={DF_row["RESOLUTION"] if DF_row["RESOLUTION"] else "UNKNOWN"}; SYNON={DF_row["SYNON"] if DF_row["SYNON"] else "UNKNOWN"}; FRAGMENTATIONMODE={DF_row["FRAGMENTATIONMODE"] if DF_row["FRAGMENTATIONMODE"] else "UNKNOWN"}; AVERAGEMASS={DF_row["AVERAGEMASS"] if DF_row["AVERAGEMASS"] else "UNKNOWN"}'
 
 def dataframe_to_msp(dataframe, name):
@@ -32,13 +36,20 @@ def dataframe_to_msp(dataframe, name):
         name = "Spectrum Conversion"  # Specify a name for the spectrum
         spectra = dataframe_to_msp(dataframe, name)  # Convert DataFrame to list of formatted spectra strings
     """
-    # convert all columns of dataframe to string
+    # Convert the data type of all columns in the dataframe to string
     dataframe = dataframe.astype(str)
 
+    # Initialize an empty list to store the formatted spectra strings
     spectrum_list = []
+
+    # Iterate over each row in the dataframe
     for index, row in tqdm(dataframe.iterrows(), total=len(dataframe), desc="{:>70}".format(name), colour="green", unit=" row"):
+        # Format the comments for the current row
         COMMENTS = format_comments(row)
 
+        # Here begins the creation of the spectrum string based on the values in the row
+        # Each attribute is checked if it exists in the row; if it doesn't, the value "UNKNOWN" is used
+        # The following block does this for several attributes such as NAME, PRECURSORMZ, PRECURSORTYPE, etc.
         SPECTRUM = ""
         SPECTRUM = SPECTRUM + "NAME: " + (row["NAME"] if row["NAME"] else "UNKNOWN") + "\n"
         SPECTRUM = SPECTRUM + "PRECURSORMZ: " + (row["PRECURSORMZ"] if row["PRECURSORMZ"] else "UNKNOWN") + "\n"
@@ -59,8 +70,10 @@ def dataframe_to_msp(dataframe, name):
         SPECTRUM = SPECTRUM + "COMMENT: " + (COMMENTS if COMMENTS else "UNKNOWN") + "\n"
         SPECTRUM = SPECTRUM + "NUM PEAKS: " + (row["NUM PEAKS"] if row["NUM PEAKS"] else "UNKNOWN") + "\n"
         SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
+        # Finally, append the formatted spectrum string for the current row to the spectrum_list
         spectrum_list.append(SPECTRUM)
 
+    # Return the list of formatted spectra strings
     return spectrum_list
 
 def csv_to_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico):
@@ -92,14 +105,22 @@ def csv_to_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_
         - NEG_GC_insilico: Negative GC insilico MSP file
 
     """
+    # Create MSP file from POS_LC dataframe
     POS_LC = dataframe_to_msp(POS_LC_df, "POS_LC")
+    # Create MSP file from POS_LC insilico dataframe
     POS_LC_insilico = dataframe_to_msp(POS_LC_df_insilico, "POS_LC_insilico")
+    # Create MSP file from POS_GC dataframe
     POS_GC = dataframe_to_msp(POS_GC_df, "POS_GC")
+    # Create MSP file from POS_GC insilico dataframe
     POS_GC_insilico = dataframe_to_msp(POS_GC_df_insilico, "POS_GC_insilico")
+    # Create MSP file from NEG_LC dataframe
     NEG_LC = dataframe_to_msp(NEG_LC_df, "NEG_LC")
+    # Create MSP file from NEG_LC insilico dataframe
     NEG_LC_insilico = dataframe_to_msp(NEG_LC_df_insilico, "NEG_LC_insilico")
+    # Create MSP file from NEG_GC dataframe
     NEG_GC = dataframe_to_msp(NEG_GC_df, "NEG_GC")
+    # Create MSP file from NEG_GC insilico dataframe
     NEG_GC_insilico = dataframe_to_msp(NEG_GC_df_insilico, "NEG_GC_insilico")
 
-
-    return POS_LC_df,POS_LC,POS_LC_df_insilico,POS_LC_insilico,POS_GC_df,POS_GC,POS_GC_df_insilico,POS_GC_insilico,NEG_LC_df,NEG_LC,NEG_LC_df_insilico,NEG_LC_insilico,NEG_GC_df,NEG_GC,NEG_GC_df_insilico,NEG_GC_insilico
+    # Return original dataframes as well as the generated MSP files.
+    return POS_LC_df, POS_LC, POS_LC_df_insilico, POS_LC_insilico, POS_GC_df, POS_GC, POS_GC_df_insilico, POS_GC_insilico, NEG_LC_df, NEG_LC, NEG_LC_df_insilico, NEG_LC_insilico, NEG_GC_df, NEG_GC, NEG_GC_df_insilico, NEG_GC_insilico
