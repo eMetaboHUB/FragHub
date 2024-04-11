@@ -2,7 +2,7 @@ import numpy as np
 
 def normalize_intensity(peak_array):
     """
-    Normalize the intensity values of a numpy array.
+    Normalize (rescale) the intensity values of a numpy array.
 
     :param peak_array: A numpy array containing peak data.
                        The array is assumed to have two columns,
