@@ -116,10 +116,6 @@ def mgf_to_json_processing(FINAL_MGF):
     :param FINAL_MGF: A list of MGF spectrums to be converted.
     :return: A list of JSON-formatted spectrums.
 
-    Example usage:
-    ```
-    final_json = mgf_to_json_processing(FINAL_MGF)
-    ```
     """
     chunk_size = 5000
     final = []
