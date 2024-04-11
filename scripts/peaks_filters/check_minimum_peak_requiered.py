@@ -2,12 +2,20 @@ import numpy as np
 
 def check_minimum_peak_requiered(peak_array, n_peaks):
     """
-    :param peak_array: A numpy array representing the peaks
-    :param n_peaks: An integer representing the minimum number of peaks required
-    :return: A numpy array representing the peaks if the number of peaks is not less than n_peaks.
-             Otherwise, an empty array is returned.
+    This function checks if the number of peaks in an array is not less than a certain amount.
+
+    :param peak_array: A numpy array representing the peaks. This array holds all the peak
+    information that will be checked against our minimum number of peaks (n_peaks).
+
+    :param n_peaks: An integer representing the minimum number of peaks required. If the number
+    of peaks in 'peak_array' is less than this value, an empty array will be returned.
+
+
+    :return: If the number of peaks in 'peak_array' is not less than 'n_peaks', 'peak_array' is
+    returned as is. But, if 'peak_array' has fewer peaks than 'n_peaks', an empty numpy array is
+    returned. This is represented as a (0,2) shape numpy array, indicating no data in two dimensions.
     """
-    if len(peak_array) < int(n_peaks):
-        return np.empty((0,2))
+    if len(peak_array) < int(n_peaks):  # If the amount of peaks in 'peak_array' is less than 'n_peaks'...
+        return np.empty((0, 2))  # return an empty numpy array
     else:
-        return peak_array
+        return peak_array  # Otherwise, return 'peak_array' as is
