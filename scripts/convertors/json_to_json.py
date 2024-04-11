@@ -114,12 +114,6 @@ def json_to_json_processing(FINAL_JSON):
 
     This method takes a list of JSON objects and processes them using the 'json_to_json' method. The list is divided into chunks of size 'chunk_size'. Each chunk is processed concurrently
     * using a ThreadPoolExecutor, and the results are collected and returned as a list of processed JSON data.
-
-    Example usage:
-    ```
-    input_json = [...] # List of JSON objects
-    processed_json = json_to_json_processing(input_json)
-    ```
     """
     chunk_size = 5000
     final = []
