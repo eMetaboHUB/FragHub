@@ -13,10 +13,10 @@ import re
 
 def concatenate_MSP(msp_list):
     """
-    Concatenates a list of MSP files into a single spectrum list.
+    Concatenates multiple MSP files into a single spectrum list.
 
-    :param msp_list: A list of file paths to MSP files.
-    :return: A concatenated spectrum list.
+    :param msp_list: A list of paths to MSP files.
+    :return: A list of spectra loaded from the MSP files.
     """
     spectrum_list = []
 
@@ -27,14 +27,10 @@ def concatenate_MSP(msp_list):
 
 def concatenate_xml(xml_list):
     """
-    Concatenates the contents of XML files into a single XML string.
+    Concatenates XML files and adds filename tags to each file's XML content.
 
-    :param xml_list: List of XML file paths to be concatenated.
-    :return: List containing the concatenated XML contents of all files.
-
-    Example usage:
-        xml_list = ["file1.xml", "file2.xml"]
-        result = concatenate_xml(xml_list)
+    :param xml_list: List of XML file paths.
+    :return: List of concatenated XML contents with added filename tags.
     """
     FINAL_XML = []
     for files in tqdm(xml_list, total=len(xml_list), unit=" spectrums", colour="green", desc="{:>70}".format("concatenate")):
@@ -51,10 +47,12 @@ def concatenate_xml(xml_list):
 
 def concatenate_csv(csv_list):
     """
-    Concatenates a list of CSV files into a single DataFrame.
+    Concatenates multiple CSV files into a single DataFrame.
 
-    :param csv_list: A list of file paths to CSV files.
-    :return: A pandas DataFrame containing the concatenated data.
+    :param csv_list: List of paths to CSV files to be concatenated.
+    :type csv_list: list[str]
+    :return: Concatenated DataFrame.
+    :rtype: pandas.DataFrame
     """
     df_list = []
 
@@ -74,10 +72,12 @@ def concatenate_csv(csv_list):
 
 def concatenate_JSON(json_list):
     """
-    Concatenates a list of JSON files into a single JSON.
+    Concatenates a list of JSON files into a single spectrum list.
 
-    :param json_list: List of JSON files to concatenate.
-    :return: The concatenated JSON.
+    :param json_list: A list of JSON file paths.
+    :type json_list: list[str]
+    :return: The concatenated spectrum list.
+    :rtype: list[dict]
     """
     spectrum_list = []
 
@@ -87,6 +87,14 @@ def concatenate_JSON(json_list):
     return spectrum_list
 
 def concatenate_MGF(mgf_list):
+    """
+    Concatenates multiple MGF files into a single spectrum list.
+
+    :param mgf_list: A list of paths to MGF files.
+    :type mgf_list: list[str]
+    :return: The concatenated spectrum list.
+    :rtype: list[str]
+    """
     spectrum_list = []
 
     for files in mgf_list:
@@ -96,10 +104,13 @@ def concatenate_MGF(mgf_list):
 
 def convert_to_json(input_path):
     """
-    Converts JSON and XML files to MSP format.
-
-    :param input_path: The path to the directory containing the JSON and XML files.
-    :return: A tuple containing the converted JSON and XML files in MSP format.
+    :param input_path: The path of the input directory where the files are located.
+    :return: A tuple containing the converted data from each file type to JSON format. The order of the elements in the tuple is as follows:
+        - FINAL_MSP: The converted data from MSP files to JSON format.
+        - FINAL_XML: The converted data from XML files to JSON format.
+        - FINAL_CSV: The converted data from CSV files to JSON format.
+        - FINAL_JSON: The converted data from JSON files to JSON format (not actually converted, just collected).
+        - FINAL_MGF: The converted data from MGF files to JSON format.
     """
     # JSON
     FINAL_JSON = []
