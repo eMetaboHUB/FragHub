@@ -13,12 +13,10 @@ float_check_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 def peak_list_to_np_array(peak_list, precursormz):
     """
-    Converts a peak list string into a numpy array.
+    :param peak_list: A list of tuples representing peaks, where each tuple contains the mz value and intensity of a peak.
+    :param precursormz: The precursor mz value of the peaks.
+    :return: Numpy array representing the peaks sorted by mz values and filtered based on the precursor mz value.
 
-    :param peak_list: A string representing a peak list. Each peak is represented by a pair of values, separated by a space or colon. The first value represents the m/z (mass-to-charge ratio
-    *) of the peak, and the second value represents the intensity of the peak.
-    :return: A numpy array containing the peak data, with two columns for "mz" and "intensity". The "mz" column contains the m/z values, and the "intensity" column contains the corresponding
-    * peak intensities.
     """
     # Convert list of tuples to numpy array
     peak_list = np.array(peak_list, dtype=float)
@@ -79,9 +77,12 @@ def spectrum_cleaning(spectrum):
     return spectrum
 
 def spectrum_cleaning_processing(spectrum_list):
-    """
-    :param spectrum_list: A list of spectrum data to be processed.
-    :return: A list containing the results of processing the spectrum data.
+    """Process the given spectrum list by cleaning and filtering the spectrums.
+
+    :param spectrum_list: A list of spectrums to be processed.
+    :type spectrum_list: list
+    :return: A list of cleaned and filtered spectrums.
+    :rtype: list
     """
 
     chunk_size = 5000
