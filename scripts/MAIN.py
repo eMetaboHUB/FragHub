@@ -126,7 +126,8 @@ if __name__ == "__main__":
     time.sleep(0.01)
     spectrum_list = names_completion(spectrum_list)
 
-    # STEP 6: -- SPLITTING [POS / NEG] --
+    # STEP 6: SPLITTING
+    # -- SPLITTING [POS / NEG] --
     time.sleep(0.01)
     print("{:>70}".format("-- SPLITTING [POS / NEG] --"))
     time.sleep(0.01)
