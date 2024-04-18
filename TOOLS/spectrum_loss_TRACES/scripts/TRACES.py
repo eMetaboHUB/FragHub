@@ -28,7 +28,7 @@ def structure_traces_one(spectrum_list_TRACES, profile_name):
 
             spectrum_list_TRACES_DF = pd.concat([spectrum_list_TRACES_DF, temp_df])
 
-    spectrum_list_TRACES_DF.to_excel(rf"../OUTPUT/{profile_name}/TRACES_1.xlsx", index=False)
+    spectrum_list_TRACES_DF.to_excel(rf"../OUTPUT/{profile_name}/TRACKER_1.xlsx", index=False)
 
     return spectrum_list_TRACES_DF
 
@@ -43,6 +43,6 @@ def structure_traces_two(spectrum_list_TRACES_DF, DELETED_CONCATENATE_DF, profil
     """
     DF = pd.concat([spectrum_list_TRACES_DF, DELETED_CONCATENATE_DF])
 
-    DF.to_excel(rf"../OUTPUT/{profile_name}/TRACES_2.xlsx", index=False)
+    DF.to_excel(rf"../OUTPUT/{profile_name}/TRACKER_2.xlsx", index=False)
 
 
