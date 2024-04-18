@@ -12,7 +12,7 @@ def structure_traces_one(spectrum_list_TRACES):
     TRACES_DICT_LIST = []
 
     for spectrums_traces in spectrum_list_TRACES:
-        if spectrums_traces[0] is not None:
+        if spectrums_traces[0] is None:
             TRACES_DICT_LIST.append({'old_spectrum': spectrums_traces[5],
                                      'no_smiles_no_inchi': spectrums_traces[1],
                                      'no_or_bad_precursormz_and_no_or_bad_addcut': spectrums_traces[2],
@@ -42,7 +42,10 @@ def structure_traces_two(spectrum_list_TRACES, DELETED_CONCATENATE_DF, profile_n
                                "will_be_deleted_because_of_RDkit": False
                                })
 
-        temp_df = pd.DataFrame(temp_spectrums, index=[0])
+        # Used list-comprehension to ensure every value is a list
+        temp_spectrums = {k: [v] for k, v in temp_spectrums.items()}
+
+        temp_df = pd.DataFrame(temp_spectrums)  # Removed index, as we can use default index
 
         spectrum_list_TRACES_DF = pd.concat([spectrum_list_TRACES_DF, temp_df])
 
