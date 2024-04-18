@@ -13,6 +13,8 @@ import time
 import sys
 import os
 
+from TRACES import *
+
 ordered_columns = ["FILENAME",
                    "PREDICTED",
                    "FRAGHUBID",
@@ -108,6 +110,10 @@ if __name__ == "__main__":
     print("{:>70}".format(f"-- CLEANING SPECTRUMS --"))
     time.sleep(0.01)
     spectrum_list = spectrum_cleaning_processing(spectrum_list)
+
+    spectrum_list_TRACES = spectrum_list
+
+    spectrum_list = [spectrum[0] for spectrum in spectrum_list if spectrum[0] is not None]
 
     if not spectrum_list:
         sys.exit("There is no spectrums to process after cleaning. Exiting code !")
