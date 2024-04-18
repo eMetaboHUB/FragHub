@@ -11,7 +11,7 @@ np.set_printoptions(suppress=True)
 global float_check_pattern
 float_check_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
-def peak_list_to_np_array(peak_list, precursormz, minimum_peaks_not_requiered):
+def peak_list_to_np_array(peak_list, precursormz, peaks_filters_not_valid):
     """
     This function serves the purpose of converting a list of peak tuples (mz and intensity values) into a numpy array.
 
@@ -35,10 +35,10 @@ def peak_list_to_np_array(peak_list, precursormz, minimum_peaks_not_requiered):
 
     # Apply appropriate set of filters to the sorted numpy array of peaks.
     # The filters use the precursor mz value and pre-defined parameters.
-    peak_list, minimum_peaks_not_requiered = apply_filters(peak_list, precursormz, parameters_dict, minimum_peaks_not_requiered)
+    peak_list, peaks_filters_not_valid = apply_filters(peak_list, precursormz, parameters_dict, peaks_filters_not_valid)
 
     # Return the sorted and preset-filtered numpy array of peaks.
-    return peak_list, minimum_peaks_not_requiered
+    return peak_list, peaks_filters_not_valid
 
 def peak_list_to_str(peak_list_np):
     """
@@ -83,18 +83,18 @@ def spectrum_cleaning(spectrum):
     no_smiles_no_inchi = 0
     no_or_bad_precursormz_and_no_or_bad_addcut = 0
     no_peaks_list = 0
-    minimum_peaks_not_requiered = 0
+    peaks_filters_not_valid = 0
     old_spectrum = spectrum
 
     peak_list = spectrum["PEAKS_LIST"]
     # If peak_list is not present in the spectrum dictionary, it returns None
     if not peak_list:
         no_peaks_list = 1
-        return None, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, minimum_peaks_not_requiered, old_spectrum
+        return None, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, peaks_filters_not_valid, old_spectrum
     spectrum, no_smiles_no_inchi = normalize_values(spectrum, no_smiles_no_inchi)
     # If normalization of spectrum fails, it returns None
     if not spectrum:
-        return None, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, minimum_peaks_not_requiered, old_spectrum
+        return None, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, peaks_filters_not_valid, old_spectrum
     # Checks if "PRECURSORMZ" exists in the spectrum
     if "PRECURSORMZ" in spectrum:
         if re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])):
@@ -104,21 +104,21 @@ def spectrum_cleaning(spectrum):
             # Float value of 'PRECURSORMZ' needs to be greater than 0
             if float_precursor_mz <= 0.0:
                 no_or_bad_precursormz_and_no_or_bad_addcut = 1
-                return None, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, minimum_peaks_not_requiered, old_spectrum
+                return None, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, peaks_filters_not_valid, old_spectrum
             # Converts peak list to a numpy array
-            peak_list_np, minimum_peaks_not_requiered = peak_list_to_np_array(peak_list, float_precursor_mz, minimum_peaks_not_requiered)
+            peak_list_np, peaks_filters_not_valid = peak_list_to_np_array(peak_list, float_precursor_mz, peaks_filters_not_valid)
             # If numpy array is empty, it returns none
             if peak_list_np.size == 0:
-                return None, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, minimum_peaks_not_requiered, old_spectrum
+                return None, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, peaks_filters_not_valid, old_spectrum
             spectrum["NUM PEAKS"] = str(peak_list_np.shape[0])
             # Convert numpy array back to string and update 'PEAKS_LIST' in spectrum
             peak_list_np = peak_list_to_str(peak_list_np)
             spectrum["PEAKS_LIST"] = peak_list_np
-            return spectrum, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, minimum_peaks_not_requiered, old_spectrum
+            return spectrum, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, peaks_filters_not_valid, old_spectrum
         else:
             no_or_bad_precursormz_and_no_or_bad_addcut = 1
-            return None, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, minimum_peaks_not_requiered, old_spectrum
-    return spectrum, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, minimum_peaks_not_requiered, old_spectrum
+            return None, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, peaks_filters_not_valid, old_spectrum
+    return spectrum, no_smiles_no_inchi, no_or_bad_precursormz_and_no_or_bad_addcut, no_peaks_list, peaks_filters_not_valid, old_spectrum
 
 def spectrum_cleaning_processing(spectrum_list):
     """
