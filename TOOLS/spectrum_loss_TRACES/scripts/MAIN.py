@@ -112,6 +112,7 @@ if __name__ == "__main__":
     spectrum_list = spectrum_cleaning_processing(spectrum_list)
 
     spectrum_list_TRACES = spectrum_list
+    print(spectrum_list_TRACES[0])
 
     spectrum_list = [spectrum[0] for spectrum in spectrum_list if spectrum[0] is not None]
 
