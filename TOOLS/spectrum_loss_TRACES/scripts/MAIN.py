@@ -114,6 +114,8 @@ if __name__ == "__main__":
     spectrum_list_TRACES = spectrum_list
     print(spectrum_list_TRACES[0])
 
+    spectrum_list_TRACES = structure_traces_one(spectrum_list_TRACES)
+
     spectrum_list = [spectrum[0] for spectrum in spectrum_list if spectrum[0] is not None]
 
     if not spectrum_list:
