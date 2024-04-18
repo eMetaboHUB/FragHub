@@ -6,7 +6,7 @@ from .keep_mz_in_range import *
 from .reduce_peak_list import *
 import numpy as np
 
-def apply_filters(peak_array, precursormz, parameters_dict, minimum_peaks_not_requiered):
+def apply_filters(peak_array, precursormz, parameters_dict, peaks_filters_not_valid):
     """
     Function to apply various filters on a given peak_array according to the provided parameters.
 
@@ -29,15 +29,16 @@ def apply_filters(peak_array, precursormz, parameters_dict, minimum_peaks_not_re
         peak_array = check_minimum_peak_requiered(peak_array, n_peaks)
         # if no peaks pass this filter, return an empty array
         if peak_array.size == 0:
-            minimum_peaks_not_requiered = 1
-            return np.array([]), minimum_peaks_not_requiered
+            peaks_filters_not_valid = 1
+            return np.array([]), peaks_filters_not_valid
 
     if parameters_dict['remove_peak_above_precursormz'] == 1.0:
         # remove peaks that are above a specified limit
         peak_array = remove_peak_above_precursormz(peak_array, precursormz)
         # if no peaks pass this filter, return an empty array
         if peak_array.size == 0:
-            return np.array([]), minimum_peaks_not_requiered
+            peaks_filters_not_valid = 1
+            return np.array([]), peaks_filters_not_valid
 
     if parameters_dict['reduce_peak_list'] == 1.0:
         # limit total number of peaks to be considered
@@ -48,7 +49,8 @@ def apply_filters(peak_array, precursormz, parameters_dict, minimum_peaks_not_re
         peak_array = normalize_intensity(peak_array)
         # if no peaks pass this filter, return an empty array
         if peak_array.size == 0:
-            return np.array([]), minimum_peaks_not_requiered
+            peaks_filters_not_valid = 1
+            return np.array([]), peaks_filters_not_valid
 
     if parameters_dict['keep_mz_in_range'] == 1.0:
         # keep peaks within a certain mz range
@@ -60,7 +62,8 @@ def apply_filters(peak_array, precursormz, parameters_dict, minimum_peaks_not_re
 
     # if no peaks pass the filters, return an empty array
     if peak_array.size == 0:
-        return np.array([]), minimum_peaks_not_requiered
+        peaks_filters_not_valid = 1
+        return np.array([]), peaks_filters_not_valid
 
     # return the filtered peak array
-    return peak_array, minimum_peaks_not_requiered
+    return peak_array, peaks_filters_not_valid
