@@ -114,6 +114,7 @@ def mols_derivation_and_calculation(CONCATENATE_DF):
 
     CONCATENATE_DF['will_be_deleted'] = CONCATENATE_DF[['EXACTMASS', 'AVERAGEMASS', 'SMILES', 'INCHI', 'INCHIKEY']].isna().any(axis=1)
     DELETED_CONCATENATE_DF = CONCATENATE_DF[CONCATENATE_DF['will_be_deleted'] == True]
+    DELETED_CONCATENATE_DF = DELETED_CONCATENATE_DF.drop('will_be_deleted', axis=1)
 
     CONCATENATE_DF = CONCATENATE_DF.drop('will_be_deleted', axis=1)
 
