@@ -112,11 +112,11 @@ def mols_derivation_and_calculation(CONCATENATE_DF):
     # Apply the mask to the dataframe
     CONCATENATE_DF = CONCATENATE_DF[mask]
 
-    CONCATENATE_DF['will_be_deleted'] = CONCATENATE_DF[['EXACTMASS', 'AVERAGEMASS', 'SMILES', 'INCHI', 'INCHIKEY']].isna().any(axis=1)
-    DELETED_CONCATENATE_DF = CONCATENATE_DF[CONCATENATE_DF['will_be_deleted'] == True]
-    DELETED_CONCATENATE_DF = DELETED_CONCATENATE_DF.drop('will_be_deleted', axis=1)
+    CONCATENATE_DF['will_be_deleted_because_of_RDkit'] = CONCATENATE_DF[['EXACTMASS', 'AVERAGEMASS', 'SMILES', 'INCHI', 'INCHIKEY']].isna().any(axis=1)
+    DELETED_CONCATENATE_DF = CONCATENATE_DF[CONCATENATE_DF['will_be_deleted_because_of_RDkit'] == True]
+    # DELETED_CONCATENATE_DF = DELETED_CONCATENATE_DF.drop('will_be_deleted_because_of_RDkit', axis=1)
 
-    CONCATENATE_DF = CONCATENATE_DF.drop('will_be_deleted', axis=1)
+    CONCATENATE_DF = CONCATENATE_DF.drop('will_be_deleted_because_of_RDkit', axis=1)
 
     # Drop null entries in 'EXACTMASS', 'AVERAGEMASS', 'SMILES', 'INCHI', and 'INCHIKEY' columns of 'CONCATENATE_DF'
     CONCATENATE_DF = CONCATENATE_DF.dropna(subset=['EXACTMASS', 'AVERAGEMASS', 'SMILES', 'INCHI', 'INCHIKEY'])
