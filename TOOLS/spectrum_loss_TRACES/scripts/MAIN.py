@@ -125,7 +125,7 @@ if __name__ == "__main__":
     time.sleep(0.01)
     print("{:>70}".format("-- MOLS DERIVATION AND MASS CALCULATION --"))
     time.sleep(0.01)
-    spectrum_list = mols_derivation_and_calculation(spectrum_list)
+    spectrum_list, DELETED_CONCATENATE_DF = mols_derivation_and_calculation(spectrum_list)
 
     # STEP 5: completing missing names
     time.sleep(0.01)
