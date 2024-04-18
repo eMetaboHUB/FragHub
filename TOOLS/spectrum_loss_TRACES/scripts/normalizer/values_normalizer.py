@@ -10,7 +10,7 @@ from .normalize_empties import *
 from .normalize_ionmode import *
 from .normalize_adduct import *
 
-def normalize_values(metadata_dict):
+def normalize_values(metadata_dict, no_smiles_no_inchi):
     """
     This function takes in a metadata dictionary and applies numerous normalization functions on it to standardize its values.
 
@@ -26,6 +26,9 @@ def normalize_values(metadata_dict):
     # If both 'SMILES' and 'INCHI' keys in the dictionary
     # do not exist (have NaN values), we delete the dictionary.
     metadata_dict = delete_no_smiles_no_inchi(metadata_dict)
+
+    if not metadata_dict:
+        no_smiles_no_inchi = 1
 
     # If after the above operations the metadata_dict is not empty continue with the normalization
     if metadata_dict:
@@ -54,4 +57,4 @@ def normalize_values(metadata_dict):
         # Normalize the instruments and resolution data in the metadata
         metadata_dict = normalize_instruments_and_resolution(metadata_dict)
 
-    return metadata_dict
+    return metadata_dict, no_smiles_no_inchi
