@@ -14,6 +14,10 @@ def names_completion(CONCATENATE_DF):
 
     # Define the function to apply to each group
     def fill_group(group):
+        """
+        :param group: A pandas DataFrame representing a group.
+        :return: The group with missing values filled using the last non-null value in the group, if any.
+        """
         filled_group = group.fillna(group.dropna().iloc[0] if group.dropna().size > 0 else '')
         pbar.update()  # update the progress bar
         return filled_group
