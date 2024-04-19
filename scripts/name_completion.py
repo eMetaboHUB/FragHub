@@ -6,17 +6,22 @@ def names_completion(CONCATENATE_DF):
     :param CONCATENATE_DF: The DataFrame containing the 'NAME' column to perform name completion on.
     :return: The modified DataFrame with name completion applied.
     """
+    # Count the number of unique groups (based on 'INCHI')
+    num_groups = CONCATENATE_DF['INCHI'].nunique()
 
-    # A progress bar from tqdm library is initialized. The total progress is the length of the DataFrame provided and color is green.
-    # Each task done is represented by "row" and it provides a description of "updating names".
-    tqdm.pandas(total=len(CONCATENATE_DF), colour="green", unit=" row", desc="{:>70}".format("updating names"))
+    # Initialize tqdm progress bar with total as number of unique groups
+    pbar = tqdm(total=num_groups, colour="green", unit=" group", desc="{:>70}".format("updating names"))
 
-    # The DataFrame is grouped by the 'INCHI' column. Then for each group, a transformation is applied on the 'NAME' column of the DataFrame.
-    # The transformation function uses fillna method to replace the 'NaN' values in the group.
-    # It replaces 'NaN' values with the first non 'NaN' value in the group if there is any non 'NaN' value.
-    # If there are only 'NaN' values in the group, it would replace 'NaN' with an empty string.
-    # The progress_transform method applies the function to each group and also updates the progress bar.
-    CONCATENATE_DF['NAME'] = CONCATENATE_DF.groupby('INCHI')['NAME'].progress_transform(lambda group: group.fillna(group.dropna().iloc[0] if group.dropna().size > 0 else ''))
+    # Define the function to apply to each group
+    def fill_group(group):
+        filled_group = group.fillna(group.dropna().iloc[0] if group.dropna().size > 0 else '')
+        pbar.update()  # update the progress bar
+        return filled_group
 
-    # The DataFrame with updated 'NAME' column is returned.
+    # Apply the function to each group
+    CONCATENATE_DF['NAME'] = CONCATENATE_DF.groupby('INCHI')['NAME'].transform(fill_group)
+
+    pbar.close()  # close the progress bar
+
+    # Return the updated DataFrame
     return CONCATENATE_DF
