@@ -52,6 +52,7 @@ def build_window():
     """
     global root
     root = Tk()
+    root.iconbitmap('../FragHub.ico')
     root.title("FragHub")
 
     # Create Tab Control
