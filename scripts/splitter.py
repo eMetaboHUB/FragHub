@@ -15,6 +15,8 @@ def split_pos_neg(CONCATENATE_DF):
 
         # Update the progress bar according to the length of the split DataFrame
         pbar.update(len(POS))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # Create a progress bar to visualize the splitting process for the negative `IONMODE` values
@@ -24,6 +26,8 @@ def split_pos_neg(CONCATENATE_DF):
 
         # Update the progress bar according to the length of the split DataFrame
         pbar.update(len(NEG))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # Returning both split DataFrames
@@ -41,6 +45,8 @@ def split_LC_GC(POS, NEG):
         POS_GC = POS[POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
         # Updating the progress bar with the number of rows in POS_GC
         pbar.update(len(POS_GC))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # Creating a progress bar for positive LC spectrums separation
@@ -49,6 +55,8 @@ def split_LC_GC(POS, NEG):
         POS_LC = POS[~POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
         # Updating the progress bar with the number of rows in POS_LC
         pbar.update(len(POS_LC))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # Creating a progress bar for negative GC spectrums separation
@@ -57,6 +65,8 @@ def split_LC_GC(POS, NEG):
         NEG_GC = NEG[NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
         # Updating the progress bar with the number of rows in NEG_GC
         pbar.update(len(NEG_GC))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # Creating a progress bar for negative LC spectrums separation
@@ -65,6 +75,8 @@ def split_LC_GC(POS, NEG):
         NEG_LC = NEG[~NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
         # Updating the progress bar with the number of rows in NEG_LC
         pbar.update(len(NEG_LC))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # Returning separated POS and NEG DataFrames for LC and GC spectrums
@@ -88,24 +100,32 @@ def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC):
     with tqdm(total=len(POS_LC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_LC_In_Silico")) as pbar:
         POS_LC_In_Silico_temp = POS_LC[POS_LC['PREDICTED'] == "true"]
         pbar.update(len(POS_LC_In_Silico_temp))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # Repeat similar process for POS_GC_In_Silico
     with tqdm(total=len(POS_GC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_GC_In_Silico")) as pbar:
         POS_GC_In_Silico_temp = POS_GC[POS_GC['PREDICTED'] == "true"]
         pbar.update(len(POS_GC_In_Silico_temp))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # Continue for NEG_LC_In_Silico
     with tqdm(total=len(NEG_LC), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_LC_In_Silico")) as pbar:
         NEG_LC_In_Silico_temp = NEG_LC[NEG_LC['PREDICTED'] == "true"]
         pbar.update(len(NEG_LC_In_Silico_temp))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # And for NEG_GC_In_Silico
     with tqdm(total=len(NEG_GC), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_GC_In_Silico")) as pbar:
         NEG_GC_In_Silico_temp = NEG_GC[NEG_GC['PREDICTED'] == "true"]
         pbar.update(len(NEG_GC_In_Silico_temp))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # The next set of progress bars are for rows where PREDICTED column value is "false"
@@ -114,24 +134,32 @@ def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC):
     with tqdm(total=len(POS_LC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_LC_Exp")) as pbar:
         POS_LC_temp = POS_LC[POS_LC['PREDICTED'] == "false"]
         pbar.update(len(POS_LC_temp))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # Then with POS_GC_Exp
     with tqdm(total=len(POS_GC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_GC_Exp")) as pbar:
         POS_GC_temp = POS_GC[POS_GC['PREDICTED'] == "false"]
         pbar.update(len(POS_GC_temp))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # Continue with NEG_LC_Exp
     with tqdm(total=len(NEG_LC), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_LC_Exp")) as pbar:
         NEG_LC_temp = NEG_LC[NEG_LC['PREDICTED'] == "false"]
         pbar.update(len(NEG_LC_temp))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # Finally, proceed with NEG_GC_Exp
     with tqdm(total=len(NEG_GC), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_GC_Exp")) as pbar:
         NEG_GC_temp = NEG_GC[NEG_GC['PREDICTED'] == "false"]
         pbar.update(len(NEG_GC_temp))
+        pbar.n = pbar.total
+        pbar.refresh()
         pbar.close()
 
     # Return a tuple of all newly created dataframes.
