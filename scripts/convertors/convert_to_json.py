@@ -34,29 +34,23 @@ def concatenate_MSP(msp_list):
     return spectrum_list
 
 def concatenate_xml(xml_list):
-    # This list will hold all our final XML content.
+    """
+    Concatenates the XML contents of a list of XML files and adds a filename tag to each XML.
+
+    :param xml_list: A list of XML file paths.
+    :return: A list containing the final XML contents.
+    """
     FINAL_XML = []
 
-    # Loop over each provided XML file.
-    for files in tqdm(xml_list, total=len(xml_list), unit=" spectrums", colour="green", desc="{:>70}".format("concatenate")):
-
-        # We only want to process files that are actually XML files.
+    pbar = tqdm(xml_list, total=len(xml_list), unit=" spectrums", colour="green", desc="{:>70}".format("concatenate"))
+    for files in pbar:
         if files.endswith(".xml"):
-            # os.path.basename gets the filename part of the path. We're removing the .xml ending.
             file_name = os.path.basename(files.replace(".xml", ""))
-
-            # We're opening the file in read mode with a specific encoding.
             with open(files, "r", encoding="UTF-8") as xml_file:
-                # We're reading the content of the file into xml_content.
                 xml_content = xml_file.read()
-
-                # We're adding a filename to the xml by finding `</id>\n` and adding our filename line right after.
             xml_content = re.sub("</id>\n", f"</id>\n  <filename>{file_name}</filename>\n", xml_content)
-
-            # We're extending the list of final XMLs with our newly processed xml_content.
             FINAL_XML.extend([xml_content])
-
-            # Our function then ends by returning the final list of XML contents.
+    pbar.close()
     return FINAL_XML
 
 def concatenate_csv(csv_list):

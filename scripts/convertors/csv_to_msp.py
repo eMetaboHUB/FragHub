@@ -43,35 +43,38 @@ def dataframe_to_msp(dataframe, name):
     spectrum_list = []
 
     # Iterate over each row in the dataframe
-    for index, row in tqdm(dataframe.iterrows(), total=len(dataframe), desc="{:>70}".format(name), colour="green", unit=" row"):
-        # Format the comments for the current row
-        COMMENTS = format_comments(row)
+    with tqdm(total=len(dataframe), desc="{:>70}".format(name), colour="green", unit=" row") as pbar:
+        for index, row in dataframe.iterrows():
+            # Format the comments for the current row
+            COMMENTS = format_comments(row)
 
-        # Here begins the creation of the spectrum string based on the values in the row
-        # Each attribute is checked if it exists in the row; if it doesn't, the value "UNKNOWN" is used
-        # The following block does this for several attributes such as NAME, PRECURSORMZ, PRECURSORTYPE, etc.
-        SPECTRUM = ""
-        SPECTRUM = SPECTRUM + "NAME: " + (row["NAME"] if row["NAME"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORMZ: " + (row["PRECURSORMZ"] if row["PRECURSORMZ"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + (row["PRECURSORTYPE"] if row["PRECURSORTYPE"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "FORMULA: " + (row["FORMULA"] if row["FORMULA"] else "UNKNOWN") + "\n"
-        # Ontology ???
-        SPECTRUM = SPECTRUM + "INCHIKEY: " + (row["INCHIKEY"] if row["INCHIKEY"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "INCHI: " + (row["INCHI"] if row["INCHI"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "SMILES: " + (row["SMILES"] if row["SMILES"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "RETENTIONTIME: " + (row["RETENTIONTIME"] if row["RETENTIONTIME"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "IONMODE: " + (row["IONMODE"] if row["IONMODE"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + (row["INSTRUMENTTYPE"] if row["INSTRUMENTTYPE"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "INSTRUMENT: " + (row["INSTRUMENT"] if row["INSTRUMENT"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + (row["COLLISIONENERGY"] if row["COLLISIONENERGY"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "EXACTMASS: " + (str(row["EXACTMASS"]) if row["EXACTMASS"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "IONIZATION: " + (row["IONIZATION"] if row["IONIZATION"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "MSLEVEL: " + (str(row["MSLEVEL"]) if row["MSLEVEL"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "COMMENT: " + (COMMENTS if COMMENTS else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + "NUM PEAKS: " + (row["NUM PEAKS"] if row["NUM PEAKS"] else "UNKNOWN") + "\n"
-        SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
-        # Finally, append the formatted spectrum string for the current row to the spectrum_list
-        spectrum_list.append(SPECTRUM)
+            # Here begins the creation of the spectrum string based on the values in the row
+            # Each attribute is checked if it exists in the row; if it doesn't, the value "UNKNOWN" is used
+            # The following block does this for several attributes such as NAME, PRECURSORMZ, PRECURSORTYPE, etc.
+            SPECTRUM = ""
+            SPECTRUM = SPECTRUM + "NAME: " + (row["NAME"] if row["NAME"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "PRECURSORMZ: " + (row["PRECURSORMZ"] if row["PRECURSORMZ"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "PRECURSORTYPE: " + (row["PRECURSORTYPE"] if row["PRECURSORTYPE"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "FORMULA: " + (row["FORMULA"] if row["FORMULA"] else "UNKNOWN") + "\n"
+            # Ontology ???
+            SPECTRUM = SPECTRUM + "INCHIKEY: " + (row["INCHIKEY"] if row["INCHIKEY"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "INCHI: " + (row["INCHI"] if row["INCHI"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "SMILES: " + (row["SMILES"] if row["SMILES"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "RETENTIONTIME: " + (row["RETENTIONTIME"] if row["RETENTIONTIME"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "IONMODE: " + (row["IONMODE"] if row["IONMODE"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "INSTRUMENTTYPE: " + (row["INSTRUMENTTYPE"] if row["INSTRUMENTTYPE"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "INSTRUMENT: " + (row["INSTRUMENT"] if row["INSTRUMENT"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "COLLISIONENERGY: " + (row["COLLISIONENERGY"] if row["COLLISIONENERGY"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "EXACTMASS: " + (str(row["EXACTMASS"]) if row["EXACTMASS"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "IONIZATION: " + (row["IONIZATION"] if row["IONIZATION"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "MSLEVEL: " + (str(row["MSLEVEL"]) if row["MSLEVEL"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "COMMENT: " + (COMMENTS if COMMENTS else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + "NUM PEAKS: " + (row["NUM PEAKS"] if row["NUM PEAKS"] else "UNKNOWN") + "\n"
+            SPECTRUM = SPECTRUM + row["PEAKS_LIST"] + "\n"
+            # Finally, append the formatted spectrum string for the current row to the spectrum_list
+            spectrum_list.append(SPECTRUM)
+            pbar.update()
+        pbar.close()
 
     # Return the list of formatted spectra strings
     return spectrum_list

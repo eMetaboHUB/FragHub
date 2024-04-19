@@ -42,6 +42,7 @@ def write_msp(spectrum_list, filename, mode, update, profile_name):
 
                     # Update the progress bar
                     pbar.update()
+                pbar.close()
         else:
             # When update is required (appending to the existing file).
             with open(output_file_path, 'a', encoding="UTF-8") as f:
@@ -53,6 +54,7 @@ def write_msp(spectrum_list, filename, mode, update, profile_name):
                         continue
 
                     pbar.update()
+                pbar.close()
 
 def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, profile_name, update=False):
     """
@@ -140,6 +142,7 @@ def write_csv(df, filename, mode, update, first_run, profile_name):
 
             # Update the progress bar
             pbar.update()
+        pbar.close()
 
 def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update=False):
     """
@@ -241,6 +244,7 @@ def write_json(df, filename, mode, profile_name):
 
             # Update the progress bar
             pbar.update()
+        pbar.close()
 
         # Write a closing square bracket to end the JSON array.
         f.write('\n]')
