@@ -1,5 +1,5 @@
-from tqdm import tqdm
 from .keys_convertor import *
+from tqdm import tqdm
 import pandas as pd
 import re
 
@@ -43,6 +43,7 @@ def csv_to_json_processing(FINAL_CSV):
 
             # The progress bar is being updated after converting each JSON object.
             pbar.update()
+        pbar.close()
 
     # Finally, the converted list of JSON objects is being returned.
     return json_list
