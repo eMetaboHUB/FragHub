@@ -28,9 +28,10 @@ def load_spectrum_list_from_msp(msp_file_path):
 
     # Open the file for reading
     with open(msp_file_path, 'r', encoding="UTF-8") as file:
+        pbar = tqdm(file, total=total_size, unit="B", unit_scale=True, colour="green", desc="{:>70}".format(f"loading [{filename}]"))
 
         # For each line in the file,  visualize the progress with tqdm
-        for line in tqdm(file, total=total_size, unit="B", unit_scale=True, colour="green", desc="{:>70}".format(f"loading [{filename}]")):
+        for line in pbar:
 
             # If the line is empty,
             if line.strip() == '':
@@ -48,6 +49,7 @@ def load_spectrum_list_from_msp(msp_file_path):
             # If the line is not empty, add it to the buffer.
             else:
                 buffer.append(line.strip())
+        pbar.close()
 
     # Return the list of spectra
     return spectrum_list
