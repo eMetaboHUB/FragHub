@@ -81,7 +81,7 @@ def build_window():
 
     # Create and position the logo
     logo = PhotoImage(file='../LOGO.png')  # Replace with the path to your image file
-    logo = logo.subsample(4, 4)
+    logo = logo.subsample(6, 6)
     label_logo = Label(logo_frame, image=logo)
     label_logo.pack(side='right')
 
