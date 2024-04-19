@@ -114,7 +114,9 @@ if __name__ == "__main__":
     spectrum_list_TRACES = spectrum_list
     # print(spectrum_list_TRACES[0])
 
-    spectrum_list_TRACES_DF = structure_traces_one(spectrum_list_TRACES, profile_name)
+    spectrum_list_TRACES_DF = spectrum_traces(spectrum_list_TRACES, profile_name)
+    spectrum_list_TRACES_DF_Final = pd.DataFrame(spectrum_list_TRACES_DF)
+    spectrum_list_TRACES_DF_Final.to_excel(rf"../OUTPUT/{profile_name}/TRACKER_1.xlsx", index=False)
 
     spectrum_list = [spectrum[0] for spectrum in spectrum_list if spectrum[0] is not None]
 
@@ -129,7 +131,7 @@ if __name__ == "__main__":
     time.sleep(0.01)
     spectrum_list, DELETED_CONCATENATE_DF = mols_derivation_and_calculation(spectrum_list)
 
-    structure_traces_two(spectrum_list_TRACES_DF, DELETED_CONCATENATE_DF, profile_name)
+    structure_traces_two(spectrum_list_TRACES_DF_Final, DELETED_CONCATENATE_DF, profile_name)
 
     # STEP 5: completing missing names
     time.sleep(0.01)
