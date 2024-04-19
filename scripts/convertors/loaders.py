@@ -67,8 +67,9 @@ def load_spectrum_list_from_mgf(mgf_file_path):
 
     # open the file in read mode
     with open(mgf_file_path, 'r', encoding="UTF-8") as file:
+        pbar = tqdm(file, total=total_size, unit="B", unit_scale=True, colour="green", desc="{:>70}".format(f"loading [{filename}]"))
         # iterate through each line in the file
-        for line in tqdm(file, total=total_size, unit="B", unit_scale=True, colour="green", desc="{:>70}".format(f"loading [{filename}]")):
+        for line in pbar:
             # if the current line is 'END IONS'
             if line.strip() == 'END IONS':
                 if buffer:  # check if the buffer is not empty
@@ -80,6 +81,7 @@ def load_spectrum_list_from_mgf(mgf_file_path):
                     buffer = [f"FILENAME={filename}"]  # reinitialise the buffer with the filename
             else:  # if the line is not 'END IONS'
                 buffer.append(line.strip())  # add the line to the buffer
+        pbar.close()
 
     # return the list of spectra
     return spectrum_list
