@@ -1,5 +1,4 @@
-from tkinter import Tk, Checkbutton, Button, Label, Entry, StringVar, IntVar, LEFT, Frame, RIGHT
-from tkinter import ttk  # import ttk module
+from tkinter import Tk, ttk, Checkbutton, Button, Label, Entry, StringVar, IntVar, LEFT, Frame, RIGHT, PhotoImage, Canvas
 import json
 import os
 
@@ -52,11 +51,39 @@ def build_window():
     """
     global root
     root = Tk()
+
     root.iconbitmap('../FragHub.ico')
-    root.title("FragHub")
+
+    root.title("FragHub 1.0.0")
+
+    # Create a main frame
+    main_frame = Frame(root)
+    main_frame.pack(fill='both', expand=True)
 
     # Create Tab Control
-    tabControl = ttk.Notebook(root)
+    tabControl = ttk.Notebook(main_frame)
+    # Enter code here to add tabs...
+
+    # Pack the tab control
+    tabControl.pack(side="top", fill='both', expand=True)
+
+    # Create the bottom frame
+    bottom_frame = Frame(main_frame)
+    bottom_frame.pack(side='top', fill='both', expand=True)
+
+    # Create and place the "Done" button
+    done_button = Button(bottom_frame, text="Done", command=on_done_button_clicked, height=3, width=10)
+    done_button.place(relx=0.5, rely=0.5, anchor='c')
+
+    # Create and place the logo label at the right of the window
+    logo_frame = Frame(bottom_frame)
+    logo_frame.pack(side='right', fill='y')
+
+    # Create and position the logo
+    logo = PhotoImage(file='../LOGO.png')  # Replace with the path to your image file
+    logo = logo.subsample(4, 4)
+    label_logo = Label(logo_frame, image=logo)
+    label_logo.pack(side='right')
 
     # New tab
     tab4 = Frame(tabControl)
@@ -72,7 +99,7 @@ def build_window():
     tabControl.add(tab4, text='Profils')
     tabControl.add(tab1, text='Update Settings')
 
-    tabControl.pack(expand=1, fill='both')
+    tabControl.pack(side="top", fill='both', expand=True)  # added fill and expand
 
     # Make a list of profiles
     profile_list = ['Profile 1', 'Profile 2', 'Profile 3']
@@ -163,8 +190,6 @@ def build_window():
             parameters_dict['check_minimum_of_high_peaks_requiered_no_peaks'].set(2)
             Entry(frame_params, textvariable=parameters_dict['check_minimum_of_high_peaks_requiered_no_peaks']).pack(
                 side=LEFT)
-
-    Button(root, text="Done", command=on_done_button_clicked).pack()
 
     root.mainloop()
 
