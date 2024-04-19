@@ -34,6 +34,12 @@ def concatenate_MSP(msp_list):
     return spectrum_list
 
 def concatenate_xml(xml_list):
+    """
+    Concatenates the XML contents of a list of XML files and adds a filename tag to each XML.
+
+    :param xml_list: A list of XML file paths.
+    :return: A list containing the final XML contents.
+    """
     # This list will hold all our final XML content.
     FINAL_XML = []
 
