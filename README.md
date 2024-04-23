@@ -57,4 +57,10 @@ This function is used to check whether a given array containing peak data has a 
    137.09664 0.498920401<br>
    165.0915547 0.4243093978<br>
    "<br>
+
+## FragHub: lost spectra tracking
+If you wish to visualize the spectra tracing eliminated during the process,
+you can, from the TOOLS branch, 
+start FragHub in the TOOLS\spectrum_loss_TRACES folder,
+and visualize the tracing from the jupyter notbook TOOLS\spectrum_loss_TRACES\TRACKERS.ipynb
     
