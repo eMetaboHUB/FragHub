@@ -2,7 +2,7 @@
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![Required_Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11057687.svg)](https://doi.org/10.5281/zenodo.10843117)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10837522.svg)](https://doi.org/10.5281/zenodo.10843117)
 
 ## INSTALLATION
 
