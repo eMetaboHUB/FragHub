@@ -162,7 +162,7 @@ def search_for_brand(tree_path, instrument_infos):
         # For each key in the instrument tree dictionary
         for key in instrument_tree.keys():
             # If the key (brand) is found in the instrument_infos string
-            if re.search(rf"(\b)?{key}(\b)?", instrument_infos):
+            if re.search(rf"(\b|^|$){key}(\b|^|$)", instrument_infos):
                 # Append the found key (brand) to the tree_path list
                 tree_path.append(key)
                 # Return the updated tree_path list
@@ -189,7 +189,7 @@ def search_for_model(tree_path, instrument_infos):
         for key in instrument_tree[tree_path[0]].keys():
             # Using a regular expression, search for the key in instrument_infos.
             # rf"(\b){key}(\b)" is a pattern that matches the key surrounded by word boundaries to avoid partial matches.
-            if re.search(rf"(\b){key}(\b)", instrument_infos):
+            if re.search(rf"(\b|^|$){key}(\b|^|$)", instrument_infos):
                 # If a match is found, append the key to the tree_path list
                 tree_path.append(key)
                 # Return the updated tree_path
@@ -221,7 +221,7 @@ def search_for_spectrum_type(tree_path, instrument_infos):
     """
     try:  # Try to execute the following block of code
         for key in instrument_tree[tree_path[0]][tree_path[1]].keys():  # This block of code iterates over each key found in the 2nd depth of the dictionary
-            if re.search(rf"(\b)?{key}(\b)?", instrument_infos):  # If the key is found in the instrument data string
+            if re.search(rf"(\b|^|$){key}(\b|^|$)", instrument_infos):  # If the key is found in the instrument data string
                 tree_path.append(key)  # Then append the found key value to the tree path
                 return tree_path  # Return the updated tree path
         tree_path.append('unknown')  # If the key is not found in the instrument data string, append 'unknown' to the tree path
@@ -248,7 +248,7 @@ def search_for_instrument_type(tree_path, instrument_infos):
 
             # Use regex to find if the current key exists in instrument_infos
             # If it does, append it to the tree_path and return the updated tree_path
-            if re.search(rf"(\b)?{key}(\b)?", instrument_infos):
+            if re.search(rf"(\b|^|$){key}(\b|^|$)", instrument_infos):
                 tree_path.append(key)
                 return tree_path
 
@@ -274,7 +274,7 @@ def search_for_ionisation(tree_path, instrument_infos):
         # Iterating over keys in the instrument tree at the specified path
         for key in instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]].keys():
             # If the key is present in instrument_infos, append it to the path and return
-            if re.search(rf"(\b)?{key}(\b)?", instrument_infos):
+            if re.search(rf"(\b|^|$){key}(\b|^|$)", instrument_infos):
                 tree_path.append(key)
                 return tree_path
         # If no match found, append 'unknown' to the path and return
