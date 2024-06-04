@@ -3,3 +3,5 @@ tqdm>=4.66.1
 rdkit>=2023.9.4
 numpy>=1.26.3
 ijson>=3.2.3
+splash~=1.0
+setuptools~=70.0.0
