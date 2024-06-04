@@ -1,3 +1,4 @@
+from splash import Spectrum, SpectrumType, Splash
 from convertors.loaders import *
 import concurrent.futures
 from tqdm import tqdm
@@ -6,13 +7,6 @@ import ijson
 import json
 import sys
 import os
-import re
-
-global inchikey_update_pattern
-inchikey_update_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])", flags=re.IGNORECASE)
-
-global peak_list_split_update_pattern
-peak_list_split_update_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 def hash_spectrum_data(spectrum_data):
     """
@@ -23,21 +17,15 @@ def hash_spectrum_data(spectrum_data):
     :rtype: str
     """
     # Convert spectrum data to string
-    spectrum_string = str(spectrum_data)
 
     # Search for inchikey_update_pattern in spectrum data
-    inchikey = re.search(inchikey_update_pattern, spectrum_string)
+    print(spectrum_data["PEAKS_LIST"])
     peak_list = str(spectrum_data["PEAKS_LIST"])
 
-    # Check if inchikey exists
-    if inchikey:
-        # Extract the inchikey
-        inchikey = inchikey.group(1)
-
     # Check if both inchikey and peak_list exist
-    if inchikey and peak_list:
+    if peak_list:
         # Combine inchikey and peak list into one string with a newline separator
-        spectrum_string = inchikey + "\n" + peak_list
+        spectrum_string =  "\n" + peak_list
 
     # Create a new sha256 hash object
     sha256 = hashlib.sha256()
