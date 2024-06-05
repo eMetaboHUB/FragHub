@@ -1,8 +1,8 @@
 from normalizer.mols_calculation import *
 from convertors.convert_to_json import *
 from convertors.csv_to_msp import *
-from fraghubid_generator import *
 from duplicatas_remover import *
+from splash_generator import *
 from name_completion import *
 from msp_normalizer import *
 from set_parameters import *
@@ -15,7 +15,7 @@ import os
 
 ordered_columns = ["FILENAME",
                    "PREDICTED",
-                   "FRAGHUBID",
+                   "SPLASH",
                    "SPECTRUMID",
                    "RESOLUTION",
                    "SYNON",
@@ -72,9 +72,9 @@ if __name__ == "__main__":
 
     # STEP 2: generating FRAGHUBID
     time.sleep(0.01)
-    print("{:>70}".format("-- GENERATING FragHub UNIQUE ID --"))
+    print("{:>70}".format("-- GENERATING SPLASH UNIQUE ID --"))
     time.sleep(0.01)
-    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF)
+    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = generate_splash_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF)
 
     spectrum_list = []
     spectrum_list.extend(FINAL_MSP)

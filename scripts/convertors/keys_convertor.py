@@ -8,7 +8,7 @@ keys_dict = dict(zip(Key_dataframe['known_synonym'], Key_dataframe['fraghub_defa
 global keys_list
 keys_list = ['FILENAME',
              'PREDICTED',
-             'FRAGHUBID',
+             'SPLASH',
              'SPECTRUMID',
              'RESOLUTION',
              'SYNON',
