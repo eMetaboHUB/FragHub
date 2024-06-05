@@ -1,93 +1,76 @@
-from convertors.loaders import *
+from splash import Spectrum, SpectrumType, Splash
 import concurrent.futures
 from tqdm import tqdm
-import hashlib
-import ijson
-import json
-import sys
 import os
-import re
-
-global inchikey_update_pattern
-inchikey_update_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])", flags=re.IGNORECASE)
-
-global peak_list_split_update_pattern
-peak_list_split_update_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 def hash_spectrum_data(spectrum_data):
     """
-    Calculate the SHA256 hash of spectrum data.
-    :param spectrum_data: The spectrum data to hash.
-    :type spectrum_data: str
-    :return: The SHA256 hash of spectrum data.
-    :rtype: str
+    Hashes the spectrum data with SPLASH key.
+
+    :param spectrum_data: The spectrum data.
+    :return: The hashed spectrum.
     """
     # Convert spectrum data to string
-    spectrum_string = str(spectrum_data)
 
     # Search for inchikey_update_pattern in spectrum data
-    inchikey = re.search(inchikey_update_pattern, spectrum_string)
-    peak_list = str(spectrum_data["PEAKS_LIST"])
-
-    # Check if inchikey exists
-    if inchikey:
-        # Extract the inchikey
-        inchikey = inchikey.group(1)
+    peak_list = [tuple(peaks) for peaks in spectrum_data["PEAKS_LIST"]]
 
     # Check if both inchikey and peak_list exist
-    if inchikey and peak_list:
+    if peak_list:
         # Combine inchikey and peak list into one string with a newline separator
-        spectrum_string = inchikey + "\n" + peak_list
-
-    # Create a new sha256 hash object
-    sha256 = hashlib.sha256()
-
-    # Update the sha256 object with the spectrum data
-    sha256.update(spectrum_string.encode('utf-8'))
-
-    # Return the hexadecimal representation of the sha256 hash
-    return sha256.hexdigest()
-
-def genrate_fraghubid(spectrum):
-    """
-    This function generates FragHubID for a given spectrum by hashing the spectrum data.
-
-    :param spectrum: The spectrum data.
-    :return: The spectrum data with Fragment Hub ID.
-    """
-    # Hash the spectrum data and convert the resultant hash into a string.
-    # fraghubid holds the hashed id of the spectrum data
-    fraghubid = str(hash_spectrum_data(spectrum))
-
-    # Return None if fraghubid is empty i.e., no FragHubID could be generated.
-    if not fraghubid:
+        spectrum = Spectrum(peak_list, SpectrumType.MS)
+        return Splash().splash(spectrum)
+    else:
         return None
 
-    # Add the generated fraghubid to the spectrum data dictionary.
-    # This line is updating the spectrum dictionary with the newly generated fraghubid
-    spectrum["FRAGHUBID"] = fraghubid
+def generate_splash(spectrum):
+    """
 
-    # Return the spectrum data with the newly added FragHubID
-    # This will be a dictionary containing the spectrum data, updated with a new FragHubID.
+    :param spectrum: a dictionary containing the spectrum data
+    :return: a dictionary containing the spectrum data updated with a new splash
+
+    This method generates a splash for the given spectrum data. The spectrum data is hashed using the `hash_spectrum_data` method and the resultant hash is converted into a string.
+
+    If no splash can be generated (i.e., the hash is empty), None is returned.
+
+    The generated splash is then added to the spectrum data dictionary using the key "SPLASH".
+
+    Finally, the spectrum data with the newly added splash is returned.
+
+    """
+    # Hash the spectrum data and convert the resultant hash into a string.
+    # splash holds the hashed id of the spectrum data
+    splash = str(hash_spectrum_data(spectrum))
+
+    # Return None if splash is empty i.e., no splash could be generated.
+    if not splash:
+        return None
+
+    # Add the generated splash to the spectrum data dictionary.
+    # This line is updating the spectrum dictionary with the newly generated splash
+    spectrum["SPLASH"] = splash
+
+    # Return the spectrum data with the newly added splash
+    # This will be a dictionary containing the spectrum data, updated with a new splash.
     return spectrum
 
-def generate_fraghubid_processing(spectrum_list, files):
+def generate_splash_processing(spectrum_list, files):
     """
-    Perform parallel processing of the given spectrum list and generate fraghubid for each spectrum.
+    Perform parallel processing of the given spectrum list and generate splash for each spectrum.
     :param spectrum_list: A list of spectra.
-    :return: A list of fraghubids generated for each spectrum.
+    :return: A list of splash generated for each spectrum.
     """
     filename = os.path.basename(files)  # Extract the base name of the file path
     chunk_size = 5000  # Set the size of chunks
     final = []  # Create an empty list to store final results
     # Create a progress bar with the total length of spectrum_list and a relevant description
-    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>70}".format(f"generating FragHubID on [{filename}]"))
+    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>70}".format(f"generating SPLASH on [{filename}]"))
     # Dividing the spectrum list into chunks
     for i in range(0, len(spectrum_list), chunk_size):
         with concurrent.futures.ThreadPoolExecutor() as executor:
             chunk = spectrum_list[i:i + chunk_size]  # create a chunk
-            # Use a executor's map function to apply 'genrate_fraghubid' function to each spectrum in the chunk, and convert it to a list
-            results = list(executor.map(genrate_fraghubid, chunk))
+            # Use a executor's map function to apply 'generate_splash' function to each spectrum in the chunk, and convert it to a list
+            results = list(executor.map(generate_splash, chunk))
             progress_bar.update(len(chunk))  # update the progress bar by the size of the chunk processed
         final.extend([res for res in results if res is not None])  # Extend the final results list with results that are not None
     progress_bar.close()  # close the progress bar
@@ -119,25 +102,25 @@ def process_converted_after(spectrum_list, mode):
         file_path = os.path.abspath("../INPUT/CONVERTED/MGF_converted.json")
         filename = os.path.basename(file_path)
 
-    # Generate FragHubID for the spectrum list
-    spectrum_list = generate_fraghubid_processing(spectrum_list, filename)
+    # Generate splash for the spectrum list
+    spectrum_list = generate_splash_processing(spectrum_list, filename)
 
     # Return the processed spectrum list
     return spectrum_list
 
-def generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF):
+def generate_splash_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF):
     """
-    Process the converted files and generate a FragHub ID for each file type.
+    Process the converted files and generate a splash ID for each file type.
     - FINAL_MSP: The path to the converted MSP file.
     - FINAL_XML: The path to the converted XML file.
     - FINAL_CSV: The path to the converted CSV file.
     - FINAL_JSON: The path to the converted JSON file.
     - FINAL_MGF: The path to the converted MGF file.
 
-    - Return: A tuple containing the FragHub IDs for each file type (MSP, XML, CSV, JSON, MGF).
+    - Return: A tuple containing the splash IDs for each file type (MSP, XML, CSV, JSON, MGF).
     """
 
-    # Check if the MSP file path is valid, if it is, process the file to generate fraghub id
+    # Check if the MSP file path is valid, if it is, process the file to generate splash id
     if FINAL_MSP:
         FINAL_MSP = process_converted_after(FINAL_MSP, "MSP")
 
@@ -157,5 +140,5 @@ def generate_fraghub_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF):
     if FINAL_MGF:
         FINAL_MGF = process_converted_after(FINAL_MGF, "MGF")
 
-    # Finally return a tuple containing fraghub ids for each file type
+    # Finally return a tuple containing splash ids for each file type
     return FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF
