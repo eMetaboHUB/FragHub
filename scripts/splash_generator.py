@@ -18,8 +18,11 @@ def hash_spectrum_data(spectrum_data):
     # Check if both inchikey and peak_list exist
     if peak_list:
         # Combine inchikey and peak list into one string with a newline separator
-        spectrum = Spectrum(peak_list, SpectrumType.MS)
-        return Splash().splash(spectrum)
+        try:
+            spectrum = Spectrum(peak_list, SpectrumType.MS)
+            return Splash().splash(spectrum)
+        except:
+            return None
     else:
         return None
 
