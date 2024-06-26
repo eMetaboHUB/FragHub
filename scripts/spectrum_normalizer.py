@@ -11,7 +11,7 @@ np.set_printoptions(suppress=True)
 global float_check_pattern
 float_check_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
-def peak_list_to_np_array(peak_list, precursormz):
+def peak_list_cleaning(peak_list, precursormz):
     """
     This function serves the purpose of converting a list of peak tuples (mz and intensity values) into a numpy array.
 
@@ -98,7 +98,7 @@ def spectrum_cleaning(spectrum):
             if float_precursor_mz <= 0.0:
                 return None
             # Converts peak list to a numpy array
-            peak_list_np = peak_list_to_np_array(peak_list, float_precursor_mz)
+            peak_list_np = peak_list_cleaning(peak_list, float_precursor_mz)
             # If numpy array is empty, it returns none
             if peak_list_np.size == 0:
                 return None
