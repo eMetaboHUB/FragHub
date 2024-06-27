@@ -14,6 +14,7 @@ def parse_peak_list(peak_list_string):
     """
     # Here, 're.findall' method is being used to find all the occurrences of peak_list_csv_to_json_pattern in peak_list_string.
     peaks = re.findall(peak_list_csv_to_json_pattern, peak_list_string)
+    del peak_list_string
 
     # Peaks are being converted to a list of two values' lists, where each sub-list contains the float values of m/z and intensity.
     return [[float(mz), float(intensity)] for mz, intensity in peaks]
@@ -27,6 +28,7 @@ def csv_to_json_processing(FINAL_CSV):
     """
     # Here, 'FINAL_CSV.to_dict()' method is being used to convert each row of CSV into a dictionary and all dictionaries are combined into a list.
     json_list = FINAL_CSV.to_dict('records')
+    del FINAL_CSV
 
     # The 'if' and 'elif' checks whether 'peaks' or 'peaks_list' is in the row, and if so, calls the parse_peak_list function for them.
     for row in json_list:
