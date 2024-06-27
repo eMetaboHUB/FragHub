@@ -28,7 +28,7 @@ def csv_to_json_processing(FINAL_CSV):
     """
     # Here, 'FINAL_CSV.to_dict()' method is being used to convert each row of CSV into a dictionary and all dictionaries are combined into a list.
     json_list = FINAL_CSV.to_dict('records')
-    FINAL_CSV = []
+    del FINAL_CSV
 
     # The 'if' and 'elif' checks whether 'peaks' or 'peaks_list' is in the row, and if so, calls the parse_peak_list function for them.
     for row in json_list:
