@@ -154,11 +154,11 @@ def peak_list_to_array(peak_list):
 
     If there are no matches found (meaning no peaks were found in the peak_list string), the function returns an empty list.
     """
-    peaks_match = re.findall(peak_list_split_pattern, peak_list)  # use regex to find all peaks in the string
+    peak_list = re.findall(peak_list_split_pattern, peak_list)  # use regex to find all peaks in the string
 
     # If peak matches found return list of lists, where inner lists are pair of floats
-    if peaks_match:
-        peak_array = [[float(i), float(j)] for i, j in peaks_match]
+    if peak_list:
+        peak_array = [[float(i), float(j)] for i, j in peak_list]
         return peak_array
     # If peak matches not found return an empty list
     else:
@@ -189,9 +189,9 @@ def structure_metadata_and_peak_list(metadata, peak_list):
         return {}, []
     else:
         # Structure the metadata into dictionary form
-        metadata_dict = metadata_to_dict(metadata)
+        metadata = metadata_to_dict(metadata)
         # Check if the new structured metadata is empty
-        if not metadata_dict:
+        if not metadata:
             # If it's empty, return an empty dictionary and list
             return {}, []
         else:
@@ -199,7 +199,7 @@ def structure_metadata_and_peak_list(metadata, peak_list):
             peak_list = peak_list_to_array(peak_list)
             # If the structured peak list is not empty, return both structured metadata and peak list.
             if peak_list:
-                return metadata_dict, peak_list
+                return metadata, peak_list
             else:
                 # If the peak list is, nonetheless, empty, return an empty dictionary and list.
                 return {}, []
@@ -219,6 +219,7 @@ def msp_to_json(spectrum):
 
     # Extract general (meta) info and raw peak info from the MSP spectrum
     metadata, peak_list = extract_metadata_and_peak_list(spectrum)
+    del spectrum
 
     # Convert the unstructured metadata and peak list extracted from the spectrum to structured forms
     metadata, peak_list = structure_metadata_and_peak_list(metadata, peak_list)
@@ -239,37 +240,31 @@ def msp_to_json(spectrum):
 
 def msp_to_json_processing(FINAL_MSP):
     """
-    Process a list of spectrums and convert them to JSON format.
-    :param spectrum_list: List of spectrums to be processed.
+    Process a list of MSP spectrums and convert them to JSON format.
+    :param FINAL_MSP: List of MSP spectrums to be processed.
     :return: List of spectrums in JSON format.
     """
-    # Defines the chunk size
-    chunk_size = 5000
+    start = 0
+    end = len(FINAL_MSP)
 
-    # List to store the converted spectrums
-    final = []
+    # Initialize a progress bar to keep track of and visualize the conversion process
+    progress_bar = tqdm(total=end, unit=" spectrums", colour="green", desc="{:>70}".format("converting MSP spectrums"))
 
-    # Initialize progress bar for tracking conversion progress
-    progress_bar = tqdm(total=len(FINAL_MSP), unit=" spectrums", colour="green", desc="{:>70}".format("converting MSP spectrums"))
+    while start < end:
+        chunk_size = min(end - start, 5000)
 
-    # Dividing the spectrum list into chunks and iterate over it
-    for i in range(0, len(FINAL_MSP), chunk_size):
-        # Concurrency is used for better performance
+        # Use ThreadPoolExecutor to process the chunk
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            # Slicing the list to form a chunk
-            chunk = FINAL_MSP[i:i + chunk_size]
+            FINAL_MSP[start:start + chunk_size] = list(executor.map(msp_to_json, FINAL_MSP[start:start + chunk_size]))
 
-            # Convert the spectrums in the current chunk to JSON using msp_to_json function in a parallel manner
-            results = list(executor.map(msp_to_json, chunk))
+        # Filter out None results
+        FINAL_MSP[start:start + chunk_size] = [item for item in FINAL_MSP[start:start + chunk_size] if item is not None]
 
-            # Update the progress bar by the size of the chunk
-            progress_bar.update(len(chunk))
+        # Update progress bar
+        progress_bar.update(chunk_size)
 
-        # Add the converted spectrums to the final list, ignore the spectrums if the msp_to_json function returns None
-        final.extend([res for res in results if res is not None])
+        # Move to the next chunk
+        start += chunk_size
 
-    # Close the progress bar when the operation completes
     progress_bar.close()
-
-    # Return the list of converted spectrums
-    return final
+    return FINAL_MSP
