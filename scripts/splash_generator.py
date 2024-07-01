@@ -10,14 +10,11 @@ def hash_spectrum_data(spectrum_data):
     :param spectrum_data: The spectrum data.
     :return: The hashed spectrum.
     """
-    # Convert spectrum data to string
-
-    # Search for inchikey_update_pattern in spectrum data
     peak_list = [tuple(peaks) for peaks in spectrum_data["PEAKS_LIST"]]
 
-    # Check if both inchikey and peak_list exist
+    # Check if peak_list exist
     if peak_list:
-        # Combine inchikey and peak list into one string with a newline separator
+        # calculate splash key
         try:
             spectrum = Spectrum(peak_list, SpectrumType.MS)
             return Splash().splash(spectrum)
