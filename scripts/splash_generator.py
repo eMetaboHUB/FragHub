@@ -40,6 +40,9 @@ def generate_splash(spectrum):
     """
     # Hash the spectrum data and convert the resultant hash into a string.
     # splash holds the hashed id of the spectrum data
+    if not isinstance(spectrum, dict):
+        return None
+
     splash = str(hash_spectrum_data(spectrum))
 
     # Return None if splash is empty i.e., no splash could be generated.
