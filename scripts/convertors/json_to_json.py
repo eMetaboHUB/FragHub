@@ -137,37 +137,31 @@ def json_to_json(json_dict):
 
 def json_to_json_processing(FINAL_JSON):
     """
-    Converts a list of JSON objects into processed JSON data.
+    Converts a list of JSON objects into processed JSON data inplace.
     :param FINAL_JSON: A list of JSON objects to be processed.
-    :return: A list of processed JSON data.
-    This method takes a list of JSON objects and processes them using the 'json_to_json' method. The list is divided into chunks of size 'chunk_size'. Each chunk is processed concurrently
-    * using a ThreadPoolExecutor, and the results are collected and returned as a list of processed JSON data.
+    :return: None
     """
-    # Set the predefined chunk size
-    chunk_size = 5000
-    # Initialize an empty list for storing the results
-    final = []
-    # Initialize a progress bar for providing progress updates
-    progress_bar = tqdm(total=len(FINAL_JSON), unit=" spectrums", colour="green", desc="{:>70}".format("converting JSON spectrums"))
+    start = 0
+    end = len(FINAL_JSON)
 
-    # Start of JSON processing logic
-    # This loop repeatedly divides the list of JSON data into chunks of prespecified size
-    for i in range(0, len(FINAL_JSON), chunk_size):
-        # Each JSON chunk within the larger list is being processed concurrently
-        # The ThreadPoolExecutor is used for achieving parallel execution
+    progress_bar = tqdm(total=end, unit=" spectrums", colour="green", desc="{:>70}".format("converting JSON spectrums"))
+
+    while start < end:
+        chunk_size = min(end - start, 5000)
+
+        # Use ThreadPoolExecutor to process the chunk
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            # Get the current chunk to be processed
-            chunk = FINAL_JSON[i:i + chunk_size]
-            # Process the current chunk using the 'json_to_json' function
-            results = list(executor.map(json_to_json, chunk))
-            # Update the progress bar based on chunk size
-            progress_bar.update(len(chunk))
-        # Extend the final list with results after checking whether they are None
-        # Filter out any None results before adding to final list
-        final.extend([res for res in results if res is not None])
+            FINAL_JSON[start:start + chunk_size] = list(executor.map(json_to_json, FINAL_JSON[start:start + chunk_size]))
 
-    # Close the progress bar after all processing is complete
+        # Filter out None results
+        FINAL_JSON[start:start + chunk_size] = [item for item in FINAL_JSON[start:start + chunk_size] if item is not None]
+
+        # Update progress bar
+        progress_bar.update(chunk_size)
+
+        # Move to the next chunk
+        start += chunk_size
+
     progress_bar.close()
 
-    # Return the final list of processed JSON data
-    return final
+    return FINAL_JSON

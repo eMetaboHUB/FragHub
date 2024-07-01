@@ -32,6 +32,7 @@ def extract_metadata_and_peak_list(spectrum):
 
     # The function then searches for a match in the spectrum based on the regex metadata_peak_list_split_pattern
     match = re.search(metadata_peak_list_split_pattern, spectrum)
+    del spectrum
 
     # If the search finds a match, metadata and peak list are defined as group 1 & 2 of the match respectively
     if match:
@@ -53,6 +54,7 @@ def metadata_to_dict(metadata):
 
     # Use regular expression to find all metadata matches in the given string
     metadata_matches = re.findall(metadata_pattern, metadata)
+    del metadata
 
     # Check if there are matches
     if metadata_matches:
@@ -78,11 +80,13 @@ def peak_list_to_array(peak_list):
 
     # Use regular expression to find all peak pairs in the given string
     peaks_match = re.findall(peak_list_split_pattern, peak_list)
+    del peak_list
 
     # If matches exist
     if peaks_match:
         # Convert the matches into an array of lists with x, y as float
         peak_array = [[float(i), float(j)] for i, j in peaks_match]
+        del peaks_match
         return peak_array
     else:
         # If no matches found or the peak list is empty, return an empty list
@@ -102,6 +106,7 @@ def structure_metadata_and_peak_list(metadata, peak_list):
     else:
         # Convert the metadata into a dictionary
         metadata_dict = metadata_to_dict(metadata)
+        del metadata
         # If metadata dictionary is empty return empty dictionary and list
         if not metadata_dict:
             return {}, []
@@ -126,6 +131,7 @@ def mgf_to_json(spectrum):
 
     # Extract the metadata and peak list from the spectrum
     metadata, peak_list = extract_metadata_and_peak_list(spectrum)
+    del spectrum
 
     # Structure the extracted metadata and peak list
     metadata, peak_list = structure_metadata_and_peak_list(metadata, peak_list)
@@ -149,28 +155,27 @@ def mgf_to_json_processing(FINAL_MGF):
     :param FINAL_MGF: A list of MGF spectrums to be converted.
     :return: A list of JSON-formatted spectrums.
     """
-    # Set the chunk size for processing (in this case, 5000 spectrums at a time)
-    chunk_size = 5000
-    # Initialize a list to hold the converted spectrums
-    final = []
+    start = 0
+    end = len(FINAL_MGF)
+
     # Initialize a progress bar to keep track of and visualize the conversion process
-    progress_bar = tqdm(total=len(FINAL_MGF), unit=" spectrums", colour="green", desc="{:>70}".format("converting MGF spectrums"))
+    progress_bar = tqdm(total=end, unit=" spectrums", colour="green", desc="{:>70}".format("converting MGF spectrums"))
 
-    # Loop over the MGF spectrums in chunks of size 'chunk_size'
-    for i in range(0, len(FINAL_MGF), chunk_size):
-        # Use a ThreadPoolExecutor to process the current chunk of spectrums concurrently
+    while start < end:
+        chunk_size = min(end - start, 5000)
+
+        # Use ThreadPoolExecutor to process the chunk
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            # Get the current chunk of spectrums
-            chunk = FINAL_MGF[i:i + chunk_size]
-            # Use the executor to map the 'mgf_to_json' function to each spectrum in the chunk, and store the results
-            results = list(executor.map(mgf_to_json, chunk))
-            # Update the progress bar by the number of spectra processed in the current chunk
-            progress_bar.update(len(chunk))
-        # Extend the main result list with the valid results from the current chunk (i.e., non-None results)
-        final.extend([res for res in results if res is not None])
+            FINAL_MGF[start:start + chunk_size] = list(executor.map(mgf_to_json, FINAL_MGF[start:start + chunk_size]))
 
-    # Close the progress bar once the processing is done
+        # Filter out None results
+        FINAL_MGF[start:start + chunk_size] = [item for item in FINAL_MGF[start:start + chunk_size] if item is not None]
+
+        # Update progress bar
+        progress_bar.update(chunk_size)
+
+        # Move to the next chunk
+        start += chunk_size
+
     progress_bar.close()
-
-    # Return the final list of converted spectrums
-    return final
+    return FINAL_MGF
