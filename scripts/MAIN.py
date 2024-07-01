@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
     files_to_process = False
 
-    # Check if there is msp file to process
+    # Check if there is file to process
     if FINAL_MSP or FINAL_XML or FINAL_CSV or FINAL_JSON or FINAL_MGF:
         files_to_process = True
 

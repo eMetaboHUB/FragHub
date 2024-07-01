@@ -46,6 +46,7 @@ def convert_keys(metadata_dict):
     # and matches them with the keys available in keys_dict and keys_list.
     # The output is a dictionary where the keys are mapped from keys_dict and the values come from metadata_dict.
     converted = {keys_dict[key.lower()]: val for key, val in metadata_dict.items() if key.lower() in keys_dict and keys_dict[key.lower()] in keys_list}
+    del metadata_dict
 
     # After initial conversion, there might still be some keys from keys_list that are not in the converted dictionary.
     # This line adds those missing keys to the converted dictionary with an empty string ("") as their value.
