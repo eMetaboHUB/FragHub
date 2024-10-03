@@ -97,7 +97,7 @@ def convertlist2singlestring(list):
 
 
 ## test script
-dfcpd = pd.read_excel(r"C:\Users\Axel\Documents\Data_publi\SunBurst\MSP_smiles_npclass_null.xlsx")
+dfcpd = pd.read_excel(r"D:\Axel\DATAS\ISTD_ALL\filtered_DB\Agromix_C18_1.5RT_Jul2023_neg_filtered.xlsx")
 res = []
 SMILES_col_name = "SMILES"
 lenghtdf = len(dfcpd)
@@ -107,6 +107,6 @@ for ind in tqdm(range(lenghtdf), total=lenghtdf, colour="green"):
     # print(r)
     res.append(r)
 
-with open(r"C:\Users\Axel\Documents\Data_publi\SunBurst\MSP_smiles_NPclass_complete.json","w") as jsonFile:
+with open(r"D:\Axel\DATAS\ISTD_ALL\filtered_DB\ISTD_neg_smiles_NPclass_complete.json","w") as jsonFile:
     json.dump(res,jsonFile,indent=4)
     jsonFile.close
