@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import json
 
 # Chemin du dossier contenant les fichiers .txt
 dossier = r"D:\Axel\DATABASE\MSnLib"
