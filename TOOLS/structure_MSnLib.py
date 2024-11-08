@@ -62,7 +62,7 @@ print("df to dict")
 dict_records = df_concat.to_dict(orient='records')
 
 # Sauvegarder en fichier JSON avec une barre de progression
-chemin_sortie_json = os.path.join(dossier, "MSnLib.json")
+chemin_sortie_json = os.path.join(dossier, "MetaboAnalyste.json")
 print("writting files json")
 with open(chemin_sortie_json, 'w', encoding='utf-8') as f:
     # Écriture avec barre de progression
