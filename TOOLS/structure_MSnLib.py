@@ -63,11 +63,14 @@ dict_records = df_concat.to_dict(orient='records')
 
 # Sauvegarder en fichier JSON avec une barre de progression
 chemin_sortie_json = os.path.join(dossier, "MetaboAnalyste.json")
-print("writting files json")
+print("Écriture des fichiers JSON")
 with open(chemin_sortie_json, 'w', encoding='utf-8') as f:
+    f.write('[\n')  # Début de la liste JSON
     # Écriture avec barre de progression
-    for record in tqdm(dict_records, desc="Sauvegarde en JSON"):
-        json.dump(record, f, ensure_ascii=False)
-        f.write('\n')
+    for i, record in enumerate(tqdm(dict_records, desc="Sauvegarde en JSON")):
+        f.write(json.dumps(record, ensure_ascii=False))
+        if i < len(dict_records) - 1:
+            f.write(',\n')  # Ajoute une virgule après chaque élément sauf le dernier
+    f.write('\n]')  # Fin de la liste JSON
 
 print(f"Le fichier JSON a été enregistré dans : {chemin_sortie_json}")
