@@ -28,6 +28,9 @@ df_concat = pd.concat(dataframes, ignore_index=True)
 # Renommer la colonne 'MS2Peaks' en 'peaks_json'
 df_concat.rename(columns={'MS2Peaks': 'peaks_json'}, inplace=True)
 
+# Remplacer les cellules vides par des chaînes vides
+df_concat.fillna("", inplace=True)
+
 
 # Transformer chaque valeur de 'peaks_json' en matrice
 def transform_peaks(peaks_str):
