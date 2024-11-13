@@ -1,3 +1,4 @@
+from peaks_filters.entropy_calculation import *
 from normalizer.values_normalizer import *
 from set_parameters import parameters_dict
 from peaks_filters.filters import *
@@ -99,6 +100,7 @@ def spectrum_cleaning(spectrum):
                 return None
             # Converts peak list to a numpy array
             peak_list_np = peak_list_cleaning(peak_list, float_precursor_mz)
+            spectrum["ENTROPY"] = entropy_calculation(peak_list)
             # If numpy array is empty, it returns none
             if peak_list_np.size == 0:
                 return None
