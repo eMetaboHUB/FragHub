@@ -31,6 +31,7 @@ keys_list = ['FILENAME',
              'IONMODE',
              'COMMENT',
              'NUM PEAKS',
+             'ENTROPY',
              'PEAKS_LIST']
 
 def convert_keys(metadata_dict):
