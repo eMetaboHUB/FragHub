@@ -37,6 +37,7 @@ ordered_columns = ["FILENAME",
                    "RETENTIONTIME",
                    "IONMODE",
                    "COMMENT",
+                   "ENTROPY",
                    "NUM PEAKS",
                    "PEAKS_LIST"]
 
