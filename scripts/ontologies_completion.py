@@ -20,10 +20,9 @@ def ontologies_completion(spectrum_list):
 
     Steps:
     1. Adds columns 'CLASSYFIRE_CLASS' and 'NPCLASSIF_PATHWAY' with default value 'UNKNOWN'.
-    2. Counts the number of unique INCHIKEYs in spectrum_list.
-    3. Initializes a tqdm progress bar for tracking updates.
-    4. Defines and applies fill_row function to update ontology information based on INCHIKEY matches.
-    5. Closes the progress bar and returns the updated spectrum_list.
+    2. Merges spectrum_list with ontologies_df based on INCHIKEY.
+    3. Updates the progress bar based on the merge progress.
+    4. Returns the updated spectrum_list.
     """
     # Ajouter les colonnes 'CLASSYFIRE_CLASS' et 'NPCLASSIF_PATHWAY' avec des valeurs par défaut 'UNKNOWN'
     spectrum_list['CLASSYFIRE_CLASS'] = "UNKNOWN"
@@ -35,18 +34,27 @@ def ontologies_completion(spectrum_list):
     # Initialise la barre de progression tqdm
     pbar = tqdm(total=num_keys, colour="green", unit=" key", desc="{:>70}".format("updating ontologies"))
 
-    def fill_row(row):
-        # Mise à jour des valeurs si les INCHIKEY correspondent
-        match = ontologies_df[ontologies_df['INCHIKEY'] == row['INCHIKEY']]
-        if not match.empty:
-            row['CLASSYFIRE_CLASS'] = match['CLASSYFIRE_CLASS'].values[0]
-            row['NPCLASSIF_PATHWAY'] = match['NPCLASSIF_PATHWAY'].values[0]
-        pbar.update()  # Mise à jour de la barre de progression
-        return row
+    # Fusionner spectrum_list avec ontologies_df sur la colonne 'INCHIKEY'
+    completed_df = pd.merge(
+        spectrum_list,
+        ontologies_df[['INCHIKEY', 'CLASSYFIRE_CLASS', 'NPCLASSIF_PATHWAY']],
+        on='INCHIKEY',
+        how='left'
+    )
 
-    # Appliquer la fonction à chaque ligne de spectrum_list
-    spectrum_list = spectrum_list.apply(fill_row, axis=1)
+    # Vérifier et mettre à jour les colonnes avec les valeurs fusionnées `CLASSYFIRE_CLASS` et `NPCLASSIF_PATHWAY`
+    completed_df['CLASSYFIRE_CLASS'] = completed_df['CLASSYFIRE_CLASS_y'].combine_first(
+        completed_df['CLASSYFIRE_CLASS_x'])
+    completed_df['NPCLASSIF_PATHWAY'] = completed_df['NPCLASSIF_PATHWAY_y'].combine_first(
+        completed_df['NPCLASSIF_PATHWAY_x'])
 
-    pbar.close()  # Fermer la barre de progression
+    # Supprimer les colonnes temporaires
+    completed_df.drop(
+        columns=['CLASSYFIRE_CLASS_x', 'CLASSYFIRE_CLASS_y', 'NPCLASSIF_PATHWAY_x', 'NPCLASSIF_PATHWAY_y'],
+        inplace=True)
 
-    return spectrum_list
+    # Mettre à jour la barre de progression
+    pbar.update(num_keys)
+    pbar.close()
+
+    return completed_df
