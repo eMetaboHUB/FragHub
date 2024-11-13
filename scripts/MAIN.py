@@ -1,5 +1,6 @@
 from normalizer.mols_calculation import *
 from convertors.convert_to_json import *
+from ontologies_completion import *
 from convertors.csv_to_msp import *
 from spectrum_normalizer import *
 from duplicatas_remover import *
@@ -38,6 +39,8 @@ ordered_columns = ["FILENAME",
                    "IONMODE",
                    "COMMENT",
                    "ENTROPY",
+                   "CLASSYFIRE_CLASS",
+                   "NPCLASSIF_PATHWAY",
                    "NUM PEAKS",
                    "PEAKS_LIST"]
 
@@ -127,7 +130,13 @@ if __name__ == "__main__":
     time.sleep(0.01)
     spectrum_list = names_completion(spectrum_list)
 
-    # STEP 6: SPLITTING
+    # STEP 6: completing missing names
+    time.sleep(0.01)
+    print("{:>70}".format("-- ONTOLOGIES COMPLETION --"))
+    time.sleep(0.01)
+    spectrum_list = ontologies_completion(spectrum_list)
+
+    # STEP 7: SPLITTING
     # -- SPLITTING [POS / NEG] --
     time.sleep(0.01)
     print("{:>70}".format("-- SPLITTING [POS / NEG] --"))
@@ -149,7 +158,7 @@ if __name__ == "__main__":
     time.sleep(0.01)
     POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df)
 
-    # STEP 7: Remove duplicates spectrum when same peak_list for the same inchikey.
+    # STEP 8: Remove duplicates spectrum when same peak_list for the same inchikey.
     time.sleep(0.01)
     print("{:>70}".format("-- REMOVING DUPLICATAS --"))
     time.sleep(0.01)
@@ -161,7 +170,7 @@ if __name__ == "__main__":
         time.sleep(0.01)
         POS_LC_df, POS_LC, POS_LC_df_insilico, POS_LC_insilico, POS_GC_df, POS_GC, POS_GC_df_insilico, POS_GC_insilico, NEG_LC_df, NEG_LC, NEG_LC_df_insilico, NEG_LC_insilico, NEG_GC_df, NEG_GC, NEG_GC_df_insilico, NEG_GC_insilico = csv_to_msp(POS_LC_df, POS_LC_df_insilico, POS_GC_df, POS_GC_df_insilico, NEG_LC_df, NEG_LC_df_insilico, NEG_GC_df, NEG_GC_df_insilico)
 
-    # STEP 8: writting output files
+    # STEP 9: writting output files
     if parameters_dict["csv"] == 1.0:
         time.sleep(0.01)
         print("{:>70}".format("-- WRITING CSV --"))
