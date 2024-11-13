@@ -30,8 +30,10 @@ keys_list = ['FILENAME',
              'RETENTIONTIME',
              'IONMODE',
              'COMMENT',
-             'NUM PEAKS',
              'ENTROPY',
+             'CLASSYFIRE_CLASS',
+             'NPCLASSIF_PATHWAY',
+             'NUM PEAKS',
              'PEAKS_LIST']
 
 def convert_keys(metadata_dict):
