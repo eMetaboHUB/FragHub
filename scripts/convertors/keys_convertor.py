@@ -31,8 +31,12 @@ keys_list = ['FILENAME',
              'IONMODE',
              'COMMENT',
              'ENTROPY',
+             'CLASSYFIRE_SUPERCLASS',
              'CLASSYFIRE_CLASS',
-             'NPCLASSIF_PATHWAY',
+             'CLASSYFIRE_SUBCLASS',
+             'NPCLASS_PATHWAY',
+             'NPCLASS_SUPERCLASS',
+             'NPCLASS_CLASS',
              'NUM PEAKS',
              'PEAKS_LIST']
 
