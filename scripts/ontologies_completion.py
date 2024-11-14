@@ -5,27 +5,34 @@ import os
 global ontologies_df
 ontologies_df = pd.read_csv(os.path.abspath("../datas/ontologies_dict.csv"),sep=";", encoding="UTF-8") # Remplacez 'your_file.csv' par le chemin de votre fichier
 
-def ontologies_completion(spectrum_list):
+def ontologies_completion(spectrum_list, ontologies_df):
     """
-    ontologies_completion(spectrum_list)
+        The `ontologies_completion` function enriches a DataFrame containing spectral data with ontological information.
 
-    Add default values for 'CLASSYFIRE_CLASS' and 'NPCLASSIF_PATHWAY' columns, count unique INCHIKEYs, and update ontology information.
+        Parameters:
+        - spectrum_list (pd.DataFrame): The DataFrame containing spectral data with 'INCHIKEY' and initial ontology columns.
+        - ontologies_df (pd.DataFrame): The DataFrame containing the ontological information to merge.
 
-    Arguments:
-    - spectrum_list: A DataFrame containing spectra information.
+        Returns:
+        - pd.DataFrame: The enriched DataFrame with completed ontology information.
 
-    Returns:
-    - Updated spectrum_list with ontology information.
-
-    Steps:
-    1. Adds columns 'CLASSYFIRE_CLASS' and 'NPCLASSIF_PATHWAY' with default value 'UNKNOWN'.
-    2. Merges spectrum_list with ontologies_df based on INCHIKEY.
-    3. Updates the progress bar based on the merge progress.
-    4. Returns the updated spectrum_list.
+        The function performs the following steps:
+        - Initializes columns 'CLASSYFIRE_SUPERCLASS', 'CLASSYFIRE_CLASS', 'CLASSYFIRE_SUBCLASS', 'NPCLASS_PATHWAY',
+          'NPCLASS_SUPERCLASS', and 'NPCLASS_CLASS' in `spectrum_list` with default value 'UNKNOWN'.
+        - Counts the unique 'INCHIKEY' values in `spectrum_list`.
+        - Uses tqdm to create a progress bar for monitoring the process.
+        - Merges `spectrum_list` with `ontologies_df` on the 'INCHIKEY' column using a left join.
+        - Updates the values in the initial ontology columns with the corresponding values from the merged DataFrame.
+        - Removes temporary columns resulted from the merge.
+        - Returns the updated DataFrame with completed ontology information.
     """
     # Ajouter les colonnes 'CLASSYFIRE_CLASS' et 'NPCLASSIF_PATHWAY' avec des valeurs par défaut 'UNKNOWN'
+    spectrum_list['CLASSYFIRE_SUPERCLASS'] = "UNKNOWN"
     spectrum_list['CLASSYFIRE_CLASS'] = "UNKNOWN"
-    spectrum_list['NPCLASSIF_PATHWAY'] = "UNKNOWN"
+    spectrum_list['CLASSYFIRE_SUBCLASS'] = "UNKNOWN"
+    spectrum_list['NPCLASS_PATHWAY'] = "UNKNOWN"
+    spectrum_list['NPCLASS_SUPERCLASS'] = "UNKNOWN"
+    spectrum_list['NPCLASS_CLASS'] = "UNKNOWN"
 
     # Compter le nombre de INCHIKEY uniques dans spectrum_list
     num_keys = spectrum_list['INCHIKEY'].nunique()
@@ -36,24 +43,40 @@ def ontologies_completion(spectrum_list):
     # Fusionner spectrum_list avec ontologies_df sur la colonne 'INCHIKEY'
     completed_df = pd.merge(
         spectrum_list,
-        ontologies_df[['INCHIKEY', 'CLASSYFIRE_CLASS', 'NPCLASSIF_PATHWAY']],
+        ontologies_df[
+            ["INCHIKEY", "CLASSYFIRE_SUPERCLASS", "CLASSYFIRE_CLASS", "CLASSYFIRE_SUBCLASS", "NPCLASS_PATHWAY",
+             "NPCLASS_SUPERCLASS", "NPCLASS_CLASS"]],
         on='INCHIKEY',
         how='left'
     )
 
-    # Vérifier et mettre à jour les colonnes avec les valeurs fusionnées `CLASSYFIRE_CLASS` et `NPCLASSIF_PATHWAY`
+    # Mettre à jour les barres de progression
+    pbar.update(num_keys)
+    pbar.close()
+
+    # Remplacer les valeurs initiales par les valeurs fusionnées
+    completed_df['CLASSYFIRE_SUPERCLASS'] = completed_df['CLASSYFIRE_SUPERCLASS_y'].combine_first(
+        completed_df['CLASSYFIRE_SUPERCLASS_x'])
     completed_df['CLASSYFIRE_CLASS'] = completed_df['CLASSYFIRE_CLASS_y'].combine_first(
         completed_df['CLASSYFIRE_CLASS_x'])
-    completed_df['NPCLASSIF_PATHWAY'] = completed_df['NPCLASSIF_PATHWAY_y'].combine_first(
-        completed_df['NPCLASSIF_PATHWAY_x'])
+    completed_df['CLASSYFIRE_SUBCLASS'] = completed_df['CLASSYFIRE_SUBCLASS_y'].combine_first(
+        completed_df['CLASSYFIRE_SUBCLASS_x'])
+    completed_df['NPCLASS_PATHWAY'] = completed_df['NPCLASS_PATHWAY_y'].combine_first(completed_df['NPCLASS_PATHWAY_x'])
+    completed_df['NPCLASS_SUPERCLASS'] = completed_df['NPCLASS_SUPERCLASS_y'].combine_first(
+        completed_df['NPCLASS_SUPERCLASS_x'])
+    completed_df['NPCLASS_CLASS'] = completed_df['NPCLASS_CLASS_y'].combine_first(completed_df['NPCLASS_CLASS_x'])
 
     # Supprimer les colonnes temporaires
     completed_df.drop(
-        columns=['CLASSYFIRE_CLASS_x', 'CLASSYFIRE_CLASS_y', 'NPCLASSIF_PATHWAY_x', 'NPCLASSIF_PATHWAY_y'],
-        inplace=True)
-
-    # Mettre à jour la barre de progression
-    pbar.update(num_keys)
-    pbar.close()
+        columns=[
+            'CLASSYFIRE_SUPERCLASS_x', 'CLASSYFIRE_SUPERCLASS_y',
+            'CLASSYFIRE_CLASS_x', 'CLASSYFIRE_CLASS_y',
+            'CLASSYFIRE_SUBCLASS_x', 'CLASSYFIRE_SUBCLASS_y',
+            'NPCLASS_PATHWAY_x', 'NPCLASS_PATHWAY_y',
+            'NPCLASS_SUPERCLASS_x', 'NPCLASS_SUPERCLASS_y',
+            'NPCLASS_CLASS_x', 'NPCLASS_CLASS_y'
+        ],
+        inplace=True
+    )
 
     return completed_df
