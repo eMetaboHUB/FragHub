@@ -5,7 +5,7 @@ import os
 global ontologies_df
 ontologies_df = pd.read_csv(os.path.abspath("../datas/ontologies_dict.csv"),sep=";", encoding="UTF-8") # Remplacez 'your_file.csv' par le chemin de votre fichier
 
-def ontologies_completion(spectrum_list, ontologies_df):
+def ontologies_completion(spectrum_list):
     """
         The `ontologies_completion` function enriches a DataFrame containing spectral data with ontological information.
 
