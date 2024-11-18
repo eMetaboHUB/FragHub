@@ -78,7 +78,7 @@ def build_window():
     parameters_dict['output_directory'] = StringVar()
 
     root.iconbitmap('../FragHub.ico')
-    root.title("FragHub 1.0.0")
+    root.title("FragHub 1.2.0")
 
     # Create a main frame
     main_frame = Frame(root)
