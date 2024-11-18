@@ -92,14 +92,26 @@ def build_window():
     tab1 = Frame(tabControl)
     tab2 = Frame(tabControl)
     tab3 = Frame(tabControl)
+    tab3 = Frame(tabControl)
+    tab4 = Frame(tabControl)
+    tab_input = Frame(tabControl)
+    tab_output = Frame(tabControl)
+    # Existing tabs
+
+    # Existing tabs
+    tab1 = Frame(tabControl)
+    tab2 = Frame(tabControl)
+    tab3 = Frame(tabControl)
 
     # Add the new tab to the tabControl
+    tabControl.add(tab_input, text='INPUT')
+    tabControl.add(tab_output, text='OUTPUT')
     tabControl.add(tab2, text='Filters Settings')
     tabControl.add(tab3, text='Output Settings')
     tabControl.add(tab4, text='Profils')
     tabControl.add(tab1, text='Update Settings')
-
-    tabControl.pack(side="top", fill='both', expand=True)  # added fill and expand
+    tabControl.add(tab_input, text='INPUT')
+    tabControl.add(tab_output, text='OUTPUT')
 
     # Make a list of profiles
     profile_list = ['Profile 1', 'Profile 2', 'Profile 3']
