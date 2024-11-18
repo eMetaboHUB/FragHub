@@ -39,11 +39,37 @@ def on_done_button_clicked():
     root.destroy()
 
 def convert_dict_values_to_float(keys):
+    """
+    Convert specified dictionary values to float.
+
+    For each key in the provided list, this function checks if the key
+    exists in the global parameters_dict dictionary. If the key is present,
+    it converts the corresponding value to a float and updates the dictionary
+    in place.
+
+    Parameters:
+        keys (list): A list of keys to convert values to float in the
+        parameters_dict dictionary.
+    """
     for key in keys:
         if key in parameters_dict:
             parameters_dict[key] = float(parameters_dict[key].get())
 
 def build_window():
+    """
+    Builds the main application window for FragHub version 1.0.0. This function initializes the GUI including
+    window settings, tab control, frames, buttons, and other widgets necessary for the application functionality.
+
+     - Initializes the Tkinter root and sets its icon and title.
+     - Creates a main frame and bottom frame for organizing widgets.
+     - Adds several tabs to the window for different settings and options.
+     - Configures widgets like buttons, labels, checkbuttons, and combobox for user interactions.
+     - Loads a logo into the window and sets up directory selection widgets.
+     - Sets up functionalities where user inputs directly update the application's parameters dictionary.
+
+    Returns:
+        None
+    """
     global root
     root = Tk()
 
@@ -129,6 +155,12 @@ def build_window():
 
     # Update parameters_dict when a new selection is made
     def update_parameters_dict(*args):
+        """
+        Builds and displays the main application window.
+
+        Returns:
+            None
+        """
         parameters_dict['selected_profile'] = selected_profile.get()
 
     selected_profile.trace_add("write", update_parameters_dict)
@@ -209,6 +241,21 @@ def build_window():
 
 
 def add_directory_browsing(tab, label_text, key):
+    """
+    Create a frame for directory browsing within a specified tab and configure its elements.
+    This includes a label, an entry widget for displaying the selected directory, and a browse button.
+
+    Arguments:
+        tab (Frame): The parent frame or tab where the directory browsing components will be created.
+        label_text (str): The text for the label describing the directory selection input.
+        key (str): The key to access the directory variable in the parameters dictionary.
+
+    Parameters:
+        tab (Frame): The parent frame or tab where the directory browsing components will be created.
+        label_text (str): The text for the label describing the directory selection input.
+        key (str): The key to access the directory variable in the parameters dictionary.
+
+    """
     # Create a frame for directory browsing in the tab and pack it
     directory_frame = Frame(tab)
     directory_frame.pack(side='top', fill='x', pady=10)
@@ -228,6 +275,13 @@ def add_directory_browsing(tab, label_text, key):
 
 
 def browse_directory(directory_var, key):
+    """
+    Sets the specified directory to the directory_var and updates parameters_dict with the selected directory's absolute path.
+
+    Parameters:
+        directory_var (tkinter.StringVar): The variable that stores the directory path.
+        key (str): The key used to update parameters_dict.
+    """
     directory = filedialog.askdirectory()
     if directory:
         directory_var.set(directory)
