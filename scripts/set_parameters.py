@@ -1,4 +1,4 @@
-from tkinter import Tk, ttk, Checkbutton, Button, Label, Entry, StringVar, IntVar, LEFT, Frame, RIGHT, PhotoImage, Canvas, filedialog
+from tkinter import Tk, ttk, Checkbutton, Button, Label, Entry, StringVar, IntVar, LEFT, Frame, RIGHT, PhotoImage, Canvas, filedialog, DoubleVar
 import json
 import os
 
@@ -10,13 +10,16 @@ func_names = [
     'reduce_peak_list',
     'normalize_intensity',
     'keep_mz_in_range',
-    'check_minimum_of_high_peaks_requiered'
+    'check_minimum_of_high_peaks_requiered',
+    'remove_spectrum_under_entropy_score'
 ]
 
 
 def on_done_button_clicked():
+
     """
     Closes the root window and converts the values in the parameters_dict dictionary to floats.
+    Saves the checkbox state and entry value for 'remove_spectrum_under_entropy_score' in the parameters_dict.
     This function is triggered when the 'Done' button of the GUI is clicked.
 
     :return: None
@@ -33,7 +36,8 @@ def on_done_button_clicked():
         'keep_mz_in_range_from_mz',
         'keep_mz_in_range_to_mz',
         'check_minimum_of_high_peaks_requiered_intensity_percent',
-        'check_minimum_of_high_peaks_requiered_no_peaks'
+        'check_minimum_of_high_peaks_requiered_no_peaks',
+    'remove_spectrum_under_entropy_score_value'
     ])
 
     root.destroy()
@@ -188,6 +192,8 @@ def build_window():
         parameters_dict[func].set(True)
 
         frame = Frame(tab2)
+
+        frame = Frame(tab2)
         frame.pack(fill='x')
 
         frame_func = Frame(frame)
@@ -215,6 +221,11 @@ def build_window():
             parameters_dict['reduce_peak_list_max_peaks'] = IntVar()
             parameters_dict['reduce_peak_list_max_peaks'].set(500)
             Entry(frame_params, textvariable=parameters_dict['reduce_peak_list_max_peaks']).pack(side=LEFT)
+        elif func == 'remove_spectrum_under_entropy_score':
+            parameters_dict['remove_spectrum_under_entropy_score_value'] = DoubleVar()
+            parameters_dict['remove_spectrum_under_entropy_score_value'].set(0.5)
+            Label(frame_params, text="value:").pack(side=LEFT)
+            Entry(frame_params, textvariable=parameters_dict['remove_spectrum_under_entropy_score_value']).pack(side=LEFT)
         elif func == 'keep_mz_in_range':
             Label(frame_params, text="from_mz:").pack(side=LEFT)
             parameters_dict['keep_mz_in_range_from_mz'] = IntVar()
@@ -309,7 +320,7 @@ def reset_updates(profile_name):
     """
 
     json_update_path = rf"../datas/updates/{profile_name}.json"  # path to the relevant update.json file
-    ouput_path = rf"../OUTPUT/{profile_name}"  # path to the relevant output directory
+    ouput_path = os.path.join(parameters_dict["output_directory"],profile_name)  # path to the relevant output directory
 
     # Reset the json file - Writing an empty json object to the file effectively clears it
     with open(json_update_path, 'w') as f:
@@ -331,7 +342,7 @@ def init_profile(profile_name):
     updates_file_path = os.path.join("../datas/updates", profile_name + ".json")
 
     # Directory where outputs will be stored for the profile
-    output_directory = os.path.join("../OUTPUT", profile_name)
+    output_directory = os.path.join(parameters_dict["output_directory"],profile_name)
 
     # List of main directories to be created under the output directory
     main_directories = ['CSV', 'JSON', 'MSP']
