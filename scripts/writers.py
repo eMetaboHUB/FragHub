@@ -1,3 +1,4 @@
+from set_parameters import parameters_dict
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
@@ -18,7 +19,7 @@ def write_msp(spectrum_list, filename, mode, update, profile_name):
     """
 
     # Construct the output path
-    output_file_path = os.path.join(f"../OUTPUT/{profile_name}/MSP/{mode}", filename)
+    output_file_path = os.path.join(parameters_dict["output_directory"],f"{profile_name}/MSP/{mode}", filename)
 
     # Creating a progress bar for displaying the status of the operation.
     with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>70}".format(f"writting {filename}")) as pbar:
@@ -116,7 +117,7 @@ def write_csv(df, filename, mode, update, first_run, profile_name):
     :return: None.
     """
     # Placeholder string for the directory output path
-    output_file_path = os.path.join(f"../OUTPUT/{profile_name}/CSV/{mode}", filename)
+    output_file_path = os.path.join(parameters_dict["output_directory"],f"{profile_name}/CSV/{mode}", filename)
 
     # The chunk size is limit for each write operation
     chunk_size = 5000
@@ -215,7 +216,7 @@ def write_json(df, filename, mode, profile_name):
     """
 
     # Define the output file path for the JSON file.
-    output_file_path = os.path.join(f"../OUTPUT/{profile_name}/JSON/{mode}", filename)
+    output_file_path = os.path.join(parameters_dict["output_directory"],f"{profile_name}/JSON/{mode}", filename)
 
     # Convert the DataFrame to a list of dict records.
     json_records = df.to_dict('records')
