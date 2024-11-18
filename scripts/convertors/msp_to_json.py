@@ -4,7 +4,7 @@ from tqdm import tqdm
 import re
 
 global metadata_peak_list_split_pattern
-metadata_peak_list_split_pattern = re.compile(r"([\s\S]*:.[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
+metadata_peak_list_split_pattern = re.compile(r"([\s\S]*:.*[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
 
 global metadata_pattern
 metadata_pattern = re.compile(r"([^:]*):(?: )?([^\n]*)(?:\n|$)")
