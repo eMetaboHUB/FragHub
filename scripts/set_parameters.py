@@ -1,4 +1,4 @@
-from tkinter import Tk, ttk, Checkbutton, Button, Label, Entry, StringVar, IntVar, LEFT, Frame, RIGHT, PhotoImage, Canvas
+from tkinter import Tk, ttk, Checkbutton, Button, Label, Entry, StringVar, IntVar, LEFT, Frame, RIGHT, PhotoImage, Canvas, filedialog
 import json
 import os
 
@@ -111,6 +111,8 @@ def build_window():
     tabControl.add(tab4, text='Profils')
     tabControl.add(tab1, text='Update Settings')
     tabControl.add(tab_input, text='INPUT')
+    add_directory_browsing(tab_input, 'Select input directory')
+    add_directory_browsing(tab_output, 'Select output directory')
     tabControl.add(tab_output, text='OUTPUT')
 
     # Make a list of profiles
@@ -204,6 +206,29 @@ def build_window():
                 side=LEFT)
 
     root.mainloop()
+
+def add_directory_browsing(tab,label_text):
+    # Create a frame for directory browsing in the tab and pack it
+    directory_frame = Frame(tab)
+    directory_frame.pack(side='top', fill='x', pady=10)
+
+    # Add a label to describe the directory selection
+    directory_label = Label(directory_frame, text=label_text)
+    directory_label.pack(side='top', padx=5)
+
+    # Entry to show the selected directory
+    directory_var = StringVar()
+    directory_entry = Entry(directory_frame, textvariable=directory_var, width=40)
+    directory_entry.pack(side='top', padx=5)
+
+    # Button to browse for directory
+    browse_button = Button(directory_frame, text="Browse", command=lambda: browse_directory(directory_var))
+    browse_button.pack(side='top', padx=5)
+
+def browse_directory(directory_var):
+    directory = filedialog.askdirectory()
+    if directory:
+        directory_var.set(directory)
 
 def remove_files(directory):
     """
