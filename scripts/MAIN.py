@@ -62,8 +62,8 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    input_path = os.path.abspath(r"../INPUT")
-    output_path = os.path.abspath(rf"../OUTPUT/{profile_name}")
+    input_path = parameters_dict["input_directory"]
+    output_path = os.path.join(parameters_dict["output_directory"],profile_name)
 
     # STEP 1: convert files to json if needed (Multithreaded)
     FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = convert_to_json(input_path)
