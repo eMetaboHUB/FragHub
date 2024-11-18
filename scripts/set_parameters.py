@@ -2,7 +2,6 @@ from tkinter import Tk, ttk, Checkbutton, Button, Label, Entry, StringVar, IntVa
 import json
 import os
 
-global parameters_dict
 parameters_dict = {}
 
 func_names = [
@@ -14,6 +13,7 @@ func_names = [
     'check_minimum_of_high_peaks_requiered'
 ]
 
+
 def on_done_button_clicked():
     """
     Closes the root window and converts the values in the parameters_dict dictionary to floats.
@@ -22,26 +22,26 @@ def on_done_button_clicked():
     :return: None
     """
 
-    # Loop through a defined list of keys (pertaining to various functionalities) and check if they exist in the parameters dictionary
-    for key in [
-                   'reset_updates',
-                   'csv',
-                   'msp',
-                   'json'
-               ] + func_names + [
-                   'check_minimum_peak_requiered_n_peaks',
-                   'reduce_peak_list_max_peaks',
-                   'keep_mz_in_range_from_mz',
-                   'keep_mz_in_range_to_mz',
-                   'check_minimum_of_high_peaks_requiered_intensity_percent',
-                   'check_minimum_of_high_peaks_requiered_no_peaks'
-               ]:
-        # If the key exists in the dictionary, retrieve its value and convert it to a float
+    convert_dict_values_to_float([
+        'reset_updates',
+        'csv',
+        'msp',
+        'json'
+    ] + func_names + [
+        'check_minimum_peak_requiered_n_peaks',
+        'reduce_peak_list_max_peaks',
+        'keep_mz_in_range_from_mz',
+        'keep_mz_in_range_to_mz',
+        'check_minimum_of_high_peaks_requiered_intensity_percent',
+        'check_minimum_of_high_peaks_requiered_no_peaks'
+    ])
+
+    root.destroy()
+
+def convert_dict_values_to_float(keys):
+    for key in keys:
         if key in parameters_dict:
             parameters_dict[key] = float(parameters_dict[key].get())
-
-    # Close the root window after all the values are converted and saved back into the dictionary
-    root.destroy()
 
 def build_window():
     """
