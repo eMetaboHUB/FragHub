@@ -10,8 +10,8 @@ func_names = [
     'reduce_peak_list',
     'normalize_intensity',
     'keep_mz_in_range',
-   'check_minimum_of_high_peaks_requiered',
-   'remove_spectrum_under_entropy_score'
+    'check_minimum_of_high_peaks_requiered',
+    'remove_spectrum_under_entropy_score'
 ]
 
 
