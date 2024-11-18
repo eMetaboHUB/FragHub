@@ -90,7 +90,7 @@ def spectrum_cleaning(spectrum):
     if not spectrum:
         return None
     # Checks if "PRECURSORMZ" exists in the spectrum
-    if "PRECURSORMZ" in spectrum:
+    if "PRECURSORMZ" in spectrum and "_GC_IE" not in spectrum["FILENAME"]:
         if re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])):
             # 'PRECURSORMZ' modification with match from a regular expression search for 'float_check_pattern'
             spectrum["PRECURSORMZ"] = re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])).group(1)
