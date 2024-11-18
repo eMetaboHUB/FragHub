@@ -331,7 +331,7 @@ def init_profile(profile_name):
     updates_file_path = os.path.join("../datas/updates", profile_name + ".json")
 
     # Directory where outputs will be stored for the profile
-    output_directory = os.path.join("../OUTPUT", profile_name)
+    output_directory = os.path.join(parameters_dict["output_directory"],profile_name)
 
     # List of main directories to be created under the output directory
     main_directories = ['CSV', 'JSON', 'MSP']
