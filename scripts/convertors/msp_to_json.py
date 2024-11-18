@@ -115,7 +115,8 @@ def metadata_to_dict(metadata):
         temp = check_for_metadata_in_comments(metadata_matches)
 
         # Removing any computational metadata as they do not provide useful information
-        temp = [t for t in temp if not re.search(computed_pattern, t[0])]
+        if temp:
+            temp = [t for t in temp if not re.search(computed_pattern, t[0])]
 
         # If temp isn't False then it contains parsed metadata for processing
         if temp != False:
