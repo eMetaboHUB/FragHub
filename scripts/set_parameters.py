@@ -44,16 +44,14 @@ def convert_dict_values_to_float(keys):
             parameters_dict[key] = float(parameters_dict[key].get())
 
 def build_window():
-    """
-    Builds a window for setting filters parameters.
-
-    :return: None
-    """
     global root
     root = Tk()
 
-    root.iconbitmap('../FragHub.ico')
+    # Initialize StringVars after creating root
+    parameters_dict['input_directory'] = StringVar()
+    parameters_dict['output_directory'] = StringVar()
 
+    root.iconbitmap('../FragHub.ico')
     root.title("FragHub 1.0.0")
 
     # Create a main frame
@@ -111,8 +109,8 @@ def build_window():
     tabControl.add(tab4, text='Profils')
     tabControl.add(tab1, text='Update Settings')
     tabControl.add(tab_input, text='INPUT')
-    add_directory_browsing(tab_input, 'Select input directory')
-    add_directory_browsing(tab_output, 'Select output directory')
+    add_directory_browsing(tab_input, 'Select input directory', 'input_directory')
+    add_directory_browsing(tab_output, 'Select output directory', 'output_directory')
     tabControl.add(tab_output, text='OUTPUT')
 
     # Make a list of profiles
@@ -123,7 +121,8 @@ def build_window():
 
     # Create the Combobox, link it with the StringVar, and set the options
     profiles_dropdown = ttk.Combobox(tab4, textvariable=selected_profile)
-    profiles_dropdown['values'] = [file.replace('.json','') for file in os.listdir("../datas/updates") if file.endswith('.json')]
+    profiles_dropdown['values'] = [file.replace('.json', '') for file in os.listdir("../datas/updates") if
+                                   file.endswith('.json')]
     selected_profile.set('basic')
     parameters_dict["selected_profile"] = "basic"
     profiles_dropdown.pack()
@@ -149,7 +148,8 @@ def build_window():
 
     # Add Checkbox to tab1
     parameters_dict['reset_updates'] = IntVar()
-    Checkbutton(tab1, text='Reset updates', variable=parameters_dict['reset_updates'], onvalue=True, offvalue=False, fg='red', font=("Helvetica", 9, 'bold')).pack()
+    Checkbutton(tab1, text='Reset updates', variable=parameters_dict['reset_updates'], onvalue=True, offvalue=False,
+                fg='red', font=("Helvetica", 9, 'bold')).pack()
 
     for func in func_names:
         parameters_dict[func] = StringVar()
@@ -207,7 +207,8 @@ def build_window():
 
     root.mainloop()
 
-def add_directory_browsing(tab,label_text):
+
+def add_directory_browsing(tab, label_text, key):
     # Create a frame for directory browsing in the tab and pack it
     directory_frame = Frame(tab)
     directory_frame.pack(side='top', fill='x', pady=10)
@@ -217,18 +218,21 @@ def add_directory_browsing(tab,label_text):
     directory_label.pack(side='top', padx=5)
 
     # Entry to show the selected directory
-    directory_var = StringVar()
+    directory_var = parameters_dict[key]
     directory_entry = Entry(directory_frame, textvariable=directory_var, width=40)
     directory_entry.pack(side='top', padx=5)
 
     # Button to browse for directory
-    browse_button = Button(directory_frame, text="Browse", command=lambda: browse_directory(directory_var))
+    browse_button = Button(directory_frame, text="Browse", command=lambda: browse_directory(directory_var, key))
     browse_button.pack(side='top', padx=5)
 
-def browse_directory(directory_var):
+
+def browse_directory(directory_var, key):
     directory = filedialog.askdirectory()
     if directory:
         directory_var.set(directory)
+        # Update parameters_dict with the absolute path
+        parameters_dict[key] = directory
 
 def remove_files(directory):
     """
