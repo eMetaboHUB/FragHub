@@ -145,10 +145,8 @@ def convert_to_json(input_path):
     json_list = []
     # A boolean variable to check if there is any json file in the directory
     json_to_do = False
-    # Construct the path of the directory where json files are supposed to be
-    json_path = os.path.join(input_path, "JSON")
     # Iterate over all directories, subdirectories and files in the given directory
-    for root, dirs, files in os.walk(json_path):
+    for root, dirs, files in os.walk(input_path):
         for file in files:
             # Check if current file is a json file
             if file.endswith(".json"):
@@ -178,10 +176,8 @@ def convert_to_json(input_path):
     msp_list = []
     # A boolean variable to check if there is any MSP file to process within the directory
     msp_to_do = False
-    # Constructing the path for the directory where the MSP files are expected to be
-    msp_path = os.path.join(input_path, "MSP")
     # Looping through the directory and all subdirectories to find files
-    for root, dirs, files in os.walk(msp_path):
+    for root, dirs, files in os.walk(input_path):
         for file in files:
             # Checking if the current file is an MSP file
             if file.endswith(".msp"):
@@ -211,10 +207,8 @@ def convert_to_json(input_path):
     mgf_list = []
     # A boolean variable to check if there is any MGF file to process within the directory
     mgf_to_do = False
-    # Constructing the path for the directory where the MGF files are expected to be
-    mgf_path = os.path.join(input_path, "MGF")
     # Looping over each directory, subdirectory, and file in the provided directory
-    for root, dirs, files in os.walk(mgf_path):
+    for root, dirs, files in os.walk(input_path):
         for file in files:
             # Checking if the file has a .mgf extension
             if file.endswith(".mgf"):
@@ -244,10 +238,8 @@ def convert_to_json(input_path):
     xml_list = []
     # A boolean variable to check if there is any xml file in the directory
     xml_to_do = False
-    # Construct the path of the directory where xml files are supposed to be
-    xml_path = os.path.join(input_path, "XML")
     # Loop over all directories, subdirectories, and files in the provided directory
-    for root, dirs, files in os.walk(xml_path):
+    for root, dirs, files in os.walk(input_path):
         for file in files:
             # Check if the current file is an xml file
             if file.endswith(".xml"):
@@ -277,10 +269,8 @@ def convert_to_json(input_path):
     csv_list = []
     # A boolean flag to check if there is any CSV file to process
     csv_to_do = False
-    # Constructing the path of the directory where CSV files are supposed to be
-    csv_path = os.path.join(input_path, "CSV")
     # Walking through the directory and all its subdirectories to look for files
-    for root, dirs, files in os.walk(csv_path):
+    for root, dirs, files in os.walk(input_path):
         for file in files:
             # Checking if the current file has the extension '.csv'
             if file.endswith(".csv"):
