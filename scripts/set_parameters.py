@@ -1,8 +1,7 @@
-from tkinter import Tk, ttk, Checkbutton, Button, Label, Entry, StringVar, IntVar, LEFT, Frame, RIGHT, PhotoImage, Canvas
+from tkinter import Tk, ttk, Checkbutton, Button, Label, Entry, StringVar, IntVar, LEFT, Frame, RIGHT, PhotoImage, Canvas, filedialog
 import json
 import os
 
-global parameters_dict
 parameters_dict = {}
 
 func_names = [
@@ -14,6 +13,7 @@ func_names = [
     'check_minimum_of_high_peaks_requiered'
 ]
 
+
 def on_done_button_clicked():
     """
     Closes the root window and converts the values in the parameters_dict dictionary to floats.
@@ -22,39 +22,63 @@ def on_done_button_clicked():
     :return: None
     """
 
-    # Loop through a defined list of keys (pertaining to various functionalities) and check if they exist in the parameters dictionary
-    for key in [
-                   'reset_updates',
-                   'csv',
-                   'msp',
-                   'json'
-               ] + func_names + [
-                   'check_minimum_peak_requiered_n_peaks',
-                   'reduce_peak_list_max_peaks',
-                   'keep_mz_in_range_from_mz',
-                   'keep_mz_in_range_to_mz',
-                   'check_minimum_of_high_peaks_requiered_intensity_percent',
-                   'check_minimum_of_high_peaks_requiered_no_peaks'
-               ]:
-        # If the key exists in the dictionary, retrieve its value and convert it to a float
+    convert_dict_values_to_float([
+        'reset_updates',
+        'csv',
+        'msp',
+        'json'
+    ] + func_names + [
+        'check_minimum_peak_requiered_n_peaks',
+        'reduce_peak_list_max_peaks',
+        'keep_mz_in_range_from_mz',
+        'keep_mz_in_range_to_mz',
+        'check_minimum_of_high_peaks_requiered_intensity_percent',
+        'check_minimum_of_high_peaks_requiered_no_peaks'
+    ])
+
+    root.destroy()
+
+def convert_dict_values_to_float(keys):
+    """
+    Convert specified dictionary values to float.
+
+    For each key in the provided list, this function checks if the key
+    exists in the global parameters_dict dictionary. If the key is present,
+    it converts the corresponding value to a float and updates the dictionary
+    in place.
+
+    Parameters:
+        keys (list): A list of keys to convert values to float in the
+        parameters_dict dictionary.
+    """
+    for key in keys:
         if key in parameters_dict:
             parameters_dict[key] = float(parameters_dict[key].get())
 
-    # Close the root window after all the values are converted and saved back into the dictionary
-    root.destroy()
-
 def build_window():
     """
-    Builds a window for setting filters parameters.
+    Builds the main application window for FragHub version 1.0.0. This function initializes the GUI including
+    window settings, tab control, frames, buttons, and other widgets necessary for the application functionality.
 
-    :return: None
+     - Initializes the Tkinter root and sets its icon and title.
+     - Creates a main frame and bottom frame for organizing widgets.
+     - Adds several tabs to the window for different settings and options.
+     - Configures widgets like buttons, labels, checkbuttons, and combobox for user interactions.
+     - Loads a logo into the window and sets up directory selection widgets.
+     - Sets up functionalities where user inputs directly update the application's parameters dictionary.
+
+    Returns:
+        None
     """
     global root
     root = Tk()
 
-    root.iconbitmap('../FragHub.ico')
+    # Initialize StringVars after creating root
+    parameters_dict['input_directory'] = StringVar()
+    parameters_dict['output_directory'] = StringVar()
 
-    root.title("FragHub 1.0.0")
+    root.iconbitmap('../FragHub.ico')
+    root.title("FragHub 1.2.0")
 
     # Create a main frame
     main_frame = Frame(root)
@@ -92,14 +116,28 @@ def build_window():
     tab1 = Frame(tabControl)
     tab2 = Frame(tabControl)
     tab3 = Frame(tabControl)
+    tab3 = Frame(tabControl)
+    tab4 = Frame(tabControl)
+    tab_input = Frame(tabControl)
+    tab_output = Frame(tabControl)
+    # Existing tabs
+
+    # Existing tabs
+    tab1 = Frame(tabControl)
+    tab2 = Frame(tabControl)
+    tab3 = Frame(tabControl)
 
     # Add the new tab to the tabControl
+    tabControl.add(tab_input, text='INPUT')
+    tabControl.add(tab_output, text='OUTPUT')
     tabControl.add(tab2, text='Filters Settings')
     tabControl.add(tab3, text='Output Settings')
-    tabControl.add(tab4, text='Profils')
+    tabControl.add(tab4, text='Projects')
     tabControl.add(tab1, text='Update Settings')
-
-    tabControl.pack(side="top", fill='both', expand=True)  # added fill and expand
+    tabControl.add(tab_input, text='INPUT')
+    add_directory_browsing(tab_input, 'Select input directory', 'input_directory')
+    add_directory_browsing(tab_output, 'Select output directory', 'output_directory')
+    tabControl.add(tab_output, text='OUTPUT')
 
     # Make a list of profiles
     profile_list = ['Profile 1', 'Profile 2', 'Profile 3']
@@ -109,13 +147,20 @@ def build_window():
 
     # Create the Combobox, link it with the StringVar, and set the options
     profiles_dropdown = ttk.Combobox(tab4, textvariable=selected_profile)
-    profiles_dropdown['values'] = [file.replace('.json','') for file in os.listdir("../datas/updates") if file.endswith('.json')]
+    profiles_dropdown['values'] = [file.replace('.json', '') for file in os.listdir("../datas/updates") if
+                                   file.endswith('.json')]
     selected_profile.set('basic')
     parameters_dict["selected_profile"] = "basic"
     profiles_dropdown.pack()
 
     # Update parameters_dict when a new selection is made
     def update_parameters_dict(*args):
+        """
+        Builds and displays the main application window.
+
+        Returns:
+            None
+        """
         parameters_dict['selected_profile'] = selected_profile.get()
 
     selected_profile.trace_add("write", update_parameters_dict)
@@ -135,7 +180,8 @@ def build_window():
 
     # Add Checkbox to tab1
     parameters_dict['reset_updates'] = IntVar()
-    Checkbutton(tab1, text='Reset updates', variable=parameters_dict['reset_updates'], onvalue=True, offvalue=False, fg='red', font=("Helvetica", 9, 'bold')).pack()
+    Checkbutton(tab1, text='Reset updates', variable=parameters_dict['reset_updates'], onvalue=True, offvalue=False,
+                fg='red', font=("Helvetica", 9, 'bold')).pack()
 
     for func in func_names:
         parameters_dict[func] = StringVar()
@@ -192,6 +238,55 @@ def build_window():
                 side=LEFT)
 
     root.mainloop()
+
+
+def add_directory_browsing(tab, label_text, key):
+    """
+    Create a frame for directory browsing within a specified tab and configure its elements.
+    This includes a label, an entry widget for displaying the selected directory, and a browse button.
+
+    Arguments:
+        tab (Frame): The parent frame or tab where the directory browsing components will be created.
+        label_text (str): The text for the label describing the directory selection input.
+        key (str): The key to access the directory variable in the parameters dictionary.
+
+    Parameters:
+        tab (Frame): The parent frame or tab where the directory browsing components will be created.
+        label_text (str): The text for the label describing the directory selection input.
+        key (str): The key to access the directory variable in the parameters dictionary.
+
+    """
+    # Create a frame for directory browsing in the tab and pack it
+    directory_frame = Frame(tab)
+    directory_frame.pack(side='top', fill='x', pady=10)
+
+    # Add a label to describe the directory selection
+    directory_label = Label(directory_frame, text=label_text)
+    directory_label.pack(side='top', padx=5)
+
+    # Entry to show the selected directory
+    directory_var = parameters_dict[key]
+    directory_entry = Entry(directory_frame, textvariable=directory_var, width=40)
+    directory_entry.pack(side='top', padx=5)
+
+    # Button to browse for directory
+    browse_button = Button(directory_frame, text="Browse", command=lambda: browse_directory(directory_var, key))
+    browse_button.pack(side='top', padx=5)
+
+
+def browse_directory(directory_var, key):
+    """
+    Sets the specified directory to the directory_var and updates parameters_dict with the selected directory's absolute path.
+
+    Parameters:
+        directory_var (tkinter.StringVar): The variable that stores the directory path.
+        key (str): The key used to update parameters_dict.
+    """
+    directory = filedialog.askdirectory()
+    if directory:
+        directory_var.set(directory)
+        # Update parameters_dict with the absolute path
+        parameters_dict[key] = directory
 
 def remove_files(directory):
     """
