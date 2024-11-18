@@ -1,4 +1,4 @@
-from tkinter import Tk, ttk, Checkbutton, Button, Label, Entry, StringVar, IntVar, LEFT, Frame, RIGHT, PhotoImage, Canvas, filedialog
+from tkinter import Tk, ttk, Checkbutton, Button, Label, Entry, StringVar, IntVar, LEFT, Frame, RIGHT, PhotoImage, Canvas, filedialog, DoubleVar
 import json
 import os
 
@@ -222,7 +222,7 @@ def build_window():
             parameters_dict['reduce_peak_list_max_peaks'].set(500)
             Entry(frame_params, textvariable=parameters_dict['reduce_peak_list_max_peaks']).pack(side=LEFT)
         elif func == 'remove_spectrum_under_entropy_score':
-            parameters_dict['remove_spectrum_under_entropy_score_value'] = IntVar()
+            parameters_dict['remove_spectrum_under_entropy_score_value'] = DoubleVar()
             parameters_dict['remove_spectrum_under_entropy_score_value'].set(0.5)
             Label(frame_params, text="value:").pack(side=LEFT)
             Entry(frame_params, textvariable=parameters_dict['remove_spectrum_under_entropy_score_value']).pack(side=LEFT)
