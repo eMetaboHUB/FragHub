@@ -132,7 +132,7 @@ def build_window():
     tabControl.add(tab_output, text='OUTPUT')
     tabControl.add(tab2, text='Filters Settings')
     tabControl.add(tab3, text='Output Settings')
-    tabControl.add(tab4, text='Profils')
+    tabControl.add(tab4, text='Projects')
     tabControl.add(tab1, text='Update Settings')
     tabControl.add(tab_input, text='INPUT')
     add_directory_browsing(tab_input, 'Select input directory', 'input_directory')
