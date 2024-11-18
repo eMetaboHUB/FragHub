@@ -52,6 +52,7 @@ if __name__ == "__main__":
 
     # GUI execution
     build_window()
+    print(parameters_dict)
 
     profile_name = parameters_dict["selected_profile"]
 
