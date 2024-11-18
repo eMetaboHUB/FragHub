@@ -1,4 +1,4 @@
-# FragHub  (1.0.1)
+# FragHub  (1.2.0)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![Required_Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
@@ -25,16 +25,18 @@ NB: **Make sure that python is in the path variables and that you run Python >= 
 
 To use this programme:
 
-1) Put your msp, mgf, json, csv or xml files into 'INPUT/\<dedicated folder\>'.<br>
+1) Double-click on your corresponding OS run script into scripts folder.<br>
 >NB: If you have a file that contains **only** In-Silico spectra AND this is not specified within the filename or the spectrum, you can simply suffix the filename with "_insilico", like this: "UNPD_ISDB_R_p01_insilico.mgf".<br>
 <br>
 >NB: If you have a file that contains **only** GC-IE spectra AND this is not specified within the filename or the spectrum, you can simply suffix the filename with "_GC_IE", like this: "GMD_20111121_MDN35_ALK_MSP_GC_IE.msp".<br>
-2) Double-click on your corresponding OS run script into scripts folder.<br>
-   1) FragHub GUI start<br>
-   2) First tab: This area allows users to select specific functions for inclusion during the processing stage. Moreover, it provides the option to adjust the respective parameters of each function.<br>![img.png](img.png)
-   3) Second tab: Select the output file format of your preference. By default, all formats are selected.<br>![img_1.png](img_1.png)
-   4) Third tab: This tab facilitates the management of distinct profiles (like 'internal lab standards' or 'In-Silico DB', etc). Either select from a previously created profile or create a new one by just entering your desired profile name.<br>![img_2.png](img_2.png)
-   4) Fourth tab: The 'Reset updates' option, when checked, allows for a reset of everything related to previously encountered spectra from the **current selected profil**. This will also delete all existing files located in the OUTPUT/{**current selected profil**} folder.<br>![img_3.png](img_3.png)
+
+2) FragHub GUI start<br>
+   1) First tab: Select the folder where your spectral data files are stored ('.msp', '.json', '.csv', '.mgf').<br>![img.png](img.png)
+   2) Second tab: Select the folder in which you want your data to be saved (FragHub automatically creat a sub-folder named like the project selected/created)<br>![img_1.png](img_1.png)
+   3) Third tab: This area allows users to select specific functions for inclusion during the processing stage. Moreover, it provides the option to adjust the respective parameters of each function.<br>![img_2.png](img_2.png)
+   4) Fourth tab: Select the output file format of your preference. By default, all formats are selected.<br>![img_3.png](img_3.png)
+   5) Fifth tab: This tab facilitates the management of distinct projects (like 'internal lab standards' or 'In-Silico DB', etc). Either select from a previously created project or create a new one by just entering your desired project name.<br>![img_6.png](img_6.png)
+   6) Sixth tab: The 'Reset updates' option, when checked, allows for a reset of everything related to previously encountered spectra from the **current selected profil**. This will also delete all existing files located in the OUTPUT/{**current selected profil**} folder.<br>![img_5.png](img_5.png)
 3) When the execution is complete, please remember to take a copy of your cleaned files from the OUTPUT folder and place them in a different location.
 4) **DO NOT DELETE FILES INTO 'OUTPUT' AFTER COPY CLEANED VERSIONS.**
 
