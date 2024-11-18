@@ -27,6 +27,8 @@ To use this programme:
 
 1) Put your msp, mgf, json, csv or xml files into 'INPUT/\<dedicated folder\>'.<br>
 >NB: If you have a file that contains **only** In-Silico spectra AND this is not specified within the filename or the spectrum, you can simply suffix the filename with "_insilico", like this: "UNPD_ISDB_R_p01_insilico.mgf".<br>
+<br>
+>NB: If you have a file that contains **only** GC-IE spectra AND this is not specified within the filename or the spectrum, you can simply suffix the filename with "_GC_IE", like this: "GMD_20111121_MDN35_ALK_MSP_GC_IE.msp".<br>
 2) Double-click on your corresponding OS run script into scripts folder.<br>
    1) FragHub GUI start<br>
    2) First tab: This area allows users to select specific functions for inclusion during the processing stage. Moreover, it provides the option to adjust the respective parameters of each function.<br>![img.png](img.png)
