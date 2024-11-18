@@ -101,6 +101,10 @@ def spectrum_cleaning(spectrum):
             # Converts peak list to a numpy array
             peak_list_np = peak_list_cleaning(peak_list, float_precursor_mz)
             spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
+            if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
+                if re.search(float_check_pattern, str(spectrum["ENTROPY"])):
+                    if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
+                        return None
             # If numpy array is empty, it returns none
             if peak_list_np.size == 0:
                 return None
@@ -115,6 +119,10 @@ def spectrum_cleaning(spectrum):
         float_precursor_mz = None
         peak_list_np = peak_list_cleaning(peak_list, float_precursor_mz)
         spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
+        if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
+            if re.search(float_check_pattern, str(spectrum["ENTROPY"])):
+                if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
+                    return None
         # If numpy array is empty, it returns none
         if peak_list_np.size == 0:
             return None
