@@ -10,7 +10,8 @@ func_names = [
     'reduce_peak_list',
     'normalize_intensity',
     'keep_mz_in_range',
-    'check_minimum_of_high_peaks_requiered'
+   'check_minimum_of_high_peaks_requiered',
+   'entropy_filter'
 ]
 
 
@@ -28,6 +29,7 @@ def on_done_button_clicked():
         'msp',
         'json'
     ] + func_names + [
+    'entropy_filter_value',
         'check_minimum_peak_requiered_n_peaks',
         'reduce_peak_list_max_peaks',
         'keep_mz_in_range_from_mz',
@@ -188,6 +190,8 @@ def build_window():
         parameters_dict[func].set(True)
 
         frame = Frame(tab2)
+
+        frame = Frame(tab2)
         frame.pack(fill='x')
 
         frame_func = Frame(frame)
@@ -215,6 +219,11 @@ def build_window():
             parameters_dict['reduce_peak_list_max_peaks'] = IntVar()
             parameters_dict['reduce_peak_list_max_peaks'].set(500)
             Entry(frame_params, textvariable=parameters_dict['reduce_peak_list_max_peaks']).pack(side=LEFT)
+        elif func == 'entropy_filter':
+            Label(frame_params, text="value:").pack(side=LEFT)
+            parameters_dict['entropy_filter_value'] = IntVar()
+            parameters_dict['entropy_filter_value'].set(0.5)
+            Entry(frame_params, textvariable=parameters_dict['entropy_filter_value']).pack(side=LEFT)
         elif func == 'keep_mz_in_range':
             Label(frame_params, text="from_mz:").pack(side=LEFT)
             parameters_dict['keep_mz_in_range_from_mz'] = IntVar()
@@ -309,7 +318,7 @@ def reset_updates(profile_name):
     """
 
     json_update_path = rf"../datas/updates/{profile_name}.json"  # path to the relevant update.json file
-    ouput_path = rf"../OUTPUT/{profile_name}"  # path to the relevant output directory
+    ouput_path = os.path.join(parameters_dict["output_directory"],profile_name)  # path to the relevant output directory
 
     # Reset the json file - Writing an empty json object to the file effectively clears it
     with open(json_update_path, 'w') as f:
