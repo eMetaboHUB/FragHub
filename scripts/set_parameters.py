@@ -16,8 +16,10 @@ func_names = [
 
 
 def on_done_button_clicked():
+
     """
     Closes the root window and converts the values in the parameters_dict dictionary to floats.
+    Saves the checkbox state and entry value for 'remove_spectrum_under_entropy_score' in the parameters_dict.
     This function is triggered when the 'Done' button of the GUI is clicked.
 
     :return: None
@@ -29,13 +31,13 @@ def on_done_button_clicked():
         'msp',
         'json'
     ] + func_names + [
-    'remove_spectrum_under_entropy_score_value',
         'check_minimum_peak_requiered_n_peaks',
         'reduce_peak_list_max_peaks',
         'keep_mz_in_range_from_mz',
         'keep_mz_in_range_to_mz',
         'check_minimum_of_high_peaks_requiered_intensity_percent',
-        'check_minimum_of_high_peaks_requiered_no_peaks'
+        'check_minimum_of_high_peaks_requiered_no_peaks',
+    'remove_spectrum_under_entropy_score_value'
     ])
 
     root.destroy()
@@ -220,9 +222,9 @@ def build_window():
             parameters_dict['reduce_peak_list_max_peaks'].set(500)
             Entry(frame_params, textvariable=parameters_dict['reduce_peak_list_max_peaks']).pack(side=LEFT)
         elif func == 'remove_spectrum_under_entropy_score':
-            Label(frame_params, text="value:").pack(side=LEFT)
             parameters_dict['remove_spectrum_under_entropy_score_value'] = IntVar()
             parameters_dict['remove_spectrum_under_entropy_score_value'].set(0.5)
+            Label(frame_params, text="value:").pack(side=LEFT)
             Entry(frame_params, textvariable=parameters_dict['remove_spectrum_under_entropy_score_value']).pack(side=LEFT)
         elif func == 'keep_mz_in_range':
             Label(frame_params, text="from_mz:").pack(side=LEFT)
