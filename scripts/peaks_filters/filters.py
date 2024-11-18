@@ -31,7 +31,7 @@ def apply_filters(peak_array, precursormz, parameters_dict):
         if peak_array.size == 0:
             return np.array([])
 
-    if parameters_dict['remove_peak_above_precursormz'] == 1.0:
+    if parameters_dict['remove_peak_above_precursormz'] == 1.0 and precursormz is not None:
         # remove peaks that are above a specified limit
         peak_array = remove_peak_above_precursormz(peak_array, precursormz)
         # if no peaks pass this filter, return an empty array
