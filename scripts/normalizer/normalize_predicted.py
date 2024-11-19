@@ -3,7 +3,7 @@ import re
 global In_Silico_pattern
 In_Silico_pattern = re.compile(r"in.silico|insilico|predicted|theoretical|Annotation.level.3", flags=re.IGNORECASE)
 
-def in_filename(filename):
+def in_filename_or_name(filename, name):
     """
     This function checks if a provided filename is valid based on two criteria:
     1. The filename does not contain the string "MSMS_Public"
@@ -15,7 +15,7 @@ def in_filename(filename):
     # Check if the string "MSMS_Public" is not in the filename
     if "MSMS_Public" not in filename:
         # If "MSMS_Public" is not in the filename, check if it matches the In_Silico_pattern
-        if re.search(In_Silico_pattern, filename):
+        if re.search(In_Silico_pattern, filename+" "+name):
             # If both conditions are met, return True
             return True
     # If either of the conditions is not met, return False
@@ -37,10 +37,11 @@ def normalize_predicted(metadata_dict):
     comment_field = metadata_dict["COMMENT"]  # Extract the 'COMMENT' field from the metadata dictionary
     predicted = metadata_dict["PREDICTED"]  # Extract the 'PREDICTED' field from the metadata dictionary
     filename = metadata_dict["FILENAME"]  # Extract the 'FILENAME' from the metadata dictionary
+    name = metadata_dict["NAME"]  # Extract the 'NAME' from the metadata dictionary
 
     # If 'COMMENT' field matches the pattern, or 'PREDICTED' is 'true', or 'MSMS_Public' in the filename:
     #    set 'PREDICTED' field in the metadata dictionary to 'true'
-    if re.search(In_Silico_pattern, comment_field) or predicted == "true" or in_filename(filename):
+    if re.search(In_Silico_pattern, comment_field) or predicted == "true" or in_filename_or_name(filename, name):
         metadata_dict["PREDICTED"] = "true"
     else:  # Otherwise, set the 'PREDICTED' field in the metadata dictionary to 'false'
         metadata_dict["PREDICTED"] = "false"
