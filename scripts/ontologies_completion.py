@@ -3,7 +3,8 @@ import pandas as pd
 import os
 
 global ontologies_df
-ontologies_df = pd.read_csv(os.path.abspath("../datas/ontologies_dict.csv"),sep=";", encoding="UTF-8") # Remplacez 'your_file.csv' par le chemin de votre fichier
+files = [f for f in os.listdir(os.path.abspath("../datas/")) if 'ontologies_dict' in f]
+ontologies_df = pd.concat((pd.read_csv(os.path.join(os.path.abspath("../datas/"), f), sep=";", encoding="UTF-8") for f in files), ignore_index=True)
 
 def ontologies_completion(spectrum_list):
     """
