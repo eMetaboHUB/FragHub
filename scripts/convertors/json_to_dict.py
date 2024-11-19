@@ -23,7 +23,7 @@ def parse_MoNA_peak_list(peak_list_string):
     # The list of these peaks is returned by the function.
     return [[float(mz), float(intensity)] for mz, intensity in peaks]
 
-def parsing_MoNA_json(json_dict):
+def convert_MoNA_json(json_dict):
     """
     :convert_MoNA_json:
 
@@ -44,7 +44,7 @@ def parsing_MoNA_json(json_dict):
     # Try to fetch molecular formula, SMILES, InChI, InChIKey from the json_dict, if not available pass
     try:
         for i in range(len(json_dict["compound"][0]["metaData"])):
-            if json_dict["compound"][0]["metaData"][i]["name"].lower() in ["molecular formula", "smiles", "inchi", "inchikey"] and not json_dict["compound"][0]["metaData"][i]["computed"]:
+            if json_dict["compound"][0]["metaData"][i]["name"] in ["molecular formula", "SMILES", "InChI", "InChIKey"] and not json_dict["compound"][0]["metaData"][i]["computed"]:
                 dict_final[json_dict["compound"][0]["metaData"][i]["name"].lower()] = json_dict["compound"][0]["metaData"][i]["value"]
     except:
         pass
@@ -76,16 +76,15 @@ def parsing_MoNA_json(json_dict):
     except:
         pass
 
-    # Try to fetch predicted value
-    try:
-        dict_final["predicted"] = 'false'
-
-        tags = json_dict.get('tags')
-        for tag in tags:
-            if tag['text'] == 'In-Silico':
-                dict_final["predicted"] = 'true'
-    except:
-        pass
+        # Try to fetch predicted value
+        try:
+            tags = json_dict.get('tags')
+            if tags[1]['text'] == 'In-Silico':
+                json_dict["predicted"] == 'true'
+            else:
+                json_dict["predicted"] == 'false'
+        except:
+            pass
 
 
     return dict_final
@@ -112,7 +111,7 @@ def parse_others_json_peak_list(peak_list):
     # return a list of these peak lists
     return [[float(mz), float(intensity)] for mz, intensity in peak_list]
 
-def json_to_dict(json_dict):
+def json_to_json(json_dict):
     """
     :param json_dict: A dictionary representing a JSON object.
     :return: The converted JSON object.
@@ -131,7 +130,7 @@ def json_to_dict(json_dict):
     # If the JSON dictionary has all keys_to_check,
     # Convert it using convert_MoNA_json function and convert_keys
     if all(key in json_dict for key in keys_to_check):
-        json_dict = parsing_MoNA_json(json_dict)  # Transform JSON object
+        json_dict = convert_MoNA_json(json_dict)  # Transform JSON object
         json_dict = convert_keys(json_dict)  # Standardize keys
         return json_dict
 
@@ -147,7 +146,7 @@ def json_to_dict(json_dict):
     # If there's neither required keys nor peak keys, return None
     return None
 
-def json_to_dict_processing(FINAL_JSON):
+def json_to_json_processing(FINAL_JSON):
     """
     Converts a list of JSON objects into processed JSON data inplace.
     :param FINAL_JSON: A list of JSON objects to be processed.
@@ -156,14 +155,14 @@ def json_to_dict_processing(FINAL_JSON):
     start = 0
     end = len(FINAL_JSON)
 
-    progress_bar = tqdm(total=end, unit=" spectrums", colour="green", desc="{:>70}".format("parsing JSON spectrums"))
+    progress_bar = tqdm(total=end, unit=" spectrums", colour="green", desc="{:>70}".format("converting JSON spectrums"))
 
     while start < end:
         chunk_size = min(end - start, 5000)
 
         # Use ThreadPoolExecutor to process the chunk
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            FINAL_JSON[start:start + chunk_size] = list(executor.map(json_to_dict, FINAL_JSON[start:start + chunk_size]))
+            FINAL_JSON[start:start + chunk_size] = list(executor.map(json_to_json, FINAL_JSON[start:start + chunk_size]))
 
         # Filter out None results
         FINAL_JSON[start:start + chunk_size] = [item for item in FINAL_JSON[start:start + chunk_size] if item is not None]
