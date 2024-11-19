@@ -76,15 +76,15 @@ def convert_MoNA_json(json_dict):
     except:
         pass
 
-        # Try to fetch predicted value
-        try:
-            tags = json_dict.get('tags')
-            if tags[1]['text'] == 'In-Silico':
-                json_dict["predicted"] == 'true'
-            else:
-                json_dict["predicted"] == 'false'
-        except:
-            pass
+    # Try to fetch predicted value
+    try:
+        tags = json_dict.get('tags')
+        if tags[1]['text'] == 'In-Silico':
+            json_dict["predicted"] == 'true'
+        else:
+            json_dict["predicted"] == 'false'
+    except:
+        pass
 
 
     return dict_final
