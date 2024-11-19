@@ -45,7 +45,6 @@ def normalize_predicted(metadata_dict):
         dict: The updated metadata dictionary with the 'PREDICTED' field set to 'true'
               or 'false' based on the evaluated conditions.
     """
-
     comment_field = metadata_dict["COMMENT"]  # Extract the 'COMMENT' field from the metadata dictionary
     predicted = metadata_dict["PREDICTED"]  # Extract the 'PREDICTED' field from the metadata dictionary
     filename = metadata_dict["FILENAME"]  # Extract the 'FILENAME' from the metadata dictionary
