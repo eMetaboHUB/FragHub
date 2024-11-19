@@ -5,12 +5,19 @@ In_Silico_pattern = re.compile(r"in.silico|insilico|predicted|theoretical|Annota
 
 def in_filename_or_name(filename, name):
     """
-    This function checks if a provided filename is valid based on two criteria:
-    1. The filename does not contain the string "MSMS_Public"
-    2. The filename matches a specific pattern (In_Silico_pattern) defined elsewhere in the code.
+    Check whether a given filename or name matches specific criteria.
 
-    :param filename: The name of the file to be checked for the presence of the string "MSMS_Public" and matching a specific pattern.
-    :return: The function returns True if the filename meets both criteria. If the filename contains "MSMS_Public" or does not match the In_Silico_pattern, the function returns False.
+    This function checks if the string "MSMS_Public" is not in the filename
+    and simultaneously if the filename combined with the name matches the
+    In_Silico_pattern regular expression. If both conditions are met, the function
+    returns True, otherwise, it returns False.
+
+    Args:
+        filename (str): The filename to be checked.
+        name (str): The name to be checked alongside the filename.
+
+    Returns:
+        bool: True if conditions are met, False otherwise.
     """
     # Check if the string "MSMS_Public" is not in the filename
     if "MSMS_Public" not in filename:
@@ -23,15 +30,20 @@ def in_filename_or_name(filename, name):
 
 def normalize_predicted(metadata_dict):
     """
-    Normalize the predicted field in the given metadata dictionary.
+    Update the 'PREDICTED' field in the metadata dictionary based on specific conditions.
 
-    This function checks the 'COMMENT' and 'PREDICTED' values in the metadata dictionary and the filename
-    of the data. If the 'COMMENT' field matches a certain pattern (represented by a regular expression
-    'In_Silico_pattern'), or the 'PREDICTED' value is 'true', or the string "MSMS_Public" is in the filename,
-    it sets the 'PREDICTED' value to 'true', else it sets the 'PREDICTED' value to 'false'.
+    The function checks if certain conditions are met within the metadata dictionary
+    and updates the 'PREDICTED' field accordingly. The 'COMMENT' field is evaluated
+    against a pattern, the 'PREDICTED' field is checked for a string "true", and the
+    'FILENAME' field is checked for specific substrings.
 
-    :param metadata_dict: A dictionary containing metadata information.
-    :return: The updated metadata dictionary with the normalized predicted field.
+    Parameters:
+        metadata_dict (dict): A dictionary containing metadata with keys "COMMENT",
+                              "PREDICTED", "FILENAME", and "NAME".
+
+    Returns:
+        dict: The updated metadata dictionary with the 'PREDICTED' field set to 'true'
+              or 'false' based on the evaluated conditions.
     """
 
     comment_field = metadata_dict["COMMENT"]  # Extract the 'COMMENT' field from the metadata dictionary
