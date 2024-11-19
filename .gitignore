@@ -3,3 +3,8 @@
 /cmf_id_test/report.csv
 /datas/update.json
 /datas/ontologies_dict.csv
+/TOOLS/check_ontologies_completion/data_solweig/unique_inchikeys_merged.csv
+/TOOLS/check_ontologies_completion/data_solweig/NPClass070723.csv
+/TOOLS/check_ontologies_completion/data_solweig/CLassyFireOutput.csv
+/TOOLS/check_ontologies_completion/filtered_unknown.csv
+/TOOLS/check_ontologies_completion/unique_inchikeys.csv
