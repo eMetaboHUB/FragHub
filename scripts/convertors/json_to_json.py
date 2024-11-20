@@ -44,7 +44,7 @@ def convert_MoNA_json(json_dict):
     # Try to fetch molecular formula, SMILES, InChI, InChIKey from the json_dict, if not available pass
     try:
         for i in range(len(json_dict["compound"][0]["metaData"])):
-            if json_dict["compound"][0]["metaData"][i]["name"] in ["molecular formula", "SMILES", "InChI", "InChIKey"] and not json_dict["compound"][0]["metaData"][i]["computed"]:
+            if json_dict["compound"][0]["metaData"][i]["name"].lower() in ["molecular formula", "smiles", "inchi", "inchikey"] and not json_dict["compound"][0]["metaData"][i]["computed"]:
                 dict_final[json_dict["compound"][0]["metaData"][i]["name"].lower()] = json_dict["compound"][0]["metaData"][i]["value"]
     except:
         pass
