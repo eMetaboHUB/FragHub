@@ -116,8 +116,12 @@ def write_csv(df, filename, mode, update, first_run, profile_name):
     :param profile_name: str - a name related to the CSV file for organizing the output.
     :return: None.
     """
+    # Replace newline characters with semicolons in the PEAKS_LIST column
+    if 'PEAKS_LIST' in df.columns:
+        df['PEAKS_LIST'] = df['PEAKS_LIST'].str.replace('\n', ';')
+
     # Placeholder string for the directory output path
-    output_file_path = os.path.join(parameters_dict["output_directory"],f"{profile_name}/CSV/{mode}", filename)
+    output_file_path = os.path.join(parameters_dict["output_directory"], f"{profile_name}/CSV/{mode}", filename)
 
     # The chunk size is limit for each write operation
     chunk_size = 5000
@@ -135,15 +139,17 @@ def write_csv(df, filename, mode, update, first_run, profile_name):
 
             # If it is the first chunk in a first run, write with headers
             if start == 0 and first_run:
-                df_slice.to_csv(output_file_path, mode='w', sep=";", quotechar='"', encoding="UTF-8", index=False)
+                df_slice.to_csv(output_file_path, mode='w', sep="\t", quotechar='"', encoding="UTF-8", index=False)
 
             # If it is not the first chunk, write without headers (append)
             else:
-                df_slice.to_csv(output_file_path, mode='a', header=False, index=False, sep=";", quotechar='"', encoding="UTF-8")
+                df_slice.to_csv(output_file_path, mode='a', header=False, index=False, sep="\t", quotechar='"',
+                                encoding="UTF-8")
 
             # Update the progress bar
             pbar.update()
         pbar.close()
+
 
 def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update=False):
     """
