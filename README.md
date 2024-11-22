@@ -73,7 +73,7 @@ This function is used to check whether a given array containing peak data has a 
    137.09664 0.498920401<br>
    165.0915547 0.4243093978<br>
    "<br>
-
+>NB: If you want to read CSV from FragHub output, use separator "\t" and parse peaks list with " "(space) like m/z intensity separator and ";" like lines separator (exemple: "314.00000000 1.00000000;315.00000000 0.15715716;316.00000000 0.35735736;317.00000000 0.05105105")
 ## FragHub: lost spectra tracking
 If you wish to visualize the spectra tracing eliminated during the process,
 you can, from the TOOLS branch, 

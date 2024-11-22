@@ -60,27 +60,43 @@ def remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silic
     """
     # Remove duplicates from the POS_LC dataframe
     POS_LC_df = removing_duplicates(POS_LC_df, "POS_LC", "POS", update, first_run, profile_name)
+    POS_LC_df = POS_LC_df.copy()
+    POS_LC_df.replace("\t", " ", inplace=True)
 
     # Remove duplicates from the POS_LC_In_Silico dataframe
     POS_LC_In_Silico_df = removing_duplicates(POS_LC_In_Silico_df, "POS_LC_In_Silico", "POS", update, first_run, profile_name)
+    POS_LC_In_Silico_df = POS_LC_In_Silico_df.copy()
+    POS_LC_In_Silico_df.replace("\t", " ", inplace=True)
 
     # Remove duplicates from the POS_GC dataframe
     POS_GC_df = removing_duplicates(POS_GC_df, "POS_GC", "POS", update, first_run, profile_name)
+    POS_GC_df = POS_GC_df.copy()
+    POS_GC_df.replace("\t", " ", inplace=True)
 
     # Remove duplicates from the POS_GC_In_Silico dataframe
     POS_GC_In_Silico_df = removing_duplicates(POS_GC_In_Silico_df, "POS_GC_In_Silico", "POS", update, first_run, profile_name)
+    POS_GC_In_Silico_df = POS_GC_In_Silico_df.copy()
+    POS_GC_In_Silico_df.replace("\t", " ", inplace=True)
 
     # Remove duplicates from the NEG_LC dataframe
     NEG_LC_df = removing_duplicates(NEG_LC_df, "NEG_LC", "NEG", update, first_run, profile_name)
+    NEG_LC_df = NEG_LC_df.copy()
+    NEG_LC_df.replace("\t", " ", inplace=True)
 
     # Remove duplicates from the NEG_LC_In_Silico dataframe
     NEG_LC_In_Silico_df = removing_duplicates(NEG_LC_In_Silico_df, "NEG_LC_In_Silico", "NEG", update, first_run, profile_name)
+    NEG_LC_In_Silico_df = NEG_LC_In_Silico_df.copy()
+    NEG_LC_In_Silico_df.replace("\t", " ", inplace=True)
 
     # Remove duplicates from the NEG_GC dataframe
     NEG_GC_df = removing_duplicates(NEG_GC_df, "NEG_GC", "NEG", update, first_run, profile_name)
+    NEG_GC_df = NEG_GC_df.copy()
+    NEG_GC_df.replace("\t", " ", inplace=True)
 
     # Remove duplicates from the NEG_GC_In_Silico dataframe
     NEG_GC_In_Silico_df = removing_duplicates(NEG_GC_In_Silico_df, "NEG_GC_In_Silico", "NEG", update, first_run, profile_name)
+    NEG_GC_In_Silico_df = NEG_GC_In_Silico_df.copy()
+    NEG_GC_In_Silico_df.replace("\t", " ", inplace=True)
 
     # Return the updated dataframes
     return POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df
