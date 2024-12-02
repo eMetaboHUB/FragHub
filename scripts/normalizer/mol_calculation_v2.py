@@ -34,28 +34,47 @@ pubchem_datas = pd.concat(all_dfs, ignore_index=True)
 inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
 indigo_smiles_correction_pattern = re.compile(r"\|[\s\S]*")
 
-def correct_and_convert_inchi_smiles(row):
-    # Si INCHIKEY est présent et correspond au pattern, ne pas faire d'autres traitements
-    if pd.notna(row['INCHIKEY']) and inchikey_pattern.match(row['INCHIKEY']):
-        return row
+def merge_datas_from_pubchem(CONCATENATE_DF, pubchem_datas):
+    # Premier merge par INCHIKEY
+    CONCATENATE_DF = pd.merge(CONCATENATE_DF, pubchem_datas, on='INCHIKEY', how='left', suffixes=('', '_pubchem'))
 
-    if pd.notna(row['INCHI']):
-        if 'InChI=' not in row['INCHI']:
-            cleaned_value = re.sub(indigo_smiles_correction_pattern, "", row['INCHI'])
-            if Chem.MolFromSmiles(cleaned_value):
-                row['INCHI'] = Chem.MolToSmiles(Chem.MolFromSmiles(cleaned_value))
-            else:
-                row['INCHI'] = ''  # Nettoyer si ce n'est ni un INCHI valide, ni un SMILES valide
+    # Supprimer les colonnes suffixées après l'assignation
+    CONCATENATE_DF.drop(columns=[col for col in CONCATENATE_DF.columns if '_pubchem' in col], inplace=True)
 
-    if pd.notna(row['SMILES']):
-        if 'InChI=' in row['SMILES']:
-            if Chem.MolFromInchi(row['SMILES']):
-                row['SMILES'] = Chem.MolToInchi(Chem.MolFromInchi(row['SMILES']))
-            else:
-                row['SMILES'] = ''  # Nettoyer si ce n'est pas un SMILES valide
+    # Masque pour les lignes où 'calculation' n'est pas 'done'
+    not_done_mask = CONCATENATE_DF['calculation'] != 'done'
 
-    return row
+    # Deuxième fusion par INCHI sur les lignes non encore marquées comme 'done'
+    CONCATENATE_DF.loc[not_done_mask] = pd.merge(
+        CONCATENATE_DF[not_done_mask],
+        pubchem_datas,
+        on='INCHI',
+        how='left',
+        suffixes=('', '_pubchem')
+    )
+
+    # Supprimer à nouveau les colonnes suffixées après l'assignation
+    CONCATENATE_DF.drop(columns=[col for col in CONCATENATE_DF.columns if '_pubchem' in col], inplace=True)
+
+    # Mettre à jour le masque pour les lignes restantes
+    not_done_mask = CONCATENATE_DF['calculation'] != 'done'
+
+    # Troisième fusion par SMILES sur les lignes non encore marquées comme 'done'
+    CONCATENATE_DF.loc[not_done_mask] = pd.merge(
+        CONCATENATE_DF[not_done_mask],
+        pubchem_datas,
+        on='SMILES',
+        how='left',
+        suffixes=('', '_pubchem')
+    )
+
+    # Supprimer les colonnes suffixées après la troisième fusion
+    CONCATENATE_DF.drop(columns=[col for col in CONCATENATE_DF.columns if '_pubchem' in col], inplace=True)
+
+    return CONCATENATE_DF
 
 def mols_derivation_and_calculation(CONCATENATE_DF):
-    # Application de la fonction à chaque ligne du DataFrame
-    CONCATENATE_DF = CONCATENATE_DF.apply(correct_and_convert_inchi_smiles, axis=1)
+    CONCATENATE_DF['calculation'] = ''
+
+    CONCATENATE_DF = merge_datas_from_pubchem(CONCATENATE_DF, pubchem_datas)
+
