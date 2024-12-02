@@ -173,6 +173,8 @@ def mols_derivation_and_calculation(CONCATENATE_DF):
         CONCATENATE_DF.loc[not_done_mask, 'SMILES']
     ]).dropna().unique()
 
+    CONCATENATE_DF.drop(columns=['calculation'], inplace=True)
+
     # For each unique inchi_smiles run 'apply_transformations' and store result to a dictionary
     unique_transforms = {inchi_smiles: apply_transformations(inchi_smiles) for inchi_smiles in tqdm(
         unique_inchi_smiles, unit=" rows", colour="green", desc="{:>70}".format("derivation and calculation"))}
