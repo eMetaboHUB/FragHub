@@ -1,7 +1,7 @@
 import re
 
 global smiles_pattern
-smiles_pattern = re.compile(r"[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}", flags=re.IGNORECASE) # Match smiles
+smiles_pattern = re.compile(r"\b([^J][0-9BCOHNSOPrIFla@+\-\[\]\(\)\\\/%=#$]{6,})\b", flags=re.IGNORECASE) # Match smiles
 
 global inchi_pattern
 inchi_pattern = re.compile(r"(InChI=.*|\/[0-9A-Z]*\/)", flags=re.IGNORECASE) # Match inchi
@@ -10,7 +10,7 @@ global inchikey_pattern
 inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])", flags=re.IGNORECASE) # Match inchikey
 
 global repair_inchi_pattern
-repair_inchi_pattern = re.compile(r"^(inchi=)?", flags=re.IGNORECASE)
+repair_inchi_pattern = re.compile(r"(inchi=)", flags=re.IGNORECASE)
 
 def repair_inchi(metadata_dict):
     """
@@ -44,15 +44,13 @@ def repair_mol_descriptors(metadata_dict):
     Repairs molecular descriptors in a dictionary containing SMILES, InChI, and InChIKey.
     Check if molecular descriptors are in the dedicated field.
     """
-
-    # Assigning the values of SMILES, InChI, and InChIKey into respective variables
     smiles = metadata_dict['SMILES']
     inchi = metadata_dict['INCHI']
     inchikey = metadata_dict['INCHIKEY']
     name = metadata_dict['NAME']
     comment = metadata_dict['COMMENT']
 
-    # CASES
+    # ============= CASES =============
     # INCHIKEY
     inchikey_in_inchikey = re.search(inchikey_pattern, inchikey)
     inchikey_in_smiles = re.search(inchikey_pattern, smiles)
@@ -83,67 +81,41 @@ def repair_mol_descriptors(metadata_dict):
     inchi_in_comment = re.search(inchi_pattern, comment)
 
     if inchi_in_inchi:
-        metadata_dict['INCHI'] = inchi_in_inchi.group(0)
+        metadata_dict['INCHI'] = inchi_in_inchi.group(1)
     if inchi_in_smiles:
-        metadata_dict['INCHI'] = inchi_in_smiles.group(0)
-        metadata_dict['SMILES'] = smiles.replace(inchi_in_smiles.group(0), '')
+        metadata_dict['INCHI'] = inchi_in_smiles.group(1)
+        metadata_dict['SMILES'] = smiles.replace(inchi_in_smiles.group(1), '')
     if inchi_in_inchikey:
-        metadata_dict['INCHI'] = inchi_in_inchikey.group(0)
-        metadata_dict['INCHIKEY'] = inchikey.replace(inchi_in_inchikey.group(0), '')
+        metadata_dict['INCHI'] = inchi_in_inchikey.group(1)
+        metadata_dict['INCHIKEY'] = inchikey.replace(inchi_in_inchikey.group(1), '')
     if inchi_in_name:
-        metadata_dict['INCHI'] = inchi_in_name.group(0)
-        metadata_dict['NAME'] = name.replace(inchi_in_name.group(0), '')
+        metadata_dict['INCHI'] = inchi_in_name.group(1)
+        metadata_dict['NAME'] = name.replace(inchi_in_name.group(1), '')
     if inchi_in_comment:
-        metadata_dict['INCHI'] = inchi_in_comment.group(0)
-        metadata_dict['COMMENT'] = comment.replace(inchi_in_comment.group(0), '')
+        metadata_dict['INCHI'] = inchi_in_comment.group(1)
+        metadata_dict['COMMENT'] = comment.replace(inchi_in_comment.group(1), '')
 
     # SMILES
+    smiles_in_smiles = re.search(smiles_pattern, smiles)
+    smiles_in_inchi = re.search(smiles_pattern, inchi)
+    smiles_in_inchikey = re.search(smiles_pattern, inchikey)
+    smiles_in_name = re.search(smiles_pattern, name)
+    smiles_in_comment = re.search(smiles_pattern, comment)
 
-    # If the respective patterns match the respective values, repair the InChI and return the updated dict
-    if re.search(smiles_pattern, smiles) and re.search(inchi_pattern, inchi) and re.search(inchikey_pattern, inchikey):
-        metadata_dict = repair_inchi(metadata_dict)
-        return metadata_dict
-
-    # If the patterns of InChI and InChIKey do not match but SMILES pattern matches InChI,
-    # then update InChI value to SMILES and set the InChI to blank
-    if re.search(smiles_pattern, inchi):
-        if not re.search(inchi_pattern, inchi) and not re.search(inchikey_pattern, inchi):
-            metadata_dict['SMILES'] = inchi
-            metadata_dict['INCHI'] = ''
-
-    # If the patterns of InChi and InChiKey do not match but SMILES pattern matches InChIKey,
-    # update the InChIKey value to SMILES and set the InChIKey to blank
-    if re.search(smiles_pattern, inchikey):
-        if not re.search(inchi_pattern, inchikey) and not re.search(inchikey_pattern, inchikey):
-            metadata_dict['SMILES'] = inchikey
-            metadata_dict['INCHIKEY'] = ''
-
-    # If SMILES matches InChI pattern, set the InChI to SMILES and set SMILES to blank
-    if re.search(inchi_pattern, smiles):
-        metadata_dict['INCHI'] = smiles
-        metadata_dict['SMILES'] = ''
-
-    # If InChIKey matches InChI pattern, set the InChI to InChIKey and set the InChiKey to blank
-    if re.search(inchi_pattern, inchikey):
-        metadata_dict['INCHI'] = inchikey
-        metadata_dict['INCHIKEY'] = ''
-
-    # If InChI matches InChiKey pattern, set the InChiKey to InChI and set InChI to blank
-    if re.search(inchikey_pattern, inchi):
-        metadata_dict['INCHIKEY'] = inchi
-        metadata_dict['INCHI'] = ''
-
-    if re.search(inchikey_pattern, smiles):
-        metadata_dict['INCHIKEY'] = smiles
-        metadata_dict['SMILES'] = ''
-
-    if re.search(inchikey_pattern, name):
-        metadata_dict['INCHIKEY'] = re.search(inchikey_pattern, name).group(1)
-        metadata_dict['NAME'] = name.replace(re.search(inchikey_pattern, name).group(1), '')
-
-    if re.search(inchikey_pattern, comment):
-        metadata_dict['INCHIKEY'] = re.search(inchikey_pattern, comment).group(1)
-        metadata_dict['COMMENT'] = name.replace(re.search(inchikey_pattern, comment).group(1), '')
+    if smiles_in_smiles:
+        metadata_dict['SMILES'] = smiles_in_smiles.group(1)
+    if smiles_in_inchi:
+        metadata_dict['SMILES'] = smiles_in_inchi.group(1)
+        metadata_dict['INCHI'] = inchi.replace(smiles_in_inchi.group(1), '')
+    if smiles_in_inchikey:
+        metadata_dict['SMILES'] = smiles_in_inchikey.group(1)
+        metadata_dict['INCHIKEY'] = inchikey.replace(smiles_in_inchikey.group(1), '')
+    if smiles_in_name:
+        metadata_dict['SMILES'] = smiles_in_name.group(1)
+        metadata_dict['NAME'] = name.replace(smiles_in_name.group(1), '')
+    if smiles_in_comment:
+        metadata_dict['SMILES'] = smiles_in_comment.group(1)
+        metadata_dict['COMMENT'] = comment.replace(smiles_in_comment.group(1), '')
 
     # Again call the repair InChI function to repair and update the InChI
     metadata_dict = repair_inchi(metadata_dict)
