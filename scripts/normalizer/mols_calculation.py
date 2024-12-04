@@ -1,36 +1,11 @@
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from rdkit.Chem.Descriptors import ExactMolWt, MolWt
-from concurrent.futures import ThreadPoolExecutor
 from rdkit import RDLogger, Chem
 from tqdm import tqdm
 import pandas as pd
 import re
-import os
 
 RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
-
-# Dossier contenant les fichiers CSV
-folder_path = '../datas/pubchem_datas'
-# Liste pour stocker chaque DataFrame
-all_dfs = []
-# Fonction pour lire un fichier CSV
-def read_csv(file_path):
-    return pd.read_csv(file_path, sep=';', quotechar='"', encoding='utf-8')
-
-# Utiliser ThreadPoolExecutor pour lire les fichiers en parallèle
-with ThreadPoolExecutor() as executor:
-    futures = []
-    for file_name in os.listdir(folder_path):
-        if file_name.endswith('.csv'):
-            file_path = os.path.join(folder_path, file_name)
-            futures.append(executor.submit(read_csv, file_path))
-    # Récupérer les résultats des futures
-    for future in futures:
-        all_dfs.append(future.result())
-
-# Concaténer tous les DataFrames
-global pubchem_datas
-pubchem_datas = pd.concat(all_dfs, ignore_index=True)
 
 inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
 indigo_smiles_correction_pattern = re.compile(r"\|[\s\S]*")
@@ -113,71 +88,17 @@ def map_transformations(row, unique_transforms):
     # Return the transformed row
     return row
 
-def merge_datas_from_pubchem(CONCATENATE_DF):
-    # Premier merge par INCHIKEY
-    CONCATENATE_DF = pd.merge(CONCATENATE_DF, pubchem_datas, on='INCHIKEY', how='left', suffixes=('', '_pubchem'))
-
-    # Supprimer les colonnes suffixées après l'assignation
-    CONCATENATE_DF.drop(columns=[col for col in CONCATENATE_DF.columns if '_pubchem' in col], inplace=True)
-
-    # Masque pour les lignes où 'calculation' n'est pas 'done'
-    not_done_mask = CONCATENATE_DF['calculation'] != 'done'
-
-    # Deuxième fusion par INCHI sur les lignes non encore marquées comme 'done'
-    CONCATENATE_DF.loc[not_done_mask] = pd.merge(
-        CONCATENATE_DF[not_done_mask],
-        pubchem_datas,
-        on='INCHI',
-        how='left',
-        suffixes=('', '_pubchem')
-    )
-
-    # Supprimer à nouveau les colonnes suffixées après l'assignation
-    CONCATENATE_DF.drop(columns=[col for col in CONCATENATE_DF.columns if '_pubchem' in col], inplace=True)
-
-    # Mettre à jour le masque pour les lignes restantes
-    not_done_mask = CONCATENATE_DF['calculation'] != 'done'
-
-    # Troisième fusion par SMILES sur les lignes non encore marquées comme 'done'
-    CONCATENATE_DF.loc[not_done_mask] = pd.merge(
-        CONCATENATE_DF[not_done_mask],
-        pubchem_datas,
-        on='SMILES',
-        how='left',
-        suffixes=('', '_pubchem')
-    )
-
-    # Supprimer les colonnes suffixées après la troisième fusion
-    CONCATENATE_DF.drop(columns=[col for col in CONCATENATE_DF.columns if '_pubchem' in col], inplace=True)
-
-    return CONCATENATE_DF
-
 def mols_derivation_and_calculation(CONCATENATE_DF):
     """
     Derives and calculates molecular properties based on unique INCHI and SMILES in the given DataFrame.
     :param CONCATENATE_DF: DataFrame containing the INCHI and SMILES columns.
     :return: DataFrame with calculated molecular properties.
     """
-    # Initialize the calculation column
-    CONCATENATE_DF['calculation'] = ''
+    # Concatenates 'INCHI' and 'SMILES' columns, drops all null entries and gets unique values from result
+    unique_inchi_smiles = pd.concat([CONCATENATE_DF['INCHI'], CONCATENATE_DF['SMILES']]).dropna().unique()
 
-    # Merge data from pubchem
-    CONCATENATE_DF = merge_datas_from_pubchem(CONCATENATE_DF)
-
-    # Filter for rows where calculation is not done
-    not_done_mask = CONCATENATE_DF['calculation'] != 'done'
-
-    # Concatenate 'INCHI' and 'SMILES' columns, drop all null entries and get unique values from result
-    unique_inchi_smiles = pd.concat([
-        CONCATENATE_DF.loc[not_done_mask, 'INCHI'],
-        CONCATENATE_DF.loc[not_done_mask, 'SMILES']
-    ]).dropna().unique()
-
-    CONCATENATE_DF.drop(columns=['calculation'], inplace=True)
-
-    # For each unique inchi_smiles run 'apply_transformations' and store result to a dictionary
-    unique_transforms = {inchi_smiles: apply_transformations(inchi_smiles) for inchi_smiles in tqdm(
-        unique_inchi_smiles, unit=" rows", colour="green", desc="{:>70}".format("derivation and calculation"))}
+    # For each distinction in inchi_smiles run 'apply_transformation' and store result to a dictionary
+    unique_transforms = {inchi_smiles: apply_transformations(inchi_smiles) for inchi_smiles in tqdm(unique_inchi_smiles, unit=" rows", colour="green", desc="{:>70}".format("derivation and calculation"))}
 
     # Initialize the tqdm progress bar for the coming dataframe calculations
     tqdm.pandas(unit="rows", colour="green", desc="{:>70}".format("updating dataframe"))
