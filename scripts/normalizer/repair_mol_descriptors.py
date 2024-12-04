@@ -49,6 +49,8 @@ def repair_mol_descriptors(metadata_dict):
     smiles = metadata_dict['SMILES']
     inchi = metadata_dict['INCHI']
     inchikey = metadata_dict['INCHIKEY']
+    name = metadata_dict['NAME']
+    comment = metadata_dict['COMMENT']
 
     # If the respective patterns match the respective values, repair the InChI and return the updated dict
     if re.search(smiles_pattern, smiles) and re.search(inchi_pattern, inchi) and re.search(inchikey_pattern, inchikey):
@@ -83,6 +85,18 @@ def repair_mol_descriptors(metadata_dict):
     if re.search(inchikey_pattern, inchi):
         metadata_dict['INCHIKEY'] = inchi
         metadata_dict['INCHI'] = ''
+
+    if re.search(inchikey_pattern, smiles):
+        metadata_dict['INCHIKEY'] = smiles
+        metadata_dict['SMILES'] = ''
+
+    if re.search(inchikey_pattern, name):
+        metadata_dict['INCHIKEY'] = re.search(inchikey_pattern, name).group(1)
+        metadata_dict['NAME'] = name.replace(re.search(inchikey_pattern, name).group(1), '')
+
+    if re.search(inchikey_pattern, comment):
+        metadata_dict['INCHIKEY'] = re.search(inchikey_pattern, comment).group(1)
+        metadata_dict['COMMENT'] = name.replace(re.search(inchikey_pattern, comment).group(1), '')
 
     # Again call the repair InChI function to repair and update the InChI
     metadata_dict = repair_inchi(metadata_dict)
