@@ -72,6 +72,8 @@ def repair_mol_descriptors(metadata_dict):
     if inchikey_in_comment:
         metadata_dict['INCHIKEY'] = inchikey_in_comment.group(1)
         metadata_dict['COMMENT'] = comment.replace(inchikey_in_comment.group(1), '')
+    if not inchikey_in_inchikey:
+        metadata_dict['INCHIKEY'] = ''
 
     # INCHI
     inchi_in_inchi = re.search(inchi_pattern, inchi)
@@ -94,6 +96,8 @@ def repair_mol_descriptors(metadata_dict):
     if inchi_in_comment:
         metadata_dict['INCHI'] = inchi_in_comment.group(1)
         metadata_dict['COMMENT'] = comment.replace(inchi_in_comment.group(1), '')
+    if not inchi_in_inchi:
+        metadata_dict['INCHI'] = ''
 
     # SMILES
     smiles_in_smiles = re.search(smiles_pattern, smiles)
@@ -116,6 +120,8 @@ def repair_mol_descriptors(metadata_dict):
     if smiles_in_comment:
         metadata_dict['SMILES'] = smiles_in_comment.group(1)
         metadata_dict['COMMENT'] = comment.replace(smiles_in_comment.group(1), '')
+    if not smiles_in_smiles:
+        metadata_dict['SMILES'] = ''
 
     # Again call the repair InChI function to repair and update the InChI
     metadata_dict = repair_inchi(metadata_dict)
