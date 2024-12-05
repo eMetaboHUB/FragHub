@@ -1,11 +1,11 @@
 from normalizer.mols_calculation import *
+from complete_from_pubchem_datas import *
 from convertors.convert_to_json import *
 from ontologies_completion import *
 from convertors.csv_to_msp import *
 from spectrum_normalizer import *
 from duplicatas_remover import *
 from splash_generator import *
-from name_completion import *
 from set_parameters import *
 from splitter import *
 from writers import *
@@ -117,6 +117,7 @@ if __name__ == "__main__":
     time.sleep(0.01)
     spectrum_list = spectrum_cleaning_processing(spectrum_list)
 
+
     if not spectrum_list:
         sys.exit("There is no spectrums to process after cleaning. Exiting code !")
 
@@ -128,11 +129,11 @@ if __name__ == "__main__":
     time.sleep(0.01)
     spectrum_list = mols_derivation_and_calculation(spectrum_list)
 
-    # STEP 5: completing missing names
+    # STEP 5: completing missing metadata from pubchem datas
     time.sleep(0.01)
-    print("{:>70}".format("-- NAMES COMPLETION --"))
+    print("{:>70}".format("-- COMPLETING FROM PUBCHEM DATAS --"))
     time.sleep(0.01)
-    spectrum_list = names_completion(spectrum_list)
+    spectrum_list = complete_from_pubchem_datas(spectrum_list)
 
     # STEP 6: completing missing names
     time.sleep(0.01)
