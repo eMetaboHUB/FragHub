@@ -28,7 +28,6 @@ global pubchem_datas
 pubchem_datas = pd.concat(all_dfs, ignore_index=True)
 
 def complete_from_pubchem_datas(CONCATENATE_DF):
-    CONCATENATE_DF['calculation'] = ''
     # Ajouter une colonne 'INDEX' qui numérote les lignes
     CONCATENATE_DF['INDEX'] = range(len(CONCATENATE_DF))
 
