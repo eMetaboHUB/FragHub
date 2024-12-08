@@ -1,5 +1,6 @@
 from tqdm import tqdm
 import ijson
+import json
 import os
 import re
 
@@ -124,4 +125,44 @@ def load_spectrum_list_json(json_file_path):
             yield spectrum
 
         # Close the progress bar after all spectra have been loaded and yielded.
+        progress.close()
+
+
+def load_spectrum_list_json_2(json_file_path):
+    """
+    Cette fonction charge une liste de spectres à partir d'un fichier JSON donné.
+
+    :param json_file_path: Une chaîne représentant le chemin vers le fichier JSON contenant les spectres.
+
+    :return: Un générateur retournant chaque spectre (dictionnaire) du fichier JSON, un à la fois.
+    """
+
+    # Extraire le nom de fichier à partir du chemin donné
+    filename = os.path.basename(json_file_path)
+
+    # Calculer la taille totale du fichier en octets pour la progression
+    total_bytes = os.path.getsize(json_file_path)
+
+    with open(json_file_path, 'r', encoding="UTF-8") as file:
+        progress = tqdm(total=total_bytes, unit="B", unit_scale=True, colour="green",
+                        desc="{:>70}".format(f"loading [{filename}]"))
+
+        # Lire ligne par ligne
+        for line in file:
+            if line.strip():
+                try:
+                    # Analyser l'objet JSON de chaque ligne
+                    spectrum = json.loads(line.strip())
+
+                    # Ajouter le nom de fichier d'origine dans le dictionnaire du spectre
+                    spectrum["filename"] = filename
+
+                    # Mettre à jour la barre de progression
+                    progress.update(len(line))
+
+                    # Produire le spectre actuel
+                    yield spectrum
+                except json.JSONDecodeError as e:
+                    print(f"Erreur de décodage JSON: {e}")
+
         progress.close()

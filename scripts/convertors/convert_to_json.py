@@ -98,7 +98,10 @@ def concatenate_JSON(json_list):
         # from each file to the global spectrum_list
         # 'load_spectrum_list_json()' is used to load list of spectrum
         # from individual json file
-        spectrum_list.extend(load_spectrum_list_json(files))
+        try:
+            spectrum_list.extend(load_spectrum_list_json(files))
+        except:
+            spectrum_list.extend(load_spectrum_list_json_2(files))
 
     # The final list of all spectra from all JSON files is returned
     return spectrum_list
