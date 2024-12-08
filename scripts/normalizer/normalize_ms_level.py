@@ -11,7 +11,10 @@ def normalize_ms_level(metadata_dict):
     :return: The updated metadata dictionary with the normalized MS level value.
     :rtype: dict
     """
-    ms_level = metadata_dict["MSLEVEL"]  # Retrieve MS level value from the given dictionary.
+    try:
+        ms_level = str(metadata_dict["MSLEVEL"])  # Retrieve MS level value from the given dictionary.
+    except:
+        ms_level = None
 
     if ms_level:  # Check if it exists or not None.
         ms_level = re.findall(ms_level_pattern, ms_level)  # Find all occurrences of the pattern in the MS level value.
