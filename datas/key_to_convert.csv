@@ -244,3 +244,4 @@ targetgaspres;targetgaspressure
 targetgaspressure;targetgaspressure
 title;title
 unpd_id;spectrumid
+inchi_aux;inchikey
