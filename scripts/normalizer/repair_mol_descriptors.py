@@ -4,10 +4,10 @@ global smiles_pattern
 smiles_pattern = re.compile(r"[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}", flags=re.IGNORECASE) # Match smiles
 
 global inchi_pattern
-inchi_pattern = re.compile(r"(InChI=.*|\/[0-9A-Z]*\/)", flags=re.IGNORECASE) # Match inchi
+inchi_pattern = re.compile(r"InChI=.*|\/[0-9A-Z]*\/", flags=re.IGNORECASE) # Match inchi
 
 global inchikey_pattern
-inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])", flags=re.IGNORECASE) # Match inchikey
+inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
 
 global repair_inchi_pattern
 repair_inchi_pattern = re.compile(r"^(inchi=)?", flags=re.IGNORECASE)
@@ -49,51 +49,6 @@ def repair_mol_descriptors(metadata_dict):
     smiles = metadata_dict['SMILES']
     inchi = metadata_dict['INCHI']
     inchikey = metadata_dict['INCHIKEY']
-
-    # CASES
-    # INCHIKEY
-    inchikey_in_inchikey = re.search(inchikey_pattern, inchikey)
-    inchikey_in_smiles = re.search(inchikey_pattern, smiles)
-    inchikey_in_inchi = re.search(inchikey_pattern, inchi)
-
-    if inchikey_in_inchikey:
-        metadata_dict['INCHIKEY'] = inchikey_in_inchikey.group(1)
-    if inchikey_in_smiles:
-        metadata_dict['INCHIKEY'] = inchikey_in_smiles.group(1)
-        metadata_dict['SMILES'] = smiles.replace(inchikey_in_smiles.group(1), '')
-    if inchikey_in_inchi:
-        metadata_dict['INCHIKEY'] = inchikey_in_inchi.group(1)
-        metadata_dict['INCHI'] = inchi.replace(inchikey_in_inchi.group(1), '')
-    if inchikey_in_name:
-        metadata_dict['INCHIKEY'] = inchikey_in_name.group(1)
-        metadata_dict['NAME'] = name.replace(inchikey_in_name.group(1), '')
-    if inchikey_in_comment:
-        metadata_dict['INCHIKEY'] = inchikey_in_comment.group(1)
-        metadata_dict['COMMENT'] = comment.replace(inchikey_in_comment.group(1), '')
-
-    # INCHI
-    inchi_in_inchi = re.search(inchi_pattern, inchi)
-    inchi_in_smiles = re.search(inchi_pattern, smiles)
-    inchi_in_inchikey = re.search(inchi_pattern, inchikey)
-    inchi_in_name = re.search(inchi_pattern, name)
-    inchi_in_comment = re.search(inchi_pattern, comment)
-
-    if inchi_in_inchi:
-        metadata_dict['INCHI'] = inchi_in_inchi.group(0)
-    if inchi_in_smiles:
-        metadata_dict['INCHI'] = inchi_in_smiles.group(0)
-        metadata_dict['SMILES'] = smiles.replace(inchi_in_smiles.group(0), '')
-    if inchi_in_inchikey:
-        metadata_dict['INCHI'] = inchi_in_inchikey.group(0)
-        metadata_dict['INCHIKEY'] = inchikey.replace(inchi_in_inchikey.group(0), '')
-    if inchi_in_name:
-        metadata_dict['INCHI'] = inchi_in_name.group(0)
-        metadata_dict['NAME'] = name.replace(inchi_in_name.group(0), '')
-    if inchi_in_comment:
-        metadata_dict['INCHI'] = inchi_in_comment.group(0)
-        metadata_dict['COMMENT'] = comment.replace(inchi_in_comment.group(0), '')
-
-    # SMILES
 
     # If the respective patterns match the respective values, repair the InChI and return the updated dict
     if re.search(smiles_pattern, smiles) and re.search(inchi_pattern, inchi) and re.search(inchikey_pattern, inchikey):
