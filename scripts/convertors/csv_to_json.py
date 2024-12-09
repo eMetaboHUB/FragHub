@@ -19,7 +19,7 @@ def parse_peak_list(peak_list_string):
     # Peaks are being converted to a list of two values' lists, where each sub-list contains the float values of m/z and intensity.
     return [[float(mz), float(intensity)] for mz, intensity in peaks]
 
-def csv_to_json_processing(FINAL_CSV):
+def csv_to_dict_processing(FINAL_CSV):
     """
     Convert a CSV file to a list of JSON objects.
 

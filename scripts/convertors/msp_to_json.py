@@ -205,7 +205,7 @@ def structure_metadata_and_peak_list(metadata, peak_list):
                 # If the peak list is, nonetheless, empty, return an empty dictionary and list.
                 return {}, []
 
-def msp_to_json(spectrum):
+def msp_to_dict(spectrum):
     # Function to convert a given MSP spectrum to its corresponding JSON format
 
     """
@@ -239,7 +239,7 @@ def msp_to_json(spectrum):
     # Return the processed metadata, which is a JSON-like structured Python dictionary
     return metadata
 
-def msp_to_json_processing(FINAL_MSP):
+def msp_to_dict_processing(FINAL_MSP):
     """
     Process a list of MSP spectrums and convert them to JSON format.
     :param FINAL_MSP: List of MSP spectrums to be processed.
@@ -256,7 +256,7 @@ def msp_to_json_processing(FINAL_MSP):
 
         # Use ThreadPoolExecutor to process the chunk
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            FINAL_MSP[start:start + chunk_size] = list(executor.map(msp_to_json, FINAL_MSP[start:start + chunk_size]))
+            FINAL_MSP[start:start + chunk_size] = list(executor.map(msp_to_dict, FINAL_MSP[start:start + chunk_size]))
 
         # Filter out None results
         FINAL_MSP[start:start + chunk_size] = [item for item in FINAL_MSP[start:start + chunk_size] if item is not None]

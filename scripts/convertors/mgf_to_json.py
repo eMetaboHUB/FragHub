@@ -120,7 +120,7 @@ def structure_metadata_and_peak_list(metadata, peak_list):
                 # If peak list does not exist return empty dictionary and list
                 return {}, []
 
-def mgf_to_json(spectrum):
+def mgf_to_dict(spectrum):
     """
     Convert MGF spectrum to JSON format.
     :param spectrum: The MGF spectrum to convert.
@@ -149,7 +149,7 @@ def mgf_to_json(spectrum):
     # Return the modified and structured metadata
     return metadata
 
-def mgf_to_json_processing(FINAL_MGF):
+def mgf_to_dict_processing(FINAL_MGF):
     """
     Converts MGF spectrums to JSON format.
     :param FINAL_MGF: A list of MGF spectrums to be converted.
@@ -166,7 +166,7 @@ def mgf_to_json_processing(FINAL_MGF):
 
         # Use ThreadPoolExecutor to process the chunk
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            FINAL_MGF[start:start + chunk_size] = list(executor.map(mgf_to_json, FINAL_MGF[start:start + chunk_size]))
+            FINAL_MGF[start:start + chunk_size] = list(executor.map(mgf_to_dict, FINAL_MGF[start:start + chunk_size]))
 
         # Filter out None results
         FINAL_MGF[start:start + chunk_size] = [item for item in FINAL_MGF[start:start + chunk_size] if item is not None]
