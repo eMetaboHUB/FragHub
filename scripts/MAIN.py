@@ -1,6 +1,6 @@
 from normalizer.mols_calculation import *
 from complete_from_pubchem_datas import *
-from convertors.convert_to_json import *
+from convertors.parsing_to_dict import *
 from ontologies_completion import *
 from convertors.csv_to_msp import *
 from spectrum_normalizer import *
