@@ -78,7 +78,7 @@ if __name__ == "__main__":
     if not files_to_process:
         sys.exit("There is no files to process. Exiting code !")
 
-    # STEP 2: generating FRAGHUBID
+    # STEP 2: generating SPLASH KEY
     time.sleep(0.01)
     print("{:>70}".format("-- GENERATING SPLASH UNIQUE ID --"))
     time.sleep(0.01)
@@ -94,10 +94,19 @@ if __name__ == "__main__":
     spectrum_list.extend(FINAL_MGF)
     del FINAL_MGF
 
+    # STEP 3: removing duplicatas
+    spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns].astype(str)
+    time.sleep(0.01)
+    print("{:>70}".format("-- REMOVING DUPLICATAS --"))
+    time.sleep(0.01)
+    spectrum_list = remove_duplicatas(spectrum_list)
+    # Conversion du DataFrame en une liste de dictionnaires
+    spectrum_list = spectrum_list.to_dict(orient='records')
+
     first_run = False
     update = False
 
-    # STEP 3: cleaning spectrums (Multithreaded)
+    # STEP 4: cleaning spectrums (Multithreaded)
     time.sleep(0.01)
     print("{:>70}".format(f"-- CHECKING FOR UPDATES --"))
     time.sleep(0.01)
@@ -121,25 +130,25 @@ if __name__ == "__main__":
 
     spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns].astype(str)
 
-    # STEP 4: mols derivations and calculations
+    # STEP 5: mols derivations and calculations
     time.sleep(0.01)
     print("{:>70}".format("-- MOLS DERIVATION AND MASS CALCULATION --"))
     time.sleep(0.01)
     spectrum_list = mols_derivation_and_calculation(spectrum_list)
 
-    # STEP 5: completing missing metadata from pubchem datas
+    # STEP 6: completing missing metadata from pubchem datas
     time.sleep(0.01)
     print("{:>70}".format("-- COMPLETING FROM PUBCHEM DATAS --"))
     time.sleep(0.01)
     spectrum_list = complete_from_pubchem_datas(spectrum_list)
 
-    # STEP 6: completing missing names
+    # STEP 7: completing missing names
     time.sleep(0.01)
     print("{:>70}".format("-- ONTOLOGIES COMPLETION --"))
     time.sleep(0.01)
     spectrum_list = ontologies_completion(spectrum_list)
 
-    # STEP 7: SPLITTING
+    # STEP 8: SPLITTING
     # -- SPLITTING [POS / NEG] --
     time.sleep(0.01)
     print("{:>70}".format("-- SPLITTING [POS / NEG] --"))
@@ -160,18 +169,11 @@ if __name__ == "__main__":
     print("{:>70}".format("-- SPLITTING [EXP / In-Silico] --"))
     time.sleep(0.01)
     POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df)
-
-    # STEP 8: Remove duplicates spectrum when same peak_list for the same inchikey.
-    time.sleep(0.01)
-    print("{:>70}".format("-- REMOVING DUPLICATAS --"))
-    time.sleep(0.01)
-    POS_LC_df, POS_LC_df_insilico, POS_GC_df, POS_GC_df_insilico, NEG_LC_df, NEG_LC_df_insilico, NEG_GC_df, NEG_GC_df_insilico = remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, first_run, profile_name, update)
-
     if parameters_dict["msp"] == 1.0:
         time.sleep(0.01)
         print("{:>70}".format("-- CONVERTING CSV TO MSP --"))
         time.sleep(0.01)
-        POS_LC_df, POS_LC, POS_LC_df_insilico, POS_LC_insilico, POS_GC_df, POS_GC, POS_GC_df_insilico, POS_GC_insilico, NEG_LC_df, NEG_LC, NEG_LC_df_insilico, NEG_LC_insilico, NEG_GC_df, NEG_GC, NEG_GC_df_insilico, NEG_GC_insilico = csv_to_msp(POS_LC_df, POS_LC_df_insilico, POS_GC_df, POS_GC_df_insilico, NEG_LC_df, NEG_LC_df_insilico, NEG_GC_df, NEG_GC_df_insilico)
+        POS_LC_df, POS_LC, POS_LC_df_insilico, POS_LC_insilico, POS_GC_df, POS_GC, POS_GC_df_insilico, POS_GC_insilico, NEG_LC_df, NEG_LC, NEG_LC_df_insilico, NEG_LC_insilico, NEG_GC_df, NEG_GC, NEG_GC_df_insilico, NEG_GC_insilico = csv_to_msp(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
 
     # STEP 9: writting output files
     if parameters_dict["csv"] == 1.0:
