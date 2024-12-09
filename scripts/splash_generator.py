@@ -111,7 +111,7 @@ def process_converted_after(spectrum_list, mode):
     # Return the processed spectrum list
     return spectrum_list
 
-def generate_splash_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF):
+def generate_splash_id(FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF):
     """
     Process the converted files and generate a splash ID for each file type.
     - FINAL_MSP: The path to the converted MSP file.
@@ -127,10 +127,6 @@ def generate_splash_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF):
     if FINAL_MSP:
         FINAL_MSP = process_converted_after(FINAL_MSP, "MSP")
 
-    # Similar check for XML file path
-    if FINAL_XML:
-        FINAL_XML = process_converted_after(FINAL_XML, "XML")
-
     # Similar check for CSV file path
     if FINAL_CSV:
         FINAL_CSV = process_converted_after(FINAL_CSV, "CSV")
@@ -144,4 +140,4 @@ def generate_splash_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF):
         FINAL_MGF = process_converted_after(FINAL_MGF, "MGF")
 
     # Finally return a tuple containing splash ids for each file type
-    return FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF
+    return FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF

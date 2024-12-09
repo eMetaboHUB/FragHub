@@ -66,12 +66,12 @@ if __name__ == "__main__":
     output_path = os.path.join(parameters_dict["output_directory"],profile_name)
 
     # STEP 1: convert files to json if needed (Multithreaded)
-    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = parsing_to_dict(input_path)
+    FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF = parsing_to_dict(input_path)
 
     files_to_process = False
 
     # Check if there is file to process
-    if FINAL_MSP or FINAL_XML or FINAL_CSV or FINAL_JSON or FINAL_MGF:
+    if FINAL_MSP or FINAL_CSV or FINAL_JSON or FINAL_MGF:
         files_to_process = True
 
     # If there is no msp to process: stop python execution
@@ -82,13 +82,11 @@ if __name__ == "__main__":
     time.sleep(0.01)
     print("{:>70}".format("-- GENERATING SPLASH UNIQUE ID --"))
     time.sleep(0.01)
-    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = generate_splash_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF)
+    FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF = generate_splash_id(FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF)
 
     spectrum_list = []
     spectrum_list.extend(FINAL_MSP)
     del FINAL_MSP
-    spectrum_list.extend(FINAL_XML)
-    del FINAL_XML
     spectrum_list.extend(FINAL_CSV)
     del FINAL_CSV
     spectrum_list.extend(FINAL_JSON)
