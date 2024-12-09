@@ -1,6 +1,6 @@
 from normalizer.mols_calculation import *
 from complete_from_pubchem_datas import *
-from convertors.convert_to_json import *
+from convertors.parsing_to_dict import *
 from ontologies_completion import *
 from convertors.csv_to_msp import *
 from spectrum_normalizer import *
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     output_path = os.path.join(parameters_dict["output_directory"],profile_name)
 
     # STEP 1: convert files to json if needed (Multithreaded)
-    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = convert_to_json(input_path)
+    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = parsing_to_dict(input_path)
 
     files_to_process = False
 
