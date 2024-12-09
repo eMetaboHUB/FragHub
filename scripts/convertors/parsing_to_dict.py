@@ -1,6 +1,5 @@
 from .json_to_dict import *
 from .msp_to_dict import *
-from .xml_to_json import *
 from .csv_to_dict import *
 from .mgf_to_dict import *
 from .loaders import *
