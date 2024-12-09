@@ -127,7 +127,7 @@ def concatenate_MGF(mgf_list):
         spectrum_list.extend(load_spectrum_list_from_mgf(files))
     return spectrum_list  # Return the final concatenated list of all spectra
 
-def convert_to_json(input_path):
+def parsing_to_dict(input_path):
     """
     This function converts file data (JSON, XML, CSV, MSP, MGF) in a directory to JSON format.
     :param input_path: The path of the input directory where the files are located.
@@ -161,13 +161,13 @@ def convert_to_json(input_path):
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Print a status message that the conversion has started
-        print("{:>70}".format("-- CONVERTING JSON TO JSON --"))
+        print("{:>70}".format("-- PARSING JSON TO DICT --"))
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Concatenating all json files into a single list
         FINAL_JSON = concatenate_JSON(json_list)
         # Reformating the JSON structure to a better structure
-        FINAL_JSON = json_to_json_processing(FINAL_JSON)
+        FINAL_JSON = json_to_dict_processing(FINAL_JSON)
 
     # MSP
     # Initializing an empty list to hold the final MSP data
@@ -192,13 +192,13 @@ def convert_to_json(input_path):
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Displaying a status message indicating the beginning of MSP to JSON conversion
-        print("{:>70}".format("-- CONVERTING MSP TO JSON --"))
+        print("{:>70}".format("-- PARSING MSP TO DICT --"))
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Concatenating all found MSP files into a single list
         FINAL_MSP = concatenate_MSP(msp_list)
         # Converting each MSP spectrum to a JSON spectrum
-        FINAL_MSP = msp_to_json_processing(FINAL_MSP)
+        FINAL_MSP = msp_to_dict_processing(FINAL_MSP)
 
     # MGF
     # Initializing an empty list to hold the final MGF (Mascot Generic Format) data
@@ -223,13 +223,13 @@ def convert_to_json(input_path):
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Printing a status message signaling the start of the MGF to JSON conversion
-        print("{:>70}".format("-- CONVERTING MGF TO JSON --"))
+        print("{:>70}".format("-- PARSING MGF TO DICT --"))
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Concatenating all found MGF files into a single list
         FINAL_MGF = concatenate_MGF(mgf_list)
         # Converting each MGF spectrum to a JSON spectrum
-        FINAL_MGF = mgf_to_json_processing(FINAL_MGF)
+        FINAL_MGF = mgf_to_dict_processing(FINAL_MGF)
 
     # XML
     # Initialize an empty list to contain the final XML data
@@ -285,12 +285,12 @@ def convert_to_json(input_path):
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Printing a status message to signify the start of CSV to JSON conversion
-        print("{:>70}".format("-- CONVERTING CSV TO JSON --"))
+        print("{:>70}".format("-- PARSING CSV TO DICT --"))
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Concatenate all CSV files into one list
         FINAL_CSV = concatenate_csv(csv_list)
         # Convert the CSV data to JSON
-        FINAL_CSV = csv_to_json_processing(FINAL_CSV)
+        FINAL_CSV = csv_to_dict_processing(FINAL_CSV)
 
     return FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF
