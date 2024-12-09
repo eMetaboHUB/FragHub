@@ -55,8 +55,6 @@ def repair_mol_descriptors(metadata_dict):
     inchikey_in_inchikey = re.search(inchikey_pattern, inchikey)
     inchikey_in_smiles = re.search(inchikey_pattern, smiles)
     inchikey_in_inchi = re.search(inchikey_pattern, inchi)
-    inchikey_in_name = re.search(inchikey_pattern, name)
-    inchikey_in_comment = re.search(inchikey_pattern, comment)
 
     if inchikey_in_inchikey:
         metadata_dict['INCHIKEY'] = inchikey_in_inchikey.group(1)
