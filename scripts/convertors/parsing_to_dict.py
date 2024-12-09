@@ -33,26 +33,6 @@ def concatenate_MSP(msp_list):
     # Return combined list of spectra
     return spectrum_list
 
-def concatenate_xml(xml_list):
-    """
-    Concatenates the XML contents of a list of XML files and adds a filename tag to each XML.
-
-    :param xml_list: A list of XML file paths.
-    :return: A list containing the final XML contents.
-    """
-    FINAL_XML = []
-
-    pbar = tqdm(xml_list, total=len(xml_list), unit=" spectrums", colour="green", desc="{:>70}".format("concatenate"))
-    for files in pbar:
-        if files.endswith(".xml"):
-            file_name = os.path.basename(files.replace(".xml", ""))
-            with open(files, "r", encoding="UTF-8") as xml_file:
-                xml_content = xml_file.read()
-            xml_content = re.sub("</id>\n", f"</id>\n  <filename>{file_name}</filename>\n", xml_content)
-            FINAL_XML.extend([xml_content])
-    pbar.close()
-    return FINAL_XML
-
 def concatenate_csv(csv_list):
     """
     Concatenates multiple CSV files into a single DataFrame.
@@ -234,37 +214,6 @@ def parsing_to_dict(input_path):
         # Converting each MGF spectrum to a JSON spectrum
         FINAL_MGF = mgf_to_dict_processing(FINAL_MGF)
 
-    # XML
-    # Initialize an empty list to contain the final XML data
-    FINAL_XML = []
-    # A list to store the paths of all xml files found in the directory
-    xml_list = []
-    # A boolean variable to check if there is any xml file in the directory
-    xml_to_do = False
-    # Loop over all directories, subdirectories, and files in the provided directory
-    for root, dirs, files in os.walk(input_path):
-        for file in files:
-            # Check if the current file is an xml file
-            if file.endswith(".xml"):
-                # Get the full path of the xml file
-                xml_path = os.path.join(root, file)
-                # Append the xml file path to the list
-                xml_list.append(xml_path)
-                # Set xml_to_do to True since we have at least one xml file
-                xml_to_do = True
-    # If there are xml files to be processed
-    if xml_to_do == True:
-        # Sleep for a short time to correctly display progress bar
-        time.sleep(0.01)
-        # Print a status message that the conversion process has begun
-        print("{:>70}".format("-- CONVERTING XML TO JSON --"))
-        # Sleep for a short time to correctly display progress bar
-        time.sleep(0.01)
-        # Concatenating all xml files into one list
-        FINAL_XML = concatenate_xml(xml_list)
-        # Formatting the XML structure into JSON structure
-        FINAL_XML = xml_to_json_processing(FINAL_XML)
-
     # CSV
     # Initializing an empty list to contain the final CSV data
     FINAL_CSV = []
@@ -296,4 +245,4 @@ def parsing_to_dict(input_path):
         # Convert the CSV data to JSON
         FINAL_CSV = csv_to_dict_processing(FINAL_CSV)
 
-    return FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF
+    return FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF
