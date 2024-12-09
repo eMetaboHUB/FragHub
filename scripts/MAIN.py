@@ -100,8 +100,6 @@ if __name__ == "__main__":
     print("{:>70}".format("-- REMOVING DUPLICATAS --"))
     time.sleep(0.01)
     spectrum_list = remove_duplicatas(spectrum_list)
-    # Conversion du DataFrame en une liste de dictionnaires
-    spectrum_list = spectrum_list.to_dict(orient='records')
 
     first_run = False
     update = False
