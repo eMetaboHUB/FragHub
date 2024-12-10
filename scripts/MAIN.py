@@ -95,7 +95,9 @@ if __name__ == "__main__":
     del FINAL_MGF
 
     # STEP 3: removing duplicatas
-    spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns].astype(str)
+    spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns]
+    # Convertir toutes les colonnes en str sauf 'PEAKS_LIST'
+    spectrum_list = spectrum_list.astype({col: str for col in ordered_columns if col != 'PEAKS_LIST'})
     time.sleep(0.01)
     print("{:>70}".format("-- REMOVING DUPLICATAS --"))
     time.sleep(0.01)
