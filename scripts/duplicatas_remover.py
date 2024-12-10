@@ -2,6 +2,8 @@ from tqdm import tqdm
 import pandas as pd
 import ast
 
+import time
+
 def remove_duplicatas(spectrum_list):
     """
     Remove duplicate entries from a given spectrum list based on the maximum
@@ -34,16 +36,6 @@ def remove_duplicatas(spectrum_list):
     # Supprimer la colonne temporaire 'row_size'
     spectrum_list = spectrum_list.drop(columns=['row_size'])
 
-    # Appliquer ast.literal_eval de manière vectorisée
-    def try_literal_eval(x):
-        try:
-            return ast.literal_eval(x)
-        except (ValueError, SyntaxError):
-            print(f"Erreur lors de la conversion de PEAKS_LIST : {x}")
-            return []
+    spectrum_list = spectrum_list.to_dict(orient='records')
 
-    # Conversion de la colonne 'PEAKS_LIST'
-    spectrum_list['PEAKS_LIST'] = spectrum_list['PEAKS_LIST'].apply(try_literal_eval)
-
-    # Convertir le DataFrame en une liste de dictionnaires
-    return spectrum_list.to_dict(orient='records')
+    return spectrum_list
