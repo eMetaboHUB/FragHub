@@ -25,7 +25,7 @@ def normalize_values(metadata_dict):
 
     # If both 'SMILES' and 'INCHI' keys in the dictionary
     # do not exist (have NaN values), we delete the dictionary.
-    metadata_dict = delete_no_smiles_no_inchi(metadata_dict)
+    metadata_dict = delete_no_smiles_no_inchi_no_inchikey(metadata_dict)
 
     # If after the above operations the metadata_dict is not empty continue with the normalization
     if metadata_dict:

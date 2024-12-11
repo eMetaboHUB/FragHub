@@ -84,6 +84,10 @@ def repair_mol_descriptors(metadata_dict):
         metadata_dict['INCHIKEY'] = inchi
         metadata_dict['INCHI'] = ''
 
+    if re.search(inchikey_pattern, smiles):
+        metadata_dict['INCHIKEY'] = smiles
+        metadata_dict['SMILES'] = ''
+
     # Again call the repair InChI function to repair and update the InChI
     metadata_dict = repair_inchi(metadata_dict)
 

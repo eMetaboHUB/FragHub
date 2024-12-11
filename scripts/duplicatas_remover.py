@@ -1,86 +1,41 @@
-from tqdm.auto import tqdm
 from tqdm import tqdm
 import pandas as pd
-import os
+import ast
 
-def removing_duplicates(dataframe, name, mode, update, first_run, profile_name):
+import time
+
+def remove_duplicatas(spectrum_list):
     """
-    Remove duplicates from a dataframe and update the progress bar.
-    :param dataframe: The input dataframe.
-    :param name: The name of the dataframe.
-    :param mode: The mode of the dataframe.
-    :param update: A boolean indicating whether to update the dataframe.
-    :param first_run: A boolean indicating whether it is the first run.
-    :param profile_name: The profile name.
-    :return: The dataframe after removing duplicates.
+    Remove duplicate entries from a given spectrum list based on the maximum
+    'row_size' for each unique SPLASH identifier. The input is a DataFrame where
+    each row represents a spectrum and contains a unique identifier called SPLASH.
+    The function computes a temporary 'row_size' for each row, removes duplicates
+    by keeping the entry with the largest 'row_size' for each SPLASH, and returns
+    a list of dictionaries representing the cleaned data.
+
+    Parameters:
+    spectrum_list : DataFrame
+        A pandas DataFrame where each row represents a spectrum, and each spectrum
+        must have a 'SPLASH' identifier used to identify duplicates in the DataFrame.
+
+    Returns:
+    list of dict
+        A list of dictionaries with duplicate spectrums removed, retaining only the
+        spectrum with the largest 'row_size' for each unique SPLASH identifier.
     """
-    # Check if the dataframe should be updated and not the first run
-    if update and not first_run:
-        # Create the complete file path
-        filename = os.path.abspath(f"../OUTPUT/{profile_name}/CSV/{mode}/{name}.csv")
-        # Check if a file exists at the path, if so read it into a dataframe, else create an empty dataframe
-        if os.path.exists(filename):
-            csv_dataframe = pd.read_csv(filename, sep=";", quotechar='"', encoding="UTF-8")
-        else:
-            csv_dataframe = pd.DataFrame()
-        # Concatenate the input and loaded dataframe
-        dataframe = pd.concat([dataframe, csv_dataframe])
-    # Calculate the total count of rows in the dataframe for progress tracking
-    total_rows = len(dataframe)
-    # Create a progress bar with the number of rows in the dataframe as the total
-    t = tqdm(total=len(dataframe), desc="{:>70}".format(name), colour="green", unit=" row")
+    # Calculer la taille en bytes de chaque ligne en ajoutant une nouvelle colonne temporaire 'row_size'
+    spectrum_list['row_size'] = spectrum_list.apply(lambda row: row.astype(str).map(len).sum(), axis=1)
 
-    # Remove any duplicate rows from the dataframe based on 'INCHIKEY' and 'PEAKS_LIST' columns
-    dataframe = dataframe.loc[~dataframe.duplicated(subset=['INCHIKEY', 'PEAKS_LIST'])]
+    # Configurer tqdm pour suivre le processus de suppression
+    desc = "{:>70}".format("removing duplicates")
+    with tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc=desc) as pbar:
+        # Supprimer les doublons en gardant la ligne où 'row_size' est maximale pour chaque SPLASH
+        spectrum_list = spectrum_list.loc[spectrum_list.groupby('SPLASH')['row_size'].idxmax()]
+        pbar.update(len(spectrum_list))  # Avancement
 
-    # Update the progress bar with the original total number of rows
-    t.update(total_rows)
+    # Supprimer la colonne temporaire 'row_size'
+    spectrum_list = spectrum_list.drop(columns=['row_size'])
 
-    # Close the progress bar
-    t.close()
+    spectrum_list = spectrum_list.to_dict(orient='records')
 
-    # Return the dataframe with duplicates removed
-    return dataframe
-
-def remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, first_run, profile_name, update=False):
-    """
-    Remove duplicates from the given dataframes.
-    :param POS_LC_df: The dataframe for positive LC data.
-    :param POS_LC_In_Silico_df: The dataframe for positive LC In Silico data.
-    :param POS_GC_df: The dataframe for positive GC data.
-    :param POS_GC_In_Silico_df: The dataframe for positive GC In Silico data.
-    :param NEG_LC_df: The dataframe for negative LC data.
-    :param NEG_LC_In_Silico_df: The dataframe for negative LC In Silico data.
-    :param NEG_GC_df: The dataframe for negative GC data.
-    :param NEG_GC_In_Silico_df: The dataframe for negative GC In Silico data.
-    :param first_run: A boolean value indicating if it's the first run.
-    :param profile_name: The name of the profile.
-    :param update: A boolean value indicating if the dataframes should be updated. Default is False.
-    :return: The updated dataframes for POS_LC, POS_LC_In_Silico, POS_GC, POS_GC_In_Silico, NEG_LC, NEG_LC_In_Silico, NEG_GC, and NEG_GC_In_Silico.
-    """
-    # Remove duplicates from the POS_LC dataframe
-    POS_LC_df = removing_duplicates(POS_LC_df, "POS_LC", "POS", update, first_run, profile_name)
-
-    # Remove duplicates from the POS_LC_In_Silico dataframe
-    POS_LC_In_Silico_df = removing_duplicates(POS_LC_In_Silico_df, "POS_LC_In_Silico", "POS", update, first_run, profile_name)
-
-    # Remove duplicates from the POS_GC dataframe
-    POS_GC_df = removing_duplicates(POS_GC_df, "POS_GC", "POS", update, first_run, profile_name)
-
-    # Remove duplicates from the POS_GC_In_Silico dataframe
-    POS_GC_In_Silico_df = removing_duplicates(POS_GC_In_Silico_df, "POS_GC_In_Silico", "POS", update, first_run, profile_name)
-
-    # Remove duplicates from the NEG_LC dataframe
-    NEG_LC_df = removing_duplicates(NEG_LC_df, "NEG_LC", "NEG", update, first_run, profile_name)
-
-    # Remove duplicates from the NEG_LC_In_Silico dataframe
-    NEG_LC_In_Silico_df = removing_duplicates(NEG_LC_In_Silico_df, "NEG_LC_In_Silico", "NEG", update, first_run, profile_name)
-
-    # Remove duplicates from the NEG_GC dataframe
-    NEG_GC_df = removing_duplicates(NEG_GC_df, "NEG_GC", "NEG", update, first_run, profile_name)
-
-    # Remove duplicates from the NEG_GC_In_Silico dataframe
-    NEG_GC_In_Silico_df = removing_duplicates(NEG_GC_In_Silico_df, "NEG_GC_In_Silico", "NEG", update, first_run, profile_name)
-
-    # Return the updated dataframes
-    return POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df
+    return spectrum_list

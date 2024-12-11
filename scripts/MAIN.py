@@ -1,11 +1,14 @@
+from GUI.utils.global_vars import parameters_dict
 from normalizer.mols_calculation import *
-from convertors.convert_to_json import *
+from complete_from_pubchem_datas import *
+from convertors.parsing_to_dict import *
+from ontologies_completion import *
 from convertors.csv_to_msp import *
 from spectrum_normalizer import *
 from duplicatas_remover import *
 from splash_generator import *
-from name_completion import *
-from set_parameters import *
+from GUI.GUI import run_GUI
+from set_projects import *
 from splitter import *
 from writers import *
 from update import *
@@ -37,50 +40,55 @@ ordered_columns = ["FILENAME",
                    "RETENTIONTIME",
                    "IONMODE",
                    "COMMENT",
+                   "ENTROPY",
+                   "CLASSYFIRE_SUPERCLASS",
+                   "CLASSYFIRE_CLASS",
+                   "CLASSYFIRE_SUBCLASS",
+                   "NPCLASS_PATHWAY",
+                   "NPCLASS_SUPERCLASS",
+                   "NPCLASS_CLASS",
                    "NUM PEAKS",
                    "PEAKS_LIST"]
 
 if __name__ == "__main__":
 
     # GUI execution
-    build_window()
+    run_GUI()
 
     profile_name = parameters_dict["selected_profile"]
 
     if parameters_dict['reset_updates'] == 1.0:
         reset_updates(profile_name)
 
-    init_profile(profile_name)
+    init_project(profile_name)
 
     start_time = time.time()
 
-    input_path = os.path.abspath(r"../INPUT")
-    output_path = os.path.abspath(rf"../OUTPUT/{profile_name}")
+    input_path = parameters_dict["input_directory"]
+    output_path = os.path.join(parameters_dict["output_directory"],profile_name)
 
     # STEP 1: convert files to json if needed (Multithreaded)
-    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = convert_to_json(input_path)
+    FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF = parsing_to_dict(input_path)
 
     files_to_process = False
 
     # Check if there is file to process
-    if FINAL_MSP or FINAL_XML or FINAL_CSV or FINAL_JSON or FINAL_MGF:
+    if FINAL_MSP or FINAL_CSV or FINAL_JSON or FINAL_MGF:
         files_to_process = True
 
     # If there is no msp to process: stop python execution
     if not files_to_process:
         sys.exit("There is no files to process. Exiting code !")
 
-    # STEP 2: generating FRAGHUBID
+    # STEP 2: generating SPLASH KEY
     time.sleep(0.01)
     print("{:>70}".format("-- GENERATING SPLASH UNIQUE ID --"))
     time.sleep(0.01)
-    FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF = generate_splash_id(FINAL_MSP, FINAL_XML, FINAL_CSV, FINAL_JSON, FINAL_MGF)
+    FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF = generate_splash_id(FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF)
 
     spectrum_list = []
     spectrum_list.extend(FINAL_MSP)
     del FINAL_MSP
-    spectrum_list.extend(FINAL_XML)
-    del FINAL_XML
     spectrum_list.extend(FINAL_CSV)
     del FINAL_CSV
     spectrum_list.extend(FINAL_JSON)
@@ -88,10 +96,19 @@ if __name__ == "__main__":
     spectrum_list.extend(FINAL_MGF)
     del FINAL_MGF
 
+    # STEP 3: removing duplicatas
+    spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns]
+    # Convertir toutes les colonnes en str sauf 'PEAKS_LIST'
+    spectrum_list = spectrum_list.astype({col: str for col in ordered_columns if col != 'PEAKS_LIST'})
+    time.sleep(0.01)
+    print("{:>70}".format("-- REMOVING DUPLICATAS --"))
+    time.sleep(0.01)
+    spectrum_list = remove_duplicatas(spectrum_list)
+
     first_run = False
     update = False
 
-    # STEP 3: cleaning spectrums (Multithreaded)
+    # STEP 4: cleaning spectrums (Multithreaded)
     time.sleep(0.01)
     print("{:>70}".format(f"-- CHECKING FOR UPDATES --"))
     time.sleep(0.01)
@@ -109,24 +126,31 @@ if __name__ == "__main__":
     time.sleep(0.01)
     spectrum_list = spectrum_cleaning_processing(spectrum_list)
 
+
     if not spectrum_list:
         sys.exit("There is no spectrums to process after cleaning. Exiting code !")
 
     spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns].astype(str)
 
-    # STEP 4: mols derivations and calculations
+    # STEP 5: mols derivations and calculations
     time.sleep(0.01)
     print("{:>70}".format("-- MOLS DERIVATION AND MASS CALCULATION --"))
     time.sleep(0.01)
     spectrum_list = mols_derivation_and_calculation(spectrum_list)
 
-    # STEP 5: completing missing names
+    # STEP 6: completing missing metadata from pubchem datas
     time.sleep(0.01)
-    print("{:>70}".format("-- NAMES COMPLETION --"))
+    print("{:>70}".format("-- COMPLETING FROM PUBCHEM DATAS --"))
     time.sleep(0.01)
-    spectrum_list = names_completion(spectrum_list)
+    spectrum_list = complete_from_pubchem_datas(spectrum_list)
 
-    # STEP 6: SPLITTING
+    # STEP 7: completing missing names
+    time.sleep(0.01)
+    print("{:>70}".format("-- ONTOLOGIES COMPLETION --"))
+    time.sleep(0.01)
+    spectrum_list = ontologies_completion(spectrum_list)
+
+    # STEP 8: SPLITTING
     # -- SPLITTING [POS / NEG] --
     time.sleep(0.01)
     print("{:>70}".format("-- SPLITTING [POS / NEG] --"))
@@ -147,20 +171,13 @@ if __name__ == "__main__":
     print("{:>70}".format("-- SPLITTING [EXP / In-Silico] --"))
     time.sleep(0.01)
     POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df)
-
-    # STEP 7: Remove duplicates spectrum when same peak_list for the same inchikey.
-    time.sleep(0.01)
-    print("{:>70}".format("-- REMOVING DUPLICATAS --"))
-    time.sleep(0.01)
-    POS_LC_df, POS_LC_df_insilico, POS_GC_df, POS_GC_df_insilico, NEG_LC_df, NEG_LC_df_insilico, NEG_GC_df, NEG_GC_df_insilico = remove_duplicatas(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, first_run, profile_name, update)
-
     if parameters_dict["msp"] == 1.0:
         time.sleep(0.01)
         print("{:>70}".format("-- CONVERTING CSV TO MSP --"))
         time.sleep(0.01)
-        POS_LC_df, POS_LC, POS_LC_df_insilico, POS_LC_insilico, POS_GC_df, POS_GC, POS_GC_df_insilico, POS_GC_insilico, NEG_LC_df, NEG_LC, NEG_LC_df_insilico, NEG_LC_insilico, NEG_GC_df, NEG_GC, NEG_GC_df_insilico, NEG_GC_insilico = csv_to_msp(POS_LC_df, POS_LC_df_insilico, POS_GC_df, POS_GC_df_insilico, NEG_LC_df, NEG_LC_df_insilico, NEG_GC_df, NEG_GC_df_insilico)
+        POS_LC_df, POS_LC, POS_LC_df_insilico, POS_LC_insilico, POS_GC_df, POS_GC, POS_GC_df_insilico, POS_GC_insilico, NEG_LC_df, NEG_LC, NEG_LC_df_insilico, NEG_LC_insilico, NEG_GC_df, NEG_GC, NEG_GC_df_insilico, NEG_GC_insilico = csv_to_msp(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
 
-    # STEP 8: writting output files
+    # STEP 9: writting output files
     if parameters_dict["csv"] == 1.0:
         time.sleep(0.01)
         print("{:>70}".format("-- WRITING CSV --"))

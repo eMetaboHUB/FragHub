@@ -1,5 +1,6 @@
+from GUI.utils.global_vars import parameters_dict
+from peaks_filters.entropy_calculation import *
 from normalizer.values_normalizer import *
-from set_parameters import parameters_dict
 from peaks_filters.filters import *
 import concurrent.futures
 from tqdm import tqdm
@@ -89,7 +90,7 @@ def spectrum_cleaning(spectrum):
     if not spectrum:
         return None
     # Checks if "PRECURSORMZ" exists in the spectrum
-    if "PRECURSORMZ" in spectrum:
+    if "PRECURSORMZ" in spectrum and "_GC_IE" not in spectrum["FILENAME"]:
         if re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])):
             # 'PRECURSORMZ' modification with match from a regular expression search for 'float_check_pattern'
             spectrum["PRECURSORMZ"] = re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])).group(1)
@@ -99,6 +100,11 @@ def spectrum_cleaning(spectrum):
                 return None
             # Converts peak list to a numpy array
             peak_list_np = peak_list_cleaning(peak_list, float_precursor_mz)
+            spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
+            if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
+                if re.search(float_check_pattern, str(spectrum["ENTROPY"])):
+                    if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
+                        return None
             # If numpy array is empty, it returns none
             if peak_list_np.size == 0:
                 return None
@@ -109,6 +115,23 @@ def spectrum_cleaning(spectrum):
             return spectrum
         else:
             return None
+    elif "_GC_IE" in spectrum["FILENAME"]:
+        float_precursor_mz = None
+        peak_list_np = peak_list_cleaning(peak_list, float_precursor_mz)
+        spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
+        if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
+            if re.search(float_check_pattern, str(spectrum["ENTROPY"])):
+                if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
+                    return None
+        # If numpy array is empty, it returns none
+        if peak_list_np.size == 0:
+            return None
+        spectrum["NUM PEAKS"] = str(peak_list_np.shape[0])
+        # Convert numpy array back to string and update 'PEAKS_LIST' in spectrum
+        peak_list_np = peak_list_to_str(peak_list_np)
+        spectrum["PEAKS_LIST"] = peak_list_np
+        return spectrum
+
     return spectrum
 
 def spectrum_cleaning_processing(spectrum_list):

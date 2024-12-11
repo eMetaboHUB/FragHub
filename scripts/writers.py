@@ -1,3 +1,4 @@
+from set_projects import parameters_dict
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
@@ -18,7 +19,7 @@ def write_msp(spectrum_list, filename, mode, update, profile_name):
     """
 
     # Construct the output path
-    output_file_path = os.path.join(f"../OUTPUT/{profile_name}/MSP/{mode}", filename)
+    output_file_path = os.path.join(parameters_dict["output_directory"],f"{profile_name}/MSP/{mode}", filename)
 
     # Creating a progress bar for displaying the status of the operation.
     with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>70}".format(f"writting {filename}")) as pbar:
@@ -115,8 +116,12 @@ def write_csv(df, filename, mode, update, first_run, profile_name):
     :param profile_name: str - a name related to the CSV file for organizing the output.
     :return: None.
     """
+    # Replace newline characters with semicolons in the PEAKS_LIST column
+    if 'PEAKS_LIST' in df.columns:
+        df['PEAKS_LIST'] = df['PEAKS_LIST'].str.replace('\n', ';')
+
     # Placeholder string for the directory output path
-    output_file_path = os.path.join(f"../OUTPUT/{profile_name}/CSV/{mode}", filename)
+    output_file_path = os.path.join(parameters_dict["output_directory"], f"{profile_name}/CSV/{mode}", filename)
 
     # The chunk size is limit for each write operation
     chunk_size = 5000
@@ -134,15 +139,17 @@ def write_csv(df, filename, mode, update, first_run, profile_name):
 
             # If it is the first chunk in a first run, write with headers
             if start == 0 and first_run:
-                df_slice.to_csv(output_file_path, mode='w', sep=";", quotechar='"', encoding="UTF-8", index=False)
+                df_slice.to_csv(output_file_path, mode='w', sep="\t", quotechar='"', encoding="UTF-8", index=False)
 
             # If it is not the first chunk, write without headers (append)
             else:
-                df_slice.to_csv(output_file_path, mode='a', header=False, index=False, sep=";", quotechar='"', encoding="UTF-8")
+                df_slice.to_csv(output_file_path, mode='a', header=False, index=False, sep="\t", quotechar='"',
+                                encoding="UTF-8")
 
             # Update the progress bar
             pbar.update()
         pbar.close()
+
 
 def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update=False):
     """
@@ -215,7 +222,7 @@ def write_json(df, filename, mode, profile_name):
     """
 
     # Define the output file path for the JSON file.
-    output_file_path = os.path.join(f"../OUTPUT/{profile_name}/JSON/{mode}", filename)
+    output_file_path = os.path.join(parameters_dict["output_directory"],f"{profile_name}/JSON/{mode}", filename)
 
     # Convert the DataFrame to a list of dict records.
     json_records = df.to_dict('records')

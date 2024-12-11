@@ -10,7 +10,10 @@ def normalize_retentiontime(metadata_dict):
     """
 
     # Retrieving the retention time from metadata dictionary.
-    retientiontime = metadata_dict["RETENTIONTIME"]
+    try:
+        retientiontime = str(metadata_dict["RETENTIONTIME"])
+    except:
+        retientiontime = ""
 
     # Regular expression match for different patterns of time representation.
     match = re.search(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(m|min|minute|minutes|s|sec|second|seconds|ms|millisecond|milliseconds)(?:\W)?", retientiontime, flags=re.IGNORECASE)
