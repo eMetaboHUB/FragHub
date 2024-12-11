@@ -6,8 +6,9 @@ from convertors.csv_to_msp import *
 from spectrum_normalizer import *
 from duplicatas_remover import *
 from splash_generator import *
-from set_parameters import *
+from set_projects import *
 from splitter import *
+from GUI.GUI import *
 from writers import *
 from update import *
 import time
@@ -51,14 +52,14 @@ ordered_columns = ["FILENAME",
 if __name__ == "__main__":
 
     # GUI execution
-    build_window()
+    run_GUI()
 
     profile_name = parameters_dict["selected_profile"]
 
     if parameters_dict['reset_updates'] == 1.0:
         reset_updates(profile_name)
 
-    init_profile(profile_name)
+    init_project(profile_name)
 
     start_time = time.time()
 

@@ -66,6 +66,6 @@ def run_GUI():
     app.exec()
 
 
-if __name__ == "__main__":
-    run_GUI()
-    print(parameters_dict)
+# if __name__ == "__main__":
+#     run_GUI()
+#     print(parameters_dict)
