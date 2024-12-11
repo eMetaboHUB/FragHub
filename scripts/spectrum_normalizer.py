@@ -1,6 +1,6 @@
+from GUI.utils.global_vars import parameters_dict
 from peaks_filters.entropy_calculation import *
 from normalizer.values_normalizer import *
-from set_parameters import parameters_dict
 from peaks_filters.filters import *
 import concurrent.futures
 from tqdm import tqdm
