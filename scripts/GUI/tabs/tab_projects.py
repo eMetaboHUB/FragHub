@@ -6,6 +6,8 @@ from PyQt6.QtCore import Qt, pyqtSignal, QSize, QTimer
 from PyQt6.QtGui import QPainter, QColor, QBrush, QPen, QFont
 from ..utils.global_vars import parameters_dict  # Importer le dictionnaire global
 
+import os
+
 
 class QToggleSwitch(QWidget):
     stateChanged = pyqtSignal(bool)  # Signal émis quand l'état change
