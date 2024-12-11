@@ -3,12 +3,12 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QTabWidget, QVBoxLayout, 
 from PyQt6.QtGui import QFont, QPixmap, QIcon
 from PyQt6.QtCore import Qt
 
-from tabs.tab_input import InputTab
-from tabs.tab_output import OutputTab
-from tabs.tab_filters import FiltersTab
-from tabs.tab_output_settings import OutputSettingTab
-from tabs.tab_projects import ProjectsTab
-from utils.global_vars import parameters_dict
+from .tabs.tab_input import InputTab
+from .tabs.tab_output import OutputTab
+from .tabs.tab_filters import FiltersTab
+from .tabs.tab_output_settings import OutputSettingTab
+from .tabs.tab_projects import ProjectsTab
+from .utils.global_vars import parameters_dict
 
 
 class MainWindow(QMainWindow):

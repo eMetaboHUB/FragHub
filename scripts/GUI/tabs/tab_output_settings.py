@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QSpacerItem, QSizePolicy
 from PyQt6.QtCore import Qt, QSize, pyqtSignal
 from PyQt6.QtGui import QPainter, QColor, QBrush, QPen, QFont
-from utils.global_vars import parameters_dict  # Importer le dictionnaire global
+from ..utils.global_vars import parameters_dict  # Importer le dictionnaire global
 
 
 # Classe pour le Toggle Switch personnalisé avec style moderne

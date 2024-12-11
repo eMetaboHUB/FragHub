@@ -8,7 +8,8 @@ from duplicatas_remover import *
 from splash_generator import *
 from set_projects import *
 from splitter import *
-from GUI.GUI import *
+from GUI.utils.global_vars import parameters_dict
+from GUI.GUI import run_GUI
 from writers import *
 from update import *
 import time

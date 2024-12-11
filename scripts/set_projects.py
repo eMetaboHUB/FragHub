@@ -1,4 +1,4 @@
-from GUI.GUI import parameters_dict
+from GUI.utils.global_vars import parameters_dict
 import json
 import os
 
