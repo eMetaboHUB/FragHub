@@ -1,9 +1,11 @@
-import os
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QComboBox, QHBoxLayout, QStyledItemDelegate, QPushButton, QSpacerItem, \
+from PyQt6.QtWidgets import (
+    QWidget, QVBoxLayout, QComboBox, QHBoxLayout, QStyledItemDelegate, QPushButton, QSpacerItem,
     QSizePolicy, QLabel
+)
 from PyQt6.QtCore import Qt, pyqtSignal, QSize, QTimer
 from PyQt6.QtGui import QPainter, QColor, QBrush, QPen, QFont
 from ..utils.global_vars import parameters_dict  # Importer le dictionnaire global
+
 
 class QToggleSwitch(QWidget):
     stateChanged = pyqtSignal(bool)  # Signal émis quand l'état change
@@ -23,10 +25,14 @@ class QToggleSwitch(QWidget):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         rect = self.rect()
+
+        # Couleurs selon l'état
         background_color = QColor("#00C853") if self._state else QColor("#f44336")
         painter.setBrush(QBrush(background_color))
         painter.setPen(Qt.PenStyle.NoPen)
         painter.drawRoundedRect(rect, rect.height() // 2, rect.height() // 2)
+
+        # Texte
         font = QFont("Arial", 12, QFont.Weight.Bold)  # Police plus grande pour le texte "YES/NO"
         painter.setFont(font)
         text_color = QColor("#FFFFFF")
@@ -34,6 +40,8 @@ class QToggleSwitch(QWidget):
         text = "YES" if self._state else "NO"
         text_pos = rect.left() + 10 if self._state else rect.right() - 35
         painter.drawText(text_pos, int(rect.height() * 0.65), text)
+
+        # Bouton du toggle
         button_color = QColor("#FFFFFF")
         button_x = rect.width() - rect.height() + 5 if self._state else 5
         painter.setBrush(QBrush(button_color))
@@ -62,6 +70,10 @@ class CenteredItemDelegate(QStyledItemDelegate):
 class ProjectsTab(QWidget):
     def __init__(self):
         super().__init__()
+
+        # Initialiser "reset_updates" par défaut si cela n'a pas été défini
+        if "reset_updates" not in parameters_dict:
+            parameters_dict["reset_updates"] = 0.0
 
         # Ajouter un layout principal
         main_layout = QVBoxLayout()
