@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("FragHub 1.2.0")
-        self.setWindowIcon(QIcon('assets/FragHub_icon.png'))
+        self.setWindowIcon(QIcon('./GUI/assets/FragHub_icon.png'))
         self.setGeometry(100, 100, 900, 600)
 
         # Création du layout principal
@@ -23,7 +23,7 @@ class MainWindow(QMainWindow):
 
         # Ajouter le logo FragHub en haut
         banner = QLabel()
-        pixmap = QPixmap('assets/FragHub_icon.png').scaled(130, 130, Qt.AspectRatioMode.KeepAspectRatio,
+        pixmap = QPixmap('./GUI/assets/FragHub_icon.png').scaled(130, 130, Qt.AspectRatioMode.KeepAspectRatio,
                                                            Qt.TransformationMode.SmoothTransformation)
         banner.setPixmap(pixmap)
         banner.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Centrer l'image
