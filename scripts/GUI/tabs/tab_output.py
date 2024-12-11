@@ -15,7 +15,7 @@ class OutputTab(QWidget):
 
         # Créer le bouton de sélection de répertoires
         button = QPushButton()
-        button.setIcon(QIcon('assets/directory.png'))
+        button.setIcon(QIcon('./GUI/assets/directory.png'))
         button.setIconSize(QSize(128, 128))
         button.setFixedSize(140, 140)
         button.clicked.connect(self.browse_output_files)  # Connecter le bouton à la fonction
