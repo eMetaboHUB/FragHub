@@ -96,7 +96,7 @@ class FiltersTab(QWidget):
             "reduce_peak_list": "This function reduces the peak list to a specified maximum number of peaks. The peaks to retain are chosen based on their intensity, with peaks of greater intensity being selected.",
             "remove_spectrum_under_entropy_score": "The entropy score of the spectrum is calculated during processing. If a spectrum has an entropy score lower than the minimum required, it is deleted.",
             "keep_mz_in_range": "This function deletes all spectra whose m/z precursor is not between min and max.",
-            "check_minimum_of_high_peaks_requiered": "This function is used to check whether a given array containing peak data has a required minimum number of high peaks.\nA high peak is defined as a peak whose intensity is above a certain percentage (intensity_percent) of the maximum intensity.\nIf the array does not contain a sufficient number of high peaks, the function delete the spectrum.",
+            "check_minimum_of_high_peaks_requiered": "This function is used to check whether a given array containing peak data has a required minimum number of high peaks.\nA high peak is defined as a peak whose intensity is above a certain percentage (intensity_percent) of the maximum intensity.\nIf the array does not contain a sufficient number of high peaks, the function deletes the spectrum.",
         }
 
         # Layout vertical principal
@@ -109,7 +109,12 @@ class FiltersTab(QWidget):
             filter_layout.setSpacing(5)  # Réduit l'espace entre les widgets, rendu compact
 
             # ToggleSwitch (ON/OFF)
-            toggle = QToggleSwitch(initial_state=True)
+            initial_state = True  # Par défaut, tous les switches démarrent à True (ON)
+            toggle = QToggleSwitch(initial_state=initial_state)
+
+            # Enregistrer l'état initial dans parameters_dict
+            parameters_dict[filter_name] = 1.0 if initial_state else 0.0
+
             toggle.stateChanged.connect(
                 lambda state, name=filter_name: self.toggle_filter(state, name)
             )
@@ -144,6 +149,12 @@ class FiltersTab(QWidget):
 
         # Appliquer le layout principal
         layout.addLayout(main_layout)
+
+    def toggle_filter(self, state, filter_name):
+        """
+        Met à jour `parameters_dict` avec l'état du filtre.
+        """
+        parameters_dict[filter_name] = 1.0 if state else 0.0
 
     def add_additional_fields(self, filter_layout, filter_name):
         if filter_name == "check_minimum_peak_requiered":
