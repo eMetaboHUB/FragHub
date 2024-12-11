@@ -128,16 +128,15 @@ def parsing_to_dict(input_path):
     # A boolean variable to check if there is any json file in the directory
     json_to_do = False
     # Iterate over all directories, subdirectories and files in the given directory
-    for root, dirs, files in os.walk(input_path):
-        for file in files:
-            # Check if current file is a json file
-            if file.endswith(".json"):
-                # Get the full path to the json file
-                json_path = os.path.join(root, file)
-                # Add the json file path to our list
-                json_list.append(json_path)
-                # Set json_to_do to True as we found at least one json file
-                json_to_do = True
+    for files in input_path:
+        # Check if current file is a json file
+        if files.endswith(".json"):
+            # Get the full path to the json file
+            json_path = files
+            # Add the json file path to our list
+            json_list.append(json_path)
+            # Set json_to_do to True as we found at least one json file
+            json_to_do = True
     # If there are json files to process
     if json_to_do == True:
         # Sleep for a short time to correctly display progress bar
@@ -159,16 +158,15 @@ def parsing_to_dict(input_path):
     # A boolean variable to check if there is any MSP file to process within the directory
     msp_to_do = False
     # Looping through the directory and all subdirectories to find files
-    for root, dirs, files in os.walk(input_path):
-        for file in files:
-            # Checking if the current file is an MSP file
-            if file.endswith(".msp"):
-                # Constructing the full path to the MSP file
-                msp_path = os.path.join(root, file)
-                # Adding the path of the current MSP file to our list
-                msp_list.append(msp_path)
-                # Setting the msp_to_do flag to True as we have at least one MSP file to process
-                msp_to_do = True
+    for files in input_path:
+        # Checking if the current file is an MSP file
+        if files.endswith(".msp"):
+            # Constructing the full path to the MSP file
+            msp_path = files
+            # Adding the path of the current MSP file to our list
+            msp_list.append(msp_path)
+            # Setting the msp_to_do flag to True as we have at least one MSP file to process
+            msp_to_do = True
     # If there are any MSP files to process
     if msp_to_do == True:
         # Sleep for a short time to correctly display progress bar
@@ -190,16 +188,15 @@ def parsing_to_dict(input_path):
     # A boolean variable to check if there is any MGF file to process within the directory
     mgf_to_do = False
     # Looping over each directory, subdirectory, and file in the provided directory
-    for root, dirs, files in os.walk(input_path):
-        for file in files:
-            # Checking if the file has a .mgf extension
-            if file.endswith(".mgf"):
-                # Constructing the full path to the MGF file
-                mgf_path = os.path.join(root, file)
-                # Adding the path of the current MGF file to our list
-                mgf_list.append(mgf_path)
-                # Setting the mgf_to_do flag to True as we have at least one MGF file to process
-                mgf_to_do = True
+    for files in input_path:
+        # Checking if the file has a .mgf extension
+        if files.endswith(".mgf"):
+            # Constructing the full path to the MGF file
+            mgf_path = files
+            # Adding the path of the current MGF file to our list
+            mgf_list.append(mgf_path)
+            # Setting the mgf_to_do flag to True as we have at least one MGF file to process
+            mgf_to_do = True
     # Only proceed if there are MGF files to process
     if mgf_to_do == True:
         # Sleep for a short time to correctly display progress bar
@@ -221,16 +218,15 @@ def parsing_to_dict(input_path):
     # A boolean flag to check if there is any CSV file to process
     csv_to_do = False
     # Walking through the directory and all its subdirectories to look for files
-    for root, dirs, files in os.walk(input_path):
-        for file in files:
-            # Checking if the current file has the extension '.csv'
-            if file.endswith(".csv"):
-                # If it's a CSV file, getting full path to it
-                csv_path = os.path.join(root, file)
-                # Adding this CSV file path to our list
-                csv_list.append(csv_path)
-                # Setting the csv_to_do flag to True as there's at least one CSV file to process
-                csv_to_do = True
+    for files in input_path:
+        # Checking if the current file has the extension '.csv'
+        if files.endswith(".csv"):
+            # If it's a CSV file, getting full path to it
+            csv_path = files
+            # Adding this CSV file path to our list
+            csv_list.append(csv_path)
+            # Setting the csv_to_do flag to True as there's at least one CSV file to process
+            csv_to_do = True
     # Go ahead only if there are CSV files to process
     if csv_to_do == True:
         # Sleep for a short time to correctly display progress bar

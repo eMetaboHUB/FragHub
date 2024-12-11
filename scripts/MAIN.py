@@ -1,3 +1,4 @@
+from GUI.utils.global_vars import parameters_dict
 from normalizer.mols_calculation import *
 from complete_from_pubchem_datas import *
 from convertors.parsing_to_dict import *
@@ -6,10 +7,9 @@ from convertors.csv_to_msp import *
 from spectrum_normalizer import *
 from duplicatas_remover import *
 from splash_generator import *
+from GUI.GUI import run_GUI
 from set_projects import *
 from splitter import *
-from GUI.utils.global_vars import parameters_dict
-from GUI.GUI import run_GUI
 from writers import *
 from update import *
 import time
@@ -54,6 +54,7 @@ if __name__ == "__main__":
 
     # GUI execution
     run_GUI()
+    print(parameters_dict)
 
     profile_name = parameters_dict["selected_profile"]
 

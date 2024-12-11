@@ -5,7 +5,6 @@ from PyQt6.QtCore import Qt, pyqtSignal, QSize, QTimer
 from PyQt6.QtGui import QPainter, QColor, QBrush, QPen, QFont
 from ..utils.global_vars import parameters_dict  # Importer le dictionnaire global
 
-
 class QToggleSwitch(QWidget):
     stateChanged = pyqtSignal(bool)  # Signal émis quand l'état change
 
@@ -130,7 +129,7 @@ class ProjectsTab(QWidget):
 
     def populate_dropdown_with_json_files(self):
         """Recherche et ajoute les fichiers .json depuis ../../datas/updates dans le menu déroulant."""
-        json_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../datas/updates"))
+        json_dir = os.path.abspath("../datas/updates")
         if os.path.exists(json_dir) and os.path.isdir(json_dir):
             json_files = [file for file in os.listdir(json_dir) if file.endswith(".json")]
             if json_files:
