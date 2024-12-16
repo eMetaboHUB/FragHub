@@ -7,7 +7,6 @@ from convertors.csv_to_msp import *
 from spectrum_normalizer import *
 from duplicatas_remover import *
 from splash_generator import *
-from GUI.GUI import run_GUI
 from set_projects import *
 from splitter import *
 from writers import *
@@ -50,10 +49,7 @@ ordered_columns = ["FILENAME",
                    "NUM PEAKS",
                    "PEAKS_LIST"]
 
-if __name__ == "__main__":
-
-    # GUI execution
-    run_GUI()
+def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
 
     profile_name = parameters_dict["selected_profile"]
 
@@ -68,7 +64,7 @@ if __name__ == "__main__":
     output_path = os.path.join(parameters_dict["output_directory"],profile_name)
 
     # STEP 1: convert files to json if needed (Multithreaded)
-    FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF = parsing_to_dict(input_path)
+    FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF = parsing_to_dict(input_path, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     files_to_process = False
 

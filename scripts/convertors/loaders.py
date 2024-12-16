@@ -4,58 +4,79 @@ import json
 import os
 import re
 
-def load_spectrum_list_from_msp(msp_file_path):
+def load_spectrum_list_from_msp(msp_file_path, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     Load a spectrum list from a given MSP (Mass Spectral Peak) file.
 
     Arguments:
     msp_file_path (str): The path to the MSP file.
+    progress_callback (callable, optional): A function to update the progress percentage.
+    total_items_callback (callable, optional): A function to set the total number of spectra (e.g., initialize a progress bar).
+    prefix_callback (callable, optional): A function to update the prefix dynamically.
 
     Returns:
-    spectrum_list (List[str]): The list of spectra read from the file. Each spectrum is represented as a string.
-
+    spectrum_list (List[str]): The list of spectra read from the file, where each spectrum is represented as a string.
     """
-
-    # Count number of spectra
+    # Étape 1 : Compter le nombre de spectres
     num_spectra = sum(1 for line in open(msp_file_path, 'r', encoding="UTF-8") if line.strip() == '')
 
-    # Get the name of the file
+    # Étape 2 : Exécuter le callback pour initialiser les totaux si défini
+    if total_items_callback:
+        total_items_callback(num_spectra, 0)  # Total items = num_spectra, Completed = 0
+
+    # Mise à jour dynamique avec le préfixe si défini
+    if prefix_callback:
+        prefix_callback(f"loading [{os.path.basename(msp_file_path)}]: ")
+
+    if item_type_callback:
+        item_type_callback("spectra")
+
+    # Étape 3 : Obtenir le nom du fichier
     filename = os.path.basename(msp_file_path)
 
-    # Initialize a list to store spectra
+    # Étape 4 : Initialiser une liste pour stocker les spectres
     spectrum_list = []
 
-    # Initialize a buffer to temporarily hold data
-    buffer = [f"FILENAME: {os.path.basename(msp_file_path)}\n"]  # initialization of buffer with the filename
+    # Étape 5 : Initialiser un buffer pour contenir temporairement les données
+    buffer = [f"FILENAME: {filename}\n"]  # initialisation du buffer avec le nom du fichier
 
-    # Open the file for reading
-    with tqdm(total=num_spectra, unit="spectra", colour="green", desc="{:>70}".format(f"loading [{filename}]")) as pbar:
-        with open(msp_file_path, 'r', encoding="UTF-8") as file:
+    # Étape 6 : Ouvrir le fichier et lire ligne par ligne
+    with open(msp_file_path, 'r', encoding="UTF-8") as file:
 
-            # For each line in the file
-            for line in file:
+        # Initialisez un compteur pour suivre les progrès
+        processed_spectra = 0
 
-                # If the line is empty
-                if line.strip() == '':
+        for line in file:
 
-                    # Check if buffer is not empty
-                    if buffer:
-                        # Join the data in the buffer into a single string, and add it to the list of spectra
-                        spectrum = '\n'.join(buffer)
-                        spectrum = re.sub(r"FILENAME: .*\n", f"FILENAME: {os.path.basename(msp_file_path)}\n", spectrum, flags=re.IGNORECASE)
-                        spectrum_list.append(spectrum)
+            # Si la ligne est vide, cela signifie que le spectre est terminé
+            if line.strip() == '':
+                # Vérifier si le buffer contient des données
+                if buffer:
+                    # Joignez toutes les données du buffer en une seule chaîne
+                    spectrum = '\n'.join(buffer)
+                    spectrum = re.sub(
+                        r"FILENAME: .*\n",
+                        f"FILENAME: {filename}\n",
+                        spectrum,
+                        flags=re.IGNORECASE
+                    )
+                    # Ajouter le spectre à la liste
+                    spectrum_list.append(spectrum)
 
-                        # Reset the buffer
-                        buffer = [f"FILENAME: {os.path.basename(msp_file_path)}\n"]
+                    # Réinitialiser le buffer
+                    buffer = [f"FILENAME: {filename}\n"]
 
-                        # update the progress bar
-                        pbar.update()
+                    # Mise à jour de la progression
+                    processed_spectra += 1
 
-                # If the line is not empty, add it to the buffer.
-                else:
-                    buffer.append(line.strip())
+                    if progress_callback:
+                        progress_callback(processed_spectra)  # Met à jour directement avec le spectre traité
 
-    # Return the list of spectra
+            # Si la ligne n'est pas vide, ajoutez-la au buffer
+            else:
+                buffer.append(line.strip())
+
+    # Retourne la liste des spectres extraits
     return spectrum_list
 
 def load_spectrum_list_from_mgf(mgf_file_path):
