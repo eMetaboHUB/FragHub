@@ -10,7 +10,7 @@ import json
 import os
 import re
 
-def concatenate_MSP(msp_list):
+def concatenate_MSP(msp_list, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     This function concatenates multiple MSP files into a single spectrum list.
 
@@ -27,7 +27,7 @@ def concatenate_MSP(msp_list):
     for files in msp_list:
         # The extend method appends elements from the iterable (the result of load_spectrum_list_from_msp function)
         # to the end of the list.
-        spectrum_list.extend(load_spectrum_list_from_msp(files))
+        spectrum_list.extend(load_spectrum_list_from_msp(files, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback))
 
     # Return combined list of spectra
     return spectrum_list
@@ -109,7 +109,7 @@ def concatenate_MGF(mgf_list):
         spectrum_list.extend(load_spectrum_list_from_mgf(files))
     return spectrum_list  # Return the final concatenated list of all spectra
 
-def parsing_to_dict(input_path):
+def parsing_to_dict(input_path, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     This function converts file data (JSON, XML, CSV, MSP, MGF) in a directory to JSON format.
     :param input_path: The path of the input directory where the files are located.
@@ -176,7 +176,7 @@ def parsing_to_dict(input_path):
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Concatenating all found MSP files into a single list
-        FINAL_MSP = concatenate_MSP(msp_list)
+        FINAL_MSP = concatenate_MSP(msp_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
         # Converting each MSP spectrum to a JSON spectrum
         FINAL_MSP = msp_to_dict_processing(FINAL_MSP)
 
