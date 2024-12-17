@@ -42,13 +42,13 @@ class ProgressBarWidget(QWidget):
         # Stylesheet : rendre la barre épaisse
         self.progress_bar.setStyleSheet("""
             QProgressBar {
-                height: 24px;  /* Hauteur ajustée à celle du texte */
+                height: 24px;
                 border: 1px solid #000;
-                border-radius: 4px;  /* Coins arrondis */
-                background: #e0e0e0;  /* Couleur de fond (gris clair) */
+                border-radius: 4px;
+                background: #e0e0e0;
             }
             QProgressBar::chunk {
-                background-color: #3b8dff;  /* Couleur de progression (bleu) */
+                background-color: #3b8dff;
                 border-radius: 4px;
             }
         """)
@@ -122,6 +122,7 @@ class ProgressWindow(QMainWindow):
     update_total_signal = pyqtSignal(int, int)  # Total et étape actuelle
     update_prefix_signal = pyqtSignal(str)  # Texte de préfixe
     update_item_type_signal = pyqtSignal(str)  # Type d'items (fichiers, étapes, etc.)
+    update_step_signal = pyqtSignal(str)  # Nouveau signal pour afficher une étape dans l'onglet "Report"
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -217,6 +218,9 @@ class ProgressWindow(QMainWindow):
         container.setLayout(main_layout)
         self.setCentralWidget(container)
 
+        # Connexion du signal de mise à jour des étapes
+        self.update_step_signal.connect(self.add_step_to_report)
+
     def add_to_report(self, prefix_text, suffix_text):
         """
         Ajoute le texte du résumé (prefix + suffix) à l'onglet "Report".
@@ -227,6 +231,22 @@ class ProgressWindow(QMainWindow):
 
         # Ajouter avant l'espace extensible
         self.report_content.insertWidget(self.report_content.count() - 1, new_entry)
+
+        # Forcer le scroll vers le bas
+        self.report_scroll.verticalScrollBar().setValue(
+            self.report_scroll.verticalScrollBar().maximum()
+        )
+
+    def add_step_to_report(self, step_message):
+        """
+            Ajoute une nouvelle étape dans l'onglet "Report".
+            """
+        new_step = QLabel(step_message)
+        new_step.setFont(QFont("Arial", 12, QFont.Weight.Bold))
+        new_step.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Centre horizontalement et verticalement
+
+        # Ajouter l'étape avant les éléments extensibles
+        self.report_content.insertWidget(self.report_content.count() - 1, new_step)
 
         # Forcer le scroll vers le bas
         self.report_scroll.verticalScrollBar().setValue(
