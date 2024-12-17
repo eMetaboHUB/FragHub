@@ -223,16 +223,55 @@ class ProgressWindow(QMainWindow):
 
     def add_to_report(self, prefix_text, suffix_text):
         """
-        Ajoute le texte du résumé (prefix + suffix) à l'onglet "Report".
-        """
-        new_entry = QLabel(f"{prefix_text} - {suffix_text}")
-        new_entry.setFont(QFont("Arial", 10))
-        new_entry.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            Ajoute une nouvelle ligne dans le rapport (prefix + barre de progression statique + suffix).
+            """
+        # Créer un conteneur horizontal pour le préfixe, la barre et le suffixe
+        report_layout = QHBoxLayout()
+        report_layout.setContentsMargins(10, 5, 10, 5)
+        report_layout.setSpacing(10)
 
-        # Ajouter avant l'espace extensible
-        self.report_content.insertWidget(self.report_content.count() - 1, new_entry)
+        # Préfixe
+        prefix_label = QLabel(prefix_text)
+        prefix_label.setFont(QFont("Arial", 10, QFont.Weight.Bold))
+        prefix_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        report_layout.addWidget(prefix_label)
 
-        # Forcer le scroll vers le bas
+        # Fausse barre de progression
+        fake_progress_bar = QProgressBar()
+        fake_progress_bar.setMinimum(0)
+        fake_progress_bar.setMaximum(100)
+        fake_progress_bar.setValue(100)  # Définir une valeur fixe (par exemple, 50%)
+        fake_progress_bar.setTextVisible(False)  # Désactiver l'affichage du texte
+
+        # Appliquer le même style que votre barre de progression principale
+        fake_progress_bar.setStyleSheet("""
+                QProgressBar {
+                    height: 18px;
+                    border: 1px solid #000;
+                    border-radius: 4px;
+                    background: #e0e0e0;
+                }
+                QProgressBar::chunk {
+                    background-color: #3b8dff;
+                    border-radius: 4px;
+                }
+            """)
+        report_layout.addWidget(fake_progress_bar)
+
+        # Suffixe
+        suffix_label = QLabel(suffix_text)
+        suffix_label.setFont(QFont("Arial", 10))
+        suffix_label.setAlignment(Qt.AlignmentFlag.AlignRight)
+        report_layout.addWidget(suffix_label)
+
+        # Créer un widget conteneur pour encapsuler le layout
+        report_widget = QWidget()
+        report_widget.setLayout(report_layout)
+
+        # Ajouter le widget à la mise en page du contenu du rapport
+        self.report_content.insertWidget(self.report_content.count() - 1, report_widget)
+
+        # Forcer le scroll vers le bas pour afficher la dernière entrée
         self.report_scroll.verticalScrollBar().setValue(
             self.report_scroll.verticalScrollBar().maximum()
         )
