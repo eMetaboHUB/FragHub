@@ -141,7 +141,7 @@ def write_csv(df, filename, mode, update, first_run, profile_name, progress_call
 
     # Indicate item type
     if item_type_callback:
-        item_type_callback("DataFrame Rows")
+        item_type_callback("rows")
 
     # Define total items expected
     total_rows = len(df)
@@ -185,15 +185,11 @@ def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico,
     :return: None
     """
 
-    # Pause execution for 0.1 seconds
     time.sleep(0.1)
     # Call write_csv for Positive LC data and write it to POS_LC.csv file
     write_csv(POS_LC_df, "POS_LC.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     # Clear memory used by POS_LC_df dataframe
     del POS_LC_df
-
-    # Similar comments can be written for the rest of the calls and deletions below
-    # Just replace "POS_LC_df" and "POS_LC.csv" with appropriate values
 
     time.sleep(0.1)
     write_csv(POS_GC_df, "POS_GC.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
