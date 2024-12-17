@@ -104,7 +104,7 @@ def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC, progress_callback=Non
 
     # Initial callbacks for task setup
     if prefix_callback:
-        prefix_callback("Splitting experimental/InSilico")
+        prefix_callback("Splitting Experimental/InSilico")
     if item_type_callback:
         item_type_callback("rows")
 
