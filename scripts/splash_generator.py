@@ -72,7 +72,7 @@ def generate_splash_processing(spectrum_list, files, progress_callback=None, tot
     :return: A list containing the SPLASH generated for each spectrum.
     """
     # Extraire le nom du fichier depuis son chemin
-    filename = os.path.basename(files)
+    filename = os.path.basename(files).split("_")[0]
 
     # Définir le préfixe via le callback, si fourni
     if prefix_callback:
