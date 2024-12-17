@@ -120,7 +120,6 @@ def split_in_silico_exp(dataframe, predicted_value, text, progress_callback=None
     return filtered_dataframe
 
 
-
 def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     Function to split the provided datasets into various categories based on 'PREDICTED' column value being "true" or "false"
