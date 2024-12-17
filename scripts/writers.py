@@ -105,53 +105,71 @@ def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_L
     write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update, profile_name)
     del NEG_GC_insilico
 
-def write_csv(df, filename, mode, update, first_run, profile_name):
+def write_csv(df, filename, mode, update, first_run, profile_name, progress_callback=None, total_items_callback=None,
+              prefix_callback=None, item_type_callback=None):
     """
     This function writes a pandas DataFrame to a CSV file in chunks.
-    :param df: DataFrame - the data to be written to the CSV file
-    :param filename: str - the name of CSV file to which the data will be written
-    :param mode: str - the mode in which the file should be opened ('w' - write, 'a' - append)
-    :param update: Bool - a flag to indicate whether the file should be updated or created from scratch
-    :param first_run: Bool - indicates whether it's the first run (headers needs to be written)
-    :param profile_name: str - a name related to the CSV file for organizing the output.
+    :param df: DataFrame - the data to be written to the CSV file.
+    :param filename: str - the name of the CSV file to write the data to.
+    :param mode: str - the mode in which the file should be opened ('w' - write, 'a' - append).
+    :param update: Bool - a flag to indicate whether the file is updated or created from scratch.
+    :param first_run: Bool - indicates whether it's the first run (write the headers if True).
+    :param profile_name: str - a name related to the CSV file for output organization.
+    :param progress_callback: Callable, function to track progress of row writing.
+    :param total_items_callback: Callable, function to set the total number of rows.
+    :param prefix_callback: Callable, function to indicate the current task's description context.
+    :param item_type_callback: Callable, function to indicate the type of elements being processed.
     :return: None.
     """
     # Replace newline characters with semicolons in the PEAKS_LIST column
     if 'PEAKS_LIST' in df.columns:
-        df['PEAKS_LIST'] = df['PEAKS_LIST'].str.replace('\n', ';')
+        df['PEAKS_LIST'] = df['PEAKS_LIST'].str.replace('\n', ';', regex=False)
 
-    # Placeholder string for the directory output path
+    # Construct the file path dynamically
     output_file_path = os.path.join(parameters_dict["output_directory"], f"{profile_name}/CSV/{mode}", filename)
 
-    # The chunk size is limit for each write operation
+    # Define chunk size for writing DataFrame in parts
     chunk_size = 5000
 
-    # Calculate the number of chunks that will be required to write the entire dataframe
+    # Calculate the total number of chunks
     num_chunks = int(np.ceil(df.shape[0] / chunk_size))
 
-    # tqdm progress bar initialization and settings
-    with tqdm(total=num_chunks, unit=" row", colour="green", desc="{:>70}".format(f"writting {filename}")) as pbar:
+    # Set up task description
+    if prefix_callback:
+        prefix_callback(f"Writing {filename} to CSV")
 
-        # Split the dataframe into chunks and write each chunk separately
-        for start in range(0, df.shape[0], chunk_size):
-            # Slice the dataframe for writing
-            df_slice = df[start:start + chunk_size]
+    # Indicate item type
+    if item_type_callback:
+        item_type_callback("DataFrame Rows")
 
-            # If it is the first chunk in a first run, write with headers
-            if start == 0 and first_run:
-                df_slice.to_csv(output_file_path, mode='w', sep="\t", quotechar='"', encoding="UTF-8", index=False)
+    # Define total items expected
+    total_rows = len(df)
+    if total_items_callback:
+        total_items_callback(total_rows, 0)  # Initialize total and completed count
 
-            # If it is not the first chunk, write without headers (append)
-            else:
-                df_slice.to_csv(output_file_path, mode='a', header=False, index=False, sep="\t", quotechar='"',
-                                encoding="UTF-8")
+    # Process the DataFrame in chunks and write each chunk to the file
+    for chunk_index, start in enumerate(range(0, total_rows, chunk_size)):
+        # Select the slice of the DataFrame for the current chunk
+        df_slice = df.iloc[start:start + chunk_size]
 
-            # Update the progress bar
-            pbar.update()
-        pbar.close()
+        # Write headers only on the first chunk and during the first run
+        if start == 0 and first_run:
+            df_slice.to_csv(output_file_path, mode='w', sep="\t", quotechar='"', encoding="UTF-8", index=False)
+        else:
+            # Append the chunk without writing headers
+            df_slice.to_csv(output_file_path, mode='a', sep="\t", quotechar='"', encoding="UTF-8", index=False,
+                            header=False)
+
+        # Notify progress of written chunks (via progress_callback)
+        if progress_callback:
+            processed_rows = min((chunk_index + 1) * chunk_size, total_rows)
+            progress_callback(processed_rows)  # Update with processed row count
+
+    print(f"Finished writing {filename} to {output_file_path}")
 
 
-def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update=False):
+
+def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update=False, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     Write data to CSV files.
 
@@ -172,7 +190,7 @@ def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico,
     # Pause execution for 0.1 seconds
     time.sleep(0.1)
     # Call write_csv for Positive LC data and write it to POS_LC.csv file
-    write_csv(POS_LC_df, "POS_LC.csv", "POS", update, first_run, profile_name)
+    write_csv(POS_LC_df, "POS_LC.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     # Clear memory used by POS_LC_df dataframe
     del POS_LC_df
 
@@ -180,31 +198,31 @@ def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico,
     # Just replace "POS_LC_df" and "POS_LC.csv" with appropriate values
 
     time.sleep(0.1)
-    write_csv(POS_GC_df, "POS_GC.csv", "POS", update, first_run, profile_name)
+    write_csv(POS_GC_df, "POS_GC.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_df
 
     time.sleep(0.1)
-    write_csv(NEG_LC_df, "NEG_LC.csv", "NEG", update, first_run, profile_name)
+    write_csv(NEG_LC_df, "NEG_LC.csv", "NEG", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_df
 
     time.sleep(0.1)
-    write_csv(NEG_GC_df, "NEG_GC.csv", "NEG", update, first_run, profile_name)
+    write_csv(NEG_GC_df, "NEG_GC.csv", "NEG", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_df
 
     time.sleep(0.1)
-    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico.csv", "POS", update, first_run, profile_name)
+    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_LC_df_insilico
 
     time.sleep(0.1)
-    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico.csv", "POS", update, first_run, profile_name)
+    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_df_insilico
 
     time.sleep(0.1)
-    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico.csv", "NEG", update, first_run, profile_name)
+    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico.csv", "NEG", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_df_insilico
 
     time.sleep(0.1)
-    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv", "NEG", update, first_run, profile_name)
+    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv", "NEG", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_df_insilico
 
 def write_json(df, filename, mode, profile_name):
