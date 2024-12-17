@@ -178,7 +178,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         time.sleep(0.01)
         print("{:>70}".format("-- WRITING CSV --"))
         time.sleep(0.01)
-        writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update)
+        writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     if parameters_dict["msp"] == 1.0:
         time.sleep(0.01)
