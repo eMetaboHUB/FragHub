@@ -32,25 +32,57 @@ def concatenate_MSP(msp_list, progress_callback=None, total_items_callback=None,
     # Return combined list of spectra
     return spectrum_list
 
-def concatenate_csv(csv_list):
+
+def concatenate_csv(csv_list, progress_callback=None, total_items_callback=None, prefix_callback=None,
+                    item_type_callback=None):
     """
-    Concatenates multiple CSV files into a single DataFrame.
+    Concatenates multiple CSV files into a single DataFrame, with support for progress reporting via callbacks.
     :param csv_list: List of paths to CSV files to be concatenated.
     :type csv_list: list[str]
+    :param progress_callback: A function to update the progress (optional).
+    :param total_items_callback: A function to set the total number of items (optional).
+    :param prefix_callback: A function to dynamically set the prefix for the operation (optional).
+    :param item_type_callback: A function to specify the type of items processed (optional).
     :return: Concatenated DataFrame.
     :rtype: pandas.DataFrame
     """
+    # Define the total number of CSV files
+    total_files = len(csv_list)
+
+    # Set total items via callback if provided
+    if total_items_callback:
+        total_items_callback(total_files, 0)  # total = total_files, completed = 0
+
+    # Update the prefix dynamically via callback if provided
+    if prefix_callback:
+        prefix_callback("Reading CSV files")
+
+    # Specify the type of items being processed via callback if provided
+    if item_type_callback:
+        item_type_callback("csv_files")
+
     df_list = []  # Initialize an empty list to hold dataframes
-    for file in csv_list:  # Iterate over all the csv files
-        # Read each csv file as a dataframe
+    processed_files = 0  # Counter to track progress
+
+    for file in csv_list:  # Iterate over all the CSV files
+        # Read each CSV file as a DataFrame
         df = pd.read_csv(file, sep=";", quotechar='"', encoding="UTF-8", dtype=str)
         df['filename'] = os.path.basename(file)  # Add a 'filename' column to store the filename of each record
         df.columns = df.columns.str.lower()  # Convert all column names to lowercase
-        df = df.astype(str)  # Convert all frame data to string data type
-        df_list.append(df)  # Append the dataframe to the list
-    # Concatenate all the dataframes in df_list
+        df = df.astype(str)  # Convert all frame data to string type
+        df_list.append(df)  # Append the DataFrame to the list
+
+        # Update progress via callback if provided
+        processed_files += 1
+        if progress_callback:
+            progress_callback(processed_files)
+
+    # Concatenate all the DataFrames in df_list
     df = pd.concat(df_list, ignore_index=True)
-    return df  # Return the final concatenated dataframe
+
+    # Return the final concatenated DataFrame
+    return df
+
 
 def concatenate_JSON(json_list, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
@@ -237,7 +269,7 @@ def parsing_to_dict(input_path, progress_callback=None, total_items_callback=Non
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Concatenate all CSV files into one list
-        FINAL_CSV = concatenate_csv(csv_list)
+        FINAL_CSV = concatenate_csv(csv_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
         # Convert the CSV data to JSON
         FINAL_CSV = csv_to_dict_processing(FINAL_CSV)
 
