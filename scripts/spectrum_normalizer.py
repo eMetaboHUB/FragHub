@@ -3,7 +3,6 @@ from peaks_filters.entropy_calculation import *
 from normalizer.values_normalizer import *
 from peaks_filters.filters import *
 import concurrent.futures
-from tqdm import tqdm
 import numpy as np
 import re
 

@@ -1,7 +1,6 @@
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from rdkit.Chem.Descriptors import ExactMolWt, MolWt
 from rdkit import RDLogger, Chem
-from tqdm import tqdm
 import pandas as pd
 import re
 

@@ -1,5 +1,4 @@
 from concurrent.futures import ThreadPoolExecutor
-from tqdm import tqdm
 import pandas as pd
 import warnings
 import os
