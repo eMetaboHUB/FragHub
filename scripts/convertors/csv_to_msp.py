@@ -81,7 +81,7 @@ def dataframe_to_msp(dataframe, name, progress_callback=None, total_items_callba
 
         # Mise à jour de la progression
         if progress_callback:
-            progress_callback(index + 1)
+            progress_callback(min(index + 1, total_rows))
 
     # Retourner la liste des spectres formatés
     return spectrum_list
