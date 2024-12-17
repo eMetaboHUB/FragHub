@@ -166,8 +166,6 @@ def write_csv(df, filename, mode, update, first_run, profile_name, progress_call
             processed_rows = min((chunk_index + 1) * chunk_size, total_rows)
             progress_callback(processed_rows)  # Update with processed row count
 
-    print(f"Finished writing {filename} to {output_file_path}")
-
 
 
 def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update=False, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
