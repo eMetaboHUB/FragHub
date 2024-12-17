@@ -16,6 +16,7 @@ from progress_window import ProgressWindow
 
 from MAIN import MAIN
 
+
 class MainWindow(QMainWindow):
     # Signal pour mettre à jour la barre de progression
     update_progress_signal = pyqtSignal(int)
@@ -90,7 +91,8 @@ class MainWindow(QMainWindow):
                 progress_callback=self.progress_window.update_progress_signal.emit,
                 total_items_callback=self.progress_window.update_total_signal.emit,
                 prefix_callback=self.progress_window.update_prefix_signal.emit,
-                item_type_callback=self.progress_window.update_item_type_signal.emit  # Nouveau callback
+                item_type_callback=self.progress_window.update_item_type_signal.emit,  # Nouveau callback
+                step_callback=self.progress_window.update_step_signal.emit  # Ajout du step_callback
             )
         except Exception as e:
             print(f"Erreur : {e}")
@@ -105,5 +107,6 @@ def run_GUI():
     window = MainWindow()
     window.show()
     app.exec()
+
 
 run_GUI()
