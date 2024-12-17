@@ -106,6 +106,7 @@ def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_L
     write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_insilico
 
+
 def write_csv(df, filename, mode, update, first_run, profile_name, progress_callback=None, total_items_callback=None,
               prefix_callback=None, item_type_callback=None):
     """
@@ -167,7 +168,6 @@ def write_csv(df, filename, mode, update, first_run, profile_name, progress_call
             progress_callback(processed_rows)  # Update with processed row count
 
 
-
 def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update=False, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     Write data to CSV files.
@@ -223,6 +223,7 @@ def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico,
     time.sleep(0.1)
     write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv", "NEG", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_df_insilico
+
 
 def write_json(df, filename, mode, profile_name, progress_callback=None, total_items_callback=None,
                prefix_callback=None, item_type_callback=None):
