@@ -86,85 +86,73 @@ def split_LC_GC(POS, NEG, progress_callback=None, total_items_callback=None, pre
     return POS_LC, POS_GC, NEG_LC, NEG_GC
 
 
-def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC):
+def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC, progress_callback=None, total_items_callback=None,
+                           prefix_callback=None, item_type_callback=None):
     """
-    Function to split the provided datasets into various categories based on 'PREDICTED' column value being "true" or "false"
+    Function to split the provided datasets into various categories based on 'PREDICTED' column value being "true" or "false".
 
-    :param POS_LC: The data frame containing the positive LC data
-    :param POS_GC: The data frame containing the positive GC data
-    :param NEG_LC: The data frame containing the negative LC data
-    :param NEG_GC: The data frame containing the negative GC data
-    :return: A tuple containing separate data frames for positive LC in silico, positive GC in silico,
-        negative LC in silico, negative GC in silico, positive LC experimental, positive GC experimental,
-        negative LC experimental, and negative GC experimental.
+    :param POS_LC: The dataframe containing the positive LC data.
+    :param POS_GC: The dataframe containing the positive GC data.
+    :param NEG_LC: The dataframe containing the negative LC data.
+    :param NEG_GC: The dataframe containing the negative GC data.
+    :param progress_callback: Callable function to update progress.
+    :param total_items_callback: Callable function to set total number of items to process.
+    :param prefix_callback: Callable function to provide current task context.
+    :param item_type_callback: Callable function to define the type of items being processed.
+    :return: Tuple containing separate dataframes for positive/negative LC/GC in silico and experimental analyses.
     """
 
-    # Create and update progress bar for POS_LC_In_Silico
-    # Get rows where PREDICTED column value is "true"
-    with tqdm(total=len(POS_LC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_LC_In_Silico")) as pbar:
-        POS_LC_In_Silico_temp = POS_LC[POS_LC['PREDICTED'] == "true"]
-        pbar.update(len(POS_LC_In_Silico_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Initial callbacks for task setup
+    if prefix_callback:
+        prefix_callback("Splitting experimental/InSilico")
+    if item_type_callback:
+        item_type_callback("rows")
 
-    # Repeat similar process for POS_GC_In_Silico
-    with tqdm(total=len(POS_GC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_GC_In_Silico")) as pbar:
-        POS_GC_In_Silico_temp = POS_GC[POS_GC['PREDICTED'] == "true"]
-        pbar.update(len(POS_GC_In_Silico_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    total_rows = len(POS_LC) + len(POS_GC) + len(NEG_LC) + len(NEG_GC)
+    if total_items_callback:
+        total_items_callback(total_rows, 0)  # Initialize the total items
 
-    # Continue for NEG_LC_In_Silico
-    with tqdm(total=len(NEG_LC), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_LC_In_Silico")) as pbar:
-        NEG_LC_In_Silico_temp = NEG_LC[NEG_LC['PREDICTED'] == "true"]
-        pbar.update(len(NEG_LC_In_Silico_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Helper function for splitting
+    def split_dataframe(df, field, value):
+        return df[df[field] == value]
 
-    # And for NEG_GC_In_Silico
-    with tqdm(total=len(NEG_GC), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_GC_In_Silico")) as pbar:
-        NEG_GC_In_Silico_temp = NEG_GC[NEG_GC['PREDICTED'] == "true"]
-        pbar.update(len(NEG_GC_In_Silico_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Splitting POS_LC (In Silico and Experimental)
+    POS_LC_In_Silico_temp = split_dataframe(POS_LC, 'PREDICTED', "true")
+    if progress_callback:
+        progress_callback(len(POS_LC_In_Silico_temp))
 
-    # The next set of progress bars are for rows where PREDICTED column value is "false"
+    POS_LC_temp = split_dataframe(POS_LC, 'PREDICTED', "false")
+    if progress_callback:
+        progress_callback(len(POS_LC))
 
-    # Proceed with POS_LC_Exp
-    with tqdm(total=len(POS_LC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_LC_Exp")) as pbar:
-        POS_LC_temp = POS_LC[POS_LC['PREDICTED'] == "false"]
-        pbar.update(len(POS_LC_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Splitting POS_GC (In Silico and Experimental)
+    POS_GC_In_Silico_temp = split_dataframe(POS_GC, 'PREDICTED', "true")
+    if progress_callback:
+        progress_callback(len(POS_LC) + len(POS_GC_In_Silico_temp))
 
-    # Then with POS_GC_Exp
-    with tqdm(total=len(POS_GC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_GC_Exp")) as pbar:
-        POS_GC_temp = POS_GC[POS_GC['PREDICTED'] == "false"]
-        pbar.update(len(POS_GC_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    POS_GC_temp = split_dataframe(POS_GC, 'PREDICTED', "false")
+    if progress_callback:
+        progress_callback(len(POS_LC) + len(POS_GC))
 
-    # Continue with NEG_LC_Exp
-    with tqdm(total=len(NEG_LC), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_LC_Exp")) as pbar:
-        NEG_LC_temp = NEG_LC[NEG_LC['PREDICTED'] == "false"]
-        pbar.update(len(NEG_LC_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Splitting NEG_LC (In Silico and Experimental)
+    NEG_LC_In_Silico_temp = split_dataframe(NEG_LC, 'PREDICTED', "true")
+    if progress_callback:
+        progress_callback(len(POS_LC) + len(POS_GC) + len(NEG_LC_In_Silico_temp))
 
-    # Finally, proceed with NEG_GC_Exp
-    with tqdm(total=len(NEG_GC), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_GC_Exp")) as pbar:
-        NEG_GC_temp = NEG_GC[NEG_GC['PREDICTED'] == "false"]
-        pbar.update(len(NEG_GC_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    NEG_LC_temp = split_dataframe(NEG_LC, 'PREDICTED', "false")
+    if progress_callback:
+        progress_callback(len(POS_LC) + len(POS_GC) + len(NEG_LC))
 
-    # Return a tuple of all newly created dataframes.
-    return POS_LC_temp, POS_LC_In_Silico_temp, POS_GC_temp, POS_GC_In_Silico_temp, NEG_LC_temp, NEG_LC_In_Silico_temp, NEG_GC_temp, NEG_GC_In_Silico_temp
+    # Splitting NEG_GC (In Silico and Experimental)
+    NEG_GC_In_Silico_temp = split_dataframe(NEG_GC, 'PREDICTED', "true")
+    if progress_callback:
+        progress_callback(len(POS_LC) + len(POS_GC) + len(NEG_LC) + len(NEG_GC_In_Silico_temp))
+
+    NEG_GC_temp = split_dataframe(NEG_GC, 'PREDICTED', "false")
+    if progress_callback:
+        progress_callback(total_rows)  # Progress complete
+
+    # Returning all datasets
+    return (POS_LC_temp, POS_LC_In_Silico_temp, POS_GC_temp, POS_GC_In_Silico_temp,
+            NEG_LC_temp, NEG_LC_In_Silico_temp, NEG_GC_temp, NEG_GC_In_Silico_temp)
+
