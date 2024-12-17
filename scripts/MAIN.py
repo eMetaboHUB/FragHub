@@ -120,7 +120,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     time.sleep(0.01)
     print("{:>70}".format(f"-- CLEANING SPECTRUMS --"))
     time.sleep(0.01)
-    spectrum_list = spectrum_cleaning_processing(spectrum_list)
+    spectrum_list = spectrum_cleaning_processing(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
 
     if not spectrum_list:
