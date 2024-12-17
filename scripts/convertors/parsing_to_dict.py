@@ -52,7 +52,7 @@ def concatenate_csv(csv_list):
     df = pd.concat(df_list, ignore_index=True)
     return df  # Return the final concatenated dataframe
 
-def concatenate_JSON(json_list):
+def concatenate_JSON(json_list, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     This function is used to concatenate JSON files into a single list.
 
@@ -78,9 +78,9 @@ def concatenate_JSON(json_list):
         # 'load_spectrum_list_json()' is used to load list of spectrum
         # from individual json file
         try:
-            spectrum_list.extend(load_spectrum_list_json(files))
+            spectrum_list.extend(load_spectrum_list_json(files, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback))
         except:
-            spectrum_list.extend(load_spectrum_list_json_2(files))
+            spectrum_list.extend(load_spectrum_list_json_2(files, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback))
 
     # The final list of all spectra from all JSON files is returned
     return spectrum_list
@@ -146,7 +146,7 @@ def parsing_to_dict(input_path, progress_callback=None, total_items_callback=Non
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Concatenating all json files into a single list
-        FINAL_JSON = concatenate_JSON(json_list)
+        FINAL_JSON = concatenate_JSON(json_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
         # Reformating the JSON structure to a better structure
         FINAL_JSON = json_to_dict_processing(FINAL_JSON)
 
@@ -178,7 +178,7 @@ def parsing_to_dict(input_path, progress_callback=None, total_items_callback=Non
         # Concatenating all found MSP files into a single list
         FINAL_MSP = concatenate_MSP(msp_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
         # Converting each MSP spectrum to a JSON spectrum
-        FINAL_MSP = msp_to_dict_processing(FINAL_MSP)
+        FINAL_MSP = msp_to_dict_processing(FINAL_MSP, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # MGF
     # Initializing an empty list to hold the final MGF (Mascot Generic Format) data
