@@ -209,3 +209,6 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     time.sleep(0.01)
     if step_callback:
         step_callback("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
+
+    while True:
+        continue
