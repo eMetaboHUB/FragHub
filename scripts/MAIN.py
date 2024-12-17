@@ -166,7 +166,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     time.sleep(0.01)
     print("{:>70}".format("-- SPLITTING [EXP / In-Silico] --"))
     time.sleep(0.01)
-    POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df)
+    POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     if parameters_dict["msp"] == 1.0:
         time.sleep(0.01)
         print("{:>70}".format("-- CONVERTING CSV TO MSP --"))
