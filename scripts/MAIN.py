@@ -138,7 +138,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     time.sleep(0.01)
     print("{:>70}".format("-- COMPLETING FROM PUBCHEM DATAS --"))
     time.sleep(0.01)
-    spectrum_list = complete_from_pubchem_datas(spectrum_list)
+    spectrum_list = complete_from_pubchem_datas(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # STEP 7: completing missing names
     time.sleep(0.01)
