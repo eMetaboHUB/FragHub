@@ -271,6 +271,6 @@ def parsing_to_dict(input_path, progress_callback=None, total_items_callback=Non
         # Concatenate all CSV files into one list
         FINAL_CSV = concatenate_csv(csv_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
         # Convert the CSV data to JSON
-        FINAL_CSV = csv_to_dict_processing(FINAL_CSV)
+        FINAL_CSV = csv_to_dict_processing(FINAL_CSV, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     return FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF
