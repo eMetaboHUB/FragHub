@@ -84,6 +84,7 @@ def split_LC_GC(POS, NEG, progress_callback=None, total_items_callback=None, pre
     # Returning separated DataFrames
     return POS_LC, POS_GC, NEG_LC, NEG_GC
 
+
 def split_in_silico_exp(dataframe, predicted_value, text, progress_callback=None, total_items_callback=None,
                         prefix_callback=None, item_type_callback=None):
     """
@@ -151,5 +152,3 @@ def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC, progress_callback=Non
 
     # Return a tuple of all newly created dataframes.
     return POS_LC_temp, POS_LC_In_Silico_temp, POS_GC_temp, POS_GC_In_Silico_temp, NEG_LC_temp, NEG_LC_In_Silico_temp, NEG_GC_temp, NEG_GC_In_Silico_temp
-
-
