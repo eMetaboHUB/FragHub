@@ -148,7 +148,7 @@ def parsing_to_dict(input_path, progress_callback=None, total_items_callback=Non
         # Concatenating all json files into a single list
         FINAL_JSON = concatenate_JSON(json_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
         # Reformating the JSON structure to a better structure
-        FINAL_JSON = json_to_dict_processing(FINAL_JSON)
+        FINAL_JSON = json_to_dict_processing(FINAL_JSON, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # MSP
     # Initializing an empty list to hold the final MSP data
