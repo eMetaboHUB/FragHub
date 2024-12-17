@@ -141,7 +141,7 @@ def concatenate_MGF(mgf_list, progress_callback=None, total_items_callback=None,
     return spectrum_list  # Return the final concatenated list of all spectra
 
 
-def parsing_to_dict(input_path, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+def parsing_to_dict(input_path, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None, step_callback=None):
     """
     This function converts file data (JSON, XML, CSV, MSP, MGF) in a directory to JSON format.
     :param input_path: The path of the input directory where the files are located.
@@ -174,7 +174,8 @@ def parsing_to_dict(input_path, progress_callback=None, total_items_callback=Non
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Print a status message that the conversion has started
-        print("{:>70}".format("-- PARSING JSON TO DICT --"))
+        if step_callback:
+            step_callback("-- PARSING JSON TO DICT --")
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Concatenating all json files into a single list
@@ -204,7 +205,8 @@ def parsing_to_dict(input_path, progress_callback=None, total_items_callback=Non
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Displaying a status message indicating the beginning of MSP to JSON conversion
-        print("{:>70}".format("-- PARSING MSP TO DICT --"))
+        if step_callback:
+            step_callback("-- PARSING MSP TO DICT --")
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Concatenating all found MSP files into a single list
@@ -234,7 +236,8 @@ def parsing_to_dict(input_path, progress_callback=None, total_items_callback=Non
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Printing a status message signaling the start of the MGF to JSON conversion
-        print("{:>70}".format("-- PARSING MGF TO DICT --"))
+        if step_callback:
+            step_callback("-- PARSING MGF TO DICT --")
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Concatenating all found MGF files into a single list
@@ -264,7 +267,8 @@ def parsing_to_dict(input_path, progress_callback=None, total_items_callback=Non
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Printing a status message to signify the start of CSV to JSON conversion
-        print("{:>70}".format("-- PARSING CSV TO DICT --"))
+        if step_callback:
+            step_callback("-- PARSING CSV TO DICT --")
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Concatenate all CSV files into one list
