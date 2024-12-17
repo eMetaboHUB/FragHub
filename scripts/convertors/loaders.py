@@ -108,45 +108,62 @@ def load_spectrum_list_from_mgf(mgf_file_path):
     # return the list of spectra
     return spectrum_list
 
-def load_spectrum_list_json(json_file_path):
+def load_spectrum_list_json_2(json_file_path, progress_callback=None, total_items_callback=None, prefix_callback=None,
+                              item_type_callback=None):
     """
-    This function is used to load a list of spectra from a given JSON file.
+    Cette fonction charge une liste de spectres à partir d'un fichier JSON donné, avec gestion de la progression via des callbacks.
 
-    :param json_file_path: A string representing the path to the JSON file containing the spectra.
-
-    :return: A generator yielding each spectrum (a dictionary) from the JSON file, one at a time.
+    :param json_file_path: Une chaîne représentant le chemin vers le fichier JSON contenant les spectres.
+    :param progress_callback: Une fonction pour mettre à jour la progression (optionnel).
+    :param total_items_callback: Une fonction pour définir le total des éléments ou octets à traiter (optionnel).
+    :param prefix_callback: Une fonction pour définir dynamiquement le préfixe de l'opération (optionnel).
+    :param item_type_callback: Une fonction pour spécifier le type d'éléments traités (optionnel).
+    :return: Un générateur retournant chaque spectre (dictionnaire) du fichier JSON, un à la fois.
     """
 
-    # Extract the filename from the given path
+    # Extraire le nom de fichier à partir du chemin donné
     filename = os.path.basename(json_file_path)
 
-    # Calculate the total size of the file in bytes for progress reporting
+    # Calculer la taille totale du fichier en octets pour suivre la progression
     total_bytes = os.path.getsize(json_file_path)
 
-    # Open the JSON file for reading
-    # Note: The encoding is set to UTF-8 to support wide range of characters.
+    # Définir le total via callback si fourni
+    if total_items_callback:
+        total_items_callback(total_bytes, 0)  # total = total_bytes, completed = 0
+
+    # Définir le préfixe dynamique via callback si fourni
+    if prefix_callback:
+        prefix_callback(f"loading [{filename}]: ")
+
+    # Spécifier le type d'éléments traités (optionnel)
+    if item_type_callback:
+        item_type_callback("spectra")
+
+    # Variable pour suivre les octets traités
+    processed_bytes = 0
+
+    # Ouvrir le fichier JSON pour lecture
     with open(json_file_path, 'r', encoding="UTF-8") as file:
-        # Create a generator to yield each 'item' in the JSON file using ijson.
-        # ijson will yield each 'item' as a separate dictionary.
-        spectra = ijson.items(file, 'item')
+        # Lire ligne par ligne
+        for line in file:
+            if line.strip():  # Vérifiez que la ligne n'est pas vide
+                # Analyser l'objet JSON à partir de la ligne actuelle
+                spectrum = json.loads(line.strip())
 
-        # Initialize a progress bar for tracking file loading progress with tqdm.
-        # The total size is set to total_bytes (file size), and a description is attached showing the filename being loaded.
-        progress = tqdm(total=total_bytes, unit="B", unit_scale=True, colour="green", desc="{:>70}".format(f"loading [{filename}]"))
+                # Ajouter le nom du fichier d'origine au spectre
+                spectrum["filename"] = filename
 
-        # Loop over each spectrum in the file
-        for spectrum in spectra:
-            # Add the originating filename to the spectrum dictionary
-            spectrum["filename"] = filename
+                # Calculer la taille en octets traités
+                processed_bytes += len(line)
 
-            # Update the progress bar to reflect spectrum load in size (estimated by converting the dictionary to a string and checking its length)
-            progress.update(len(str(spectrum)))
+                # Mettre à jour le callback de progression (si défini)
+                if progress_callback:
+                    progress_callback(processed_bytes)
 
-            # Yield the current spectrum, allowing the function to be used as a generator
-            yield spectrum
+                # Produire le spectre actuel
+                yield spectrum
 
-        # Close the progress bar after all spectra have been loaded and yielded.
-        progress.close()
+
 
 
 def load_spectrum_list_json_2(json_file_path):
