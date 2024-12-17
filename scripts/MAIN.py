@@ -132,7 +132,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     time.sleep(0.01)
     print("{:>70}".format("-- MOLS DERIVATION AND MASS CALCULATION --"))
     time.sleep(0.01)
-    spectrum_list = mols_derivation_and_calculation(spectrum_list)
+    spectrum_list = mols_derivation_and_calculation(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # STEP 6: completing missing metadata from pubchem datas
     time.sleep(0.01)
