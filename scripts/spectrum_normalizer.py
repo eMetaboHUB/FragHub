@@ -134,7 +134,8 @@ def spectrum_cleaning(spectrum):
 
     return spectrum
 
-def spectrum_cleaning_processing(spectrum_list):
+def spectrum_cleaning_processing(spectrum_list, progress_callback=None, total_items_callback=None, prefix_callback=None,
+                                 item_type_callback=None):
     """
     Main function used for performing spectrum cleaning operation on multiple spectrums.
 
@@ -142,35 +143,61 @@ def spectrum_cleaning_processing(spectrum_list):
     The spectrum list is divided into chunks of determined size. Each chunk is then processed concurrently by utilizing
     the ThreadPoolExecutor.
 
-    During the operation, a progress bar is shown to indicate the progress of the operation. The progress bar is updated
-    every time a chunk of spectrums has been processed.
+    During the operation, progress is reported via callbacks instead of a progress bar. The callbacks are triggered
+    as the cleaning process progresses.
 
     Finally, the cleaned spectrums are collected and returned.
 
     :param spectrum_list: A list of spectrums that need to be cleaned
     :type spectrum_list: list
+    :param progress_callback: A function to update the progress (optional)
+    :param total_items_callback: A function to set the total number of items (optional)
+    :param prefix_callback: A function to dynamically set the prefix for the operation (optional)
+    :param item_type_callback: A function to specify the type of items being processed (optional)
     :return: A list of cleaned spectrums
     :rtype: list
     """
 
+    # Define a task prefix via the callback (if provided)
+    if prefix_callback:
+        prefix_callback("cleaning spectrums")
+
+    # Specify the type of items being processed (if provided)
+    if item_type_callback:
+        item_type_callback("spectra")
+
+    # Define the total number of spectrums for processing
+    if total_items_callback:
+        total_items_callback(len(spectrum_list), 0)  # Set total items and display initial completed = 0
+
     # Define the chunk size: the number of spectrums that can be processed at once
     chunk_size = 5000
+
     # Initialize the list that will hold the cleaned spectra
     final = []
-    # Initialize a progress bar to monitor the processing
-    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>70}".format("cleaning spectrums"))
-    # Loop over the spectrum list using the defined chunk size
+
+    # Variable to track processed items
+    processed_items = 0
+
+    # Loop over the spectrum list, processing chunks of size `chunk_size`
     for i in range(0, len(spectrum_list), chunk_size):
-        # Create a ThreadPoolExecutor for concurrent processing
+        # Create a thread pool executor for concurrent processing
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            # Extract a chunk of spectrum from the spectrum list
+            # Extract the current chunk
             chunk = spectrum_list[i:i + chunk_size]
-            # Execute the spectrum_cleaning function on each spectrum from the chunk concurrently
+            # Execute the `spectrum_cleaning` function for each item in the current chunk concurrently
             results = list(executor.map(spectrum_cleaning, chunk))
-            # Update the progress bar
-            progress_bar.update(len(chunk))
-        # Collect all non-None cleaned spectrums from the chunk and append them to the final cleaned spectrum list
+
+        # Collect all non-None results (cleaned spectrums)
         final.extend([res for res in results if res is not None])
-    # Close the progress bar after all has been processed
-    progress_bar.close()
-    return final  # Return the cleaned spectrum list
+
+        # Update the number of processed items
+        processed_items += len(chunk)
+
+        # Trigger the progress callback with the updated count
+        if progress_callback:
+            progress_callback(processed_items)
+
+    # Return the final cleaned spectrum list
+    return final
+
