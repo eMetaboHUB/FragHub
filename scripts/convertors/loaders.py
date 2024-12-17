@@ -79,34 +79,63 @@ def load_spectrum_list_from_msp(msp_file_path, progress_callback=None, total_ite
     # Retourne la liste des spectres extraits
     return spectrum_list
 
-def load_spectrum_list_from_mgf(mgf_file_path):
+
+def load_spectrum_list_from_mgf(mgf_file_path, progress_callback=None, total_items_callback=None, prefix_callback=None,
+                                item_type_callback=None):
     """
-    Load a spectrum list from a given MGF (Mascot Generic Format) file.
+    Load a spectrum list from a given MGF (Mascot Generic Format) file, with support for progress callbacks.
     :param mgf_file_path: The path to the MGF file.
+    :param progress_callback: A function to update the progress (optional).
+    :param total_items_callback: A function to set the total number of items (optional).
+    :param prefix_callback: A function to dynamically set the prefix for the operation (optional).
+    :param item_type_callback: A function to specify the type of items processed (optional).
     :return: The list of spectra read from the file. Each spectrum is represented as a string.
     """
-    # Count the total number of spectra
+    # Count the total number of spectra (lines with 'END IONS')
     num_spectra = sum(1 for line in open(mgf_file_path, 'r', encoding="UTF-8") if line.strip() == 'END IONS')
 
+    # Extract file name
     filename = os.path.basename(mgf_file_path)
+
+    # Set total items via callback if provided
+    if total_items_callback:
+        total_items_callback(num_spectra, 0)  # total = num_spectra, completed = 0
+
+    # Update the prefix dynamically via callback if provided
+    if prefix_callback:
+        prefix_callback(f"Loading [{filename}]: ")
+
+    # Specify the type of items being processed via callback if provided
+    if item_type_callback:
+        item_type_callback("spectra")
+
+    # Initialize variables for parsing
     spectrum_list = []
     buffer = [f"FILENAME={filename}"]
+    processed_items = 0
 
-    with tqdm(total=num_spectra, unit="spectra", colour="green", desc="{:>70}".format(f"loading [{filename}]")) as pbar:
-        with open(mgf_file_path, 'r', encoding="UTF-8") as file:
-            for line in file:
-                if line.strip() == 'END IONS':
-                    if buffer:
-                        spectrum = '\n'.join(buffer)
-                        spectrum = re.sub(r"FILENAME=.*\n", f"FILENAME={filename}\n", spectrum, flags=re.IGNORECASE)
-                        spectrum_list.append(spectrum)
-                        buffer = [f"FILENAME={filename}"]
-                    pbar.update(1)  # Update progress bar each time a spectrum is being processed
-                else:
-                    buffer.append(line.strip())
+    with open(mgf_file_path, 'r', encoding="UTF-8") as file:
+        for line in file:
+            # Detect end of a spectrum
+            if line.strip() == 'END IONS':
+                if buffer:
+                    # Process the buffer into a single spectrum string
+                    spectrum = '\n'.join(buffer)
+                    spectrum = re.sub(r"FILENAME=.*\n", f"FILENAME={filename}\n", spectrum, flags=re.IGNORECASE)
+                    spectrum_list.append(spectrum)
+                    buffer = [f"FILENAME={filename}"]  # Reset the buffer for the next spectrum
 
-    # return the list of spectra
+                # Update progress via callback if provided
+                processed_items += 1
+                if progress_callback:
+                    progress_callback(processed_items)
+            else:
+                # Accumulate lines in the buffer
+                buffer.append(line.strip())
+
+    # Return the list of spectra
     return spectrum_list
+
 
 def load_spectrum_list_json(json_file_path, progress_callback=None, total_items_callback=None, prefix_callback=None,
                             item_type_callback=None):

@@ -85,7 +85,7 @@ def concatenate_JSON(json_list, progress_callback=None, total_items_callback=Non
     # The final list of all spectra from all JSON files is returned
     return spectrum_list
 
-def concatenate_MGF(mgf_list):
+def concatenate_MGF(mgf_list, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     Concatenates multiple MGF files into a single spectrum list.
 
@@ -106,8 +106,9 @@ def concatenate_MGF(mgf_list):
     for files in mgf_list:  # Loop over each file path in the mgf_list
         # Extend the spectrum_list with spectral data from current file
         # The load_spectrum_list_from_mgf() is supposed to return a list of spectra from a single MGF file.
-        spectrum_list.extend(load_spectrum_list_from_mgf(files))
+        spectrum_list.extend(load_spectrum_list_from_mgf(files, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback))
     return spectrum_list  # Return the final concatenated list of all spectra
+
 
 def parsing_to_dict(input_path, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
@@ -206,7 +207,7 @@ def parsing_to_dict(input_path, progress_callback=None, total_items_callback=Non
         # Sleep for a short time to correctly display progress bar
         time.sleep(0.01)
         # Concatenating all found MGF files into a single list
-        FINAL_MGF = concatenate_MGF(mgf_list)
+        FINAL_MGF = concatenate_MGF(mgf_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
         # Converting each MGF spectrum to a JSON spectrum
         FINAL_MGF = mgf_to_dict_processing(FINAL_MGF)
 
