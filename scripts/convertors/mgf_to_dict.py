@@ -1,6 +1,5 @@
 from .keys_convertor import *
 import concurrent.futures
-from tqdm import tqdm
 import re
 
 global metadata_peak_list_split_pattern

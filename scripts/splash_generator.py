@@ -1,6 +1,5 @@
 from splash import Spectrum, SpectrumType, Splash
 import concurrent.futures
-from tqdm import tqdm
 import os
 
 def hash_spectrum_data(spectrum_data):

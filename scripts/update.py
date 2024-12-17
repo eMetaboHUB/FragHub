@@ -1,5 +1,4 @@
 import concurrent.futures
-from tqdm import tqdm
 import json
 
 def init_json_update_file(json_update_file):

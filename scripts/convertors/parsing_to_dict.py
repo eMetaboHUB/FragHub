@@ -3,7 +3,6 @@ from .msp_to_dict import *
 from .csv_to_dict import *
 from .mgf_to_dict import *
 from .loaders import *
-from tqdm import tqdm
 import pandas as pd
 import time
 import json

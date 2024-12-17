@@ -1,5 +1,4 @@
 from set_projects import parameters_dict
-from tqdm import tqdm
 import pandas as pd
 import numpy as np
 import json
