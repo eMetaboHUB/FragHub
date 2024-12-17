@@ -209,7 +209,7 @@ def parsing_to_dict(input_path, progress_callback=None, total_items_callback=Non
         # Concatenating all found MGF files into a single list
         FINAL_MGF = concatenate_MGF(mgf_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
         # Converting each MGF spectrum to a JSON spectrum
-        FINAL_MGF = mgf_to_dict_processing(FINAL_MGF)
+        FINAL_MGF = mgf_to_dict_processing(FINAL_MGF, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # CSV
     # Initializing an empty list to contain the final CSV data

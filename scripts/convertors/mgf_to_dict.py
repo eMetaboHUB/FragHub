@@ -149,17 +149,35 @@ def mgf_to_dict(spectrum):
     # Return the modified and structured metadata
     return metadata
 
-def mgf_to_dict_processing(FINAL_MGF):
+
+def mgf_to_dict_processing(FINAL_MGF, progress_callback=None, total_items_callback=None, prefix_callback=None,
+                           item_type_callback=None):
     """
-    Converts MGF spectrums to JSON format.
+    Converts MGF spectrums to JSON format, with support for progress reporting via callbacks.
     :param FINAL_MGF: A list of MGF spectrums to be converted.
+    :param progress_callback: A function to update the progress (optional).
+    :param total_items_callback: A function to set the total number of items (optional).
+    :param prefix_callback: A function to dynamically set the prefix for the operation (optional).
+    :param item_type_callback: A function to specify the type of items processed (optional).
     :return: A list of JSON-formatted spectrums.
     """
     start = 0
     end = len(FINAL_MGF)
 
-    # Initialize a progress bar to keep track of and visualize the conversion process
-    progress_bar = tqdm(total=end, unit=" spectrums", colour="green", desc="{:>70}".format("converting MGF spectrums"))
+    # Set total items via callback if provided
+    if total_items_callback:
+        total_items_callback(end, 0)  # total = end, completed = 0
+
+    # Update the prefix dynamically via callback if provided
+    if prefix_callback:
+        prefix_callback("Parsing MGF spectrums")
+
+    # Specify the type of items being processed via callback if provided
+    if item_type_callback:
+        item_type_callback("spectra")
+
+    # Variable to track progress
+    processed_items = 0
 
     while start < end:
         chunk_size = min(end - start, 5000)
@@ -171,11 +189,13 @@ def mgf_to_dict_processing(FINAL_MGF):
         # Filter out None results
         FINAL_MGF[start:start + chunk_size] = [item for item in FINAL_MGF[start:start + chunk_size] if item is not None]
 
-        # Update progress bar
-        progress_bar.update(chunk_size)
+        # Update progress via callback if provided
+        processed_items += chunk_size
+        if progress_callback:
+            progress_callback(processed_items)
 
         # Move to the next chunk
         start += chunk_size
 
-    progress_bar.close()
     return FINAL_MGF
+
