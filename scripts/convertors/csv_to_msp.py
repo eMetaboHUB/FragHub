@@ -17,8 +17,7 @@ def format_comments(DF_row):
     # If it exists, include the attribute value. If not, include 'UNKNOWN'.
     return f'FILENAME={DF_row["FILENAME"] if DF_row["FILENAME"] else "UNKNOWN"}; PREDICTED={DF_row["PREDICTED"] if DF_row["PREDICTED"] else "UNKNOWN"}; SPLASH={DF_row["SPLASH"] if DF_row["SPLASH"] else "UNKNOWN"}; SPECTRUMID={DF_row["SPECTRUMID"] if DF_row["SPECTRUMID"] else "UNKNOWN"}; RESOLUTION={DF_row["RESOLUTION"] if DF_row["RESOLUTION"] else "UNKNOWN"}; SYNON={DF_row["SYNON"] if DF_row["SYNON"] else "UNKNOWN"}; FRAGMENTATIONMODE={DF_row["FRAGMENTATIONMODE"] if DF_row["FRAGMENTATIONMODE"] else "UNKNOWN"}; AVERAGEMASS={DF_row["AVERAGEMASS"] if DF_row["AVERAGEMASS"] else "UNKNOWN"}; ENTROPY={DF_row["ENTROPY"] if DF_row["ENTROPY"] else "UNKNOWN"}; ONTOLOGIES = "CLASSYFIRE_SUPERCLASS={DF_row['CLASSYFIRE_SUPERCLASS'] if DF_row['CLASSYFIRE_SUPERCLASS'] else 'UNKNOWN'}, CLASSYFIRE_CLASS = {DF_row['CLASSYFIRE_CLASS'] if DF_row['CLASSYFIRE_CLASS'] else 'UNKNOWN'}, CLASSYFIRE_SUBCLASS = {DF_row['CLASSYFIRE_SUBCLASS'] if DF_row['CLASSYFIRE_SUBCLASS'] else 'UNKNOWN'}, NPCLASS_PATHWAY = {DF_row['NPCLASS_PATHWAY'] if DF_row['NPCLASS_PATHWAY'] else 'UNKNOWN'}, NPCLASS_SUPERCLASS = {DF_row['NPCLASS_SUPERCLASS'] if DF_row['NPCLASS_SUPERCLASS'] else 'UNKNOWN'}, NPCLASS_CLASS = {DF_row['NPCLASS_CLASS'] if DF_row['NPCLASS_CLASS'] else 'UNKNOWN'}"'
 
-def dataframe_to_msp(dataframe, name, progress_callback=None, total_items_callback=None, prefix_callback=None,
-                     item_type_callback=None):
+def dataframe_to_msp(dataframe, name, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     Convertit un DataFrame contenant des données spectrales en une liste de chaînes formatées représentant les spectres.
 
@@ -30,6 +29,8 @@ def dataframe_to_msp(dataframe, name, progress_callback=None, total_items_callba
     :param item_type_callback: Fonction callable pour signaler le type des éléments traités.
     :return: Une liste de chaînes formatées représentant les spectres.
     """
+    # Réindexer le DataFrame pour garantir un index consécutif (important après des filtrages/splits)
+    dataframe = dataframe.reset_index(drop=True)
 
     # Convertir toutes les colonnes en type chaîne
     dataframe = dataframe.astype(str)
@@ -81,7 +82,7 @@ def dataframe_to_msp(dataframe, name, progress_callback=None, total_items_callba
 
         # Mise à jour de la progression
         if progress_callback:
-            progress_callback(min(index + 1, total_rows))
+            progress_callback(index + 1)
 
     # Retourner la liste des spectres formatés
     return spectrum_list
@@ -126,7 +127,7 @@ def csv_to_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_
 
     # Create MSP file from POS_GC dataframe
     time.sleep(0.1)
-    POS_GC = dataframe_to_msp(POS_GC_df, "POS_GC")
+    POS_GC = dataframe_to_msp(POS_GC_df, "POS_GC", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # Create MSP file from POS_GC insilico dataframe
     time.sleep(0.1)
@@ -134,7 +135,7 @@ def csv_to_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_
 
     # Create MSP file from NEG_LC dataframe
     time.sleep(0.1)
-    NEG_LC = dataframe_to_msp(NEG_LC_df, "NEG_LC")
+    NEG_LC = dataframe_to_msp(NEG_LC_df, "NEG_LC", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # Create MSP file from NEG_LC insilico dataframe
     time.sleep(0.1)
@@ -142,7 +143,7 @@ def csv_to_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_
 
     # Create MSP file from NEG_GC dataframe
     time.sleep(0.1)
-    NEG_GC = dataframe_to_msp(NEG_GC_df, "NEG_GC")
+    NEG_GC = dataframe_to_msp(NEG_GC_df, "NEG_GC", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # Create MSP file from NEG_GC insilico dataframe
     time.sleep(0.1)
