@@ -102,7 +102,7 @@ def split_in_silico_exp(dataframe, predicted_value, text, progress_callback=None
     if prefix_callback:
         prefix_callback(text)  # Exemple : "Filtrage des spectres"
     if item_type_callback:
-        item_type_callback("spectrums")
+        item_type_callback("rows")
 
     # Nombre total d'éléments dans le DataFrame
     total_rows = len(dataframe)
