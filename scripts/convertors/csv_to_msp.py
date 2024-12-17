@@ -1,4 +1,5 @@
 import pandas as pd
+import time
 import re
 
 def format_comments(DF_row):
@@ -116,21 +117,36 @@ def csv_to_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_
 
     """
     # Create MSP file from POS_LC dataframe
+    time.sleep(0.1)
     POS_LC = dataframe_to_msp(POS_LC_df, "POS_LC", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
     # Create MSP file from POS_LC insilico dataframe
+    time.sleep(0.1)
     POS_LC_insilico = dataframe_to_msp(POS_LC_df_insilico, "POS_LC_insilico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
     # Create MSP file from POS_GC dataframe
+    time.sleep(0.1)
     POS_GC = dataframe_to_msp(POS_GC_df, "POS_GC")
+
     # Create MSP file from POS_GC insilico dataframe
+    time.sleep(0.1)
     POS_GC_insilico = dataframe_to_msp(POS_GC_df_insilico, "POS_GC_insilico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
     # Create MSP file from NEG_LC dataframe
+    time.sleep(0.1)
     NEG_LC = dataframe_to_msp(NEG_LC_df, "NEG_LC")
+
     # Create MSP file from NEG_LC insilico dataframe
+    time.sleep(0.1)
     NEG_LC_insilico = dataframe_to_msp(NEG_LC_df_insilico, "NEG_LC_insilico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
     # Create MSP file from NEG_GC dataframe
+    time.sleep(0.1)
     NEG_GC = dataframe_to_msp(NEG_GC_df, "NEG_GC")
+
     # Create MSP file from NEG_GC insilico dataframe
+    time.sleep(0.1)
     NEG_GC_insilico = dataframe_to_msp(NEG_GC_df_insilico, "NEG_GC_insilico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # Return original dataframes as well as the generated MSP files.
-    return POS_LC_df, POS_LC, POS_LC_df_insilico, POS_LC_insilico, POS_GC_df, POS_GC, POS_GC_df_insilico, POS_GC_insilico, NEG_LC_df, NEG_LC, NEG_LC_df_insilico, NEG_LC_insilico, NEG_GC_df, NEG_GC, NEG_GC_df_insilico, NEG_GC_insilico
+    return POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico
