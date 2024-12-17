@@ -37,54 +37,54 @@ def split_pos_neg(CONCATENATE_DF, progress_callback=None, total_items_callback=N
     return POS, NEG
 
 
-def split_LC_GC(POS, NEG):
+def split_LC_GC(POS, NEG, progress_callback=None, total_items_callback=None, prefix_callback=None,
+                item_type_callback=None):
     """
-    :param POS: DataFrame containing positive spectrums
-    :param NEG: DataFrame containing negative spectrums
-    :return: Four DataFrames containing positive LC spectrums, positive GC spectrums, negative LC spectrums, and negative GC spectrums
+    This function separates the given positive and negative DataFrames into LC and GC spectrums.
+
+    :param POS: DataFrame containing positive spectrums.
+    :param NEG: DataFrame containing negative spectrums.
+    :param progress_callback: Callable function to update progress information.
+    :param total_items_callback: Callable function to define the total number of items to process.
+    :param prefix_callback: Callable function to provide the current task context.
+    :param item_type_callback: Callable function to define the processed item type.
+    :return: Four DataFrames (POS_LC, POS_GC, NEG_LC, NEG_GC).
     """
-    # Creating a progress bar for positive GC spectrums separation
-    with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="{:>70}".format("POS_GC")) as pbar:
-        # Extracting rows in POS DataFrame where 'INSTRUMENTTYPE' contains either 'GC' or 'EI'. Case-insensitive
-        POS_GC = POS[POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-        # Updating the progress bar with the number of rows in POS_GC
-        pbar.update(len(POS_GC))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
 
-    # Creating a progress bar for positive LC spectrums separation
-    with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="{:>70}".format("POS_LC")) as pbar:
-        # Extracting rows in POS DataFrame where 'INSTRUMENTTYPE' does not contain either 'GC' or 'EI'. Case-insensitive
-        POS_LC = POS[~POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-        # Updating the progress bar with the number of rows in POS_LC
-        pbar.update(len(POS_LC))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Initial callbacks to describe the process
+    if prefix_callback:
+        prefix_callback("Splitting LC/GC")
+    if item_type_callback:
+        item_type_callback("rows")
 
-    # Creating a progress bar for negative GC spectrums separation
-    with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_GC")) as pbar:
-        # Extracting rows in NEG DataFrame where 'INSTRUMENTTYPE' contains either 'GC' or 'EI'. Case-insensitive
-        NEG_GC = NEG[NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-        # Updating the progress bar with the number of rows in NEG_GC
-        pbar.update(len(NEG_GC))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Total rows to process (Positive + Negative)
+    total_rows = len(POS) + len(NEG)
+    if total_items_callback:
+        total_items_callback(total_rows, 0)  # Report total and initialize completed items to 0
 
-    # Creating a progress bar for negative LC spectrums separation
-    with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_LC")) as pbar:
-        # Extracting rows in NEG DataFrame where 'INSTRUMENTTYPE' does not contain either 'GC' or 'EI'. Case-insensitive
-        NEG_LC = NEG[~NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-        # Updating the progress bar with the number of rows in NEG_LC
-        pbar.update(len(NEG_LC))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Splitting positive GC spectrums
+    POS_GC = POS[POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
+    if progress_callback:
+        progress_callback(len(POS_GC))  # Update progress after processing positive GC
 
-    # Returning separated POS and NEG DataFrames for LC and GC spectrums
+    # Splitting positive LC spectrums
+    POS_LC = POS[~POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
+    if progress_callback:
+        progress_callback(len(POS))  # Update progress after processing all positive spectrums
+
+    # Splitting negative GC spectrums
+    NEG_GC = NEG[NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
+    if progress_callback:
+        progress_callback(len(POS) + len(NEG_GC))  # Update progress after processing negative GC
+
+    # Splitting negative LC spectrums
+    NEG_LC = NEG[~NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
+    if progress_callback:
+        progress_callback(total_rows)  # Indicate that all rows have been processed
+
+    # Returning separated DataFrames
     return POS_LC, POS_GC, NEG_LC, NEG_GC
+
 
 def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC):
     """

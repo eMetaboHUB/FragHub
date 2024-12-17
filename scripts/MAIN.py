@@ -157,7 +157,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     time.sleep(0.01)
     print("{:>70}".format("-- SPLITTING [LC / GC] --"))
     time.sleep(0.01)
-    POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df = split_LC_GC(POS_df, NEG_df)
+    POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df = split_LC_GC(POS_df, NEG_df, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     del POS_df
     del NEG_df
