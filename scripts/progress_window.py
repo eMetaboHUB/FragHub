@@ -152,7 +152,13 @@ class ProgressWindow(QMainWindow):
         self.report_content = QVBoxLayout()
         self.report_widget.setLayout(self.report_content)
 
-        # Ajout zone défilable pour le rapport
+        # Ajouter un espace extensible pour gérer le contenu dynamique
+        self.report_content.addStretch()
+
+        # Régler la taille minimum pour activer le scroll
+        self.report_widget.setMinimumWidth(1)
+
+        # Ajout d'une zone défilable pour le rapport
         self.report_scroll = QScrollArea()
         self.report_scroll.setWidgetResizable(True)
         self.report_scroll.setWidget(self.report_widget)
@@ -218,4 +224,11 @@ class ProgressWindow(QMainWindow):
         new_entry = QLabel(f"{prefix_text} - {suffix_text}")
         new_entry.setFont(QFont("Arial", 10))
         new_entry.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.report_content.addWidget(new_entry)
+
+        # Ajouter avant l'espace extensible
+        self.report_content.insertWidget(self.report_content.count() - 1, new_entry)
+
+        # Forcer le scroll vers le bas
+        self.report_scroll.verticalScrollBar().setValue(
+            self.report_scroll.verticalScrollBar().maximum()
+        )
