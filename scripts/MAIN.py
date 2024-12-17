@@ -108,7 +108,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     time.sleep(0.01)
     print("{:>70}".format(f"-- CHECKING FOR UPDATES --"))
     time.sleep(0.01)
-    spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list, profile_name)
+    spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     if not spectrum_list:
         sys.exit("There is no new spectrums to clean from databases. Exiting code !")
