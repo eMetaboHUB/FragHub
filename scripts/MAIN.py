@@ -171,14 +171,14 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         time.sleep(0.01)
         print("{:>70}".format("-- CONVERTING CSV TO MSP --"))
         time.sleep(0.01)
-        POS_LC_df, POS_LC, POS_LC_df_insilico, POS_LC_insilico, POS_GC_df, POS_GC, POS_GC_df_insilico, POS_GC_insilico, NEG_LC_df, NEG_LC, NEG_LC_df_insilico, NEG_LC_insilico, NEG_GC_df, NEG_GC, NEG_GC_df_insilico, NEG_GC_insilico = csv_to_msp(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+        POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico = csv_to_msp(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # STEP 9: writting output files
     if parameters_dict["csv"] == 1.0:
         time.sleep(0.01)
         print("{:>70}".format("-- WRITING CSV --"))
         time.sleep(0.01)
-        writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+        writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, first_run, profile_name, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     if parameters_dict["msp"] == 1.0:
         time.sleep(0.01)
@@ -190,7 +190,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         time.sleep(0.01)
         print("{:>70}".format("-- WRITING JSON --"))
         time.sleep(0.01)
-        writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+        writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     time.sleep(0.01)
     print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
