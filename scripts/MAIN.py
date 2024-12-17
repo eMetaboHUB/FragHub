@@ -49,7 +49,7 @@ ordered_columns = ["FILENAME",
                    "NUM PEAKS",
                    "PEAKS_LIST"]
 
-def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None, step_callback=None):
+def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None, step_callback=None, completion_callback=None):
 
     profile_name = parameters_dict["selected_profile"]
 
@@ -207,8 +207,8 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     time.sleep(0.01)
-    if step_callback:
-        step_callback("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
+    if completion_callback:
+        completion_callback("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
 
     while True:
         continue

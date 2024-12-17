@@ -291,3 +291,21 @@ class ProgressWindow(QMainWindow):
         self.report_scroll.verticalScrollBar().setValue(
             self.report_scroll.verticalScrollBar().maximum()
         )
+
+    def handle_completion(self, message):
+        """
+        Remplace la barre de progression par le message final.
+        """
+        # Supprimer la barre de progression du layout (si elle existe encore)
+        if hasattr(self, 'progress_bar') and self.progress_bar:
+            self.progress_layout.removeWidget(self.progress_bar)
+            self.progress_bar.deleteLater()  # Supprime correctement la barre
+            self.progress_bar = None
+
+        # Crée un QLabel avec le message de fin
+        completion_label = QLabel(message)
+        completion_label.setFont(QFont("Arial", 14, QFont.Weight.Bold))
+        completion_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        # Ajouter le QLabel dans le layout
+        self.progress_layout.addWidget(completion_label)
