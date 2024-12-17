@@ -7,7 +7,8 @@ import time
 import os
 import re
 
-def write_msp(spectrum_list, filename, mode, update, profile_name):
+def write_msp(spectrum_list, filename, mode, update, profile_name, progress_callback=None, total_items_callback=None,
+              prefix_callback=None, item_type_callback=None):
     """
     Write MSP file.
     :param spectrum_list: A list of spectra to be written to the MSP file.
@@ -15,49 +16,49 @@ def write_msp(spectrum_list, filename, mode, update, profile_name):
     :param mode: The mode of writing (either 'w' for write or 'a' for append).
     :param update: Boolean value indicating whether to update the existing file or create a new one.
     :param profile_name: The name of the profile being used.
+    :param progress_callback: Callback for reporting progress.
+    :param total_items_callback: Callback for setting the total number of items.
+    :param prefix_callback: Callback to set the prefix for context/task.
+    :param item_type_callback: Callback for specifying the type of items (e.g., "row").
     :return: None
     """
 
-    # Construct the output path
-    output_file_path = os.path.join(parameters_dict["output_directory"],f"{profile_name}/MSP/{mode}", filename)
+    # Gérer le chemin de sortie
+    output_file_path = os.path.join(parameters_dict["output_directory"], f"{profile_name}/MSP/{mode}", filename)
 
-    # Creating a progress bar for displaying the status of the operation.
-    with tqdm(total=len(spectrum_list), unit=" row", colour="green", desc="{:>70}".format(f"writting {filename}")) as pbar:
+    # Donne le contexte du traitement avec le prefix_callback
+    if prefix_callback:
+        prefix_callback(f"Writing {filename} to MSP")
 
-        # When update is not required (writing in a new file or overwriting the existing file).
-        if not update:
-            # Open the file in write mode
-            with open(output_file_path, 'w', encoding="UTF-8") as f:
+    # Indiquer le type d'éléments avec le item_type_callback
+    if item_type_callback:
+        item_type_callback("spectra")
 
-                # Iterate through each spectrum in the list
-                for spectrum in spectrum_list:
-                    try:
-                        # Write the spectrum to the file
-                        f.write(spectrum)
+    # Initialiser le total d'éléments avec le total_items_callback
+    total_spectra = len(spectrum_list)
+    if total_items_callback:
+        total_items_callback(total_spectra, 0)  # Initialisation à 0 progressé
 
-                        # Add two newline characters after each spectrum
-                        f.write("\n\n")
-                    except:
-                        # In case of any exception, skip the current spectrum
-                        continue
+    # Ouvrir le fichier pour écrire les spectres
+    file_mode = 'a' if update else 'w'
+    with open(output_file_path, file_mode, encoding="UTF-8") as f:
+        # Parcourir chaque spectre dans la liste
+        for index, spectrum in enumerate(spectrum_list):
+            try:
+                # Écrire le spectre dans le fichier
+                f.write(spectrum)
+                f.write("\n\n")
 
-                    # Update the progress bar
-                    pbar.update()
-                pbar.close()
-        else:
-            # When update is required (appending to the existing file).
-            with open(output_file_path, 'a', encoding="UTF-8") as f:
-                for spectrum in spectrum_list:
-                    try:
-                        f.write(spectrum)
-                        f.write("\n\n")
-                    except:
-                        continue
+                # Mettre à jour les callbacks après chaque écriture
+                if progress_callback:
+                    progress_callback(index + 1)  # Signal progress (ligne actuelle)
+            except Exception as e:
+                # En cas d'erreur, ignorer le spectre, mais signaler les problèmes si nécessaire
+                print(f"Error writing spectrum {index}: {e}")
+                continue
 
-                    pbar.update()
-                pbar.close()
 
-def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, profile_name, update=False):
+def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, profile_name, update=False, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     This function writes MSP files for positive and negative LC and GC data. It takes in various inputs for different types of data, a profile_name which is the name of the profile and an optional update flag which defaults to False when not provided.
 
@@ -79,30 +80,30 @@ def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_L
     # sleep for 0.1 second to avoid too many computations
     time.sleep(0.1)
     # write the positive LC data to the "POS_LC.msp" file
-    write_msp(POS_LC, "POS_LC.msp", "POS", update, profile_name)
+    write_msp(POS_LC, "POS_LC.msp", "POS", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     # delete the positive LC data to free up memory
     del POS_LC
     # repeat the process for other types of data
     time.sleep(0.1)
-    write_msp(POS_LC_insilico, "POS_LC_insilico.msp", "POS", update, profile_name)
+    write_msp(POS_LC_insilico, "POS_LC_insilico.msp", "POS", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_LC_insilico
     time.sleep(0.1)
-    write_msp(POS_GC, "POS_GC.msp", "POS", update, profile_name)
+    write_msp(POS_GC, "POS_GC.msp", "POS", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC
     time.sleep(0.1)
-    write_msp(POS_GC_insilico, "POS_GC_insilico.msp", "POS", update, profile_name)
+    write_msp(POS_GC_insilico, "POS_GC_insilico.msp", "POS", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_insilico
     time.sleep(0.1)
-    write_msp(NEG_LC, "NEG_LC.msp", "NEG", update, profile_name)
+    write_msp(NEG_LC, "NEG_LC.msp", "NEG", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC
     time.sleep(0.1)
-    write_msp(NEG_LC_insilico, "NEG_LC_insilico.msp", "NEG", update, profile_name)
+    write_msp(NEG_LC_insilico, "NEG_LC_insilico.msp", "NEG", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_insilico
     time.sleep(0.1)
-    write_msp(NEG_GC, "NEG_GC.msp", "NEG", update, profile_name)
+    write_msp(NEG_GC, "NEG_GC.msp", "NEG", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC
     time.sleep(0.1)
-    write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update, profile_name)
+    write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_insilico
 
 def write_csv(df, filename, mode, update, first_run, profile_name, progress_callback=None, total_items_callback=None,
