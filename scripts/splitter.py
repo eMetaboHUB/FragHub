@@ -1,37 +1,41 @@
 from tqdm import tqdm
 import re
 
-def split_pos_neg(CONCATENATE_DF):
+def split_pos_neg(CONCATENATE_DF, progress_callback=None, total_items_callback=None, prefix_callback=None,
+                  item_type_callback=None):
     """
     This function splits the given DataFrame into two DataFrames based on the value of the `IONMODE` column
     :param CONCATENATE_DF: Initial DataFrame containing mixed type data
+    :param progress_callback: Callable function to report progress.
+    :param total_items_callback: Callable function to set the total number of items to be processed.
+    :param prefix_callback: Callable function to describe the current task.
+    :param item_type_callback: Callable function to define the type of item being processed.
     :return: Two DataFrames, one for positive and one for negative 'IONMODE' values
     """
 
-    # Create a progress bar to visualize the splitting process for the positive `IONMODE` values
-    with tqdm(total=len(CONCATENATE_DF), unit=" spectrums", colour="green", desc="{:>70}".format("POS")) as pbar:
-        # Splitting the DataFrame where 'IONMODE' = 'positive'
-        POS = CONCATENATE_DF[CONCATENATE_DF['IONMODE'] == 'positive']
+    # Initial tasks description callbacks
+    if prefix_callback:
+        prefix_callback("Splitting POS/NEG")
+    if item_type_callback:
+        item_type_callback("rows")
 
-        # Update the progress bar according to the length of the split DataFrame
-        pbar.update(len(POS))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Set total items at the beginning
+    if total_items_callback:
+        total_items_callback(len(CONCATENATE_DF), 0)
 
-    # Create a progress bar to visualize the splitting process for the negative `IONMODE` values
-    with tqdm(total=len(CONCATENATE_DF), unit=" spectrums", colour="green", desc="{:>70}".format("NEG")) as pbar:
-        # Splitting the DataFrame where 'IONMODE' = 'negative'
-        NEG = CONCATENATE_DF[CONCATENATE_DF['IONMODE'] == 'negative']
+    # Splitting the DataFrame where 'IONMODE' = 'positive'
+    POS = CONCATENATE_DF[CONCATENATE_DF['IONMODE'] == 'positive']
+    if progress_callback:
+        progress_callback(len(POS))  # Update progress with the size of the split positive DataFrame
 
-        # Update the progress bar according to the length of the split DataFrame
-        pbar.update(len(NEG))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Splitting the DataFrame where 'IONMODE' = 'negative'
+    NEG = CONCATENATE_DF[CONCATENATE_DF['IONMODE'] == 'negative']
+    if progress_callback:
+        progress_callback(len(CONCATENATE_DF))  # Update progress to the total size, indicating completion
 
-    # Returning both split DataFrames
+    # Return both split DataFrames
     return POS, NEG
+
 
 def split_LC_GC(POS, NEG):
     """
