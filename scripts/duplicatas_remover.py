@@ -30,6 +30,8 @@ def remove_duplicatas(spectrum_list, progress_callback=None, total_items_callbac
         A list of dictionaries with duplicate spectrums removed, retaining only the
         spectrum with the largest 'row_size' for each unique SPLASH identifier.
     """
+    total_items = len(spectrum_list)
+
     # Définir un préfixe via le callback, si fourni
     if prefix_callback:
         prefix_callback("removing duplicates")
@@ -45,23 +47,19 @@ def remove_duplicatas(spectrum_list, progress_callback=None, total_items_callbac
     # Calculer la taille des lignes (en caractères) en ajoutant une nouvelle colonne temporaire 'row_size'
     spectrum_list['row_size'] = spectrum_list.apply(lambda row: row.astype(str).map(len).sum(), axis=1)
 
-    # Variable pour suivre la progression
-    processed_items = 0
-
     # Supprimer les doublons en gardant la ligne avec la plus grande 'row_size' pour chaque SPLASH
     unique_splash_indices = spectrum_list.groupby('SPLASH')['row_size'].idxmax()
     spectrum_list = spectrum_list.loc[unique_splash_indices]
 
-    # Mettre à jour la progression après le traitement des spectres uniques
-    processed_items = len(spectrum_list)  # Longueur de la DataFrame après suppression des doublons
-    if progress_callback:
-        progress_callback(processed_items)
-
     # Supprimer la colonne temporaire 'row_size'
     spectrum_list = spectrum_list.drop(columns=['row_size'])
+
+    # Mettre à jour la progression après le traitement (et passer à 100 % à la fin)
+    if progress_callback:
+        progress_callback(total_items)  # Mise à jour avec le nombre final de spectres
+        progress_callback(100)  # Forcer la progression à 100 %
 
     # Convertir en liste de dictionnaires pour la sortie
     spectrum_list = spectrum_list.to_dict(orient='records')
 
     return spectrum_list
-
