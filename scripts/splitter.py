@@ -84,74 +84,73 @@ def split_LC_GC(POS, NEG, progress_callback=None, total_items_callback=None, pre
     # Returning separated DataFrames
     return POS_LC, POS_GC, NEG_LC, NEG_GC
 
-
-def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC, progress_callback=None, total_items_callback=None,
-                           prefix_callback=None, item_type_callback=None):
+def split_in_silico_exp(dataframe, predicted_value, text, progress_callback=None, total_items_callback=None,
+                        prefix_callback=None, item_type_callback=None):
     """
-    Function to split the provided datasets into various categories based on 'PREDICTED' column value being "true" or "false".
+    Filtre un DataFrame basé sur une valeur prédite et met à jour la progression via des callbacks.
 
-    :param POS_LC: The dataframe containing the positive LC data.
-    :param POS_GC: The dataframe containing the positive GC data.
-    :param NEG_LC: The dataframe containing the negative LC data.
-    :param NEG_GC: The dataframe containing the negative GC data.
-    :param progress_callback: Callable function to update progress.
-    :param total_items_callback: Callable function to set total number of items to process.
-    :param prefix_callback: Callable function to provide current task context.
-    :param item_type_callback: Callable function to define the type of items being processed.
-    :return: Tuple containing separate dataframes for positive/negative LC/GC in silico and experimental analyses.
+    :param dataframe: DataFrame à filtrer.
+    :param predicted_value: La valeur à rechercher dans la colonne 'PREDICTED'.
+    :param text: Description ou contexte de l'opération.
+    :param progress_callback: Fonction callable pour notifier la progression.
+    :param total_items_callback: Fonction callable pour définir le total des éléments.
+    :param prefix_callback: Fonction callable pour signaler le contexte de la tâche.
+    :param item_type_callback: Fonction callable pour indiquer le type d'éléments.
+    :return: Le DataFrame filtré.
     """
-
-    # Initial callbacks for task setup
+    # Initialisation des callbacks : contexte de la tâche et type d'éléments
     if prefix_callback:
-        prefix_callback("Splitting Experimental/InSilico")
+        prefix_callback(text)  # Exemple : "Filtrage des spectres"
     if item_type_callback:
-        item_type_callback("rows")
+        item_type_callback("spectrums")
 
-    total_rows = len(POS_LC) + len(POS_GC) + len(NEG_LC) + len(NEG_GC)
+    # Nombre total d'éléments dans le DataFrame
+    total_rows = len(dataframe)
     if total_items_callback:
-        total_items_callback(total_rows, 0)  # Initialize the total items
+        total_items_callback(total_rows, 0)  # Initialisation des éléments à 0
 
-    # Helper function for splitting
-    def split_dataframe(df, field, value):
-        return df[df[field] == value]
+    # Filtrage du DataFrame
+    filtered_dataframe = dataframe[dataframe['PREDICTED'] == predicted_value]
 
-    # Splitting POS_LC (In Silico and Experimental)
-    POS_LC_In_Silico_temp = split_dataframe(POS_LC, 'PREDICTED', "true")
+    # Mettre à jour la barre de progression
+    filtered_count = len(filtered_dataframe)
     if progress_callback:
-        progress_callback(len(POS_LC_In_Silico_temp))
+        progress_callback(min(filtered_count, total_rows))  # Limitation à 100 % max
 
-    POS_LC_temp = split_dataframe(POS_LC, 'PREDICTED', "false")
-    if progress_callback:
-        progress_callback(len(POS_LC))
+    return filtered_dataframe
 
-    # Splitting POS_GC (In Silico and Experimental)
-    POS_GC_In_Silico_temp = split_dataframe(POS_GC, 'PREDICTED', "true")
-    if progress_callback:
-        progress_callback(len(POS_LC) + len(POS_GC_In_Silico_temp))
 
-    POS_GC_temp = split_dataframe(POS_GC, 'PREDICTED', "false")
-    if progress_callback:
-        progress_callback(len(POS_LC) + len(POS_GC))
 
-    # Splitting NEG_LC (In Silico and Experimental)
-    NEG_LC_In_Silico_temp = split_dataframe(NEG_LC, 'PREDICTED', "true")
-    if progress_callback:
-        progress_callback(len(POS_LC) + len(POS_GC) + len(NEG_LC_In_Silico_temp))
+def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+    """
+    Function to split the provided datasets into various categories based on 'PREDICTED' column value being "true" or "false"
 
-    NEG_LC_temp = split_dataframe(NEG_LC, 'PREDICTED', "false")
-    if progress_callback:
-        progress_callback(len(POS_LC) + len(POS_GC) + len(NEG_LC))
+    :param POS_LC: The data frame containing the positive LC data
+    :param POS_GC: The data frame containing the positive GC data
+    :param NEG_LC: The data frame containing the negative LC data
+    :param NEG_GC: The data frame containing the negative GC data
+    :return: A tuple containing separate data frames for positive LC in silico, positive GC in silico,
+        negative LC in silico, negative GC in silico, positive LC experimental, positive GC experimental,
+        negative LC experimental, and negative GC experimental.
+    """
+    POS_LC_In_Silico_temp = split_in_silico_exp(POS_LC, "true", "POS_LC_In_Silico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    # Splitting NEG_GC (In Silico and Experimental)
-    NEG_GC_In_Silico_temp = split_dataframe(NEG_GC, 'PREDICTED', "true")
-    if progress_callback:
-        progress_callback(len(POS_LC) + len(POS_GC) + len(NEG_LC) + len(NEG_GC_In_Silico_temp))
+    POS_GC_In_Silico_temp = split_in_silico_exp(POS_GC, "true", "POS_GC_In_Silico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    NEG_GC_temp = split_dataframe(NEG_GC, 'PREDICTED', "false")
-    if progress_callback:
-        progress_callback(total_rows)  # Progress complete
+    NEG_LC_In_Silico_temp = split_in_silico_exp(NEG_LC, "true", "NEG_LC_In_Silico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    # Returning all datasets
-    return (POS_LC_temp, POS_LC_In_Silico_temp, POS_GC_temp, POS_GC_In_Silico_temp,
-            NEG_LC_temp, NEG_LC_In_Silico_temp, NEG_GC_temp, NEG_GC_In_Silico_temp)
+    NEG_GC_In_Silico_temp = split_in_silico_exp(NEG_GC, "true", "NEG_GC_In_Silico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
+    POS_LC_temp = split_in_silico_exp(POS_LC, "false", "POS_LC_Exp", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
+    POS_GC_temp = split_in_silico_exp(POS_GC, "false", "POS_GC_Exp", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
+    NEG_LC_temp = split_in_silico_exp(NEG_LC, "false", "NEG_LC_Exp", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
+    NEG_GC_temp = split_in_silico_exp(NEG_GC, "false", "NEG_GC_Exp", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
+
+    # Return a tuple of all newly created dataframes.
+    return POS_LC_temp, POS_LC_In_Silico_temp, POS_GC_temp, POS_GC_In_Silico_temp, NEG_LC_temp, NEG_LC_In_Silico_temp, NEG_GC_temp, NEG_GC_In_Silico_temp
+
 
