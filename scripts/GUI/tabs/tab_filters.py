@@ -73,6 +73,24 @@ class FiltersTab(QWidget):
         self.setLayout(self.layout)
 
     def create_filters(self):
+        filters = [
+            "normalize_intensity",
+            "remove_peak_above_precursormz",
+            "check_minimum_peak_requiered",
+            "reduce_peak_list",
+            "remove_spectrum_under_entropy_score",
+            "keep_mz_in_range",
+            "check_minimum_of_high_peaks_requiered",
+        ]
+
+        global parameters_dict
+
+        # Initialiser chaque filtre à 1.0 par défaut dans parameters_dict s'il manque
+        for filter_name in filters:
+            if filter_name not in parameters_dict:
+                parameters_dict[filter_name] = 1.0
+
+        # Ajouter les filtres au layout principal
         self.add_filters(self.layout)
 
     def add_filters(self, layout):
@@ -109,7 +127,7 @@ class FiltersTab(QWidget):
             filter_layout.setSpacing(5)  # Réduit l'espace entre les widgets, rendu compact
 
             # ToggleSwitch (ON/OFF)
-            toggle = QToggleSwitch(initial_state=True)
+            toggle = QToggleSwitch(initial_state=parameters_dict.get(filter_name, 1.0) == 1.0)
             toggle.stateChanged.connect(
                 lambda state, name=filter_name: self.toggle_filter(state, name)
             )
