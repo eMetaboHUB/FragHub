@@ -102,7 +102,7 @@ def mols_derivation_and_calculation(CONCATENATE_DF, progress_callback=None, tota
 
     # Set the progress-related prefix, if provided
     if prefix_callback:
-        prefix_callback("derivation and calculation")
+        prefix_callback("derivation and calculation:")
 
     # Specify the type of items being processed, if provided
     if item_type_callback:
@@ -130,7 +130,7 @@ def mols_derivation_and_calculation(CONCATENATE_DF, progress_callback=None, tota
 
     # Step 3: Map transformations back to the DataFrame
     if prefix_callback:
-        prefix_callback("updating rows")
+        prefix_callback("updating rows:")
     results_processed = 0
     total_items = len(CONCATENATE_DF)  # Total rows in the DataFrame
     if total_items_callback:
