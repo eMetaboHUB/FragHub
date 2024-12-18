@@ -1,4 +1,5 @@
 import concurrent.futures
+import deletion_report
 import json
 
 def init_json_update_file(json_update_file):
@@ -54,6 +55,8 @@ def check_for_update_processing(spectrum_list, profile_name, progress_callback=N
     :return: A tuple (updated spectrum list, update flag, first run flag).
     """
     global json_update_file
+
+    total = len(spectrum_list)
 
     # Extra task prefix
     if prefix_callback:
@@ -115,6 +118,8 @@ def check_for_update_processing(spectrum_list, profile_name, progress_callback=N
     # Write the updated JSON file back to disk
     with open(f'../datas/updates/{profile_name}.json', 'w') as f:
         json.dump(json_update_file, f, ensure_ascii=False, indent=4)
+
+    deletion_report.previously_cleaned = total - len(final_spectrum_list)
 
     # Return the final spectrum list, the update flag, and the first run flag
     return final_spectrum_list, update, first_run
