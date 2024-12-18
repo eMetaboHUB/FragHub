@@ -52,7 +52,7 @@ def split_LC_GC(POS, NEG, progress_callback=None, total_items_callback=None, pre
 
     # Initial callbacks to describe the process
     if prefix_callback:
-        prefix_callback("Splitting LC/GC")
+        prefix_callback("Splitting LC/GC:")
     if item_type_callback:
         item_type_callback("rows")
 
