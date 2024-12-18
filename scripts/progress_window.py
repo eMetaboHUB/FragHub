@@ -131,6 +131,7 @@ class ProgressWindow(QMainWindow):
     update_item_type_signal = pyqtSignal(str)  # Type d'items (fichiers, étapes, etc.)
     update_step_signal = pyqtSignal(str)  # Nouveau signal pour afficher une étape dans l'onglet "Report"
     completion_callback = pyqtSignal(str)  # Nouveau signal pour indiquer la fin
+    deletion_callback = pyqtSignal(str)  # Nouveau signal pour l'option de suppression
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -231,6 +232,8 @@ class ProgressWindow(QMainWindow):
 
         self.completion_callback.connect(self.handle_completion)
 
+        self.deletion_callback.connect(self.add_deletion_to_report)
+
     def add_to_report(self, prefix_text, suffix_text):
         """
             Ajoute une nouvelle ligne dans le rapport (prefix + barre de progression statique + suffix).
@@ -325,3 +328,20 @@ class ProgressWindow(QMainWindow):
         self.stop_button.setStyleSheet(
             "background-color: green; color: white; font-weight: bold; font-size: 14px; padding: 10px; border-radius: 5px;"
         )  # Rend le bouton vert avec du texte blanc
+
+    def add_deletion_to_report(self, deletion_message):
+        """
+                Ajoute un message de suppression dans l'onglet "Report".
+                """
+        new_deletion = QLabel(deletion_message)
+        new_deletion.setFont(QFont("Arial", 12, QFont.Weight.Normal))  # Texte normal pour les suppressions
+        new_deletion.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Centre horizontalement et verticalement
+        new_deletion.setStyleSheet("color: red;")  # Par exemple : texte rouge pour indiquer une action de suppression
+
+        # Ajouter le message avant les éléments extensibles
+        self.report_content.insertWidget(self.report_content.count() - 1, new_deletion)
+
+        # Forcer le scroll vers le bas
+        self.report_scroll.verticalScrollBar().setValue(
+            self.report_scroll.verticalScrollBar().maximum()
+        )

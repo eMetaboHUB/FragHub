@@ -49,7 +49,7 @@ ordered_columns = ["FILENAME",
                    "NUM PEAKS",
                    "PEAKS_LIST"]
 
-def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None, step_callback=None, completion_callback=None):
+def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None, step_callback=None, completion_callback=None, deletion_callback=None):
 
     profile_name = parameters_dict["selected_profile"]
 
@@ -101,7 +101,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     if step_callback:
         step_callback("-- REMOVING DUPLICATAS --")
     time.sleep(0.01)
-    spectrum_list = remove_duplicatas(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    spectrum_list = remove_duplicatas(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback, deletion_callback=deletion_callback)
 
     first_run = False
     update = False
