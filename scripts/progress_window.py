@@ -8,6 +8,13 @@ import sys
 import time
 
 
+def format_time(time_in_seconds):
+    """Format the time in seconds to HH:mm:ss"""
+    hours, remainder = divmod(time_in_seconds, 3600)  # Convert to hours
+    minutes, seconds = divmod(remainder, 60)  # Convert to minutes and seconds
+    return f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}"
+
+
 class ProgressBarWidget(QWidget):
     """
     Widget personnalisé pour une barre de progression mise à jour dynamiquement par des signaux.
@@ -97,7 +104,7 @@ class ProgressBarWidget(QWidget):
         # Mettre à jour le suffixe de progression
         self.progress_suffix.setText(
             f"{progress_percent:.2f}% | {progress}/{self.total_items} {self.item_type} "
-            f"[{elapsed_time:.2f}s < {estimated_time_left:.2f}s, {items_per_second:.2f} {self.item_type}/s]"
+            f"[{format_time(elapsed_time)} < {format_time(estimated_time_left)}, {items_per_second:.2f} {self.item_type}/s]"
         )
 
         # Vérifier si la barre atteint 100 %
