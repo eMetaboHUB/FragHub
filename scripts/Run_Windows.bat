@@ -3,6 +3,6 @@
 :start
 cls
 
-powershell -Command "python ./MAIN.py ; pause"
+powershell -Command "python ./FragHub.py ; pause"
 
 exit
