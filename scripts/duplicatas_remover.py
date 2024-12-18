@@ -34,7 +34,7 @@ def remove_duplicatas(spectrum_list, progress_callback=None, total_items_callbac
 
     # Définir un préfixe via le callback, si fourni
     if prefix_callback:
-        prefix_callback("removing duplicates")
+        prefix_callback("removing duplicates:")
 
     # Spécifier le type d'éléments via le callback
     if item_type_callback:
