@@ -110,7 +110,6 @@ def spectrum_cleaning(spectrum):
                         return None
             # If numpy array is empty, it returns none
             if peak_list_np.size == 0:
-                deletion_report.empty_peaks_list += 1
                 return None
             spectrum["NUM PEAKS"] = str(peak_list_np.shape[0])
             # Convert numpy array back to string and update 'PEAKS_LIST' in spectrum
