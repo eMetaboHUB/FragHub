@@ -97,7 +97,8 @@ class MainWindow(QMainWindow):
                 prefix_callback=self.progress_window.update_prefix_signal.emit,
                 item_type_callback=self.progress_window.update_item_type_signal.emit,
                 step_callback=self.progress_window.update_step_signal.emit,
-                completion_callback=self.progress_window.completion_callback.emit  # Utilisation de emit ici
+                completion_callback=self.progress_window.completion_callback.emit,  # Utilisation de emit ici
+                deletion_callback=self.progress_window.deletion_callback.emit,  # Signal pour la suppression
             )
         except Exception as e:
             print(f"Erreur : {e}")

@@ -4,6 +4,7 @@ from .check_minimum_peak_requiered import *
 from .normalize_intensity import *
 from .keep_mz_in_range import *
 from .reduce_peak_list import *
+import deletion_report
 import numpy as np
 
 def apply_filters(peak_array, precursormz, parameters_dict):
@@ -36,6 +37,7 @@ def apply_filters(peak_array, precursormz, parameters_dict):
         peak_array = remove_peak_above_precursormz(peak_array, precursormz)
         # if no peaks pass this filter, return an empty array
         if peak_array.size == 0:
+            deletion_report.all_peaks_above_precursor_mz += 1
             return np.array([])
 
     if parameters_dict['reduce_peak_list'] == 1.0:
@@ -52,6 +54,9 @@ def apply_filters(peak_array, precursormz, parameters_dict):
     if parameters_dict['keep_mz_in_range'] == 1.0:
         # keep peaks within a certain mz range
         peak_array = keep_mz_in_range(peak_array, mz_from, mz_to)
+        if peak_array.size == 0:
+            deletion_report.no_peaks_in_mz_range += 1
+            return np.array([])
 
     if parameters_dict['check_minimum_of_high_peaks_requiered'] == 1.0:
         # filter out peaks below a minimum intensity percent

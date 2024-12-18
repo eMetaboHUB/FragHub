@@ -8,12 +8,14 @@ from spectrum_normalizer import *
 from duplicatas_remover import *
 from splash_generator import *
 from set_projects import *
+import deletion_report
 from splitter import *
 from writers import *
 from update import *
 import time
 import sys
 import os
+
 
 ordered_columns = ["FILENAME",
                    "PREDICTED",
@@ -49,7 +51,7 @@ ordered_columns = ["FILENAME",
                    "NUM PEAKS",
                    "PEAKS_LIST"]
 
-def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None, step_callback=None, completion_callback=None):
+def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None, step_callback=None, completion_callback=None, deletion_callback=None):
 
     profile_name = parameters_dict["selected_profile"]
 
@@ -102,6 +104,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         step_callback("-- REMOVING DUPLICATAS --")
     time.sleep(0.01)
     spectrum_list = remove_duplicatas(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    deletion_callback(f"duplicatas removed: {deletion_report.duplicatas_removed}")
 
     first_run = False
     update = False
@@ -112,6 +115,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         step_callback("-- CHECKING FOR UPDATES --")
     time.sleep(0.01)
     spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    deletion_callback(f"previously cleaned: {deletion_report.previously_cleaned}")
 
     if not spectrum_list:
         sys.exit("There is no new spectrums to clean from databases. Exiting code !")
@@ -125,7 +129,18 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         step_callback("-- CLEANING SPECTRUMS --")
     time.sleep(0.01)
     spectrum_list = spectrum_cleaning_processing(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
-
+    deletion_callback(
+        f"""
+        No peaks list: {deletion_report.no_peaks_list}
+        No smiles, no inchi, no inchikey: {deletion_report.no_smiles_no_inchi_no_inchikey}
+        No precursor mz: {deletion_report.no_precursor_mz}
+        Low entropy score: {deletion_report.low_entropy_score}
+        Minimum peaks not required: {deletion_report.minimum_peaks_not_requiered}
+        All peaks above precursor mz: {deletion_report.all_peaks_above_precursor_mz}
+        No peaks in mz range: {deletion_report.no_peaks_in_mz_range}
+        Minimum high peaks not required: {deletion_report.minimum_high_peaks_not_requiered}
+        """
+    )
 
     if not spectrum_list:
         sys.exit("There is no spectrums to process after cleaning. Exiting code !")
@@ -138,6 +153,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         step_callback("--  MOLS DERIVATION AND MASS CALCULATION --")
     time.sleep(0.01)
     spectrum_list = mols_derivation_and_calculation(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    deletion_callback(f"No smiles, no inchi, no inchikey (updated): {deletion_report.no_smiles_no_inchi_no_inchikey}")
 
     # STEP 6: completing missing metadata from pubchem datas
     time.sleep(0.01)
@@ -205,6 +221,10 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             step_callback("--  WRITING JSON --")
         time.sleep(0.01)
         writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
+    deletion_callback(
+        f"Total deletions: {sum([deletion_report.duplicatas_removed, deletion_report.previously_cleaned, deletion_report.no_peaks_list, deletion_report.no_smiles_no_inchi_no_inchikey, deletion_report.no_precursor_mz, deletion_report.low_entropy_score, deletion_report.minimum_peaks_not_requiered, deletion_report.all_peaks_above_precursor_mz, deletion_report.no_peaks_in_mz_range, deletion_report.minimum_high_peaks_not_requiered])}"
+    )
 
     time.sleep(0.01)
     if completion_callback:
