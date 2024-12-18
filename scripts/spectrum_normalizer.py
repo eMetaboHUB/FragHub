@@ -3,6 +3,7 @@ from peaks_filters.entropy_calculation import *
 from normalizer.values_normalizer import *
 from peaks_filters.filters import *
 import concurrent.futures
+import deletion_report
 import numpy as np
 import re
 
@@ -83,6 +84,7 @@ def spectrum_cleaning(spectrum):
     peak_list = spectrum["PEAKS_LIST"]
     # If peak_list is not present in the spectrum dictionary, it returns None
     if not peak_list:
+        deletion_report.no_peaks_list += 1
         return None
     spectrum = normalize_values(spectrum)
     # If normalization of spectrum fails, it returns None
