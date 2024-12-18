@@ -137,7 +137,7 @@ def write_csv(df, filename, mode, update, first_run, profile_name, progress_call
 
     # Set up task description
     if prefix_callback:
-        prefix_callback(f"Writing {filename} to CSV")
+        prefix_callback(f"Writing {filename} to CSV:")
 
     # Indicate item type
     if item_type_callback:
