@@ -311,7 +311,7 @@ class ProgressWindow(QMainWindow):
         message_label = QLabel(completion_message)
         message_label.setFont(QFont("Arial", 16, QFont.Weight.Bold))
         message_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        message_label.setStyleSheet("color: green; background-color: #F0F0F0; padding: 20px;")
 
         # Ajouter le QLabel au layout principal de l'onglet Progress
         self.progress_layout.addWidget(message_label)
+
