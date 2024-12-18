@@ -1,6 +1,5 @@
 from .keys_convertor import *
 import concurrent.futures
-from tqdm import tqdm
 import re
 
 global peak_list_json_to_json_pattern
@@ -147,33 +146,54 @@ def json_to_dict(json_dict):
     # If there's neither required keys nor peak keys, return None
     return None
 
-def json_to_dict_processing(FINAL_JSON):
+def json_to_dict_processing(FINAL_JSON, progress_callback=None, total_items_callback=None, prefix_callback=None,
+                            item_type_callback=None):
     """
-    Converts a list of JSON objects into processed JSON data inplace.
+    Converts a list of JSON objects into processed JSON data inplace, with progress reporting via callbacks.
     :param FINAL_JSON: A list of JSON objects to be processed.
+    :param progress_callback: A function to update the progress (optional).
+    :param total_items_callback: A function to set the total number of items (optional).
+    :param prefix_callback: A function to dynamically set the prefix for the operation (optional).
+    :param item_type_callback: A function to specify the type of items processed (optional).
     :return: None
     """
     start = 0
     end = len(FINAL_JSON)
 
-    progress_bar = tqdm(total=end, unit=" spectrums", colour="green", desc="{:>70}".format("parsing JSON spectrums"))
+    # Setting total items via callback if provided
+    if total_items_callback:
+        total_items_callback(end, 0)  # total = end, completed = 0
+
+    # Updating the dynamic prefix via callback if provided
+    if prefix_callback:
+        prefix_callback("Parsing JSON spectrums:")
+
+    # Specifying the type of items being processed via callback if provided
+    if item_type_callback:
+        item_type_callback("spectra")
+
+    # Variable to track progress
+    processed_items = 0
 
     while start < end:
         chunk_size = min(end - start, 5000)
 
         # Use ThreadPoolExecutor to process the chunk
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            FINAL_JSON[start:start + chunk_size] = list(executor.map(json_to_dict, FINAL_JSON[start:start + chunk_size]))
+            FINAL_JSON[start:start + chunk_size] = list(
+                executor.map(json_to_dict, FINAL_JSON[start:start + chunk_size]))
 
         # Filter out None results
-        FINAL_JSON[start:start + chunk_size] = [item for item in FINAL_JSON[start:start + chunk_size] if item is not None]
+        FINAL_JSON[start:start + chunk_size] = [item for item in FINAL_JSON[start:start + chunk_size] if
+                                                item is not None]
 
-        # Update progress bar
-        progress_bar.update(chunk_size)
+        # Update progress
+        processed_items += chunk_size
+        if progress_callback:
+            progress_callback(processed_items)
 
         # Move to the next chunk
         start += chunk_size
 
-    progress_bar.close()
-
     return FINAL_JSON
+

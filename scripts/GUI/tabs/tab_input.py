@@ -4,6 +4,7 @@ from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtWidgets import QFileDialog
 from ..utils.global_vars import parameters_dict  # Importer le dictionnaire global
 
+
 class InputTab(QWidget):
     def __init__(self):
         super().__init__()

@@ -1,6 +1,5 @@
 from .keys_convertor import *
 import concurrent.futures
-from tqdm import tqdm
 import re
 
 global metadata_peak_list_split_pattern
@@ -239,33 +238,53 @@ def msp_to_dict(spectrum):
     # Return the processed metadata, which is a JSON-like structured Python dictionary
     return metadata
 
-def msp_to_dict_processing(FINAL_MSP):
+def msp_to_dict_processing(FINAL_MSP, progress_callback=None, total_items_callback=None, prefix_callback=None,
+                           item_type_callback=None):
     """
-    Process a list of MSP spectrums and convert them to JSON format.
+    Process a list of MSP spectrums and convert them to JSON format, with support for progress callbacks.
     :param FINAL_MSP: List of MSP spectrums to be processed.
+    :param progress_callback: A function to update the progress.
+    :param total_items_callback: A function to set the total number of items.
+    :param prefix_callback: A function to dynamically set the prefix for the operation.
+    :param item_type_callback: A function to specify the type of items processed (e.g., "spectra").
     :return: List of spectrums in JSON format.
     """
     start = 0
     end = len(FINAL_MSP)
 
-    # Initialize a progress bar to keep track of and visualize the conversion process
-    progress_bar = tqdm(total=end, unit=" spectrums", colour="green", desc="{:>70}".format("converting MSP spectrums"))
+    # Initialiser le total des items via callback (si défini)
+    if total_items_callback:
+        total_items_callback(end, 0)  # total = end, completed = 0
 
+    # Mise à jour dynamique du prefixe (si défini)
+    if prefix_callback:
+        prefix_callback("Parsing MSP spectrums:")
+
+    # Mise à jour du type d'éléments (si défini)
+    if item_type_callback:
+        item_type_callback("spectra")
+
+    # Initialisation de la variable pour suivre la progression
+    processed_items = 0
+
+    # Traitement en morceaux (chunks) pour les spectres MSP
     while start < end:
-        chunk_size = min(end - start, 5000)
+        chunk_size = min(end - start, 5000)  # Traiter par morceaux de 5000
 
-        # Use ThreadPoolExecutor to process the chunk
+        # Utilisation de ThreadPoolExecutor pour le traitement parallèle
         with concurrent.futures.ThreadPoolExecutor() as executor:
             FINAL_MSP[start:start + chunk_size] = list(executor.map(msp_to_dict, FINAL_MSP[start:start + chunk_size]))
 
-        # Filter out None results
+        # Filtrer les résultats None
         FINAL_MSP[start:start + chunk_size] = [item for item in FINAL_MSP[start:start + chunk_size] if item is not None]
 
-        # Update progress bar
-        progress_bar.update(chunk_size)
+        # Mise à jour de la progression
+        processed_items += chunk_size
+        if progress_callback:
+            progress_callback(processed_items)
 
-        # Move to the next chunk
+        # Passer au prochain morceau
         start += chunk_size
 
-    progress_bar.close()
     return FINAL_MSP
+

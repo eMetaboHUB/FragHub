@@ -1,12 +1,9 @@
-from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QComboBox, QHBoxLayout, QStyledItemDelegate, QPushButton, QSpacerItem,
+import os
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QComboBox, QHBoxLayout, QStyledItemDelegate, QPushButton, QSpacerItem, \
     QSizePolicy, QLabel
-)
 from PyQt6.QtCore import Qt, pyqtSignal, QSize, QTimer
 from PyQt6.QtGui import QPainter, QColor, QBrush, QPen, QFont
 from ..utils.global_vars import parameters_dict  # Importer le dictionnaire global
-
-import os
 
 
 class QToggleSwitch(QWidget):
@@ -27,14 +24,10 @@ class QToggleSwitch(QWidget):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         rect = self.rect()
-
-        # Couleurs selon l'état
         background_color = QColor("#00C853") if self._state else QColor("#f44336")
         painter.setBrush(QBrush(background_color))
         painter.setPen(Qt.PenStyle.NoPen)
         painter.drawRoundedRect(rect, rect.height() // 2, rect.height() // 2)
-
-        # Texte
         font = QFont("Arial", 12, QFont.Weight.Bold)  # Police plus grande pour le texte "YES/NO"
         painter.setFont(font)
         text_color = QColor("#FFFFFF")
@@ -42,8 +35,6 @@ class QToggleSwitch(QWidget):
         text = "YES" if self._state else "NO"
         text_pos = rect.left() + 10 if self._state else rect.right() - 35
         painter.drawText(text_pos, int(rect.height() * 0.65), text)
-
-        # Bouton du toggle
         button_color = QColor("#FFFFFF")
         button_x = rect.width() - rect.height() + 5 if self._state else 5
         painter.setBrush(QBrush(button_color))
@@ -73,9 +64,11 @@ class ProjectsTab(QWidget):
     def __init__(self):
         super().__init__()
 
-        # Initialiser "reset_updates" par défaut si cela n'a pas été défini
         if "reset_updates" not in parameters_dict:
             parameters_dict["reset_updates"] = 0.0
+
+        if "selected_profile" not in parameters_dict:
+            parameters_dict["selected_profile"] = "Basic"
 
         # Ajouter un layout principal
         main_layout = QVBoxLayout()
@@ -143,7 +136,7 @@ class ProjectsTab(QWidget):
 
     def populate_dropdown_with_json_files(self):
         """Recherche et ajoute les fichiers .json depuis ../../datas/updates dans le menu déroulant."""
-        json_dir = os.path.abspath("../datas/updates")
+        json_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../datas/updates"))
         if os.path.exists(json_dir) and os.path.isdir(json_dir):
             json_files = [file for file in os.listdir(json_dir) if file.endswith(".json")]
             if json_files:
