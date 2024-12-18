@@ -16,6 +16,10 @@ from progress_window import ProgressWindow
 
 from MAIN import MAIN
 
+import ctypes
+
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub")
+
 
 class MainWindow(QMainWindow):
     # Signal pour mettre à jour la barre de progression
@@ -105,6 +109,7 @@ class MainWindow(QMainWindow):
 
 def run_GUI():
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon("./GUI/assets/FragHub_Python_icon.ico"))
     window = MainWindow()
     window.show()
     app.exec()
