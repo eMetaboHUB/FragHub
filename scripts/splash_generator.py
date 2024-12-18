@@ -75,7 +75,7 @@ def generate_splash_processing(spectrum_list, files, progress_callback=None, tot
 
     # Définir le préfixe via le callback, si fourni
     if prefix_callback:
-        prefix_callback(f"generating SPLASH for [{filename}]: ")
+        prefix_callback(f"generating SPLASH for [{filename}]:")
 
     # Spécifier le type d'éléments via le callback
     if item_type_callback:
