@@ -1,4 +1,4 @@
-from deletion_report import duplicatas_removed
+import deletion_report
 import pandas as pd
 import ast
 
@@ -6,7 +6,7 @@ import time
 
 
 def remove_duplicatas(spectrum_list, progress_callback=None, total_items_callback=None, prefix_callback=None,
-                      item_type_callback=None, deletion_callback=None):
+                      item_type_callback=None):
     """
     Remove duplicate entries from a given spectrum list based on the maximum
     'row_size' for each unique SPLASH identifier. The function computes a temporary
@@ -31,8 +31,6 @@ def remove_duplicatas(spectrum_list, progress_callback=None, total_items_callbac
         A list of dictionaries with duplicate spectrums removed, retaining only the
         spectrum with the largest 'row_size' for each unique SPLASH identifier.
     """
-    global duplicatas_removed
-
     total_items = len(spectrum_list)
 
     # Définir un préfixe via le callback, si fourni
@@ -65,8 +63,6 @@ def remove_duplicatas(spectrum_list, progress_callback=None, total_items_callbac
     # Convertir en liste de dictionnaires pour la sortie
     spectrum_list = spectrum_list.to_dict(orient='records')
 
-    duplicatas_removed = total_items - len(spectrum_list)
-
-    deletion_callback(f"duplicatas removed: {duplicatas_removed}")
+    deletion_report.duplicatas_removed = total_items - len(spectrum_list)
 
     return spectrum_list

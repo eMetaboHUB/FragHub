@@ -8,12 +8,14 @@ from spectrum_normalizer import *
 from duplicatas_remover import *
 from splash_generator import *
 from set_projects import *
+import deletion_report
 from splitter import *
 from writers import *
 from update import *
 import time
 import sys
 import os
+
 
 ordered_columns = ["FILENAME",
                    "PREDICTED",
@@ -101,7 +103,8 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     if step_callback:
         step_callback("-- REMOVING DUPLICATAS --")
     time.sleep(0.01)
-    spectrum_list = remove_duplicatas(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback, deletion_callback=deletion_callback)
+    spectrum_list = remove_duplicatas(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    deletion_callback(f"duplicatas removed: {deletion_report.duplicatas_removed}")
 
     first_run = False
     update = False
