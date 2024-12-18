@@ -247,7 +247,7 @@ def write_json(df, filename, mode, profile_name, progress_callback=None, total_i
 
     # Si un prefix_callback est défini, indiquer la tâche actuelle
     if prefix_callback:
-        prefix_callback(f"Writing {filename} to JSON")
+        prefix_callback(f"Writing {filename} to JSON:")
 
     # Définir le type d'éléments avec le callback item_type_callback
     if item_type_callback:
