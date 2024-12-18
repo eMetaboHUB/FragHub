@@ -42,7 +42,7 @@ def complete_from_pubchem_datas(CONCATENATE_DF, progress_callback=None, total_it
     """
     # Define the prefix for the task and type of items if provided
     if prefix_callback:
-        prefix_callback("enriching data from PubChem")
+        prefix_callback("enriching data from PubChem:")
     if item_type_callback:
         item_type_callback("rows")
 
