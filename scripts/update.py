@@ -57,7 +57,7 @@ def check_for_update_processing(spectrum_list, profile_name, progress_callback=N
 
     # Extra task prefix
     if prefix_callback:
-        prefix_callback("checking for updates")
+        prefix_callback("checking for updates:")
 
     # Specify the type of item being processed
     if item_type_callback:
