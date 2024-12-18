@@ -54,7 +54,7 @@ def concatenate_csv(csv_list, progress_callback=None, total_items_callback=None,
 
     # Update the prefix dynamically via callback if provided
     if prefix_callback:
-        prefix_callback("Reading CSV files")
+        prefix_callback("Reading CSV files:")
 
     # Specify the type of items being processed via callback if provided
     if item_type_callback:

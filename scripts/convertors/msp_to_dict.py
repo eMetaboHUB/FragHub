@@ -258,7 +258,7 @@ def msp_to_dict_processing(FINAL_MSP, progress_callback=None, total_items_callba
 
     # Mise à jour dynamique du prefixe (si défini)
     if prefix_callback:
-        prefix_callback("Parsing MSP spectrums: ")
+        prefix_callback("Parsing MSP spectrums:")
 
     # Mise à jour du type d'éléments (si défini)
     if item_type_callback:

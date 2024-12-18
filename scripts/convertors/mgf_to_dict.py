@@ -169,7 +169,7 @@ def mgf_to_dict_processing(FINAL_MGF, progress_callback=None, total_items_callba
 
     # Update the prefix dynamically via callback if provided
     if prefix_callback:
-        prefix_callback("Parsing MGF spectrums")
+        prefix_callback("Parsing MGF spectrums:")
 
     # Specify the type of items being processed via callback if provided
     if item_type_callback:

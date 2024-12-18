@@ -25,7 +25,7 @@ def load_spectrum_list_from_msp(msp_file_path, progress_callback=None, total_ite
 
     # Mise à jour dynamique avec le préfixe si défini
     if prefix_callback:
-        prefix_callback(f"loading [{os.path.basename(msp_file_path)}]: ")
+        prefix_callback(f"loading [{os.path.basename(msp_file_path)}]:")
 
     if item_type_callback:
         item_type_callback("spectra")
@@ -102,7 +102,7 @@ def load_spectrum_list_from_mgf(mgf_file_path, progress_callback=None, total_ite
 
     # Update the prefix dynamically via callback if provided
     if prefix_callback:
-        prefix_callback(f"Loading [{filename}]: ")
+        prefix_callback(f"Loading [{filename}]:")
 
     # Specify the type of items being processed via callback if provided
     if item_type_callback:
@@ -153,7 +153,7 @@ def load_spectrum_list_json(json_file_path, progress_callback=None, total_items_
 
     # Dynamically update the prefix if provided
     if prefix_callback:
-        prefix_callback(f"loading [{filename}]: ")
+        prefix_callback(f"loading [{filename}]:")
 
     # Update the item type being processed if provided
     if item_type_callback:
@@ -211,7 +211,7 @@ def load_spectrum_list_json_2(json_file_path, progress_callback=None, total_item
 
     # Définir le préfixe dynamique via callback si fourni
     if prefix_callback:
-        prefix_callback(f"loading [{filename}]: ")
+        prefix_callback(f"loading [{filename}]:")
 
     # Spécifier le type d'éléments traités via callback
     if item_type_callback:
