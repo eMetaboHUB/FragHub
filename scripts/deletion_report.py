@@ -22,3 +22,12 @@ low_entropy_score = 0
 
 global minimum_peaks_not_requiered
 minimum_peaks_not_requiered = 0
+
+global all_peaks_above_precursor_mz
+all_peaks_above_precursor_mz = 0
+
+global no_peaks_in_mz_range
+no_peaks_in_mz_range = 0
+
+global minimum_high_peaks_not_requiered
+minimum_high_peaks_not_requiered = 0
