@@ -81,5 +81,8 @@ def complete_from_pubchem_datas(CONCATENATE_DF, progress_callback=None, total_it
     # Remove the additional columns created by the PubChem merge
     enriched_df.drop(columns=[col + '_pubchem' for col in columns_to_update], inplace=True)
 
+    if progress_callback:
+        progress_callback(len(concatenate_df_copy))
+
     return enriched_df
 
