@@ -129,7 +129,18 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         step_callback("-- CLEANING SPECTRUMS --")
     time.sleep(0.01)
     spectrum_list = spectrum_cleaning_processing(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
-
+    deletion_callback(
+        f"""
+        No peaks list: {deletion_report.no_peaks_list}
+        No smiles, no inchi, no inchikey: {deletion_report.no_smiles_no_inchi_no_inchikey}
+        No precursor mz: {deletion_report.no_precursor_mz}
+        Low entropy score: {deletion_report.low_entropy_score}
+        Minimum peaks not required: {deletion_report.minimum_peaks_not_requiered}
+        All peaks above precursor mz: {deletion_report.all_peaks_above_precursor_mz}
+        No peaks in mz range: {deletion_report.no_peaks_in_mz_range}
+        Minimum high peaks not required: {deletion_report.minimum_high_peaks_not_requiered}
+        """
+    )
 
     if not spectrum_list:
         sys.exit("There is no spectrums to process after cleaning. Exiting code !")
