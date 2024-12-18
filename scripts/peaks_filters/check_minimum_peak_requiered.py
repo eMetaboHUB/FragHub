@@ -1,3 +1,4 @@
+import deletion_report
 import numpy as np
 
 def check_minimum_peak_requiered(peak_array, n_peaks):
@@ -16,6 +17,7 @@ def check_minimum_peak_requiered(peak_array, n_peaks):
     returned. This is represented as a (0,2) shape numpy array, indicating no data in two dimensions.
     """
     if len(peak_array) < int(n_peaks):  # If the amount of peaks in 'peak_array' is less than 'n_peaks'...
+        deletion_report.minimum_peaks_not_requiered += 1
         return np.empty((0, 2))  # return an empty numpy array
     else:
         return peak_array  # Otherwise, return 'peak_array' as is

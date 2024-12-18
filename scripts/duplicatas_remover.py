@@ -1,3 +1,4 @@
+import deletion_report
 import pandas as pd
 import ast
 
@@ -61,5 +62,7 @@ def remove_duplicatas(spectrum_list, progress_callback=None, total_items_callbac
 
     # Convertir en liste de dictionnaires pour la sortie
     spectrum_list = spectrum_list.to_dict(orient='records')
+
+    deletion_report.duplicatas_removed = total_items - len(spectrum_list)
 
     return spectrum_list
