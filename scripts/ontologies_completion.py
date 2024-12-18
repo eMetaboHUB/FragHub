@@ -33,7 +33,7 @@ def ontologies_completion(spectrum_list, progress_callback=None, total_items_cal
 
     # Initialiser le suivi avec les callbacks
     if prefix_callback:
-        prefix_callback("updating ontologies")
+        prefix_callback("updating ontologies:")
 
     if item_type_callback:
         item_type_callback("rows")
