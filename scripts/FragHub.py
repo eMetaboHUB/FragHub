@@ -93,7 +93,7 @@ class MainWindow(QMainWindow):
                 prefix_callback=self.progress_window.update_prefix_signal.emit,
                 item_type_callback=self.progress_window.update_item_type_signal.emit,
                 step_callback=self.progress_window.update_step_signal.emit,
-                completion_callback=self.progress_window.handle_completion  # On remplace la barre ici
+                completion_callback=self.progress_window.completion_callback.emit  # Utilisation de emit ici
             )
         except Exception as e:
             print(f"Erreur : {e}")

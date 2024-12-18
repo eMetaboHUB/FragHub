@@ -123,6 +123,7 @@ class ProgressWindow(QMainWindow):
     update_prefix_signal = pyqtSignal(str)  # Texte de préfixe
     update_item_type_signal = pyqtSignal(str)  # Type d'items (fichiers, étapes, etc.)
     update_step_signal = pyqtSignal(str)  # Nouveau signal pour afficher une étape dans l'onglet "Report"
+    completion_callback = pyqtSignal(str)  # Nouveau signal pour indiquer la fin
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -221,6 +222,8 @@ class ProgressWindow(QMainWindow):
         # Connexion du signal de mise à jour des étapes
         self.update_step_signal.connect(self.add_step_to_report)
 
+        self.completion_callback.connect(self.handle_completion)
+
     def add_to_report(self, prefix_text, suffix_text):
         """
             Ajoute une nouvelle ligne dans le rapport (prefix + barre de progression statique + suffix).
@@ -292,20 +295,23 @@ class ProgressWindow(QMainWindow):
             self.report_scroll.verticalScrollBar().maximum()
         )
 
-    def handle_completion(self, message):
+    def handle_completion(self, completion_message):
         """
-        Remplace la barre de progression par le message final.
+        Affiche un message final dans l'onglet Progress
+        en remplaçant la barre de progression.
         """
-        # Supprimer la barre de progression du layout (si elle existe encore)
-        if hasattr(self, 'progress_bar') and self.progress_bar:
-            self.progress_layout.removeWidget(self.progress_bar)
-            self.progress_bar.deleteLater()  # Supprime correctement la barre
-            self.progress_bar = None
+        # Supprimer tous les widgets existants dans progress_layout
+        while self.progress_layout.count() > 0:
+            item = self.progress_layout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()  # Supprime proprement chaque widget
 
-        # Crée un QLabel avec le message de fin
-        completion_label = QLabel(message)
-        completion_label.setFont(QFont("Arial", 14, QFont.Weight.Bold))
-        completion_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # Créer un QLabel pour afficher le message final
+        message_label = QLabel(completion_message)
+        message_label.setFont(QFont("Arial", 16, QFont.Weight.Bold))
+        message_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        message_label.setStyleSheet("color: green; background-color: #F0F0F0; padding: 20px;")
 
-        # Ajouter le QLabel dans le layout
-        self.progress_layout.addWidget(completion_label)
+        # Ajouter le QLabel au layout principal de l'onglet Progress
+        self.progress_layout.addWidget(message_label)
