@@ -67,6 +67,9 @@ class ProjectsTab(QWidget):
         if "reset_updates" not in parameters_dict:
             parameters_dict["reset_updates"] = 0.0
 
+        if "selected_profile" not in parameters_dict:
+            parameters_dict["selected_profile"] = "Basic"
+
         # Ajouter un layout principal
         main_layout = QVBoxLayout()
 
