@@ -166,7 +166,7 @@ def json_to_dict_processing(FINAL_JSON, progress_callback=None, total_items_call
 
     # Updating the dynamic prefix via callback if provided
     if prefix_callback:
-        prefix_callback("Parsing JSON spectrums")
+        prefix_callback("Parsing JSON spectrums:")
 
     # Specifying the type of items being processed via callback if provided
     if item_type_callback:
