@@ -14,7 +14,7 @@ def split_pos_neg(CONCATENATE_DF, progress_callback=None, total_items_callback=N
 
     # Initial tasks description callbacks
     if prefix_callback:
-        prefix_callback("Splitting POS/NEG")
+        prefix_callback("Splitting POS/NEG:")
     if item_type_callback:
         item_type_callback("rows")
 
