@@ -66,6 +66,9 @@ This function takes an array of peak data (representing mass-to-charge ratio, or
 **check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peaks)**<br>
 This function is used to check whether a given array containing peak data has a required minimum number of "high peaks". A "high peak" is defined as a peak whose intensity is above a certain percentage (intensity_percent) of the maximum intensity. If the array does not contain a sufficient number of "high peaks", the function ignore the spectrum.<br>
 
+**remove_spectrum_under_entropy_score(score)**<br>
+The entropy score of the spectrum is calculated during processing. If a spectrum has an entropy score lower than the minimum required, it is deleted.<br>
+
 ## required csv file
 1) CSV files need to be separated by '**;**' with quotechar '**"**'.<br>
 2) peaks columns need to be named '**peaks**'.<br>
