@@ -1,6 +1,7 @@
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from rdkit.Chem.Descriptors import ExactMolWt, MolWt
 from rdkit import RDLogger, Chem
+import deletion_report
 import pandas as pd
 import re
 
@@ -155,8 +156,14 @@ def mols_derivation_and_calculation(CONCATENATE_DF, progress_callback=None, tota
     # Apply the mask to retain only valid rows
     CONCATENATE_DF = CONCATENATE_DF[mask]
 
+    befor = len(CONCATENATE_DF)
+
     # Step 5: Drop null values in critical columns
     CONCATENATE_DF = CONCATENATE_DF.dropna(subset=['EXACTMASS', 'AVERAGEMASS', 'SMILES', 'INCHI', 'INCHIKEY'])
+    after = len(CONCATENATE_DF)
+    missing = after - befor
+
+    deletion_report.no_smiles_no_inchi_no_inchikey += missing
 
     # Return the final transformed DataFrame
     return CONCATENATE_DF
