@@ -222,6 +222,10 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         time.sleep(0.01)
         writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
+    deletion_callback(
+        f"Total deletions: {sum([deletion_report.duplicatas_removed, deletion_report.previously_cleaned, deletion_report.no_peaks_list, deletion_report.no_smiles_no_inchi_no_inchikey, deletion_report.no_precursor_mz, deletion_report.low_entropy_score, deletion_report.minimum_peaks_not_requiered, deletion_report.all_peaks_above_precursor_mz, deletion_report.no_peaks_in_mz_range, deletion_report.minimum_high_peaks_not_requiered])}"
+    )
+
     time.sleep(0.01)
     if completion_callback:
         completion_callback("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
