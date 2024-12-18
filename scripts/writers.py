@@ -27,7 +27,7 @@ def write_msp(spectrum_list, filename, mode, update, profile_name, progress_call
 
     # Donne le contexte du traitement avec le prefix_callback
     if prefix_callback:
-        prefix_callback(f"Writing {filename} to MSP")
+        prefix_callback(f"Writing {filename} to MSP:")
 
     # Indiquer le type d'éléments avec le item_type_callback
     if item_type_callback:
