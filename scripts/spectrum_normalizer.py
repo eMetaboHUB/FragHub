@@ -126,6 +126,7 @@ def spectrum_cleaning(spectrum):
         if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
             if re.search(float_check_pattern, str(spectrum["ENTROPY"])):
                 if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
+                    deletion_report.low_entropy_score += 1
                     return None
         # If numpy array is empty, it returns none
         if peak_list_np.size == 0:
