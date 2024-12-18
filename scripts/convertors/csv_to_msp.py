@@ -37,7 +37,7 @@ def dataframe_to_msp(dataframe, name, progress_callback=None, total_items_callba
 
     # Indique la tâche en cours
     if prefix_callback:
-        prefix_callback(f"Formatting {name} to MSP")
+        prefix_callback(f"Formatting {name} to MSP:")
 
     # Définir le type d'éléments traités
     if item_type_callback:
