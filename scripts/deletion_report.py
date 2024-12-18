@@ -10,3 +10,15 @@ no_peaks_list = 0
 
 global no_smiles_no_inchi_no_inchikey
 no_smiles_no_inchi_no_inchikey = 0
+
+global no_precursor_mz
+no_precursor_mz = 0
+
+global empty_peaks_list
+empty_peaks_list = 0
+
+global low_entropy_score
+low_entropy_score = 0
+
+global minimum_peaks_not_requiered
+minimum_peaks_not_requiered = 0

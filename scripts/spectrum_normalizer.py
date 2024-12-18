@@ -98,6 +98,7 @@ def spectrum_cleaning(spectrum):
             float_precursor_mz = float(spectrum["PRECURSORMZ"].replace(",", "."))
             # Float value of 'PRECURSORMZ' needs to be greater than 0
             if float_precursor_mz <= 0.0:
+                deletion_report.no_precursor_mz += 1
                 return None
             # Converts peak list to a numpy array
             peak_list_np = peak_list_cleaning(peak_list, float_precursor_mz)
@@ -105,9 +106,11 @@ def spectrum_cleaning(spectrum):
             if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
                 if re.search(float_check_pattern, str(spectrum["ENTROPY"])):
                     if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
+                        deletion_report.low_entropy_score += 1
                         return None
             # If numpy array is empty, it returns none
             if peak_list_np.size == 0:
+                deletion_report.empty_peaks_list += 1
                 return None
             spectrum["NUM PEAKS"] = str(peak_list_np.shape[0])
             # Convert numpy array back to string and update 'PEAKS_LIST' in spectrum
@@ -115,6 +118,7 @@ def spectrum_cleaning(spectrum):
             spectrum["PEAKS_LIST"] = peak_list_np
             return spectrum
         else:
+            deletion_report.no_precursor_mz += 1
             return None
     elif "_GC_IE" in spectrum["FILENAME"]:
         float_precursor_mz = None
