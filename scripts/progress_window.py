@@ -298,7 +298,7 @@ class ProgressWindow(QMainWindow):
     def handle_completion(self, completion_message):
         """
         Affiche un message final dans l'onglet Progress
-        en remplaçant la barre de progression.
+        en remplaçant la barre de progression, et change le bouton STOP en FINISH tout en conservant son comportement.
         """
         # Supprimer tous les widgets existants dans progress_layout
         while self.progress_layout.count() > 0:
@@ -311,7 +311,10 @@ class ProgressWindow(QMainWindow):
         message_label = QLabel(completion_message)
         message_label.setFont(QFont("Arial", 16, QFont.Weight.Bold))
         message_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        # Ajouter le QLabel au layout principal de l'onglet Progress
         self.progress_layout.addWidget(message_label)
 
+        # Changer le texte et le style du bouton "STOP"
+        self.stop_button.setText("FINISH")  # Change le texte du bouton
+        self.stop_button.setStyleSheet(
+            "background-color: green; color: white; font-weight: bold; font-size: 14px; padding: 10px; border-radius: 5px;"
+        )  # Rend le bouton vert avec du texte blanc
