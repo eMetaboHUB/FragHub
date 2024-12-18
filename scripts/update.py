@@ -1,5 +1,4 @@
 import concurrent.futures
-from tqdm import tqdm
 import json
 
 def init_json_update_file(json_update_file):
@@ -41,62 +40,81 @@ def check_for_update(spectrum):
         # If the SPLASH is found in the dictionary, an update is not needed. Return None
         return None
 
-def check_for_update_processing(spectrum_list, profile_name):
+def check_for_update_processing(spectrum_list, profile_name, progress_callback=None, total_items_callback=None,
+                                prefix_callback=None, item_type_callback=None):
     """
-    This method checks for updates in the given spectrum list using a profile name.
+    Check for updates in the given spectrum list using a profile name, with progress reporting via callbacks.
+
     :param spectrum_list: A list of spectrums to check for updates.
     :param profile_name: The name of the profile to use for checking updates.
-    :return: A tuple containing the updated spectrum list, a flag indicating if an update was found, and the first run flag.
+    :param progress_callback: A function to update the progress (processed items).
+    :param total_items_callback: A function to set the total number of items (optional).
+    :param prefix_callback: A function to dynamically set the prefix for the operation (optional).
+    :param item_type_callback: A function to specify the type of items (optional).
+    :return: A tuple (updated spectrum list, update flag, first run flag).
     """
     global json_update_file
-    # Read json file that contains previous update status
+
+    # Extra task prefix
+    if prefix_callback:
+        prefix_callback("checking for updates:")
+
+    # Specify the type of item being processed
+    if item_type_callback:
+        item_type_callback("spectra")
+
+    # Define the total number of items using the callback
+    if total_items_callback:
+        total_items_callback(len(spectrum_list), 0)  # Total = len(spectrum_list), Completed = 0
+
+    # Open the JSON file containing the previous update status
     with open(f'../datas/updates/{profile_name}.json', 'r') as f:
         json_update_file = json.load(f)
 
-    # Initialize json file and get first run flag
+    # Initialize the update file and first run flag
     json_update_file, first_run = init_json_update_file(json_update_file)
 
-    # chunk size for how many spectrums will be checked simultaneously
+    # Define chunk size for parallel processing
     chunk_size = 5000
 
-    final = []  # final list of processed spectrums
+    # Final list to store successfully checked spectra
+    final = []
+    processed_items = 0  # Track the number of processed items
 
-    # Progress bar for visual representation of the task
-    progress_bar = tqdm(total=len(spectrum_list), unit=" spectrums", colour="green", desc="{:>70}".format("checking for updates"))
-
-    # Iterating the spectrums in chunk size
+    # Iterate through the spectrum list in chunks
     for i in range(0, len(spectrum_list), chunk_size):
+        chunk = spectrum_list[i:i + chunk_size]
+
+        # Use ThreadPoolExecutor for parallel processing
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            chunk = spectrum_list[i:i + chunk_size]
-
-            # Checking each spectrum chunk in concurrent manner
+            # Check each spectrum in the chunk
             results = list(executor.map(check_for_update, chunk))
-            progress_bar.update(len(chunk))
 
-        # Adding successfully checked spectrums to the final list
+        # Add successfully checked spectra to the final list
         final.extend([res for res in results if res is not None])
 
-    # Creating new list with updated spectrums only
+        # Update the number of processed items
+        processed_items += len(chunk)
+
+        # Update progress callback if provided
+        if progress_callback:
+            progress_callback(processed_items)
+
+    # Create a cleaned list with only updated spectra
     final_spectrum_list = [res[0] for res in final]
 
-    # Newly found SPLASH list
+    # Generate a new SPLASH list
     new_splash = {res[1]: True for res in final}
 
-    # Update flag - if new spectrums found, set it as True, otherwise, False
-    if final:
-        update = True
-    else:
-        update = False
+    # Determine whether an update occurred
+    update = bool(final)
 
-    # Updating json file with new SPLASH list
+    # Update the SPLASH list in the JSON file
     json_update_file["SPLASH_LIST"].update(new_splash)
 
-    # Write updated data to the json file
+    # Write the updated JSON file back to disk
     with open(f'../datas/updates/{profile_name}.json', 'w') as f:
         json.dump(json_update_file, f, ensure_ascii=False, indent=4)
 
-    # Close the progress bar after finishing the task
-    progress_bar.close()
-
-    # Return results : updated spectrum list, update flag, first run flag
+    # Return the final spectrum list, the update flag, and the first run flag
     return final_spectrum_list, update, first_run

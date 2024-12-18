@@ -49,7 +49,7 @@ ordered_columns = ["FILENAME",
                    "NUM PEAKS",
                    "PEAKS_LIST"]
 
-def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None, step_callback=None, completion_callback=None):
 
     profile_name = parameters_dict["selected_profile"]
 
@@ -64,7 +64,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     output_path = os.path.join(parameters_dict["output_directory"],profile_name)
 
     # STEP 1: convert files to json if needed (Multithreaded)
-    FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF = parsing_to_dict(input_path, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF = parsing_to_dict(input_path, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback, step_callback=step_callback)
 
     files_to_process = False
 
@@ -78,9 +78,10 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
 
     # STEP 2: generating SPLASH KEY
     time.sleep(0.01)
-    print("{:>70}".format("-- GENERATING SPLASH UNIQUE ID --"))
+    if step_callback:
+        step_callback("-- GENERATING SPLASH UNIQUE ID --")
     time.sleep(0.01)
-    FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF = generate_splash_id(FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF)
+    FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF = generate_splash_id(FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     spectrum_list = []
     spectrum_list.extend(FINAL_MSP)
@@ -97,18 +98,20 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     # Convertir toutes les colonnes en str sauf 'PEAKS_LIST'
     spectrum_list = spectrum_list.astype({col: str for col in ordered_columns if col != 'PEAKS_LIST'})
     time.sleep(0.01)
-    print("{:>70}".format("-- REMOVING DUPLICATAS --"))
+    if step_callback:
+        step_callback("-- REMOVING DUPLICATAS --")
     time.sleep(0.01)
-    spectrum_list = remove_duplicatas(spectrum_list)
+    spectrum_list = remove_duplicatas(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     first_run = False
     update = False
 
     # STEP 4: cleaning spectrums (Multithreaded)
     time.sleep(0.01)
-    print("{:>70}".format(f"-- CHECKING FOR UPDATES --"))
+    if step_callback:
+        step_callback("-- CHECKING FOR UPDATES --")
     time.sleep(0.01)
-    spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list, profile_name)
+    spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     if not spectrum_list:
         sys.exit("There is no new spectrums to clean from databases. Exiting code !")
@@ -118,9 +121,10 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     if first_run_temp:
         first_run = True
     time.sleep(0.01)
-    print("{:>70}".format(f"-- CLEANING SPECTRUMS --"))
+    if step_callback:
+        step_callback("-- CLEANING SPECTRUMS --")
     time.sleep(0.01)
-    spectrum_list = spectrum_cleaning_processing(spectrum_list)
+    spectrum_list = spectrum_cleaning_processing(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
 
     if not spectrum_list:
@@ -130,67 +134,81 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
 
     # STEP 5: mols derivations and calculations
     time.sleep(0.01)
-    print("{:>70}".format("-- MOLS DERIVATION AND MASS CALCULATION --"))
+    if step_callback:
+        step_callback("--  MOLS DERIVATION AND MASS CALCULATION --")
     time.sleep(0.01)
-    spectrum_list = mols_derivation_and_calculation(spectrum_list)
+    spectrum_list = mols_derivation_and_calculation(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # STEP 6: completing missing metadata from pubchem datas
     time.sleep(0.01)
-    print("{:>70}".format("-- COMPLETING FROM PUBCHEM DATAS --"))
+    if step_callback:
+        step_callback("--  COMPLETING FROM PUBCHEM DATAS --")
     time.sleep(0.01)
-    spectrum_list = complete_from_pubchem_datas(spectrum_list)
+    spectrum_list = complete_from_pubchem_datas(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # STEP 7: completing missing names
     time.sleep(0.01)
-    print("{:>70}".format("-- ONTOLOGIES COMPLETION --"))
+    if step_callback:
+        step_callback("--  ONTOLOGIES COMPLETION --")
     time.sleep(0.01)
-    spectrum_list = ontologies_completion(spectrum_list)
+    spectrum_list = ontologies_completion(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # STEP 8: SPLITTING
     # -- SPLITTING [POS / NEG] --
     time.sleep(0.01)
-    print("{:>70}".format("-- SPLITTING [POS / NEG] --"))
+    if step_callback:
+        step_callback("--  SPLITTING [POS / NEG] --")
     time.sleep(0.01)
-    POS_df, NEG_df = split_pos_neg(spectrum_list)
+    POS_df, NEG_df = split_pos_neg(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # -- SPLITTING [LC / GC] --
     time.sleep(0.01)
-    print("{:>70}".format("-- SPLITTING [LC / GC] --"))
+    if step_callback:
+        step_callback("--  SPLITTING [LC / GC] --")
     time.sleep(0.01)
-    POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df = split_LC_GC(POS_df, NEG_df)
+    POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df = split_LC_GC(POS_df, NEG_df, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     del POS_df
     del NEG_df
 
     # -- SPLITTING [EXP / In-Silico] --
     time.sleep(0.01)
-    print("{:>70}".format("-- SPLITTING [EXP / In-Silico] --"))
+    if step_callback:
+        step_callback("--  SPLITTING [EXP / In-Silico] --")
     time.sleep(0.01)
-    POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df)
+    POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     if parameters_dict["msp"] == 1.0:
         time.sleep(0.01)
-        print("{:>70}".format("-- CONVERTING CSV TO MSP --"))
+        if step_callback:
+            step_callback("--  CONVERTING CSV TO MSP --")
         time.sleep(0.01)
-        POS_LC_df, POS_LC, POS_LC_df_insilico, POS_LC_insilico, POS_GC_df, POS_GC, POS_GC_df_insilico, POS_GC_insilico, NEG_LC_df, NEG_LC, NEG_LC_df_insilico, NEG_LC_insilico, NEG_GC_df, NEG_GC, NEG_GC_df_insilico, NEG_GC_insilico = csv_to_msp(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
+        POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico = csv_to_msp(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # STEP 9: writting output files
     if parameters_dict["csv"] == 1.0:
         time.sleep(0.01)
-        print("{:>70}".format("-- WRITING CSV --"))
+        if step_callback:
+            step_callback("--  WRITING CSV --")
         time.sleep(0.01)
-        writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update)
+        writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, first_run, profile_name, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     if parameters_dict["msp"] == 1.0:
         time.sleep(0.01)
-        print("{:>70}".format("-- WRITING MSP --"))
+        if step_callback:
+            step_callback("--  WRITING MSP --")
         time.sleep(0.01)
-        writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, profile_name, update)
+        writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, profile_name, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     if parameters_dict["json"] == 1.0:
         time.sleep(0.01)
-        print("{:>70}".format("-- WRITING JSON --"))
+        if step_callback:
+            step_callback("--  WRITING JSON --")
         time.sleep(0.01)
-        writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, profile_name)
+        writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     time.sleep(0.01)
-    print("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
+    if completion_callback:
+        completion_callback("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
+
+    while True:
+        continue

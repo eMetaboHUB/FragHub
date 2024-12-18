@@ -8,6 +8,13 @@ import sys
 import time
 
 
+def format_time(time_in_seconds):
+    """Format the time in seconds to HH:mm:ss"""
+    hours, remainder = divmod(time_in_seconds, 3600)  # Convert to hours
+    minutes, seconds = divmod(remainder, 60)  # Convert to minutes and seconds
+    return f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}"
+
+
 class ProgressBarWidget(QWidget):
     """
     Widget personnalisé pour une barre de progression mise à jour dynamiquement par des signaux.
@@ -42,13 +49,13 @@ class ProgressBarWidget(QWidget):
         # Stylesheet : rendre la barre épaisse
         self.progress_bar.setStyleSheet("""
             QProgressBar {
-                height: 24px;  /* Hauteur ajustée à celle du texte */
+                height: 24px;
                 border: 1px solid #000;
-                border-radius: 4px;  /* Coins arrondis */
-                background: #e0e0e0;  /* Couleur de fond (gris clair) */
+                border-radius: 4px;
+                background: #e0e0e0;
             }
             QProgressBar::chunk {
-                background-color: #3b8dff;  /* Couleur de progression (bleu) */
+                background-color: #3b8dff;
                 border-radius: 4px;
             }
         """)
@@ -97,7 +104,7 @@ class ProgressBarWidget(QWidget):
         # Mettre à jour le suffixe de progression
         self.progress_suffix.setText(
             f"{progress_percent:.2f}% | {progress}/{self.total_items} {self.item_type} "
-            f"[{elapsed_time:.2f}s < {estimated_time_left:.2f}s, {items_per_second:.2f} {self.item_type}/s]"
+            f"[{format_time(elapsed_time)} < {format_time(estimated_time_left)}, {items_per_second:.2f} {self.item_type}/s]"
         )
 
         # Vérifier si la barre atteint 100 %
@@ -122,6 +129,8 @@ class ProgressWindow(QMainWindow):
     update_total_signal = pyqtSignal(int, int)  # Total et étape actuelle
     update_prefix_signal = pyqtSignal(str)  # Texte de préfixe
     update_item_type_signal = pyqtSignal(str)  # Type d'items (fichiers, étapes, etc.)
+    update_step_signal = pyqtSignal(str)  # Nouveau signal pour afficher une étape dans l'onglet "Report"
+    completion_callback = pyqtSignal(str)  # Nouveau signal pour indiquer la fin
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -152,7 +161,13 @@ class ProgressWindow(QMainWindow):
         self.report_content = QVBoxLayout()
         self.report_widget.setLayout(self.report_content)
 
-        # Ajout zone défilable pour le rapport
+        # Ajouter un espace extensible pour gérer le contenu dynamique
+        self.report_content.addStretch()
+
+        # Régler la taille minimum pour activer le scroll
+        self.report_widget.setMinimumWidth(1)
+
+        # Ajout d'une zone défilable pour le rapport
         self.report_scroll = QScrollArea()
         self.report_scroll.setWidgetResizable(True)
         self.report_scroll.setWidget(self.report_widget)
@@ -211,11 +226,102 @@ class ProgressWindow(QMainWindow):
         container.setLayout(main_layout)
         self.setCentralWidget(container)
 
+        # Connexion du signal de mise à jour des étapes
+        self.update_step_signal.connect(self.add_step_to_report)
+
+        self.completion_callback.connect(self.handle_completion)
+
     def add_to_report(self, prefix_text, suffix_text):
         """
-        Ajoute le texte du résumé (prefix + suffix) à l'onglet "Report".
+            Ajoute une nouvelle ligne dans le rapport (prefix + barre de progression statique + suffix).
+            """
+        # Créer un conteneur horizontal pour le préfixe, la barre et le suffixe
+        report_layout = QHBoxLayout()
+        report_layout.setContentsMargins(10, 5, 10, 5)
+        report_layout.setSpacing(10)
+
+        # Préfixe
+        prefix_label = QLabel(prefix_text)
+        prefix_label.setFont(QFont("Arial", 10, QFont.Weight.Bold))
+        prefix_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        report_layout.addWidget(prefix_label)
+
+        # Fausse barre de progression
+        fake_progress_bar = QProgressBar()
+        fake_progress_bar.setMinimum(0)
+        fake_progress_bar.setMaximum(100)
+        fake_progress_bar.setValue(100)  # Définir une valeur fixe (par exemple, 50%)
+        fake_progress_bar.setTextVisible(False)  # Désactiver l'affichage du texte
+
+        # Appliquer le même style que votre barre de progression principale
+        fake_progress_bar.setStyleSheet("""
+                QProgressBar {
+                    height: 18px;
+                    border: 1px solid #000;
+                    border-radius: 4px;
+                    background: #e0e0e0;
+                }
+                QProgressBar::chunk {
+                    background-color: #3b8dff;
+                    border-radius: 4px;
+                }
+            """)
+        report_layout.addWidget(fake_progress_bar)
+
+        # Suffixe
+        suffix_label = QLabel(suffix_text)
+        suffix_label.setFont(QFont("Arial", 10))
+        suffix_label.setAlignment(Qt.AlignmentFlag.AlignRight)
+        report_layout.addWidget(suffix_label)
+
+        # Créer un widget conteneur pour encapsuler le layout
+        report_widget = QWidget()
+        report_widget.setLayout(report_layout)
+
+        # Ajouter le widget à la mise en page du contenu du rapport
+        self.report_content.insertWidget(self.report_content.count() - 1, report_widget)
+
+        # Forcer le scroll vers le bas pour afficher la dernière entrée
+        self.report_scroll.verticalScrollBar().setValue(
+            self.report_scroll.verticalScrollBar().maximum()
+        )
+
+    def add_step_to_report(self, step_message):
         """
-        new_entry = QLabel(f"{prefix_text} - {suffix_text}")
-        new_entry.setFont(QFont("Arial", 10))
-        new_entry.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.report_content.addWidget(new_entry)
+            Ajoute une nouvelle étape dans l'onglet "Report".
+            """
+        new_step = QLabel(step_message)
+        new_step.setFont(QFont("Arial", 12, QFont.Weight.Bold))
+        new_step.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Centre horizontalement et verticalement
+
+        # Ajouter l'étape avant les éléments extensibles
+        self.report_content.insertWidget(self.report_content.count() - 1, new_step)
+
+        # Forcer le scroll vers le bas
+        self.report_scroll.verticalScrollBar().setValue(
+            self.report_scroll.verticalScrollBar().maximum()
+        )
+
+    def handle_completion(self, completion_message):
+        """
+        Affiche un message final dans l'onglet Progress
+        en remplaçant la barre de progression, et change le bouton STOP en FINISH tout en conservant son comportement.
+        """
+        # Supprimer tous les widgets existants dans progress_layout
+        while self.progress_layout.count() > 0:
+            item = self.progress_layout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()  # Supprime proprement chaque widget
+
+        # Créer un QLabel pour afficher le message final
+        message_label = QLabel(completion_message)
+        message_label.setFont(QFont("Arial", 16, QFont.Weight.Bold))
+        message_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.progress_layout.addWidget(message_label)
+
+        # Changer le texte et le style du bouton "STOP"
+        self.stop_button.setText("FINISH")  # Change le texte du bouton
+        self.stop_button.setStyleSheet(
+            "background-color: green; color: white; font-weight: bold; font-size: 14px; padding: 10px; border-radius: 5px;"
+        )  # Rend le bouton vert avec du texte blanc

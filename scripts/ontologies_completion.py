@@ -1,4 +1,3 @@
-from tqdm import tqdm
 import pandas as pd
 import os
 
@@ -6,28 +5,22 @@ global ontologies_df
 files = [f for f in os.listdir(os.path.abspath("../datas/ontologies_datas")) if 'ontologies_dict' in f]
 ontologies_df = pd.concat((pd.read_csv(os.path.join(os.path.abspath("../datas/ontologies_datas/"), f), sep=";", encoding="UTF-8") for f in files), ignore_index=True)
 
-def ontologies_completion(spectrum_list):
+def ontologies_completion(spectrum_list, progress_callback=None, total_items_callback=None, prefix_callback=None,
+                          item_type_callback=None):
     """
-        The `ontologies_completion` function enriches a DataFrame containing spectral data with ontological information.
+    The `ontologies_completion` function enriches a DataFrame containing spectral data with ontological information.
 
-        Parameters:
-        - spectrum_list (pd.DataFrame): The DataFrame containing spectral data with 'INCHIKEY' and initial ontology columns.
-        - ontologies_df (pd.DataFrame): The DataFrame containing the ontological information to merge.
+    Parameters:
+    - spectrum_list (pd.DataFrame): The DataFrame containing spectral data with 'INCHIKEY' and initial ontology columns.
+    - progress_callback (callable, optional): Function to update progress during processing.
+    - total_items_callback (callable, optional): Function to set the total number of items to process.
+    - prefix_callback (callable, optional): Function to describe the task being performed.
+    - item_type_callback (callable, optional): Function to define the item type being processed.
 
-        Returns:
-        - pd.DataFrame: The enriched DataFrame with completed ontology information.
-
-        The function performs the following steps:
-        - Initializes columns 'CLASSYFIRE_SUPERCLASS', 'CLASSYFIRE_CLASS', 'CLASSYFIRE_SUBCLASS', 'NPCLASS_PATHWAY',
-          'NPCLASS_SUPERCLASS', and 'NPCLASS_CLASS' in `spectrum_list` with default value 'UNKNOWN'.
-        - Counts the unique 'INCHIKEY' values in `spectrum_list`.
-        - Uses tqdm to create a progress bar for monitoring the process.
-        - Merges `spectrum_list` with `ontologies_df` on the 'INCHIKEY' column using a left join.
-        - Updates the values in the initial ontology columns with the corresponding values from the merged DataFrame.
-        - Removes temporary columns resulted from the merge.
-        - Returns the updated DataFrame with completed ontology information.
+    Returns:
+    - pd.DataFrame: The enriched DataFrame with completed ontology information.
     """
-    # Ajouter les colonnes 'CLASSYFIRE_CLASS' et 'NPCLASSIF_PATHWAY' avec des valeurs par défaut 'UNKNOWN'
+    # Ajouter les colonnes avec des valeurs par défaut 'UNKNOWN'
     spectrum_list['CLASSYFIRE_SUPERCLASS'] = "UNKNOWN"
     spectrum_list['CLASSYFIRE_CLASS'] = "UNKNOWN"
     spectrum_list['CLASSYFIRE_SUBCLASS'] = "UNKNOWN"
@@ -38,22 +31,33 @@ def ontologies_completion(spectrum_list):
     # Compter le nombre de INCHIKEY uniques dans spectrum_list
     num_keys = spectrum_list['INCHIKEY'].nunique()
 
-    # Initialise la barre de progression tqdm
-    pbar = tqdm(total=num_keys, colour="green", unit=" key", desc="{:>70}".format("updating ontologies"))
+    # Initialiser le suivi avec les callbacks
+    if prefix_callback:
+        prefix_callback("updating ontologies:")
 
-    # Fusionner spectrum_list avec ontologies_df sur la colonne 'INCHIKEY'
+    if item_type_callback:
+        item_type_callback("rows")
+
+    if total_items_callback:
+        total_items_callback(num_keys, 0)  # Définir le total au départ
+
+    # Fusionner spectrum_list avec ontologies_df sur 'INCHIKEY'
     completed_df = pd.merge(
         spectrum_list,
         ontologies_df[
             ["INCHIKEY", "CLASSYFIRE_SUPERCLASS", "CLASSYFIRE_CLASS", "CLASSYFIRE_SUBCLASS", "NPCLASS_PATHWAY",
-             "NPCLASS_SUPERCLASS", "NPCLASS_CLASS"]],
+             "NPCLASS_SUPERCLASS", "NPCLASS_CLASS"]
+        ],
         on='INCHIKEY',
         how='left'
     )
 
-    # Mettre à jour les barres de progression
-    pbar.update(num_keys)
-    pbar.close()
+    # Simuler mise à jour clé par clé pour la progression
+    processed_keys = 0
+    for _ in range(num_keys):
+        processed_keys += 1
+        if progress_callback:
+            progress_callback(processed_keys)
 
     # Remplacer les valeurs initiales par les valeurs fusionnées
     completed_df['CLASSYFIRE_SUPERCLASS'] = completed_df['CLASSYFIRE_SUPERCLASS_y'].combine_first(

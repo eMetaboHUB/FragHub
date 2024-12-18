@@ -1,88 +1,127 @@
-from tqdm import tqdm
 import re
 
-def split_pos_neg(CONCATENATE_DF):
+def split_pos_neg(CONCATENATE_DF, progress_callback=None, total_items_callback=None, prefix_callback=None,
+                  item_type_callback=None):
     """
     This function splits the given DataFrame into two DataFrames based on the value of the `IONMODE` column
     :param CONCATENATE_DF: Initial DataFrame containing mixed type data
+    :param progress_callback: Callable function to report progress.
+    :param total_items_callback: Callable function to set the total number of items to be processed.
+    :param prefix_callback: Callable function to describe the current task.
+    :param item_type_callback: Callable function to define the type of item being processed.
     :return: Two DataFrames, one for positive and one for negative 'IONMODE' values
     """
 
-    # Create a progress bar to visualize the splitting process for the positive `IONMODE` values
-    with tqdm(total=len(CONCATENATE_DF), unit=" spectrums", colour="green", desc="{:>70}".format("POS")) as pbar:
-        # Splitting the DataFrame where 'IONMODE' = 'positive'
-        POS = CONCATENATE_DF[CONCATENATE_DF['IONMODE'] == 'positive']
+    # Initial tasks description callbacks
+    if prefix_callback:
+        prefix_callback("Splitting POS/NEG:")
+    if item_type_callback:
+        item_type_callback("rows")
 
-        # Update the progress bar according to the length of the split DataFrame
-        pbar.update(len(POS))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Set total items at the beginning
+    if total_items_callback:
+        total_items_callback(len(CONCATENATE_DF), 0)
 
-    # Create a progress bar to visualize the splitting process for the negative `IONMODE` values
-    with tqdm(total=len(CONCATENATE_DF), unit=" spectrums", colour="green", desc="{:>70}".format("NEG")) as pbar:
-        # Splitting the DataFrame where 'IONMODE' = 'negative'
-        NEG = CONCATENATE_DF[CONCATENATE_DF['IONMODE'] == 'negative']
+    # Splitting the DataFrame where 'IONMODE' = 'positive'
+    POS = CONCATENATE_DF[CONCATENATE_DF['IONMODE'] == 'positive']
+    if progress_callback:
+        progress_callback(len(POS))  # Update progress with the size of the split positive DataFrame
 
-        # Update the progress bar according to the length of the split DataFrame
-        pbar.update(len(NEG))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Splitting the DataFrame where 'IONMODE' = 'negative'
+    NEG = CONCATENATE_DF[CONCATENATE_DF['IONMODE'] == 'negative']
+    if progress_callback:
+        progress_callback(len(CONCATENATE_DF))  # Update progress to the total size, indicating completion
 
-    # Returning both split DataFrames
+    # Return both split DataFrames
     return POS, NEG
 
-def split_LC_GC(POS, NEG):
+
+def split_LC_GC(POS, NEG, progress_callback=None, total_items_callback=None, prefix_callback=None,
+                item_type_callback=None):
     """
-    :param POS: DataFrame containing positive spectrums
-    :param NEG: DataFrame containing negative spectrums
-    :return: Four DataFrames containing positive LC spectrums, positive GC spectrums, negative LC spectrums, and negative GC spectrums
+    This function separates the given positive and negative DataFrames into LC and GC spectrums.
+
+    :param POS: DataFrame containing positive spectrums.
+    :param NEG: DataFrame containing negative spectrums.
+    :param progress_callback: Callable function to update progress information.
+    :param total_items_callback: Callable function to define the total number of items to process.
+    :param prefix_callback: Callable function to provide the current task context.
+    :param item_type_callback: Callable function to define the processed item type.
+    :return: Four DataFrames (POS_LC, POS_GC, NEG_LC, NEG_GC).
     """
-    # Creating a progress bar for positive GC spectrums separation
-    with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="{:>70}".format("POS_GC")) as pbar:
-        # Extracting rows in POS DataFrame where 'INSTRUMENTTYPE' contains either 'GC' or 'EI'. Case-insensitive
-        POS_GC = POS[POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-        # Updating the progress bar with the number of rows in POS_GC
-        pbar.update(len(POS_GC))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
 
-    # Creating a progress bar for positive LC spectrums separation
-    with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="{:>70}".format("POS_LC")) as pbar:
-        # Extracting rows in POS DataFrame where 'INSTRUMENTTYPE' does not contain either 'GC' or 'EI'. Case-insensitive
-        POS_LC = POS[~POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-        # Updating the progress bar with the number of rows in POS_LC
-        pbar.update(len(POS_LC))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Initial callbacks to describe the process
+    if prefix_callback:
+        prefix_callback("Splitting LC/GC:")
+    if item_type_callback:
+        item_type_callback("rows")
 
-    # Creating a progress bar for negative GC spectrums separation
-    with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_GC")) as pbar:
-        # Extracting rows in NEG DataFrame where 'INSTRUMENTTYPE' contains either 'GC' or 'EI'. Case-insensitive
-        NEG_GC = NEG[NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-        # Updating the progress bar with the number of rows in NEG_GC
-        pbar.update(len(NEG_GC))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Total rows to process (Positive + Negative)
+    total_rows = len(POS) + len(NEG)
+    if total_items_callback:
+        total_items_callback(total_rows, 0)  # Report total and initialize completed items to 0
 
-    # Creating a progress bar for negative LC spectrums separation
-    with tqdm(total=len(POS), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_LC")) as pbar:
-        # Extracting rows in NEG DataFrame where 'INSTRUMENTTYPE' does not contain either 'GC' or 'EI'. Case-insensitive
-        NEG_LC = NEG[~NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-        # Updating the progress bar with the number of rows in NEG_LC
-        pbar.update(len(NEG_LC))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    # Splitting positive GC spectrums
+    POS_GC = POS[POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
+    if progress_callback:
+        progress_callback(len(POS_GC))  # Update progress after processing positive GC
 
-    # Returning separated POS and NEG DataFrames for LC and GC spectrums
+    # Splitting positive LC spectrums
+    POS_LC = POS[~POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
+    if progress_callback:
+        progress_callback(len(POS))  # Update progress after processing all positive spectrums
+
+    # Splitting negative GC spectrums
+    NEG_GC = NEG[NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
+    if progress_callback:
+        progress_callback(len(POS) + len(NEG_GC))  # Update progress after processing negative GC
+
+    # Splitting negative LC spectrums
+    NEG_LC = NEG[~NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
+    if progress_callback:
+        progress_callback(total_rows)  # Indicate that all rows have been processed
+
+    # Returning separated DataFrames
     return POS_LC, POS_GC, NEG_LC, NEG_GC
 
-def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC):
+
+def split_in_silico_exp(dataframe, predicted_value, text, progress_callback=None, total_items_callback=None,
+                        prefix_callback=None, item_type_callback=None):
+    """
+    Filtre un DataFrame basé sur une valeur prédite et met à jour la progression via des callbacks.
+
+    :param dataframe: DataFrame à filtrer.
+    :param predicted_value: La valeur à rechercher dans la colonne 'PREDICTED'.
+    :param text: Description ou contexte de l'opération.
+    :param progress_callback: Fonction callable pour notifier la progression.
+    :param total_items_callback: Fonction callable pour définir le total des éléments.
+    :param prefix_callback: Fonction callable pour signaler le contexte de la tâche.
+    :param item_type_callback: Fonction callable pour indiquer le type d'éléments.
+    :return: Le DataFrame filtré.
+    """
+    # Initialisation des callbacks : contexte de la tâche et type d'éléments
+    if prefix_callback:
+        prefix_callback(text+":")  # Exemple : "Filtrage des spectres"
+    if item_type_callback:
+        item_type_callback("rows")
+
+    # Nombre total d'éléments dans le DataFrame
+    total_rows = len(dataframe)
+    if total_items_callback:
+        total_items_callback(total_rows, 0)  # Initialisation des éléments à 0
+
+    # Filtrage du DataFrame
+    filtered_dataframe = dataframe[dataframe['PREDICTED'] == predicted_value]
+
+    # Mettre à jour la barre de progression
+    filtered_count = len(filtered_dataframe)
+    if progress_callback:
+        progress_callback(min(filtered_count, total_rows))  # Limitation à 100 % max
+
+    return filtered_dataframe
+
+
+def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     Function to split the provided datasets into various categories based on 'PREDICTED' column value being "true" or "false"
 
@@ -94,73 +133,22 @@ def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC):
         negative LC in silico, negative GC in silico, positive LC experimental, positive GC experimental,
         negative LC experimental, and negative GC experimental.
     """
+    POS_LC_In_Silico_temp = split_in_silico_exp(POS_LC, "true", "POS_LC_In_Silico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    # Create and update progress bar for POS_LC_In_Silico
-    # Get rows where PREDICTED column value is "true"
-    with tqdm(total=len(POS_LC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_LC_In_Silico")) as pbar:
-        POS_LC_In_Silico_temp = POS_LC[POS_LC['PREDICTED'] == "true"]
-        pbar.update(len(POS_LC_In_Silico_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    POS_GC_In_Silico_temp = split_in_silico_exp(POS_GC, "true", "POS_GC_In_Silico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    # Repeat similar process for POS_GC_In_Silico
-    with tqdm(total=len(POS_GC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_GC_In_Silico")) as pbar:
-        POS_GC_In_Silico_temp = POS_GC[POS_GC['PREDICTED'] == "true"]
-        pbar.update(len(POS_GC_In_Silico_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    NEG_LC_In_Silico_temp = split_in_silico_exp(NEG_LC, "true", "NEG_LC_In_Silico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    # Continue for NEG_LC_In_Silico
-    with tqdm(total=len(NEG_LC), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_LC_In_Silico")) as pbar:
-        NEG_LC_In_Silico_temp = NEG_LC[NEG_LC['PREDICTED'] == "true"]
-        pbar.update(len(NEG_LC_In_Silico_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    NEG_GC_In_Silico_temp = split_in_silico_exp(NEG_GC, "true", "NEG_GC_In_Silico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    # And for NEG_GC_In_Silico
-    with tqdm(total=len(NEG_GC), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_GC_In_Silico")) as pbar:
-        NEG_GC_In_Silico_temp = NEG_GC[NEG_GC['PREDICTED'] == "true"]
-        pbar.update(len(NEG_GC_In_Silico_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    POS_LC_temp = split_in_silico_exp(POS_LC, "false", "POS_LC_Exp", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    # The next set of progress bars are for rows where PREDICTED column value is "false"
+    POS_GC_temp = split_in_silico_exp(POS_GC, "false", "POS_GC_Exp", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    # Proceed with POS_LC_Exp
-    with tqdm(total=len(POS_LC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_LC_Exp")) as pbar:
-        POS_LC_temp = POS_LC[POS_LC['PREDICTED'] == "false"]
-        pbar.update(len(POS_LC_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    NEG_LC_temp = split_in_silico_exp(NEG_LC, "false", "NEG_LC_Exp", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    # Then with POS_GC_Exp
-    with tqdm(total=len(POS_GC), unit=" spectrums", colour="green", desc="{:>70}".format("POS_GC_Exp")) as pbar:
-        POS_GC_temp = POS_GC[POS_GC['PREDICTED'] == "false"]
-        pbar.update(len(POS_GC_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
+    NEG_GC_temp = split_in_silico_exp(NEG_GC, "false", "NEG_GC_Exp", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    # Continue with NEG_LC_Exp
-    with tqdm(total=len(NEG_LC), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_LC_Exp")) as pbar:
-        NEG_LC_temp = NEG_LC[NEG_LC['PREDICTED'] == "false"]
-        pbar.update(len(NEG_LC_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
-
-    # Finally, proceed with NEG_GC_Exp
-    with tqdm(total=len(NEG_GC), unit=" spectrums", colour="green", desc="{:>70}".format("NEG_GC_Exp")) as pbar:
-        NEG_GC_temp = NEG_GC[NEG_GC['PREDICTED'] == "false"]
-        pbar.update(len(NEG_GC_temp))
-        pbar.n = pbar.total
-        pbar.refresh()
-        pbar.close()
 
     # Return a tuple of all newly created dataframes.
     return POS_LC_temp, POS_LC_In_Silico_temp, POS_GC_temp, POS_GC_In_Silico_temp, NEG_LC_temp, NEG_LC_In_Silico_temp, NEG_GC_temp, NEG_GC_In_Silico_temp
