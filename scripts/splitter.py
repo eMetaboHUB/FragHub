@@ -101,7 +101,7 @@ def split_in_silico_exp(dataframe, predicted_value, text, progress_callback=None
     """
     # Initialisation des callbacks : contexte de la tâche et type d'éléments
     if prefix_callback:
-        prefix_callback(text)  # Exemple : "Filtrage des spectres"
+        prefix_callback(text+":")  # Exemple : "Filtrage des spectres"
     if item_type_callback:
         item_type_callback("rows")
 
