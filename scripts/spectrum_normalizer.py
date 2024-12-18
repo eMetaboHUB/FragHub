@@ -159,7 +159,7 @@ def spectrum_cleaning_processing(spectrum_list, progress_callback=None, total_it
 
     # Define a task prefix via the callback (if provided)
     if prefix_callback:
-        prefix_callback("cleaning spectrums")
+        prefix_callback("cleaning spectrums:")
 
     # Specify the type of items being processed (if provided)
     if item_type_callback:
