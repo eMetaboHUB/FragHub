@@ -116,6 +116,11 @@ class ProgressBarWidget(QWidget):
         """Met à jour le nombre total d'items et réinitialise si nécessaire."""
         self.total_items = total
         self.progress_bar.setMaximum(total)
+
+        # Réinitialiser le temps écoulé
+        self.start_time = time.time()  # Temps actuel comme nouvelle référence
+
+        # Met à jour la barre avec les nouveaux totaux et le progrès actuel (completed)
         self.update_progress_bar(completed)
 
 
