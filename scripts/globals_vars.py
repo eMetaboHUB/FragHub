@@ -16,6 +16,21 @@ peak_list_csv_to_json_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s
 global peak_list_json_to_json_pattern
 peak_list_json_to_json_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:|,|, )(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
+global metadata_peak_list_split_pattern
+metadata_peak_list_split_pattern = re.compile(r"([\s\S]*=.*[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
+
+global metadata_pattern
+metadata_pattern = re.compile(r"([^:\n]*?)=\s*([^\n]*)(?:\n|$)")
+
+global metadata_fields_name_pattern
+metadata_fields_name_pattern = re.compile(r'^[\W_]+|[\W_]+$')
+
+global metadata_strip_value_pattern
+metadata_strip_value_pattern = re.compile(r"^\"|\"$")
+
+global peak_list_split_pattern
+peak_list_split_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
+
 global keys_dict
 Key_dataframe = pd.read_csv(os.path.abspath("../datas/key_to_convert.csv"),sep=";", encoding="UTF-8") # Remplacez 'your_file.csv' par le chemin de votre fichier
 keys_dict = dict(zip(Key_dataframe['known_synonym'], Key_dataframe['fraghub_default'].str.upper()))

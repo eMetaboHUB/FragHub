@@ -1,22 +1,9 @@
 from calculate_maximized_chunk_size import *
 from .keys_convertor import *
 import concurrent.futures
+import globals_vars
 import re
 
-global metadata_peak_list_split_pattern
-metadata_peak_list_split_pattern = re.compile(r"([\s\S]*=.*[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
-
-global metadata_pattern
-metadata_pattern = re.compile(r"([^:\n]*?)=\s*([^\n]*)(?:\n|$)")
-
-global metadata_fields_name_pattern
-metadata_fields_name_pattern = re.compile(r'^[\W_]+|[\W_]+$')
-
-global metadata_strip_value_pattern
-metadata_strip_value_pattern = re.compile(r"^\"|\"$")
-
-global peak_list_split_pattern
-peak_list_split_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 def extract_metadata_and_peak_list(spectrum):
     """
@@ -31,7 +18,7 @@ def extract_metadata_and_peak_list(spectrum):
     metadata, peak_list = None, None
 
     # The function then searches for a match in the spectrum based on the regex metadata_peak_list_split_pattern
-    match = re.search(metadata_peak_list_split_pattern, spectrum)
+    match = re.search(globals_vars.metadata_peak_list_split_pattern, spectrum)
     del spectrum
 
     # If the search finds a match, metadata and peak list are defined as group 1 & 2 of the match respectively
@@ -53,7 +40,7 @@ def metadata_to_dict(metadata):
     metadata_dict = {}
 
     # Use regular expression to find all metadata matches in the given string
-    metadata_matches = re.findall(metadata_pattern, metadata)
+    metadata_matches = re.findall(globals_vars.metadata_pattern, metadata)
     del metadata
 
     # Check if there are matches
@@ -62,7 +49,7 @@ def metadata_to_dict(metadata):
         for match in metadata_matches:
             # Remove the field name from the match, convert to lower case and strip spaces, then assign to dictionary
             # The assumed structure of each match is (field name, value) pair
-            metadata_dict[re.sub(metadata_fields_name_pattern, '', match[0]).lower().strip()] = re.sub(metadata_strip_value_pattern, "", match[1])
+            metadata_dict[re.sub(globals_vars.metadata_fields_name_pattern, '', match[0]).lower().strip()] = re.sub(globals_vars.metadata_strip_value_pattern, "", match[1])
 
         # Return the dictionary with metadata
         return metadata_dict
@@ -79,7 +66,7 @@ def peak_list_to_array(peak_list):
     """
 
     # Use regular expression to find all peak pairs in the given string
-    peaks_match = re.findall(peak_list_split_pattern, peak_list)
+    peaks_match = re.findall(globals_vars.peak_list_split_pattern, peak_list)
     del peak_list
 
     # If matches exist
