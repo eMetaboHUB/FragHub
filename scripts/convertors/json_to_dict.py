@@ -15,7 +15,7 @@ def parse_MoNA_peak_list(peak_list_string):
     """
     # A regular expression pattern is used here to find all matches within the peak list string. Each match
     # is a peak represented in JSON format.
-    peaks = re.findall(globals_vars.peak_list_json_to_json_pattern, peak_list_string)
+    peaks = re.findall(globals_vars.peak_list_json_pattern, peak_list_string)
 
     # Here, we convert each peak (m/z and intensity) into float type and store them in a list.
     # The list of these peaks is returned by the function.
@@ -104,7 +104,7 @@ def parse_others_json_peak_list(peak_list):
     """
 
     # Use a regex pattern to find all peaks in the JSON string
-    peak_list = re.findall(globals_vars.peak_list_json_to_json_pattern, peak_list)
+    peak_list = re.findall(globals_vars.peak_list_json_pattern, peak_list)
 
     # convert each peak's mz and intensity values to float and group them in a list
     # return a list of these peak lists
