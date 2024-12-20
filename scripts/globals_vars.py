@@ -131,3 +131,6 @@ ionmode_pos_pattern = re.compile(r"^p|^\+|^pos", flags=re.IGNORECASE)
 global ionmode_neg_pattern
 ionmode_neg_pattern = re.compile(r"^n|^\-|^neg", flags=re.IGNORECASE)
 
+global ms_level_pattern
+ms_level_pattern = re.compile(r"(?:ms)?(\d)", flags=re.IGNORECASE)
+
