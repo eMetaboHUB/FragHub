@@ -5,3 +5,4 @@ ijson>=3.2.3
 setuptools~=70.0.0
 git+https://github.com/berlinguyinca/spectra-hash.git@master#egg=splash&subdirectory=python
 PyQt6~=6.7.1
+psutil~=6.0.0
