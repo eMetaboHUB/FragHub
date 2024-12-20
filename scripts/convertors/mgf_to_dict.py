@@ -40,7 +40,7 @@ def metadata_to_dict(metadata):
     metadata_dict = {}
 
     # Use regular expression to find all metadata matches in the given string
-    metadata_matches = re.findall(globals_vars.metadata_pattern, metadata)
+    metadata_matches = re.findall(globals_vars.metadata_pattern_mgf, metadata)
     del metadata
 
     # Check if there are matches
