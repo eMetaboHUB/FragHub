@@ -1,4 +1,4 @@
-from ..calculate_maximized_chunk_size import *
+from calculate_maximized_chunk_size import *
 from .keys_convertor import *
 import concurrent.futures
 import re
@@ -179,9 +179,11 @@ def mgf_to_dict_processing(FINAL_MGF, progress_callback=None, total_items_callba
     # Variable to track progress
     processed_items = 0
 
-    while start < end:
-        chunk_size = calculate_maximized_chunk_size(data_list=FINAL_MGF)
+    # Calculate the chunk size once, outside the loop
+    chunk_size = calculate_maximized_chunk_size(data_list=FINAL_MGF)
 
+    # Process the data in chunks
+    while start < end:
         # Use ThreadPoolExecutor to process the chunk
         with concurrent.futures.ThreadPoolExecutor() as executor:
             FINAL_MGF[start:start + chunk_size] = list(executor.map(mgf_to_dict, FINAL_MGF[start:start + chunk_size]))
@@ -190,7 +192,7 @@ def mgf_to_dict_processing(FINAL_MGF, progress_callback=None, total_items_callba
         FINAL_MGF[start:start + chunk_size] = [item for item in FINAL_MGF[start:start + chunk_size] if item is not None]
 
         # Update progress via callback if provided
-        processed_items += chunk_size
+        processed_items += min(chunk_size, end - start)  # Ensure not to exceed the total size
         if progress_callback:
             progress_callback(processed_items)
 
@@ -198,4 +200,5 @@ def mgf_to_dict_processing(FINAL_MGF, progress_callback=None, total_items_callba
         start += chunk_size
 
     return FINAL_MGF
+
 

@@ -1,4 +1,4 @@
-from ..calculate_maximized_chunk_size import *
+from calculate_maximized_chunk_size import *
 from .keys_convertor import *
 import concurrent.futures
 import re
@@ -176,20 +176,23 @@ def json_to_dict_processing(FINAL_JSON, progress_callback=None, total_items_call
     # Variable to track progress
     processed_items = 0
 
-    while start < end:
-        chunk_size = calculate_maximized_chunk_size(data_list=FINAL_JSON)
+    # Calculate chunk size once
+    chunk_size = calculate_maximized_chunk_size(data_list=FINAL_JSON)
 
+    # Process the data in chunks
+    while start < end:
         # Use ThreadPoolExecutor to process the chunk
         with concurrent.futures.ThreadPoolExecutor() as executor:
             FINAL_JSON[start:start + chunk_size] = list(
                 executor.map(json_to_dict, FINAL_JSON[start:start + chunk_size]))
 
         # Filter out None results
-        FINAL_JSON[start:start + chunk_size] = [item for item in FINAL_JSON[start:start + chunk_size] if
-                                                item is not None]
+        FINAL_JSON[start:start + chunk_size] = [
+            item for item in FINAL_JSON[start:start + chunk_size] if item is not None
+        ]
 
         # Update progress
-        processed_items += chunk_size
+        processed_items += min(chunk_size, end - start)  # Avoid exceeding total size
         if progress_callback:
             progress_callback(processed_items)
 
@@ -197,4 +200,5 @@ def json_to_dict_processing(FINAL_JSON, progress_callback=None, total_items_call
         start += chunk_size
 
     return FINAL_JSON
+
 

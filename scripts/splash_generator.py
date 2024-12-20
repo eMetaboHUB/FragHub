@@ -87,7 +87,7 @@ def generate_splash_processing(spectrum_list, files, progress_callback=None, tot
     if total_items_callback:
         total_items_callback(len(spectrum_list), 0)  # total = longueur de spectrum_list, completed = 0
 
-    # Taille des chunks pour le traitement par lots
+    # Taille des chunks calculée une fois
     chunk_size = calculate_maximized_chunk_size(data_list=spectrum_list)
 
     # Liste pour stocker les résultats finaux
@@ -118,6 +118,7 @@ def generate_splash_processing(spectrum_list, files, progress_callback=None, tot
 
     # Retourner la liste finale des résultats
     return final
+
 
 
 # process_converted_after function processes the converted spectrum list.
