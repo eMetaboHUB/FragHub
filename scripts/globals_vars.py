@@ -139,3 +139,15 @@ In_Silico_pattern = re.compile(r"in.silico|insilico|predicted|theoretical|Annota
 
 global retention_time_pattern
 retention_time_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(m|min|minute|minutes|s|sec|second|seconds|ms|millisecond|milliseconds)(?:\W)?")
+
+global smiles_pattern
+smiles_pattern = re.compile(r"[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}", flags=re.IGNORECASE) # Match smiles
+
+global inchi_pattern
+inchi_pattern = re.compile(r"InChI=.*|\/[0-9A-Z]*\/", flags=re.IGNORECASE) # Match inchi
+
+global inchikey_pattern
+inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
+
+global repair_inchi_pattern
+repair_inchi_pattern = re.compile(r"^(inchi=)?", flags=re.IGNORECASE)
