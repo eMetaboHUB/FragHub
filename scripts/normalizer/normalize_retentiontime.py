@@ -1,4 +1,6 @@
+import globals_vars
 import re
+
 
 def normalize_retentiontime(metadata_dict):
     """
@@ -16,7 +18,7 @@ def normalize_retentiontime(metadata_dict):
         retientiontime = ""
 
     # Regular expression match for different patterns of time representation.
-    match = re.search(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(m|min|minute|minutes|s|sec|second|seconds|ms|millisecond|milliseconds)(?:\W)?", retientiontime, flags=re.IGNORECASE)
+    match = re.search(globals_vars.retention_time_pattern, retientiontime, flags=re.IGNORECASE)
 
     # If match found, normalization process begins.
     if match:
