@@ -1,4 +1,5 @@
 from splash import Spectrum, SpectrumType, Splash
+from calculate_maximized_chunk_size import *
 import concurrent.futures
 import os
 
@@ -56,6 +57,7 @@ def generate_splash(spectrum):
     # This will be a dictionary containing the spectrum data, updated with a new splash.
     return spectrum
 
+
 def generate_splash_processing(spectrum_list, files, progress_callback=None, total_items_callback=None,
                                prefix_callback=None, item_type_callback=None):
     """
@@ -86,7 +88,7 @@ def generate_splash_processing(spectrum_list, files, progress_callback=None, tot
         total_items_callback(len(spectrum_list), 0)  # total = longueur de spectrum_list, completed = 0
 
     # Taille des chunks pour le traitement par lots
-    chunk_size = 5000
+    chunk_size = calculate_maximized_chunk_size(data_size=len(spectrum_list), estimate_item_size=1024)
 
     # Liste pour stocker les résultats finaux
     final = []
