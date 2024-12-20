@@ -21,6 +21,9 @@ peak_list_json_to_json_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\
 global metadata_peak_list_split_pattern
 metadata_peak_list_split_pattern = re.compile(r"([\s\S]*=.*[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
 
+global metadata_peak_list_split_pattern_msp
+metadata_peak_list_split_pattern_msp = re.compile(r"([\s\S]*:.*[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
+
 global metadata_pattern
 metadata_pattern = re.compile(r"([^:\n]*?)=\s*([^\n]*)(?:\n|$)")
 
@@ -33,8 +36,6 @@ metadata_strip_value_pattern = re.compile(r"^\"|\"$")
 global peak_list_split_pattern
 peak_list_split_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
-global metadata_peak_list_split_pattern
-metadata_peak_list_split_pattern = re.compile(r"([\s\S]*:.*[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
 
 global metadata_pattern
 metadata_pattern = re.compile(r"([^:]*):(?: )?([^\n]*)(?:\n|$)")
