@@ -134,3 +134,6 @@ ionmode_neg_pattern = re.compile(r"^n|^\-|^neg", flags=re.IGNORECASE)
 global ms_level_pattern
 ms_level_pattern = re.compile(r"(?:ms)?(\d)", flags=re.IGNORECASE)
 
+global In_Silico_pattern
+In_Silico_pattern = re.compile(r"in.silico|insilico|predicted|theoretical|Annotation.level.3", flags=re.IGNORECASE)
+

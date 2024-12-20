@@ -1,7 +1,6 @@
+import globals_vars
 import re
 
-global In_Silico_pattern
-In_Silico_pattern = re.compile(r"in.silico|insilico|predicted|theoretical|Annotation.level.3", flags=re.IGNORECASE)
 
 def in_filename_or_name(filename, name):
     """
@@ -22,7 +21,7 @@ def in_filename_or_name(filename, name):
     # Check if the string "MSMS_Public" is not in the filename
     if "MSMS_Public" not in filename:
         # If "MSMS_Public" is not in the filename, check if it matches the In_Silico_pattern
-        if re.search(In_Silico_pattern, filename+" "+name):
+        if re.search(globals_vars.In_Silico_pattern, filename+" "+name):
             # If both conditions are met, return True
             return True
     # If either of the conditions is not met, return False
