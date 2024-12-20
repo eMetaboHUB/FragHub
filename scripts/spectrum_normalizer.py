@@ -1,5 +1,6 @@
 from GUI.utils.global_vars import parameters_dict
 from peaks_filters.entropy_calculation import *
+from calculate_maximized_chunk_size import *
 from normalizer.values_normalizer import *
 from peaks_filters.filters import *
 import concurrent.futures
@@ -176,7 +177,7 @@ def spectrum_cleaning_processing(spectrum_list, progress_callback=None, total_it
         total_items_callback(len(spectrum_list), 0)  # Set total items and display initial completed = 0
 
     # Define the chunk size: the number of spectrums that can be processed at once
-    chunk_size = 5000
+    chunk_size = calculate_maximized_chunk_size(data_list=spectrum_list)
 
     # Initialize the list that will hold the cleaned spectra
     final = []
