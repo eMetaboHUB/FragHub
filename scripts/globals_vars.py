@@ -7,17 +7,12 @@ import re
 
 # =================================================== REGEX PATTERN ====================================================
 
+# ============ Parsors regex ============
 global metadata_strip_value_pattern
 metadata_strip_value_pattern = re.compile(r"^\"|\"$")
 
-global indigo_smiles_correction_pattern
-indigo_smiles_correction_pattern = re.compile(r"\|[\s\S]*")
-
 global metadata_fields_name_pattern
 metadata_fields_name_pattern = re.compile(r'^[\W_]+|[\W_]+$')
-
-global sub_adduct_pattern
-sub_adduct_pattern = re.compile(r"\(|\)|(.*\[)|(\]([\d\+\-\*]*)?)")
 
 global metadata_pattern_mgf
 metadata_pattern_mgf = re.compile(r"([^:\n]*?)=\s*([^\n]*)(?:\n|$)")
@@ -25,15 +20,37 @@ metadata_pattern_mgf = re.compile(r"([^:\n]*?)=\s*([^\n]*)(?:\n|$)")
 global metadata_pattern_msp
 metadata_pattern_msp = re.compile(r"([^:]*):(?: )?([^\n]*)(?:\n|$)")
 
-
-global float_check_pattern
-float_check_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
-
 global computed_pattern
 computed_pattern = re.compile(r"computed", flags=re.IGNORECASE)
 
 global comment_pattern
 comment_pattern = re.compile(r'comment.*', flags=re.IGNORECASE)
+
+global peak_list_split_pattern
+peak_list_split_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
+
+global peak_list_json_pattern
+peak_list_json_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:|,|, )(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
+
+global sub_fields_pattern
+sub_fields_pattern = re.compile(r"(\S+?)=\"([^\"]*)\"|\"(\w+?)=([^\"]*)\"|\"([^\"]*?)=([^\"]*)\"|(\S+?)=(\d+(?:[.,]\d*)?)|(\S+?)=(.*?)(?:;|\n|$)")
+
+global metadata_peak_list_split_pattern_mgf
+metadata_peak_list_split_pattern_mgf = re.compile(r"([\s\S]*=.*[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
+
+global metadata_peak_list_split_pattern_msp
+metadata_peak_list_split_pattern_msp = re.compile(r"([\s\S]*:.*[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
+# ======================================
+
+# ===== normalizers regex pattern ======
+global indigo_smiles_correction_pattern
+indigo_smiles_correction_pattern = re.compile(r"\|[\s\S]*")
+
+global sub_adduct_pattern
+sub_adduct_pattern = re.compile(r"\(|\)|(.*\[)|(\]([\d\+\-\*]*)?)")
+
+global float_check_pattern
+float_check_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 global ms_level_pattern
 ms_level_pattern = re.compile(r"(?:ms)?(\d)", flags=re.IGNORECASE)
@@ -56,32 +73,18 @@ smiles_pattern = re.compile(r"[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}", flags=re.IG
 global inchikey_pattern
 inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
 
-global peak_list_split_pattern
-peak_list_split_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
-
-global peak_list_json_pattern
-peak_list_json_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:|,|, )(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
-
 global In_Silico_pattern
 In_Silico_pattern = re.compile(r"in.silico|insilico|predicted|theoretical|Annotation.level.3", flags=re.IGNORECASE)
 
-global sub_fields_pattern
-sub_fields_pattern = re.compile(r"(\S+?)=\"([^\"]*)\"|\"(\w+?)=([^\"]*)\"|\"([^\"]*?)=([^\"]*)\"|(\S+?)=(\d+(?:[.,]\d*)?)|(\S+?)=(.*?)(?:;|\n|$)")
-
 global retention_time_pattern
 retention_time_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(m|min|minute|minutes|s|sec|second|seconds|ms|millisecond|milliseconds)(?:\W)?")
-
-global metadata_peak_list_split_pattern_mgf
-metadata_peak_list_split_pattern_mgf = re.compile(r"([\s\S]*=.*[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
-
-global metadata_peak_list_split_pattern_msp
-metadata_peak_list_split_pattern_msp = re.compile(r"([\s\S]*:.*[0-9]*\n)(((-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(.*)(\n|$))*)")
 
 global ionization_mode_pattern
 ionization_mode_pattern = re.compile(r"((?:^|\b)?APCI(?:\b|$)?)|((?:^|\b)?ACPI(?:\b|$)?)|((?:^|\b)?APPI(?:\b|$)?)|((?:^|\b)?EI(?:\b|$)?)|((?:^|\b)?ESI(?:\b|$)?)|((?:^|\b)?FAB(?:\b|$)?)|((?:^|\b)?MALDI(?:\b|$)?)",flags=re.IGNORECASE)
 
 global empty_pattern
 empty_pattern = re.compile(r"(^CCS:( .*)?)|(^\$:00in-source( .*)?)|(^0( .*)?)|(^0\.0( .*)?)|(^$)|(^na( .*)?)|(^n/a( .*)?)|(^nan( .*)?)|(^unknown( .*)?)|(^unknow( .*)?)|(^none( .*)?)|(^\?( .*)?)|(^unk( .*)?)|(^x( .*)?)", flags=re.IGNORECASE)
+# =====================================
 
 # ======================================================================================================================
 
