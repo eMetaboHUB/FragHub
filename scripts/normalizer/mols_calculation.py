@@ -2,13 +2,12 @@ from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from rdkit.Chem.Descriptors import ExactMolWt, MolWt
 from rdkit import RDLogger, Chem
 import deletion_report
+import globals_vars
 import pandas as pd
 import re
 
 RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
 
-inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
-indigo_smiles_correction_pattern = re.compile(r"\|[\s\S]*")
 
 def apply_transformations(inchi_smiles):
     """
@@ -21,7 +20,7 @@ def apply_transformations(inchi_smiles):
 
     # Check if the input string does not contain 'InChI='. If true, some corrections will be applied to the string
     if 'InChI=' not in inchi_smiles:
-        inchi_smiles = re.sub(indigo_smiles_correction_pattern, "", inchi_smiles)
+        inchi_smiles = re.sub(globals_vars.indigo_smiles_correction_pattern, "", inchi_smiles)
 
     # Check if the modified input string is indeed a string
     if isinstance(inchi_smiles, str):
@@ -151,7 +150,7 @@ def mols_derivation_and_calculation(CONCATENATE_DF, progress_callback=None, tota
     CONCATENATE_DF = CONCATENATE_DF.apply(apply_row_mapping, axis=1)
 
     # Step 4: Validate the 'INCHIKEY' column using a predefined pattern
-    mask = CONCATENATE_DF['INCHIKEY'].str.fullmatch(inchikey_pattern, na=False)
+    mask = CONCATENATE_DF['INCHIKEY'].str.fullmatch(globals_vars.inchikey_pattern, na=False)
 
     # Apply the mask to retain only valid rows
     CONCATENATE_DF = CONCATENATE_DF[mask]
