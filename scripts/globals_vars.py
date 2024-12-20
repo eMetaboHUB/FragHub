@@ -125,3 +125,9 @@ with open('../datas/instruments_tree.json', 'r') as f:
 global ionization_mode_pattern
 ionization_mode_pattern = re.compile(r"((?:^|\b)?APCI(?:\b|$)?)|((?:^|\b)?ACPI(?:\b|$)?)|((?:^|\b)?APPI(?:\b|$)?)|((?:^|\b)?EI(?:\b|$)?)|((?:^|\b)?ESI(?:\b|$)?)|((?:^|\b)?FAB(?:\b|$)?)|((?:^|\b)?MALDI(?:\b|$)?)",flags=re.IGNORECASE)
 
+global ionmode_pos_pattern
+ionmode_pos_pattern = re.compile(r"^p|^\+|^pos", flags=re.IGNORECASE)
+
+global ionmode_neg_pattern
+ionmode_neg_pattern = re.compile(r"^n|^\-|^neg", flags=re.IGNORECASE)
+
