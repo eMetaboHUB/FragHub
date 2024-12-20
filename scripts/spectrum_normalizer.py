@@ -5,13 +5,11 @@ from normalizer.values_normalizer import *
 from peaks_filters.filters import *
 import concurrent.futures
 import deletion_report
+import globals_vars
 import numpy as np
 import re
 
 np.set_printoptions(suppress=True)
-
-global float_check_pattern
-float_check_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 def peak_list_cleaning(peak_list, precursormz):
     """
@@ -93,9 +91,9 @@ def spectrum_cleaning(spectrum):
         return None
     # Checks if "PRECURSORMZ" exists in the spectrum
     if "PRECURSORMZ" in spectrum and "_GC_IE" not in spectrum["FILENAME"]:
-        if re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])):
+        if re.search(globals_vars.float_check_pattern, str(spectrum["PRECURSORMZ"])):
             # 'PRECURSORMZ' modification with match from a regular expression search for 'float_check_pattern'
-            spectrum["PRECURSORMZ"] = re.search(float_check_pattern, str(spectrum["PRECURSORMZ"])).group(1)
+            spectrum["PRECURSORMZ"] = re.search(globals_vars.float_check_pattern, str(spectrum["PRECURSORMZ"])).group(1)
             float_precursor_mz = float(spectrum["PRECURSORMZ"].replace(",", "."))
             # Float value of 'PRECURSORMZ' needs to be greater than 0
             if float_precursor_mz <= 0.0:
@@ -105,7 +103,7 @@ def spectrum_cleaning(spectrum):
             peak_list_np = peak_list_cleaning(peak_list, float_precursor_mz)
             spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
             if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
-                if re.search(float_check_pattern, str(spectrum["ENTROPY"])):
+                if re.search(globals_vars.float_check_pattern, str(spectrum["ENTROPY"])):
                     if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
                         deletion_report.low_entropy_score += 1
                         return None
@@ -125,7 +123,7 @@ def spectrum_cleaning(spectrum):
         peak_list_np = peak_list_cleaning(peak_list, float_precursor_mz)
         spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
         if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
-            if re.search(float_check_pattern, str(spectrum["ENTROPY"])):
+            if re.search(globals_vars.float_check_pattern, str(spectrum["ENTROPY"])):
                 if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
                     deletion_report.low_entropy_score += 1
                     return None
