@@ -379,7 +379,7 @@ def normalize_instruments_and_resolution(metadata_dict):
     # Try to retrieve the instrument's resolution and specific solution
     try:
         # Determine if the instrument has high or low resolution, if neither can be determined, mark as unknown
-        resolution = "high" if "high" in globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]] else "low" if "low" in instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]] else "unknown"
+        resolution = "high" if "high" in globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]] else "low" if "low" in globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]] else "unknown"
 
         # Retrieve the corresponding solution for the determined resolution
         solution = globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]][resolution]["SOLUTION"]
