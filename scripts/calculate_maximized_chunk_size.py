@@ -1,29 +1,36 @@
 import psutil
 import math
 import os
+import sys
 
-def calculate_maximized_chunk_size(data_size: int, estimate_item_size: int = 1024) -> int:
+
+def calculate_maximized_chunk_size(data_list: list) -> int:
     """
     Calcule la taille optimale des chunks en fonction des ressources système pour utiliser pleinement le CPU et la mémoire.
 
-    :param data_size: Nombre total d'éléments dans les données (par exemple, taille de `spectrum_list`).
-    :param estimate_item_size: Taille approximative en mémoire d'un élément (spectre) en octets. Par défaut : 1 KB.
+    :param data_list: Liste d'éléments à traiter (ex: spectrum_list).
+                      La taille du premier élément sera utilisée pour estimer la taille moyenne des items.
     :return: Taille optimale d'un chunk pour maximiser l'utilisation des ressources.
     """
-
     # Obtenez le nombre maximal de threads logiques (CPU disponibles)
     cpu_count = os.cpu_count()  # Nombre de cœurs logiques
     # Mémoire disponible (en octets)
     available_memory = psutil.virtual_memory().available
 
+    # Estimer la taille moyenne d'un élément en mémoire (en octets) d'après le premier élément
+    if not data_list:
+        raise ValueError("La liste des données est vide. Impossible de calculer le chunk optimal.")
+
+    estimate_item_size = sys.getsizeof(data_list[0])  # Taille mémoire du premier élément (en octets)
+
     # Calcul maximal : combien d'éléments peuvent tenir dans la mémoire par cœur
     max_chunk_memory_per_cpu = available_memory // cpu_count  # Mémoire disponible pour chaque cœur
-    chunk_items_by_memory = max_chunk_memory_per_cpu // estimate_item_size  # Nombre d'items par chunk (taille mémoire)
+    chunk_items_by_memory = max_chunk_memory_per_cpu // estimate_item_size  # Nombre possible d'items par chunk (mémoire max)
 
-    # Nombre d'items pour une répartition "équilibrée"
-    chunk_items_by_cpu = math.ceil(data_size / cpu_count)  # Diviser équitablement les données par cœur
+    # Nombre d'items par répartition équilibrée (nombre total d'éléments divisé par le nombre de CPU)
+    chunk_items_by_cpu = math.ceil(len(data_list) / cpu_count)  # Diviser équitablement entre les cœurs
 
-    # Taille optimale est le minimum entre la mémoire disponible et la charge équilibrée par cœur
+    # Taille optimale est le minimum entre la mémoire disponible (pour chaque CPU) et la répartition équilibrée
     chunk_size = min(chunk_items_by_memory, chunk_items_by_cpu)
 
-    return max(1, chunk_size)  # Toujours retourner au moins 1
+    return max(1, chunk_size)  # Toujours retourner au moins 1 élément par chunk
