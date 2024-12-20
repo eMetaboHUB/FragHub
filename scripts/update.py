@@ -1,3 +1,4 @@
+from calculate_maximized_chunk_size import *
 import concurrent.futures
 import deletion_report
 import json
@@ -78,7 +79,7 @@ def check_for_update_processing(spectrum_list, profile_name, progress_callback=N
     json_update_file, first_run = init_json_update_file(json_update_file)
 
     # Define chunk size for parallel processing
-    chunk_size = 5000
+    chunk_size = calculate_maximized_chunk_size(data_list=spectrum_list)
 
     # Final list to store successfully checked spectra
     final = []
