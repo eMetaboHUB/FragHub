@@ -1,3 +1,4 @@
+from ..calculate_maximized_chunk_size import *
 from .keys_convertor import *
 import concurrent.futures
 import re
@@ -179,7 +180,7 @@ def mgf_to_dict_processing(FINAL_MGF, progress_callback=None, total_items_callba
     processed_items = 0
 
     while start < end:
-        chunk_size = min(end - start, 5000)
+        chunk_size = calculate_maximized_chunk_size(data_list=FINAL_MGF)
 
         # Use ThreadPoolExecutor to process the chunk
         with concurrent.futures.ThreadPoolExecutor() as executor:

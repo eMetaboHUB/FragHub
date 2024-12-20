@@ -1,3 +1,4 @@
+from ..calculate_maximized_chunk_size import *
 from .keys_convertor import *
 import concurrent.futures
 import re
@@ -269,7 +270,7 @@ def msp_to_dict_processing(FINAL_MSP, progress_callback=None, total_items_callba
 
     # Traitement en morceaux (chunks) pour les spectres MSP
     while start < end:
-        chunk_size = min(end - start, 5000)  # Traiter par morceaux de 5000
+        chunk_size = calculate_maximized_chunk_size(data_list=FINAL_MSP)
 
         # Utilisation de ThreadPoolExecutor pour le traitement parallèle
         with concurrent.futures.ThreadPoolExecutor() as executor:
