@@ -1,9 +1,7 @@
 import pandas as pd
+import globals_vars
 import os
 
-global ontologies_df
-files = [f for f in os.listdir(os.path.abspath("../datas/ontologies_datas")) if 'ontologies_dict' in f]
-ontologies_df = pd.concat((pd.read_csv(os.path.join(os.path.abspath("../datas/ontologies_datas/"), f), sep=";", encoding="UTF-8") for f in files), ignore_index=True)
 
 def ontologies_completion(spectrum_list, progress_callback=None, total_items_callback=None, prefix_callback=None,
                           item_type_callback=None):
@@ -44,7 +42,7 @@ def ontologies_completion(spectrum_list, progress_callback=None, total_items_cal
     # Fusionner spectrum_list avec ontologies_df sur 'INCHIKEY'
     completed_df = pd.merge(
         spectrum_list,
-        ontologies_df[
+        globals_vars.ontologies_df[
             ["INCHIKEY", "CLASSYFIRE_SUPERCLASS", "CLASSYFIRE_CLASS", "CLASSYFIRE_SUBCLASS", "NPCLASS_PATHWAY",
              "NPCLASS_SUPERCLASS", "NPCLASS_CLASS"]
         ],
