@@ -27,8 +27,8 @@ metadata_peak_list_split_pattern_msp = re.compile(r"([\s\S]*:.*[0-9]*\n)(((-?\d+
 global metadata_pattern_mgf
 metadata_pattern_mgf = re.compile(r"([^:\n]*?)=\s*([^\n]*)(?:\n|$)")
 
-global metadata_pattern
-metadata_pattern = re.compile(r"([^:]*):(?: )?([^\n]*)(?:\n|$)")
+global metadata_pattern_msp
+metadata_pattern_msp = re.compile(r"([^:]*):(?: )?([^\n]*)(?:\n|$)")
 
 global metadata_fields_name_pattern
 metadata_fields_name_pattern = re.compile(r'^[\W_]+|[\W_]+$')

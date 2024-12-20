@@ -84,7 +84,7 @@ def metadata_to_dict(metadata):
     metadata_dict = {}
 
     # Using regex to find all matches in the metadata string that follow the specified pattern
-    metadata_matches = re.findall(globals_vars.metadata_pattern, metadata)
+    metadata_matches = re.findall(globals_vars.metadata_pattern_msp, metadata)
 
     # If we have found matches, further process them. If not, return an empty dictionary
     if metadata_matches:
