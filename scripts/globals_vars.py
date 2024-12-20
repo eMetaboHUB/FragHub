@@ -45,9 +45,6 @@ computed_pattern = re.compile(r"computed", flags=re.IGNORECASE)
 global comment_pattern
 comment_pattern = re.compile(r'comment.*', flags=re.IGNORECASE)
 
-
-
-
 global sub_fields_pattern
 sub_fields_pattern = re.compile(r"(\S+?)=\"([^\"]*)\"|\"(\w+?)=([^\"]*)\"|\"([^\"]*?)=([^\"]*)\"|(\S+?)=(\d+(?:[.,]\d*)?)|(\S+?)=(.*?)(?:;|\n|$)")
 
@@ -143,9 +140,6 @@ smiles_pattern = re.compile(r"[^J][a-z0-9@+\-\[\]\(\)\\\/%=#$]{6,}", flags=re.IG
 global inchi_pattern
 inchi_pattern = re.compile(r"InChI=.*|\/[0-9A-Z]*\/", flags=re.IGNORECASE) # Match inchi
 
-global inchikey_pattern
-inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=re.IGNORECASE) # Match inchikey or short inchikey
-
 global repair_inchi_pattern
 repair_inchi_pattern = re.compile(r"^(inchi=)?", flags=re.IGNORECASE)
 
@@ -178,7 +172,3 @@ pubchem_datas = pd.concat(all_dfs, ignore_index=True)
 global ontologies_df
 files = [f for f in os.listdir(os.path.abspath("../datas/ontologies_datas")) if 'ontologies_dict' in f]
 ontologies_df = pd.concat((pd.read_csv(os.path.join(os.path.abspath("../datas/ontologies_datas/"), f), sep=";", encoding="UTF-8") for f in files), ignore_index=True)
-
-
-global float_check_pattern
-float_check_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
