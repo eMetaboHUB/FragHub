@@ -11,3 +11,6 @@ cpu_count = os.cpu_count()  # Nombre de cœurs logiques
 
 global peak_list_csv_to_json_pattern
 peak_list_csv_to_json_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:|,|, )(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
+
+global peak_list_json_to_json_pattern
+peak_list_json_to_json_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:|,|, )(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
