@@ -1,5 +1,6 @@
 import pandas as pd
 import psutil
+import json
 import os
 import re
 
@@ -116,3 +117,7 @@ adduct_dict = dict(zip(adduct_dataframe['known_adduct'], adduct_dataframe['fragh
 
 global empty_pattern
 empty_pattern = re.compile(r"(^CCS:( .*)?)|(^\$:00in-source( .*)?)|(^0( .*)?)|(^0\.0( .*)?)|(^$)|(^na( .*)?)|(^n/a( .*)?)|(^nan( .*)?)|(^unknown( .*)?)|(^unknow( .*)?)|(^none( .*)?)|(^\?( .*)?)|(^unk( .*)?)|(^x( .*)?)", flags=re.IGNORECASE)
+
+global instrument_tree
+with open('../datas/instruments_tree.json', 'r') as f:
+    instrument_tree = json.load(f)
