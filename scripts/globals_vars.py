@@ -137,3 +137,5 @@ ms_level_pattern = re.compile(r"(?:ms)?(\d)", flags=re.IGNORECASE)
 global In_Silico_pattern
 In_Silico_pattern = re.compile(r"in.silico|insilico|predicted|theoretical|Annotation.level.3", flags=re.IGNORECASE)
 
+global retention_time_pattern
+retention_time_pattern = re.compile(r"(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(m|min|minute|minutes|s|sec|second|seconds|ms|millisecond|milliseconds)(?:\W)?")
