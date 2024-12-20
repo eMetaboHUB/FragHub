@@ -1,4 +1,4 @@
-from ..calculate_maximized_chunk_size import *
+from calculate_maximized_chunk_size import *
 from .keys_convertor import *
 import concurrent.futures
 import re
@@ -257,7 +257,7 @@ def msp_to_dict_processing(FINAL_MSP, progress_callback=None, total_items_callba
     if total_items_callback:
         total_items_callback(end, 0)  # total = end, completed = 0
 
-    # Mise à jour dynamique du prefixe (si défini)
+    # Mise à jour dynamique du préfixe (si défini)
     if prefix_callback:
         prefix_callback("Parsing MSP spectrums:")
 
@@ -268,10 +268,11 @@ def msp_to_dict_processing(FINAL_MSP, progress_callback=None, total_items_callba
     # Initialisation de la variable pour suivre la progression
     processed_items = 0
 
+    # Calculer la taille des chunks une seule fois au départ
+    chunk_size = calculate_maximized_chunk_size(data_list=FINAL_MSP)
+
     # Traitement en morceaux (chunks) pour les spectres MSP
     while start < end:
-        chunk_size = calculate_maximized_chunk_size(data_list=FINAL_MSP)
-
         # Utilisation de ThreadPoolExecutor pour le traitement parallèle
         with concurrent.futures.ThreadPoolExecutor() as executor:
             FINAL_MSP[start:start + chunk_size] = list(executor.map(msp_to_dict, FINAL_MSP[start:start + chunk_size]))
@@ -280,7 +281,7 @@ def msp_to_dict_processing(FINAL_MSP, progress_callback=None, total_items_callba
         FINAL_MSP[start:start + chunk_size] = [item for item in FINAL_MSP[start:start + chunk_size] if item is not None]
 
         # Mise à jour de la progression
-        processed_items += chunk_size
+        processed_items += min(chunk_size, end - start)  # S'assurer de ne pas dépasser la taille totale
         if progress_callback:
             progress_callback(processed_items)
 
@@ -288,4 +289,5 @@ def msp_to_dict_processing(FINAL_MSP, progress_callback=None, total_items_callba
         start += chunk_size
 
     return FINAL_MSP
+
 
