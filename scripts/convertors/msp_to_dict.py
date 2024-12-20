@@ -18,7 +18,7 @@ def extract_metadata_and_peak_list(spectrum):
     metadata, peak_list = None, None
 
     # Use a regex pattern to search for matches within the input spectrum
-    match = re.search(globals_vars.metadata_peak_list_split_pattern, spectrum)
+    match = re.search(globals_vars.metadata_peak_list_split_pattern_msp, spectrum)
 
     # If a match is found, assign the groups to metadata and peak_list variables
     if match:
