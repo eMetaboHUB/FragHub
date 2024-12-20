@@ -17,8 +17,6 @@ def calculate_maximized_chunk_size(data_list: list) -> int:
     available_memory = globals_vars.available_memory
 
     # Estimer la taille moyenne d'un élément en mémoire (en octets) d'après le premier élément
-    if not data_list:
-        raise ValueError("La liste des données est vide. Impossible de calculer le chunk optimal.")
 
     estimate_item_size = sys.getsizeof(data_list[0])  # Taille mémoire du premier élément (en octets)
 
