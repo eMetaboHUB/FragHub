@@ -1,9 +1,7 @@
 from .keys_convertor import *
 import pandas as pd
+import globals_vars
 import re
-
-global peak_list_csv_to_json_pattern
-peak_list_csv_to_json_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:|,|, )(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
 
 def parse_peak_list(peak_list_string):
     """
@@ -12,7 +10,7 @@ def parse_peak_list(peak_list_string):
     :return: A list of peak values, where each peak value is a list containing the m/z value and intensity.
     """
     # Here, 're.findall' method is being used to find all the occurrences of peak_list_csv_to_json_pattern in peak_list_string.
-    peaks = re.findall(peak_list_csv_to_json_pattern, peak_list_string)
+    peaks = re.findall(globals_vars.peak_list_csv_to_json_pattern, peak_list_string)
     del peak_list_string
 
     # Peaks are being converted to a list of two values' lists, where each sub-list contains the float values of m/z and intensity.
