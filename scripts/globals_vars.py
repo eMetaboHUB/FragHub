@@ -45,17 +45,13 @@ computed_pattern = re.compile(r"computed", flags=re.IGNORECASE)
 global comment_pattern
 comment_pattern = re.compile(r'comment.*', flags=re.IGNORECASE)
 
-global metadata_fields_name_pattern
-metadata_fields_name_pattern = re.compile(r'^[\W_]+|[\W_]+$')
 
-global peak_list_split_pattern
-peak_list_split_pattern = re.compile(r"(-?\d+\.?\d*(?:[Ee][+-]?\d+)?)(?:\s+|:)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)")
+
 
 global sub_fields_pattern
 sub_fields_pattern = re.compile(r"(\S+?)=\"([^\"]*)\"|\"(\w+?)=([^\"]*)\"|\"([^\"]*?)=([^\"]*)\"|(\S+?)=(\d+(?:[.,]\d*)?)|(\S+?)=(.*?)(?:;|\n|$)")
 
-global metadata_strip_value_pattern
-metadata_strip_value_pattern = re.compile(r"^\"|\"$")
+
 
 global keys_dict
 Key_dataframe = pd.read_csv(os.path.abspath("../datas/key_to_convert.csv"),sep=";", encoding="UTF-8") # Remplacez 'your_file.csv' par le chemin de votre fichier
