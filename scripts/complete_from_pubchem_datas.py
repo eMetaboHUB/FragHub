@@ -1,30 +1,6 @@
-from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
-import warnings
+import globals_vars
 import os
-
-# Dossier contenant les fichiers CSV
-folder_path = '../datas/pubchem_datas/'
-# Liste pour stocker chaque DataFrame
-all_dfs = []
-# Fonction pour lire un fichier CSV
-def read_csv(file_path):
-    return pd.read_csv(file_path, sep=';', quotechar='"', encoding='utf-8')
-
-# Utiliser ThreadPoolExecutor pour lire les fichiers en parallèle
-with ThreadPoolExecutor() as executor:
-    futures = []
-    for file_name in os.listdir(folder_path):
-        if file_name.endswith('.csv'):
-            file_path = os.path.join(folder_path, file_name)
-            futures.append(executor.submit(read_csv, file_path))
-    # Récupérer les résultats des futures
-    for future in futures:
-        all_dfs.append(future.result())
-
-# Concaténer tous les DataFrames
-global pubchem_datas
-pubchem_datas = pd.concat(all_dfs, ignore_index=True)
 
 
 def complete_from_pubchem_datas(CONCATENATE_DF, progress_callback=None, total_items_callback=None, prefix_callback=None,
@@ -55,7 +31,7 @@ def complete_from_pubchem_datas(CONCATENATE_DF, progress_callback=None, total_it
 
     # Enrich the DataFrame by merging with pubchem_datas
     enriched_df = concatenate_df_copy.merge(
-        pubchem_datas,
+        globals_vars.pubchem_datas,
         on='INCHIKEY',
         suffixes=('', '_pubchem'),
         how='left'
