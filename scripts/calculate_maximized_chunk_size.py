@@ -1,6 +1,5 @@
-import psutil
+import globals_vars
 import math
-import os
 import sys
 
 
@@ -13,9 +12,9 @@ def calculate_maximized_chunk_size(data_list: list) -> int:
     :return: Taille optimale d'un chunk pour maximiser l'utilisation des ressources.
     """
     # Obtenez le nombre maximal de threads logiques (CPU disponibles)
-    cpu_count = os.cpu_count()  # Nombre de cœurs logiques
+    cpu_count = globals_vars.cpu_count
     # Mémoire disponible (en octets)
-    available_memory = psutil.virtual_memory().available
+    available_memory = globals_vars.available_memory
 
     # Estimer la taille moyenne d'un élément en mémoire (en octets) d'après le premier élément
     if not data_list:
