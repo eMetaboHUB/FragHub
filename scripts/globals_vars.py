@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 import psutil
 import json
@@ -151,3 +152,29 @@ inchikey_pattern = re.compile(r"([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})", flags=r
 
 global repair_inchi_pattern
 repair_inchi_pattern = re.compile(r"^(inchi=)?", flags=re.IGNORECASE)
+
+#  =============
+# Dossier contenant les fichiers CSV
+folder_path = '../datas/pubchem_datas/'
+# Liste pour stocker chaque DataFrame
+all_dfs = []
+# Fonction pour lire un fichier CSV
+def read_csv(file_path):
+    return pd.read_csv(file_path, sep=';', quotechar='"', encoding='utf-8')
+
+# Utiliser ThreadPoolExecutor pour lire les fichiers en parallèle
+with ThreadPoolExecutor() as executor:
+    futures = []
+    for file_name in os.listdir(folder_path):
+        if file_name.endswith('.csv'):
+            file_path = os.path.join(folder_path, file_name)
+            futures.append(executor.submit(read_csv, file_path))
+    # Récupérer les résultats des futures
+    for future in futures:
+        all_dfs.append(future.result())
+
+# Concaténer tous les DataFrames
+global pubchem_datas
+pubchem_datas = pd.concat(all_dfs, ignore_index=True)
+
+# ===========================
