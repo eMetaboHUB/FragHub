@@ -15,7 +15,7 @@ from GUI.tabs.tab_projects import ProjectsTab
 from progress_window import ProgressWindow
 
 from MAIN import MAIN
-
+import traceback
 import ctypes
 
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub")
@@ -101,7 +101,7 @@ class MainWindow(QMainWindow):
                 deletion_callback=self.progress_window.deletion_callback.emit,  # Signal pour la suppression
             )
         except Exception as e:
-            print(f"Erreur : {e}")
+            traceback.print_exc()
         finally:
             self.running = False
             self.progress_window.close()
