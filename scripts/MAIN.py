@@ -117,114 +117,115 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     deletion_callback(f"previously cleaned: {deletion_report.previously_cleaned}")
 
-    if not spectrum_list:
-        sys.exit("There is no new spectrums to clean from databases. Exiting code !")
+    if spectrum_list:
 
-    if update_temp:
-        update = True
-    if first_run_temp:
-        first_run = True
-    time.sleep(0.01)
-    if step_callback:
-        step_callback("-- CLEANING SPECTRUMS --")
-    time.sleep(0.01)
-    spectrum_list = spectrum_cleaning_processing(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
-    deletion_callback(
-        f"""
-        No peaks list: {deletion_report.no_peaks_list}
-        No smiles, no inchi, no inchikey: {deletion_report.no_smiles_no_inchi_no_inchikey}
-        No precursor mz: {deletion_report.no_precursor_mz}
-        Low entropy score: {deletion_report.low_entropy_score}
-        Minimum peaks not required: {deletion_report.minimum_peaks_not_requiered}
-        All peaks above precursor mz: {deletion_report.all_peaks_above_precursor_mz}
-        No peaks in mz range: {deletion_report.no_peaks_in_mz_range}
-        Minimum high peaks not required: {deletion_report.minimum_high_peaks_not_requiered}
-        """
-    )
-
-    if not spectrum_list:
-        sys.exit("There is no spectrums to process after cleaning. Exiting code !")
-
-    spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns].astype(str)
-
-    # STEP 5: mols derivations and calculations
-    time.sleep(0.01)
-    if step_callback:
-        step_callback("--  MOLS DERIVATION AND MASS CALCULATION --")
-    time.sleep(0.01)
-    spectrum_list = mols_derivation_and_calculation(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
-    deletion_callback(f"No smiles, no inchi, no inchikey (updated): {deletion_report.no_smiles_no_inchi_no_inchikey}")
-
-    # STEP 6: completing missing metadata from pubchem datas
-    time.sleep(0.01)
-    if step_callback:
-        step_callback("--  COMPLETING FROM PUBCHEM DATAS --")
-    time.sleep(0.01)
-    spectrum_list = complete_from_pubchem_datas(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
-
-    # STEP 7: completing missing names
-    time.sleep(0.01)
-    if step_callback:
-        step_callback("--  ONTOLOGIES COMPLETION --")
-    time.sleep(0.01)
-    spectrum_list = ontologies_completion(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
-
-    # STEP 8: SPLITTING
-    # -- SPLITTING [POS / NEG] --
-    time.sleep(0.01)
-    if step_callback:
-        step_callback("--  SPLITTING [POS / NEG] --")
-    time.sleep(0.01)
-    POS_df, NEG_df = split_pos_neg(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
-
-    # -- SPLITTING [LC / GC] --
-    time.sleep(0.01)
-    if step_callback:
-        step_callback("--  SPLITTING [LC / GC] --")
-    time.sleep(0.01)
-    POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df = split_LC_GC(POS_df, NEG_df, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
-
-    del POS_df
-    del NEG_df
-
-    # -- SPLITTING [EXP / In-Silico] --
-    time.sleep(0.01)
-    if step_callback:
-        step_callback("--  SPLITTING [EXP / In-Silico] --")
-    time.sleep(0.01)
-    POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
-    if parameters_dict["msp"] == 1.0:
+        if update_temp:
+            update = True
+        if first_run_temp:
+            first_run = True
         time.sleep(0.01)
         if step_callback:
-            step_callback("--  CONVERTING CSV TO MSP --")
+            step_callback("-- CLEANING SPECTRUMS --")
         time.sleep(0.01)
-        POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico = csv_to_msp(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+        spectrum_list = spectrum_cleaning_processing(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+        deletion_callback(
+            f"""
+            No peaks list: {deletion_report.no_peaks_list}
+            No smiles, no inchi, no inchikey: {deletion_report.no_smiles_no_inchi_no_inchikey}
+            No precursor mz: {deletion_report.no_precursor_mz}
+            Low entropy score: {deletion_report.low_entropy_score}
+            Minimum peaks not required: {deletion_report.minimum_peaks_not_requiered}
+            All peaks above precursor mz: {deletion_report.all_peaks_above_precursor_mz}
+            No peaks in mz range: {deletion_report.no_peaks_in_mz_range}
+            Minimum high peaks not required: {deletion_report.minimum_high_peaks_not_requiered}
+            """
+        )
 
-    # STEP 9: writting output files
-    if parameters_dict["csv"] == 1.0:
+        if not spectrum_list:
+            sys.exit("There is no spectrums to process after cleaning. Exiting code !")
+
+        spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns].astype(str)
+
+        # STEP 5: mols derivations and calculations
         time.sleep(0.01)
         if step_callback:
-            step_callback("--  WRITING CSV --")
+            step_callback("--  MOLS DERIVATION AND MASS CALCULATION --")
         time.sleep(0.01)
-        writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, first_run, profile_name, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+        spectrum_list = mols_derivation_and_calculation(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+        deletion_callback(f"No smiles, no inchi, no inchikey (updated): {deletion_report.no_smiles_no_inchi_no_inchikey}")
 
-    if parameters_dict["msp"] == 1.0:
+        # STEP 6: completing missing metadata from pubchem datas
         time.sleep(0.01)
         if step_callback:
-            step_callback("--  WRITING MSP --")
+            step_callback("--  COMPLETING FROM PUBCHEM DATAS --")
         time.sleep(0.01)
-        writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, profile_name, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+        spectrum_list = complete_from_pubchem_datas(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    if parameters_dict["json"] == 1.0:
+        # STEP 7: completing missing names
         time.sleep(0.01)
         if step_callback:
-            step_callback("--  WRITING JSON --")
+            step_callback("--  ONTOLOGIES COMPLETION --")
         time.sleep(0.01)
-        writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+        spectrum_list = ontologies_completion(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    deletion_callback(
-        f"Total deletions: {sum([deletion_report.duplicatas_removed, deletion_report.previously_cleaned, deletion_report.no_peaks_list, deletion_report.no_smiles_no_inchi_no_inchikey, deletion_report.no_precursor_mz, deletion_report.low_entropy_score, deletion_report.minimum_peaks_not_requiered, deletion_report.all_peaks_above_precursor_mz, deletion_report.no_peaks_in_mz_range, deletion_report.minimum_high_peaks_not_requiered])}"
-    )
+        # STEP 8: SPLITTING
+        # -- SPLITTING [POS / NEG] --
+        time.sleep(0.01)
+        if step_callback:
+            step_callback("--  SPLITTING [POS / NEG] --")
+        time.sleep(0.01)
+        POS_df, NEG_df = split_pos_neg(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
+        # -- SPLITTING [LC / GC] --
+        time.sleep(0.01)
+        if step_callback:
+            step_callback("--  SPLITTING [LC / GC] --")
+        time.sleep(0.01)
+        POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df = split_LC_GC(POS_df, NEG_df, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
+        del POS_df
+        del NEG_df
+
+        # -- SPLITTING [EXP / In-Silico] --
+        time.sleep(0.01)
+        if step_callback:
+            step_callback("--  SPLITTING [EXP / In-Silico] --")
+        time.sleep(0.01)
+        POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df = exp_in_silico_splitter(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+        if parameters_dict["msp"] == 1.0:
+            time.sleep(0.01)
+            if step_callback:
+                step_callback("--  CONVERTING CSV TO MSP --")
+            time.sleep(0.01)
+            POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico = csv_to_msp(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
+        # STEP 9: writting output files
+        if parameters_dict["csv"] == 1.0:
+            time.sleep(0.01)
+            if step_callback:
+                step_callback("--  WRITING CSV --")
+            time.sleep(0.01)
+            writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, first_run, profile_name, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
+        if parameters_dict["msp"] == 1.0:
+            time.sleep(0.01)
+            if step_callback:
+                step_callback("--  WRITING MSP --")
+            time.sleep(0.01)
+            writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, profile_name, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
+        if parameters_dict["json"] == 1.0:
+            time.sleep(0.01)
+            if step_callback:
+                step_callback("--  WRITING JSON --")
+            time.sleep(0.01)
+            writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+
+        deletion_callback(
+            f"Total deletions: {sum([deletion_report.duplicatas_removed, deletion_report.previously_cleaned, deletion_report.no_peaks_list, deletion_report.no_smiles_no_inchi_no_inchikey, deletion_report.no_precursor_mz, deletion_report.low_entropy_score, deletion_report.minimum_peaks_not_requiered, deletion_report.all_peaks_above_precursor_mz, deletion_report.no_peaks_in_mz_range, deletion_report.minimum_high_peaks_not_requiered])}"
+        )
+    else:
+        deletion_callback("There is no new spectrums to process. Exiting code !")
 
     time.sleep(0.01)
     if completion_callback:
