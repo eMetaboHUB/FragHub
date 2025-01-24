@@ -49,6 +49,9 @@ metadata_peak_list_split_pattern_msp = re.compile(r"([\s\S]*:.*[0-9]*\n)(((-?\d+
 global indigo_smiles_correction_pattern
 indigo_smiles_correction_pattern = re.compile(r"\|[\s\S]*")
 
+global sub_signe_end_adduct_pattern
+sub_signe_end_adduct_pattern = re.compile(r"(\-|\+)$")
+
 global sub_adduct_pattern
 sub_adduct_pattern = re.compile(r"\(|\)|(.*\[)|(\]([\d\+\-\*]*)?)")
 
