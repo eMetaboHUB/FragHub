@@ -28,3 +28,6 @@ no_peaks_in_mz_range = 0
 
 global minimum_high_peaks_not_requiered
 minimum_high_peaks_not_requiered = 0
+
+global no_or_bad_adduct
+no_or_bad_adduct = 0
