@@ -1,4 +1,3 @@
-import deletion_report
 import pandas as pd
 import globals_vars
 import re
@@ -19,10 +18,6 @@ def normalize_adduct(metadata_dict):
     # Normalize the obtained 'PRECURSORTYPE' value using regex substitution
     # Note: 'sub_adduct_pattern' is a previously defined regular expression pattern
     adduct = re.sub(globals_vars.sub_adduct_pattern, "", adduct)
-
-    if not re.search(globals_vars.is_adduct_pattern, adduct):
-        deletion_report.no_or_bad_adduct += 1
-        return None
 
     # Check if the normalized 'adduct' value exists in a previously defined dictionary 'adduct_dict'
     # If yes, replace the 'PRECURSORTYPE' value in the metadata dictionary with the corresponding value from 'adduct_dict'

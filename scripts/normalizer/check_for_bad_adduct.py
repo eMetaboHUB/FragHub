@@ -1,4 +1,6 @@
 import deletion_report
+import globals_vars
+import re
 
 def check_for_bad_adduct(metadata_dict):
     """
@@ -19,6 +21,12 @@ def check_for_bad_adduct(metadata_dict):
         dict or None: The same metadata dictionary if no inconsistencies are found;
         otherwise, None.
     """
+    adduct = metadata_dict['PRECURSORTYPE']
+
+    if not re.search(globals_vars.is_adduct_pattern, adduct):
+        deletion_report.no_or_bad_adduct += 1
+        return None
+
     if metadata_dict['IONMODE'] == 'positive':
         if metadata_dict['PRECURSORTYPE'].endswith('-'):
             deletion_report.no_or_bad_adduct += 1
