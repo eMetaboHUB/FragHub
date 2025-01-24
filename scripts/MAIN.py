@@ -133,6 +133,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             No peaks list: {deletion_report.no_peaks_list}
             No smiles, no inchi, no inchikey: {deletion_report.no_smiles_no_inchi_no_inchikey}
             No precursor mz: {deletion_report.no_precursor_mz}
+            No or bad adduct: {deletion_report.no_or_bad_adduct}
             Low entropy score: {deletion_report.low_entropy_score}
             Minimum peaks not required: {deletion_report.minimum_peaks_not_requiered}
             All peaks above precursor mz: {deletion_report.all_peaks_above_precursor_mz}
