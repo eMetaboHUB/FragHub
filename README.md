@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="scripts/GUI/assets/FragHub_icon.png" alt="FragHub Icon" /> 1.2.1
+  <img src="scripts/GUI/assets/FragHub_icon.png" alt="FragHub Icon" /> 1.2.2
 </div>
 
 # FragHub  (1.2.2)
