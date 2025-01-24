@@ -3,6 +3,7 @@ from .missing_precursormz_re_calculation import *
 from .delete_no_smiles_no_inchi import *
 from .normalize_retentiontime import *
 from .repair_mol_descriptors import *
+from .check_for_bad_adduct import *
 from .normalize_ionization import *
 from .normalize_predicted import *
 from .normalize_ms_level import *
@@ -38,6 +39,9 @@ def normalize_values(metadata_dict):
 
         # Normalize the ion mode in the metadata, from long form to short standardized form
         metadata_dict = normalize_ionmode(metadata_dict)
+
+        # ckeck if adduct in pos is really pos (exemple)
+        metadata_dict = check_for_bad_adduct(metadata_dict)
 
         # Normalize MS level
         metadata_dict = normalize_ms_level(metadata_dict)
