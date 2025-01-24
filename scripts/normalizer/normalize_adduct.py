@@ -15,6 +15,10 @@ def normalize_adduct(metadata_dict):
     # Get the 'PRECURSORTYPE' from the provided metadata dictionary
     adduct = metadata_dict['PRECURSORTYPE']
 
+    if not re.search(globals_vars.is_adduct_pattern, adduct):
+        metadata_dict['PRECURSORTYPE'] = ""
+        return metadata_dict
+
     # Normalize the obtained 'PRECURSORTYPE' value using regex substitution
     # Note: 'sub_adduct_pattern' is a previously defined regular expression pattern
     adduct = re.sub(globals_vars.sub_adduct_pattern, "", adduct)
