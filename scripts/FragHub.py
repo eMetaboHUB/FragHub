@@ -71,11 +71,17 @@ class MainWindow(QMainWindow):
 
     def open_progress_window(self):
         """
-        Affiche une nouvelle fenêtre pour la progression.
+        Affiche une nouvelle fenêtre pour la progression et cache la fenêtre principale.
         """
         if not self.running:
+            # Masquer la fenêtre principale
+            self.hide()
+
+            # Ouvrir la fenêtre de progression
             self.progress_window = ProgressWindow(self)
             self.progress_window.show()
+
+            # Commencer l'exécution
             self.start_execution()
 
     def start_execution(self):
@@ -103,7 +109,9 @@ class MainWindow(QMainWindow):
         except Exception as e:
             traceback.print_exc()
         finally:
+            # Réafficher la fenêtre principale une fois l'exécution terminée
             self.running = False
+            self.show()  # Réaffiche la fenêtre principale
             self.progress_window.close()
             self.progress_window = None
 
