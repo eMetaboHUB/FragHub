@@ -6,7 +6,9 @@ from PyQt6.QtGui import QFont, QPixmap, QIcon
 from PyQt6.QtCore import Qt, pyqtSignal
 import sys
 import time
+import ctypes
 
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub")
 
 def format_time(time_in_seconds):
     """Format the time in seconds to HH:mm:ss"""
@@ -146,7 +148,12 @@ class ProgressWindow(QMainWindow):
         self.setWindowIcon(QIcon("./GUI/assets/FragHub_icon.png"))
         self.setGeometry(100, 100, 1280, 720)
 
-        # Ajout de l'icône en haut
+        # Configure la fenêtre pour apparaître de manière indépendante dans la barre des tâches
+        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating,
+                          False)  # S'affiche correctement sans voler le focus
+
+        # Ajouter un banner avec l'icône
         banner = QLabel()
         pixmap = QPixmap("./GUI/assets/FragHub_icon.png").scaled(
             130, 130, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation

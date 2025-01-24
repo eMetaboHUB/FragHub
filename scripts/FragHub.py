@@ -71,17 +71,16 @@ class MainWindow(QMainWindow):
 
     def open_progress_window(self):
         """
-        Affiche une nouvelle fenêtre pour la progression et cache la fenêtre principale.
+        Affiche la fenêtre de progression et masque la fenêtre principale (indépendante).
         """
         if not self.running:
-            # Masquer la fenêtre principale
-            self.hide()
+            self.hide()  # Cache simplement la fenêtre principale.
 
-            # Ouvrir la fenêtre de progression
-            self.progress_window = ProgressWindow(self)
-            self.progress_window.show()
+            # Crée une nouvelle fenêtre de progression sans parent
+            self.progress_window = ProgressWindow(parent=None)
+            self.progress_window.show()  # Affiche la fenêtre de progression
 
-            # Commencer l'exécution
+            # Commencer le processus d'exécution
             self.start_execution()
 
     def start_execution(self):
@@ -94,26 +93,28 @@ class MainWindow(QMainWindow):
 
     def run_main_function(self):
         """
-        Exécute la fonction MAIN dans un thread.
+        Exécution de la tâche principale avec gestion de la progression.
         """
         try:
+            # Lancement du processus principal
             MAIN(
                 progress_callback=self.progress_window.update_progress_signal.emit,
                 total_items_callback=self.progress_window.update_total_signal.emit,
                 prefix_callback=self.progress_window.update_prefix_signal.emit,
                 item_type_callback=self.progress_window.update_item_type_signal.emit,
                 step_callback=self.progress_window.update_step_signal.emit,
-                completion_callback=self.progress_window.completion_callback.emit,  # Utilisation de emit ici
-                deletion_callback=self.progress_window.deletion_callback.emit,  # Signal pour la suppression
+                completion_callback=self.progress_window.completion_callback.emit,
+                deletion_callback=self.progress_window.deletion_callback.emit,
             )
         except Exception as e:
             traceback.print_exc()
         finally:
-            # Réafficher la fenêtre principale une fois l'exécution terminée
-            self.running = False
+            # Restaurer la fenêtre principale et terminer la progression
             self.show()  # Réaffiche la fenêtre principale
-            self.progress_window.close()
-            self.progress_window = None
+            if self.progress_window:
+                self.progress_window.close()  # Ferme la fenêtre de progression
+                self.progress_window = None
+            self.running = False
 
 
 def run_GUI():
