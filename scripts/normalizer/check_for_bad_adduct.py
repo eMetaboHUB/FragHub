@@ -1,9 +1,4 @@
-import globals_vars
-import re
 
-"""
-si ionmode pos: mais adduit neg, on supprime (vis versa)
-"""
 def check_for_bad_adduct(metadata_dict):
     """
     Check for inconsistent adducts based on ionization mode.
