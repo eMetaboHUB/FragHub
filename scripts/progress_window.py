@@ -142,7 +142,7 @@ class ProgressWindow(QMainWindow):
         super().__init__(parent)
 
         # Titre et icône de la fenêtre
-        self.setWindowTitle("FragHub 1.2.2")
+        self.setWindowTitle("FragHub 1.2.3")
         self.setWindowIcon(QIcon("./GUI/assets/FragHub_icon.png"))
         self.setGeometry(100, 100, 1280, 720)
 

@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 - **24_01_2025**: 
   - deleting spectrum if neg adduct in pos spectrum, or pos adduct in neg spectrum
   - bug(fix): let thread safely terminate in no new spectrum to process
+  - removing no or bad adduct spectrum
+  - refactoring adduct normalization
 
 - **20_12_2024**: 
   - New modern GUI (Graphical User Interface).
