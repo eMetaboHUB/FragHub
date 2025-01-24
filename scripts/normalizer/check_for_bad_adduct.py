@@ -22,19 +22,20 @@ def check_for_bad_adduct(metadata_dict):
         otherwise, None.
     """
     adduct = metadata_dict['PRECURSORTYPE']
+    ionmode = metadata_dict['IONMODE']
 
     if not re.search(globals_vars.is_adduct_pattern, adduct):
         deletion_report.no_or_bad_adduct += 1
         return None
 
-    if metadata_dict['IONMODE'] == 'positive':
-        if metadata_dict['PRECURSORTYPE'].endswith('-'):
+    if ionmode == 'positive':
+        if adduct.endswith('-'):
             deletion_report.no_or_bad_adduct += 1
             return None
         else:
             return metadata_dict
-    elif metadata_dict['IONMODE'] == 'negative':
-        if metadata_dict['PRECURSORTYPE'].endswith('+'):
+    elif ionmode == 'negative':
+        if adduct.endswith('+'):
             deletion_report.no_or_bad_adduct += 1
             return None
         else:
