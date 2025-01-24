@@ -50,7 +50,7 @@ global indigo_smiles_correction_pattern
 indigo_smiles_correction_pattern = re.compile(r"\|[\s\S]*")
 
 global sub_signe_end_adduct_pattern
-sub_signe_end_adduct_pattern = re.compile(r"(\-|\+)$")
+sub_signe_end_adduct_pattern = re.compile(r"(?<!M)(\-|\+)$")
 
 global sub_adduct_pattern
 sub_adduct_pattern = re.compile(r"\(|\)|(.*\[)|(\]([\d\+\-\*]*)?)")
