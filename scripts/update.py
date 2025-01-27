@@ -1,3 +1,5 @@
+import os.path
+
 from calculate_maximized_chunk_size import *
 import concurrent.futures
 import deletion_report
@@ -42,7 +44,7 @@ def check_for_update(spectrum):
         # If the SPLASH is found in the dictionary, an update is not needed. Return None
         return None
 
-def check_for_update_processing(spectrum_list, profile_name, progress_callback=None, total_items_callback=None,
+def check_for_update_processing(spectrum_list, output_directory, progress_callback=None, total_items_callback=None,
                                 prefix_callback=None, item_type_callback=None):
     """
     Check for updates in the given spectrum list using a profile name, with progress reporting via callbacks.
@@ -71,8 +73,9 @@ def check_for_update_processing(spectrum_list, profile_name, progress_callback=N
     if total_items_callback:
         total_items_callback(len(spectrum_list), 0)  # Total = len(spectrum_list), Completed = 0
 
+    update_file_path = os.path.join(output_directory, "updates.json")
     # Open the JSON file containing the previous update status
-    with open(f'../datas/updates/{profile_name}.json', 'r') as f:
+    with open(update_file_path, 'r') as f:
         json_update_file = json.load(f)
 
     # Initialize the update file and first run flag
@@ -117,7 +120,7 @@ def check_for_update_processing(spectrum_list, profile_name, progress_callback=N
     json_update_file["SPLASH_LIST"].update(new_splash)
 
     # Write the updated JSON file back to disk
-    with open(f'../datas/updates/{profile_name}.json', 'w') as f:
+    with open(update_file_path, 'w') as f:
         json.dump(json_update_file, f, ensure_ascii=False, indent=4)
 
     deletion_report.previously_cleaned = total - len(final_spectrum_list)
