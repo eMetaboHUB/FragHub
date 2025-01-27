@@ -41,7 +41,7 @@ class OutputTab(QWidget):
 
         info_button = QPushButton("🛈")
         info_button.setFixedSize(30, 30)
-        info_button.setToolTip("Select an empty directory where project will be created")
+        info_button.setToolTip("Create a new empty directory or Select an existing directory where FragHub has already written files")
         info_button_layout.addWidget(info_button, alignment=Qt.AlignmentFlag.AlignRight)
         self.layout.addLayout(info_button_layout)
 
