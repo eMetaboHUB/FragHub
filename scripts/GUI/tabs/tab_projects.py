@@ -65,7 +65,7 @@ class ProjectsTab(QWidget):
         super().__init__()
 
         if "reset_updates" not in parameters_dict:
-            parameters_dict["reset_updates"] = 0.0
+            parameters_dict["reset_updates"] = 0.0  # Initialisation par défaut
 
         # Layout principal
         main_layout = QVBoxLayout()
@@ -88,6 +88,9 @@ class ProjectsTab(QWidget):
         # Ajouter le toggle switch
         self.toggle_switch = QToggleSwitch(initial_state=False)  # Toujours "NO" au départ
         main_layout.addWidget(self.toggle_switch, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        # Connecter le signal du toggle switch au gestionnaire
+        self.toggle_switch.stateChanged.connect(self.on_toggle_state_changed)
 
         # Connecter le signal pour surveiller les changements de répertoire
         self.output_directory_changed_signal.connect(self.check_output_directory)
@@ -126,3 +129,10 @@ class ProjectsTab(QWidget):
             else:
                 self.toggle_switch.setEnabled(False)  # Bloquer le toggle switch
                 self.toggle_switch.setChecked(False)  # Rester sur "NO" par défaut
+
+    def on_toggle_state_changed(self, state):
+        """
+        Gère les changements d'état du toggle switch.
+        Met à jour le dictionnaire global pour refléter l'état actuel.
+        """
+        parameters_dict["reset_updates"] = 1.0 if state else 0.0  # 1.0 pour YES, 0.0 pour NO
