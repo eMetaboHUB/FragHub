@@ -1,7 +1,7 @@
 from GUI.utils.global_vars import parameters_dict
 import deletion_report
 import global_report
-
+import os
 
 def calculate_unique_inchikeys(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC,
                                NEG_GC_insilico):
@@ -183,7 +183,16 @@ def format_report():
 
 
 def report(output_directory, POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico):
+    # Calculs des spectres et des InChIKeys uniques
     calculate_spectrum_number(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico)
     calculate_unique_inchikeys(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico)
 
+    # Création du rapport formaté
     formated_report = format_report()
+
+    # Définir le chemin complet pour le fichier report.txt
+    report_file_path = os.path.join(output_directory, "report.txt")
+
+    # Écriture du contenu dans le fichier report.txt
+    with open(report_file_path, "w") as report_file:
+        report_file.write(formated_report)
