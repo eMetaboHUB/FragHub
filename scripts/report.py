@@ -87,6 +87,9 @@ def format_parameters():
     remove_spectrum_under_entropy_score: {"ON" if parameters_dict['remove_spectrum_under_entropy_score'] else "OFF"}
     keep_mz_in_range: {"ON" if parameters_dict['keep_mz_in_range'] else "OFF"}
     check_minimum_of_high_peaks_requiered: {"ON" if parameters_dict['check_minimum_of_high_peaks_requiered'] else "OFF"}
+    
+    reset_updates: {"YES" if parameters_dict['reset_updates'] else "NO"}
+    
     """
 
     return parameters_string
