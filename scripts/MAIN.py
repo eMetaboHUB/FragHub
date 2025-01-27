@@ -206,7 +206,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             if step_callback:
                 step_callback("--  WRITING CSV --")
             time.sleep(0.01)
-            writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, first_run, profile_name, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+            writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, first_run, output_directory, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
         if parameters_dict["msp"] == 1.0:
             time.sleep(0.01)

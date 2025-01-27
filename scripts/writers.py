@@ -106,7 +106,7 @@ def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_L
     del NEG_GC_insilico
 
 
-def write_csv(df, filename, mode, update, first_run, profile_name, progress_callback=None, total_items_callback=None,
+def write_csv(df, filename, mode, update, first_run, output_directory, progress_callback=None, total_items_callback=None,
               prefix_callback=None, item_type_callback=None):
     """
     This function writes a pandas DataFrame to a CSV file in chunks.
@@ -127,7 +127,7 @@ def write_csv(df, filename, mode, update, first_run, profile_name, progress_call
         df['PEAKS_LIST'] = df['PEAKS_LIST'].str.replace('\n', ';', regex=False)
 
     # Construct the file path dynamically
-    output_file_path = os.path.join(parameters_dict["output_directory"], f"{profile_name}/CSV/{mode}", filename)
+    output_file_path = f"{output_directory}/CSV/{mode}/{filename}"
 
     # Define chunk size for writing DataFrame in parts
     chunk_size = 5000
@@ -167,7 +167,7 @@ def write_csv(df, filename, mode, update, first_run, profile_name, progress_call
             progress_callback(processed_rows)  # Update with processed row count
 
 
-def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update=False, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, output_directory, update=False, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     Write data to CSV files.
 
@@ -187,36 +187,36 @@ def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico,
 
     time.sleep(0.1)
     # Call write_csv for Positive LC data and write it to POS_LC.csv file
-    write_csv(POS_LC_df, "POS_LC.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(POS_LC_df, "POS_LC.csv", "POS", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     # Clear memory used by POS_LC_df dataframe
     del POS_LC_df
 
     time.sleep(0.1)
-    write_csv(POS_GC_df, "POS_GC.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(POS_GC_df, "POS_GC.csv", "POS", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_df
 
     time.sleep(0.1)
-    write_csv(NEG_LC_df, "NEG_LC.csv", "NEG", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(NEG_LC_df, "NEG_LC.csv", "NEG", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_df
 
     time.sleep(0.1)
-    write_csv(NEG_GC_df, "NEG_GC.csv", "NEG", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(NEG_GC_df, "NEG_GC.csv", "NEG", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_df
 
     time.sleep(0.1)
-    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico.csv", "POS", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_LC_df_insilico
 
     time.sleep(0.1)
-    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico.csv", "POS", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_df_insilico
 
     time.sleep(0.1)
-    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico.csv", "NEG", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico.csv", "NEG", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_df_insilico
 
     time.sleep(0.1)
-    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv", "NEG", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv", "NEG", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_df_insilico
 
 
