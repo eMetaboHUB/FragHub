@@ -64,7 +64,6 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     start_time = time.time()
 
     input_path = parameters_dict["input_directory"]
-    output_path = output_directory
 
     # STEP 1: convert files to json if needed (Multithreaded)
     FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF = parsing_to_dict(input_path, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback, step_callback=step_callback)
