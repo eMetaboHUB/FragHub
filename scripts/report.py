@@ -96,7 +96,21 @@ def format_parameters():
 
 
 def format_fitered_out():
-    pass
+    fitered_out_string = f""" 
+       ======================= FILTERED OUT =======================
+      No peaks list: {deletion_report.no_peaks_list}
+      No smiles, no inchi, no inchikey: {deletion_report.no_smiles_no_inchi_no_inchikey}
+      No precursor mz: {deletion_report.no_precursor_mz}
+      No or bad adduct: {deletion_report.no_or_bad_adduct}
+      Low entropy score: {deletion_report.low_entropy_score}
+      Minimum peaks not required: {deletion_report.minimum_peaks_not_requiered}
+      All peaks above precursor mz: {deletion_report.all_peaks_above_precursor_mz}
+      No peaks in mz range: {deletion_report.no_peaks_in_mz_range}
+      Minimum high peaks not required: {deletion_report.minimum_high_peaks_not_requiered}
+
+       """
+
+    return fitered_out_string
 
 def format_spectrum_numbers():
     pass
@@ -105,10 +119,13 @@ def format_unique_inchikeys():
     pass
 
 def format_report():
+    parameters_string = format_parameters()
+    fitered_out_string = format_fitered_out()
     pass
 
 
 def report(output_directory, POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico):
     calculate_spectrum_number(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico)
     calculate_unique_inchikeys(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico)
+
     format_report()
