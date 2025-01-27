@@ -1,4 +1,5 @@
 from GUI.utils.global_vars import parameters_dict
+from datetime import datetime
 import deletion_report
 import global_report
 import os
@@ -279,8 +280,11 @@ def report(output_directory, POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, N
     # Création du rapport formaté
     formated_report = format_report()
 
-    # Définir le chemin complet pour le fichier report.txt
-    report_file_path = os.path.join(output_directory, "report.txt")
+    # Générer la date et l'heure au format désiré : DD_MM_YYYY__HH_MM_SS
+    current_datetime = datetime.now().strftime("%d_%m_%Y__%H_%M_%S")
+
+    # Définir le chemin complet pour le fichier avec date et heure
+    report_file_path = os.path.join(output_directory, f"report_{current_datetime}.txt")
 
     # Écriture du contenu dans le fichier report.txt
     with open(report_file_path, "w") as report_file:
