@@ -12,6 +12,7 @@ import deletion_report
 from splitter import *
 from writers import *
 from update import *
+from report import *
 import time
 import sys
 import os
@@ -227,6 +228,8 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         )
     else:
         deletion_callback("There is no new spectrums to process. Exiting code !")
+
+    report(output_directory, POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico)
 
     time.sleep(0.01)
     if completion_callback:
