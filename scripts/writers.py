@@ -220,7 +220,7 @@ def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico,
     del NEG_GC_df_insilico
 
 
-def write_json(df, filename, mode, profile_name, progress_callback=None, total_items_callback=None,
+def write_json(df, filename, mode, output_directory, progress_callback=None, total_items_callback=None,
                prefix_callback=None, item_type_callback=None):
     """
     Write DataFrame to a JSON file.
@@ -240,7 +240,7 @@ def write_json(df, filename, mode, profile_name, progress_callback=None, total_i
     """
 
     # Définir le chemin du fichier de sortie
-    output_file_path = os.path.join(parameters_dict["output_directory"], f"{profile_name}/JSON/{mode}", filename)
+    output_file_path = f"{output_directory}/JSON/{mode}/{filename}"
 
     # Convertir le DataFrame en une liste de dictionnaires
     json_records = df.to_dict('records')
@@ -283,7 +283,7 @@ def write_json(df, filename, mode, profile_name, progress_callback=None, total_i
         f.write('\n]')
 
 
-def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, profile_name, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     Write dataframes to JSON files.
     :param POS_LC_df: Positive LC dataframe
@@ -300,50 +300,50 @@ def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Positive LC DataFrame to a JSON file named "POS_LC.json"
-    write_json(POS_LC_df, "POS_LC.json", "POS", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(POS_LC_df, "POS_LC.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     # Deleting the DataFrame from memory as it's no longer needed
     del POS_LC_df
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Positive GC DataFrame to a JSON file named "POS_GC.json"
-    write_json(POS_GC_df, "POS_GC.json", "POS", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(POS_GC_df, "POS_GC.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_df
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Negative LC DataFrame to a JSON file named "NEG_LC.json"
-    write_json(NEG_LC_df, "NEG_LC.json", "NEG", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(NEG_LC_df, "NEG_LC.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_df
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Negative GC DataFrame to a JSON file named "NEG_GC.json"
-    write_json(NEG_GC_df, "NEG_GC.json", "NEG", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(NEG_GC_df, "NEG_GC.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_df
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Positive In Silico LC DataFrame to a JSON file named "POS_LC_In_Silico.json"
-    write_json(POS_LC_df_insilico, "POS_LC_In_Silico.json", "POS", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(POS_LC_df_insilico, "POS_LC_In_Silico.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_LC_df_insilico
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Positive In Silico GC DataFrame to a JSON file named "POS_GC_In_Silico.json"
-    write_json(POS_GC_df_insilico, "POS_GC_In_Silico.json", "POS", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(POS_GC_df_insilico, "POS_GC_In_Silico.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_df_insilico
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Negative In Silico LC DataFrame to a JSON file named "NEG_LC_In_Silico.json"
-    write_json(NEG_LC_df_insilico, "NEG_LC_In_Silico.json", "NEG", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(NEG_LC_df_insilico, "NEG_LC_In_Silico.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_df_insilico
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Negative In Silico GC DataFrame to a JSON file named "NEG_GC_In_Silico.json"
-    write_json(NEG_GC_df_insilico, "NEG_GC_In_Silico.json", "NEG", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(NEG_GC_df_insilico, "NEG_GC_In_Silico.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # Deleting the DataFrame from memory as it's no longer needed
     del NEG_GC_df_insilico
