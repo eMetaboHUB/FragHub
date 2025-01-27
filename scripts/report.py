@@ -97,18 +97,18 @@ def format_parameters():
 
 def format_fitered_out():
     fitered_out_string = f""" 
-       ======================= FILTERED OUT =======================
-      No peaks list: {deletion_report.no_peaks_list}
-      No smiles, no inchi, no inchikey: {deletion_report.no_smiles_no_inchi_no_inchikey}
-      No precursor mz: {deletion_report.no_precursor_mz}
-      No or bad adduct: {deletion_report.no_or_bad_adduct}
-      Low entropy score: {deletion_report.low_entropy_score}
-      Minimum peaks not required: {deletion_report.minimum_peaks_not_requiered}
-      All peaks above precursor mz: {deletion_report.all_peaks_above_precursor_mz}
-      No peaks in mz range: {deletion_report.no_peaks_in_mz_range}
-      Minimum high peaks not required: {deletion_report.minimum_high_peaks_not_requiered}
+    ======================= FILTERED OUT =======================
+    No peaks list: {deletion_report.no_peaks_list}
+    No smiles, no inchi, no inchikey: {deletion_report.no_smiles_no_inchi_no_inchikey}
+    No precursor mz: {deletion_report.no_precursor_mz}
+    No or bad adduct: {deletion_report.no_or_bad_adduct}
+    Low entropy score: {deletion_report.low_entropy_score}
+    Minimum peaks not required: {deletion_report.minimum_peaks_not_requiered}
+    All peaks above precursor mz: {deletion_report.all_peaks_above_precursor_mz}
+    No peaks in mz range: {deletion_report.no_peaks_in_mz_range}
+    Minimum high peaks not required: {deletion_report.minimum_high_peaks_not_requiered}
 
-       """
+    """
 
     return fitered_out_string
 
