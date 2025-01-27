@@ -1,3 +1,4 @@
+import global_report
 import re
 
 def split_pos_neg(CONCATENATE_DF, progress_callback=None, total_items_callback=None, prefix_callback=None,
@@ -21,6 +22,12 @@ def split_pos_neg(CONCATENATE_DF, progress_callback=None, total_items_callback=N
     # Set total items at the beginning
     if total_items_callback:
         total_items_callback(len(CONCATENATE_DF), 0)
+
+    # Count and save unique INCHIKEYs in the global report dictionary
+    if 'INCHIKEY' in CONCATENATE_DF.columns:
+        global_report.report_dict['TOTAL_unique_inchikey'] = CONCATENATE_DF['INCHIKEY'].nunique()
+    else:
+        global_report.report_dict['TOTAL_unique_inchikey'] = 0  # Si la colonne n'existe pas, on enregistre 0.
 
     # Splitting the DataFrame where 'IONMODE' = 'positive'
     POS = CONCATENATE_DF[CONCATENATE_DF['IONMODE'] == 'positive']
