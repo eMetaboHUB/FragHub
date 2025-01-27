@@ -119,6 +119,17 @@ def format_fitered_out():
 
 
 def format_spectrum_numbers():
+    total_spectrum_number = (
+            global_report.report_dict["pos_lc_exp_spectrum_number"] +
+            global_report.report_dict["neg_lc_exp_spectrum_number"] +
+            global_report.report_dict["pos_lc_insilico_spectrum_number"] +
+            global_report.report_dict["neg_lc_insilico_spectrum_number"] +
+            global_report.report_dict["pos_gc_exp_spectrum_number"] +
+            global_report.report_dict["neg_gc_exp_spectrum_number"] +
+            global_report.report_dict["pos_gc_insilico_spectrum_number"] +
+            global_report.report_dict["neg_gc_insilico_spectrum_number"]
+    )
+
     spectrum_numbers_string = f""" 
     ================== SPECTRUM NUMBER ==================
     POS LC Exp: {global_report.report_dict["pos_lc_exp_spectrum_number"]}
@@ -130,9 +141,11 @@ def format_spectrum_numbers():
     POS GC InSilico: {global_report.report_dict["pos_gc_insilico_spectrum_number"]}
     NEG GC InSilico: {global_report.report_dict["neg_gc_insilico_spectrum_number"]}
 
+    Total: {total_spectrum_number}
     """
 
     return spectrum_numbers_string
+
 
 def format_unique_inchikeys():
     pass
