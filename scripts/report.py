@@ -4,8 +4,7 @@ import deletion_report
 import global_report
 import os
 
-def calculate_unique_inchikeys(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC,
-                               NEG_GC_insilico):
+def calculate_unique_inchikeys(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df):
     """
     Calculate the number of unique INCHIKEYs in each DataFrame and update global_report.report_dict.
 
@@ -28,18 +27,17 @@ def calculate_unique_inchikeys(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico,
         return 0  # Retourne 0 si la colonne est absente
 
     # Mise à jour du dictionnaire report_dict avec les valeurs calculées
-    global_report.report_dict["pos_lc_exp_spectrum_unique_inchikey"] = count_unique_inchikeys(POS_LC)
-    global_report.report_dict["neg_lc_exp_spectrum_unique_inchikey"] = count_unique_inchikeys(NEG_LC)
-    global_report.report_dict["pos_lc_insilico_spectrum_unique_inchikey"] = count_unique_inchikeys(POS_LC_insilico)
-    global_report.report_dict["neg_lc_insilico_spectrum_unique_inchikey"] = count_unique_inchikeys(NEG_LC_insilico)
-    global_report.report_dict["pos_gc_exp_spectrum_unique_inchikey"] = count_unique_inchikeys(POS_GC)
-    global_report.report_dict["neg_gc_exp_spectrum_unique_inchikey"] = count_unique_inchikeys(NEG_GC)
-    global_report.report_dict["pos_gc_insilico_spectrum_unique_inchikey"] = count_unique_inchikeys(POS_GC_insilico)
-    global_report.report_dict["neg_gc_insilico_spectrum_unique_inchikey"] = count_unique_inchikeys(NEG_GC_insilico)
+    global_report.report_dict["pos_lc_exp_spectrum_unique_inchikey"] = count_unique_inchikeys(POS_LC_df)
+    global_report.report_dict["neg_lc_exp_spectrum_unique_inchikey"] = count_unique_inchikeys(NEG_LC_df)
+    global_report.report_dict["pos_lc_insilico_spectrum_unique_inchikey"] = count_unique_inchikeys(POS_LC_In_Silico_df)
+    global_report.report_dict["neg_lc_insilico_spectrum_unique_inchikey"] = count_unique_inchikeys(NEG_LC_In_Silico_df)
+    global_report.report_dict["pos_gc_exp_spectrum_unique_inchikey"] = count_unique_inchikeys(POS_GC_df)
+    global_report.report_dict["neg_gc_exp_spectrum_unique_inchikey"] = count_unique_inchikeys(NEG_GC_df)
+    global_report.report_dict["pos_gc_insilico_spectrum_unique_inchikey"] = count_unique_inchikeys(POS_GC_In_Silico_df)
+    global_report.report_dict["neg_gc_insilico_spectrum_unique_inchikey"] = count_unique_inchikeys(NEG_GC_In_Silico_df)
 
 
-def calculate_spectrum_number(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC,
-                              NEG_GC_insilico):
+def calculate_spectrum_number(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df):
     """
     Calculate the number of spectra (rows) in each DataFrame and update global_report.report_dict.
 
@@ -54,14 +52,14 @@ def calculate_spectrum_number(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, 
     """
 
     # Mise à jour des clés dans le dictionnaire global `report_dict`
-    global_report.report_dict["pos_lc_exp_spectrum_number"] = len(POS_LC)
-    global_report.report_dict["neg_lc_exp_spectrum_number"] = len(NEG_LC)
-    global_report.report_dict["pos_lc_insilico_spectrum_number"] = len(POS_LC_insilico)
-    global_report.report_dict["neg_lc_insilico_spectrum_number"] = len(NEG_LC_insilico)
-    global_report.report_dict["pos_gc_exp_spectrum_number"] = len(POS_GC)
-    global_report.report_dict["neg_gc_exp_spectrum_number"] = len(NEG_GC)
-    global_report.report_dict["pos_gc_insilico_spectrum_number"] = len(POS_GC_insilico)
-    global_report.report_dict["neg_gc_insilico_spectrum_number"] = len(NEG_GC_insilico)
+    global_report.report_dict["pos_lc_exp_spectrum_number"] = len(POS_LC_df)
+    global_report.report_dict["neg_lc_exp_spectrum_number"] = len(NEG_LC_df)
+    global_report.report_dict["pos_lc_insilico_spectrum_number"] = len(POS_LC_In_Silico_df)
+    global_report.report_dict["neg_lc_insilico_spectrum_number"] = len(NEG_LC_In_Silico_df)
+    global_report.report_dict["pos_gc_exp_spectrum_number"] = len(POS_GC_df)
+    global_report.report_dict["neg_gc_exp_spectrum_number"] = len(NEG_GC_df)
+    global_report.report_dict["pos_gc_insilico_spectrum_number"] = len(POS_GC_In_Silico_df)
+    global_report.report_dict["neg_gc_insilico_spectrum_number"] = len(NEG_GC_In_Silico_df)
 
 
 def format_parameters():
@@ -247,7 +245,7 @@ def format_report():
     return parameters_string + filtered_out_string + spectrum_numbers_string + unique_inchikeys_string
 
 
-def report(output_directory, POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico):
+def report(output_directory, POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df):
     """
     Generate a formatted report based on input data and write it to a specified output directory.
 
@@ -274,8 +272,8 @@ def report(output_directory, POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, N
         None
     """
     # Calculs des spectres et des InChIKeys uniques
-    calculate_spectrum_number(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico)
-    calculate_unique_inchikeys(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico)
+    calculate_spectrum_number(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
+    calculate_unique_inchikeys(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
 
     # Création du rapport formaté
     formated_report = format_report()

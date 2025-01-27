@@ -229,7 +229,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     else:
         deletion_callback("There is no new spectrums to process. Exiting code !")
 
-    report(output_directory, POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico)
+    report(output_directory, POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
 
     time.sleep(0.01)
     if completion_callback:
