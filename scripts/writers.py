@@ -6,7 +6,7 @@ import time
 import os
 import re
 
-def write_msp(spectrum_list, filename, mode, update, profile_name, progress_callback=None, total_items_callback=None,
+def write_msp(spectrum_list, filename, mode, update, output_directory, progress_callback=None, total_items_callback=None,
               prefix_callback=None, item_type_callback=None):
     """
     Write MSP file.
@@ -23,7 +23,7 @@ def write_msp(spectrum_list, filename, mode, update, profile_name, progress_call
     """
 
     # Gérer le chemin de sortie
-    output_file_path = os.path.join(parameters_dict["output_directory"], f"{profile_name}/MSP/{mode}", filename)
+    output_file_path = f"{output_directory}/MSP/{mode}/{filename}"
 
     # Donne le contexte du traitement avec le prefix_callback
     if prefix_callback:
@@ -57,7 +57,7 @@ def write_msp(spectrum_list, filename, mode, update, profile_name, progress_call
                 continue
 
 
-def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, profile_name, update=False, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, output_directory, update=False, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     This function writes MSP files for positive and negative LC and GC data. It takes in various inputs for different types of data, a profile_name which is the name of the profile and an optional update flag which defaults to False when not provided.
 
@@ -79,30 +79,30 @@ def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_L
     # sleep for 0.1 second to avoid too many computations
     time.sleep(0.1)
     # write the positive LC data to the "POS_LC.msp" file
-    write_msp(POS_LC, "POS_LC.msp", "POS", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(POS_LC, "POS_LC.msp", "POS", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     # delete the positive LC data to free up memory
     del POS_LC
     # repeat the process for other types of data
     time.sleep(0.1)
-    write_msp(POS_LC_insilico, "POS_LC_insilico.msp", "POS", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(POS_LC_insilico, "POS_LC_insilico.msp", "POS", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_LC_insilico
     time.sleep(0.1)
-    write_msp(POS_GC, "POS_GC.msp", "POS", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(POS_GC, "POS_GC.msp", "POS", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC
     time.sleep(0.1)
-    write_msp(POS_GC_insilico, "POS_GC_insilico.msp", "POS", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(POS_GC_insilico, "POS_GC_insilico.msp", "POS", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_insilico
     time.sleep(0.1)
-    write_msp(NEG_LC, "NEG_LC.msp", "NEG", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(NEG_LC, "NEG_LC.msp", "NEG", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC
     time.sleep(0.1)
-    write_msp(NEG_LC_insilico, "NEG_LC_insilico.msp", "NEG", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(NEG_LC_insilico, "NEG_LC_insilico.msp", "NEG", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_insilico
     time.sleep(0.1)
-    write_msp(NEG_GC, "NEG_GC.msp", "NEG", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(NEG_GC, "NEG_GC.msp", "NEG", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC
     time.sleep(0.1)
-    write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_insilico
 
 
