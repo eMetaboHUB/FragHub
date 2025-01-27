@@ -27,7 +27,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("FragHub 1.2.3")
+        self.setWindowTitle("FragHub 1.2.4")
         self.setWindowIcon(QIcon("./GUI/assets/FragHub_icon.png"))
         self.setGeometry(100, 100, 1280, 720)
 
@@ -45,12 +45,21 @@ class MainWindow(QMainWindow):
 
         # Créez les onglets principaux
         self.tabs = QTabWidget()
+
+        # Créer des instances explicites de OutputTab et ProjectsTab
+        self.output_tab = OutputTab()
+        self.projects_tab = ProjectsTab()
+
+        # Ajouter les instances d'onglet à QTabWidget
         self.tabs.addTab(InputTab(), "INPUT")
-        self.tabs.addTab(OutputTab(), "OUTPUT")
+        self.tabs.addTab(self.output_tab, "OUTPUT")
         self.tabs.addTab(FiltersTab(), "Filters settings")
         self.tabs.addTab(OutputSettingTab(), "Output settings")
-        self.tabs.addTab(ProjectsTab(), "Projects settings")
+        self.tabs.addTab(self.projects_tab, "Projects settings")
         main_layout.addWidget(self.tabs)
+
+        # Connecter le signal (après avoir ajouté les onglets)
+        self.output_tab.output_directory_changed.connect(self.projects_tab.output_directory_changed_signal)
 
         # Bouton START/STOP
         self.start_button = QPushButton("START")

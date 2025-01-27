@@ -1,11 +1,13 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QLabel, QHBoxLayout
 from PyQt6.QtGui import QFont, QIcon
-from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtCore import QSize, Qt, pyqtSignal
 from PyQt6.QtWidgets import QFileDialog
 from ..utils.global_vars import parameters_dict  # Importer le dictionnaire global
 
 
 class OutputTab(QWidget):
+    output_directory_changed = pyqtSignal(str)
+
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()
@@ -39,7 +41,7 @@ class OutputTab(QWidget):
 
         info_button = QPushButton("🛈")
         info_button.setFixedSize(30, 30)
-        info_button.setToolTip("Select an empty directory where project will be created")
+        info_button.setToolTip("Create a new empty directory or Select an existing directory where FragHub has already written files")
         info_button_layout.addWidget(info_button, alignment=Qt.AlignmentFlag.AlignRight)
         self.layout.addLayout(info_button_layout)
 
@@ -50,3 +52,4 @@ class OutputTab(QWidget):
         directory = QFileDialog.getExistingDirectory(self, "Choisir un répertoire pour OUTPUT")
         if directory:
             parameters_dict["output_directory"] = directory
+            self.output_directory_changed.emit(directory)  # Émettre le signal

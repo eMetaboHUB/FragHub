@@ -6,7 +6,7 @@ import time
 import os
 import re
 
-def write_msp(spectrum_list, filename, mode, update, profile_name, progress_callback=None, total_items_callback=None,
+def write_msp(spectrum_list, filename, mode, update, output_directory, progress_callback=None, total_items_callback=None,
               prefix_callback=None, item_type_callback=None):
     """
     Write MSP file.
@@ -23,7 +23,7 @@ def write_msp(spectrum_list, filename, mode, update, profile_name, progress_call
     """
 
     # Gérer le chemin de sortie
-    output_file_path = os.path.join(parameters_dict["output_directory"], f"{profile_name}/MSP/{mode}", filename)
+    output_file_path = f"{output_directory}/MSP/{mode}/{filename}"
 
     # Donne le contexte du traitement avec le prefix_callback
     if prefix_callback:
@@ -57,7 +57,7 @@ def write_msp(spectrum_list, filename, mode, update, profile_name, progress_call
                 continue
 
 
-def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, profile_name, update=False, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, output_directory, update=False, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     This function writes MSP files for positive and negative LC and GC data. It takes in various inputs for different types of data, a profile_name which is the name of the profile and an optional update flag which defaults to False when not provided.
 
@@ -79,34 +79,34 @@ def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_L
     # sleep for 0.1 second to avoid too many computations
     time.sleep(0.1)
     # write the positive LC data to the "POS_LC.msp" file
-    write_msp(POS_LC, "POS_LC.msp", "POS", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(POS_LC, "POS_LC.msp", "POS", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     # delete the positive LC data to free up memory
     del POS_LC
     # repeat the process for other types of data
     time.sleep(0.1)
-    write_msp(POS_LC_insilico, "POS_LC_insilico.msp", "POS", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(POS_LC_insilico, "POS_LC_insilico.msp", "POS", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_LC_insilico
     time.sleep(0.1)
-    write_msp(POS_GC, "POS_GC.msp", "POS", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(POS_GC, "POS_GC.msp", "POS", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC
     time.sleep(0.1)
-    write_msp(POS_GC_insilico, "POS_GC_insilico.msp", "POS", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(POS_GC_insilico, "POS_GC_insilico.msp", "POS", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_insilico
     time.sleep(0.1)
-    write_msp(NEG_LC, "NEG_LC.msp", "NEG", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(NEG_LC, "NEG_LC.msp", "NEG", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC
     time.sleep(0.1)
-    write_msp(NEG_LC_insilico, "NEG_LC_insilico.msp", "NEG", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(NEG_LC_insilico, "NEG_LC_insilico.msp", "NEG", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_insilico
     time.sleep(0.1)
-    write_msp(NEG_GC, "NEG_GC.msp", "NEG", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(NEG_GC, "NEG_GC.msp", "NEG", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC
     time.sleep(0.1)
-    write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_msp(NEG_GC_insilico, "NEG_GC_insilico.msp", "NEG", update, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_insilico
 
 
-def write_csv(df, filename, mode, update, first_run, profile_name, progress_callback=None, total_items_callback=None,
+def write_csv(df, filename, mode, update, first_run, output_directory, progress_callback=None, total_items_callback=None,
               prefix_callback=None, item_type_callback=None):
     """
     This function writes a pandas DataFrame to a CSV file in chunks.
@@ -127,7 +127,7 @@ def write_csv(df, filename, mode, update, first_run, profile_name, progress_call
         df['PEAKS_LIST'] = df['PEAKS_LIST'].str.replace('\n', ';', regex=False)
 
     # Construct the file path dynamically
-    output_file_path = os.path.join(parameters_dict["output_directory"], f"{profile_name}/CSV/{mode}", filename)
+    output_file_path = f"{output_directory}/CSV/{mode}/{filename}"
 
     # Define chunk size for writing DataFrame in parts
     chunk_size = 5000
@@ -167,7 +167,7 @@ def write_csv(df, filename, mode, update, first_run, profile_name, progress_call
             progress_callback(processed_rows)  # Update with processed row count
 
 
-def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, profile_name, update=False, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, first_run, output_directory, update=False, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     Write data to CSV files.
 
@@ -187,40 +187,40 @@ def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico,
 
     time.sleep(0.1)
     # Call write_csv for Positive LC data and write it to POS_LC.csv file
-    write_csv(POS_LC_df, "POS_LC.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(POS_LC_df, "POS_LC.csv", "POS", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     # Clear memory used by POS_LC_df dataframe
     del POS_LC_df
 
     time.sleep(0.1)
-    write_csv(POS_GC_df, "POS_GC.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(POS_GC_df, "POS_GC.csv", "POS", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_df
 
     time.sleep(0.1)
-    write_csv(NEG_LC_df, "NEG_LC.csv", "NEG", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(NEG_LC_df, "NEG_LC.csv", "NEG", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_df
 
     time.sleep(0.1)
-    write_csv(NEG_GC_df, "NEG_GC.csv", "NEG", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(NEG_GC_df, "NEG_GC.csv", "NEG", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_df
 
     time.sleep(0.1)
-    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(POS_LC_df_insilico, "POS_LC_In_Silico.csv", "POS", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_LC_df_insilico
 
     time.sleep(0.1)
-    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico.csv", "POS", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(POS_GC_df_insilico, "POS_GC_In_Silico.csv", "POS", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_df_insilico
 
     time.sleep(0.1)
-    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico.csv", "NEG", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(NEG_LC_df_insilico, "NEG_LC_In_Silico.csv", "NEG", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_df_insilico
 
     time.sleep(0.1)
-    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv", "NEG", update, first_run, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_csv(NEG_GC_df_insilico, "NEG_GC_In_Silico.csv", "NEG", update, first_run, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_df_insilico
 
 
-def write_json(df, filename, mode, profile_name, progress_callback=None, total_items_callback=None,
+def write_json(df, filename, mode, output_directory, progress_callback=None, total_items_callback=None,
                prefix_callback=None, item_type_callback=None):
     """
     Write DataFrame to a JSON file.
@@ -240,7 +240,7 @@ def write_json(df, filename, mode, profile_name, progress_callback=None, total_i
     """
 
     # Définir le chemin du fichier de sortie
-    output_file_path = os.path.join(parameters_dict["output_directory"], f"{profile_name}/JSON/{mode}", filename)
+    output_file_path = f"{output_directory}/JSON/{mode}/{filename}"
 
     # Convertir le DataFrame en une liste de dictionnaires
     json_records = df.to_dict('records')
@@ -283,7 +283,7 @@ def write_json(df, filename, mode, profile_name, progress_callback=None, total_i
         f.write('\n]')
 
 
-def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, profile_name, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     Write dataframes to JSON files.
     :param POS_LC_df: Positive LC dataframe
@@ -300,50 +300,50 @@ def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Positive LC DataFrame to a JSON file named "POS_LC.json"
-    write_json(POS_LC_df, "POS_LC.json", "POS", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(POS_LC_df, "POS_LC.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     # Deleting the DataFrame from memory as it's no longer needed
     del POS_LC_df
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Positive GC DataFrame to a JSON file named "POS_GC.json"
-    write_json(POS_GC_df, "POS_GC.json", "POS", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(POS_GC_df, "POS_GC.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_df
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Negative LC DataFrame to a JSON file named "NEG_LC.json"
-    write_json(NEG_LC_df, "NEG_LC.json", "NEG", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(NEG_LC_df, "NEG_LC.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_df
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Negative GC DataFrame to a JSON file named "NEG_GC.json"
-    write_json(NEG_GC_df, "NEG_GC.json", "NEG", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(NEG_GC_df, "NEG_GC.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_df
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Positive In Silico LC DataFrame to a JSON file named "POS_LC_In_Silico.json"
-    write_json(POS_LC_df_insilico, "POS_LC_In_Silico.json", "POS", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(POS_LC_df_insilico, "POS_LC_In_Silico.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_LC_df_insilico
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Positive In Silico GC DataFrame to a JSON file named "POS_GC_In_Silico.json"
-    write_json(POS_GC_df_insilico, "POS_GC_In_Silico.json", "POS", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(POS_GC_df_insilico, "POS_GC_In_Silico.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_df_insilico
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Negative In Silico LC DataFrame to a JSON file named "NEG_LC_In_Silico.json"
-    write_json(NEG_LC_df_insilico, "NEG_LC_In_Silico.json", "NEG", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(NEG_LC_df_insilico, "NEG_LC_In_Silico.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_df_insilico
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Negative In Silico GC DataFrame to a JSON file named "NEG_GC_In_Silico.json"
-    write_json(NEG_GC_df_insilico, "NEG_GC_In_Silico.json", "NEG", profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(NEG_GC_df_insilico, "NEG_GC_In_Silico.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # Deleting the DataFrame from memory as it's no longer needed
     del NEG_GC_df_insilico

@@ -1,5 +1,8 @@
 # Change Log
 All notable changes to this project will be documented in this file.
+- **27_01_2025**:
+  - Refactoring updates and project logic.
+
 
 - **24_01_2025**: 
   - deleting spectrum if neg adduct in pos spectrum, or pos adduct in neg spectrum

@@ -53,17 +53,17 @@ ordered_columns = ["FILENAME",
 
 def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None, step_callback=None, completion_callback=None, deletion_callback=None):
 
-    profile_name = parameters_dict["selected_profile"]
+    output_directory = parameters_dict["output_directory"]
 
     if parameters_dict['reset_updates'] == 1.0:
-        reset_updates(profile_name)
+        reset_updates(output_directory)
 
-    init_project(profile_name)
+    init_project(output_directory)
 
     start_time = time.time()
 
     input_path = parameters_dict["input_directory"]
-    output_path = os.path.join(parameters_dict["output_directory"],profile_name)
+    output_path = output_directory
 
     # STEP 1: convert files to json if needed (Multithreaded)
     FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF = parsing_to_dict(input_path, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback, step_callback=step_callback)
@@ -114,7 +114,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     if step_callback:
         step_callback("-- CHECKING FOR UPDATES --")
     time.sleep(0.01)
-    spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     deletion_callback(f"previously cleaned: {deletion_report.previously_cleaned}")
 
     if spectrum_list:
@@ -206,21 +206,21 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             if step_callback:
                 step_callback("--  WRITING CSV --")
             time.sleep(0.01)
-            writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, first_run, profile_name, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+            writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, first_run, output_directory, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
         if parameters_dict["msp"] == 1.0:
             time.sleep(0.01)
             if step_callback:
                 step_callback("--  WRITING MSP --")
             time.sleep(0.01)
-            writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, profile_name, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+            writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico, output_directory, update, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
         if parameters_dict["json"] == 1.0:
             time.sleep(0.01)
             if step_callback:
                 step_callback("--  WRITING JSON --")
             time.sleep(0.01)
-            writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, profile_name, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+            writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
         deletion_callback(
             f"Total deletions: {sum([deletion_report.duplicatas_removed, deletion_report.previously_cleaned, deletion_report.no_peaks_list, deletion_report.no_smiles_no_inchi_no_inchikey, deletion_report.no_precursor_mz, deletion_report.low_entropy_score, deletion_report.minimum_peaks_not_requiered, deletion_report.all_peaks_above_precursor_mz, deletion_report.no_peaks_in_mz_range, deletion_report.minimum_high_peaks_not_requiered])}"
