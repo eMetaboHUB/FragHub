@@ -31,25 +31,30 @@ def reset_updates(output_directory):
     if os.path.exists(output_path):  # if the output directory exists
         remove_files(output_path)  # call the remove_files function to remove all files in the directory
 
-def init_project(profile_name):
+def init_project(output_directory):
     """
     Initializes the profile with the given profile name.
 
-    :param profile_name: The name of the profile to initialize.
+    :param output_directory: The output directory to initialize.
     :return: None
     """
 
     # Path to the file where updates will be stored
-    updates_file_path = os.path.join("../datas/updates", profile_name + ".json")
+    updates_file_path = os.path.join(output_directory, "updates.json")
 
-    # Directory where outputs will be stored for the profile
-    output_directory = os.path.join(parameters_dict["output_directory"],profile_name)
+    # Path to the .fraghub file
+    fraghub_file_path = os.path.join(output_directory, ".fraghub")
 
     # List of main directories to be created under the output directory
     main_directories = ['CSV', 'JSON', 'MSP']
 
     # List of subdirectories to be created under each main directory
     sub_directories = ['NEG', 'POS']
+
+    # Checking if the output directory for the profile already exists
+    if not os.path.isdir(output_directory):
+        # Creating the output directory since it doesn't exist
+        os.makedirs(output_directory)
 
     # Checking if the updates file already exists
     if not os.path.isfile(updates_file_path):
@@ -58,10 +63,11 @@ def init_project(profile_name):
             # Write an empty JSON object to the file as initial content
             json.dump({}, fp)
 
-    # Checking if the output directory for the profile already exists
-    if not os.path.isdir(output_directory):
-        # Creating the output directory since it doesn't exist
-        os.makedirs(output_directory)
+    # Create an empty .fraghub file if it doesn't already exist
+    if not os.path.isfile(fraghub_file_path):
+        with open(fraghub_file_path, 'w') as fp:
+            # Leave the file empty (just create it)
+            pass
 
     # For each directory in main_directories list...
     for main_dir in main_directories:
