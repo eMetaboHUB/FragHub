@@ -88,10 +88,17 @@ def format_parameters():
     normalize_intensity: {"ON" if parameters_dict["normalize_intensity"] else "OFF"}
     remove_peak_above_precursormz: {"ON" if parameters_dict['remove_peak_above_precursormz'] else "OFF"}
     check_minimum_peak_requiered: {"ON" if parameters_dict['check_minimum_peak_requiered'] else "OFF"}
+        n_peaks: {parameters_dict['check_minimum_peak_requiered_n_peaks']}
     reduce_peak_list: {"ON" if parameters_dict['reduce_peak_list'] else "OFF"}
+        max_peaks: {parameters_dict['reduce_peak_list_max_peaks']}
     remove_spectrum_under_entropy_score: {"ON" if parameters_dict['remove_spectrum_under_entropy_score'] else "OFF"}
+        entropy_score_value: {parameters_dict['remove_spectrum_under_entropy_score_value']}
     keep_mz_in_range: {"ON" if parameters_dict['keep_mz_in_range'] else "OFF"}
+        from_mz: {parameters_dict['keep_mz_in_range_from_mz']}
+        to_mz: {parameters_dict['keep_mz_in_range_to_mz']}
     check_minimum_of_high_peaks_requiered: {"ON" if parameters_dict['check_minimum_of_high_peaks_requiered'] else "OFF"}
+        intensity_percent: {parameters_dict['check_minimum_of_high_peaks_requiered_intensity_percent']}
+        no_peaks: {parameters_dict['check_minimum_of_high_peaks_requiered_no_peaks']}
     
     reset_updates: {"YES" if parameters_dict['reset_updates'] else "NO"}
     
@@ -101,7 +108,7 @@ def format_parameters():
 
 
 def format_fitered_out():
-    fitered_out_string = f""" 
+    filtered_out_string = f""" 
     ======================= FILTERED OUT =======================
     No peaks list: {deletion_report.no_peaks_list}
     No smiles, no inchi, no inchikey: {deletion_report.no_smiles_no_inchi_no_inchikey}
@@ -115,7 +122,7 @@ def format_fitered_out():
     
     """
 
-    return fitered_out_string
+    return filtered_out_string
 
 
 def format_spectrum_numbers():
@@ -148,17 +155,35 @@ def format_spectrum_numbers():
 
 
 def format_unique_inchikeys():
-    pass
+    unique_inchikeys_string = f""" 
+    ================= UNIQUE INCHIKEYS ==================
+    POS LC Exp: {global_report.report_dict["pos_lc_exp_spectrum_unique_inchikey"]}
+    NEG LC Exp: {global_report.report_dict["neg_lc_exp_spectrum_unique_inchikey"]}
+    POS LC InSilico: {global_report.report_dict["pos_lc_insilico_spectrum_unique_inchikey"]}
+    NEG LC InSilico: {global_report.report_dict["neg_lc_insilico_spectrum_unique_inchikey"]}
+    POS GC Exp: {global_report.report_dict["pos_gc_exp_spectrum_unique_inchikey"]}
+    NEG GC Exp: {global_report.report_dict["neg_gc_exp_spectrum_unique_inchikey"]}
+    POS GC InSilico: {global_report.report_dict["pos_gc_insilico_spectrum_unique_inchikey"]}
+    NEG GC InSilico: {global_report.report_dict["neg_gc_insilico_spectrum_unique_inchikey"]}
+
+    TOTAL Unique InChIKeys: {global_report.report_dict["TOTAL_unique_inchikey"]}
+    
+    """
+
+    return unique_inchikeys_string
+
 
 def format_report():
     parameters_string = format_parameters()
-    fitered_out_string = format_fitered_out()
+    filtered_out_string = format_fitered_out()
     spectrum_numbers_string = format_spectrum_numbers()
-    pass
+    unique_inchikeys_string = format_unique_inchikeys()
+
+    return parameters_string + filtered_out_string + spectrum_numbers_string + unique_inchikeys_string
 
 
 def report(output_directory, POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico):
     calculate_spectrum_number(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico)
     calculate_unique_inchikeys(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico)
 
-    format_report()
+    formated_report = format_report()
