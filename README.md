@@ -39,10 +39,10 @@ To use this programme:
 
 2) FragHub GUI start: **at any time you can move the mouse over 🛈 to view a detailed description**<br>
    1) First tab: Select single or multiple .json, .csv, .msp, or .mgf files.<br>![img.png](img.png)
-   2) Second tab: Select an empty directory where project will be created<br>![img_1.png](img_1.png)
+   2) Second tab: Create a nex empty directory or Select an existing directory where FragHub has already written files<br>![img_1.png](img_1.png)
    3) Third tab: This area allows users to select specific filters for inclusion during the processing stage. Moreover, it provides the option to adjust the respective parameters of each filters.<br>![img_2.png](img_2.png)
    4) Fourth tab: Select the output file format of your preference. By default, all formats are selected.<br>![img_3.png](img_3.png)
-   5) Fifth tab: FragHub projects allow you to save the splash keys of previous spectra processed.<br>So that at the next update, only new spectra from the database are processed, and added to previous FragHub processes.<br>Enter the name of your project to create a new one, or select an existing one.<br><br>Reseting project allows you to delete splash keys and output files from the selected project, in order to start a new project from scratch.<br>![img_4.png](img_4.png)
+   5) Fifth tab: FragHub save the splash keys of previous spectra processed.<br>So that at the next update, only new spectra from the database are processed, and added to previous FragHub processes.<br>Reseting project allows you to delete splash keys and output files from the selected project, in order to start a new project from scratch.<br>![img_4.png](img_4.png)
    6) Click on START button to run the programme.
 3) Progress start. At any time you can click on STOP button to close the programme.<br>![img_5.png](img_5.png)
 4) When Progress is finish, click on FINISH button to close the programme.<br>![img_6.png](img_6.png)
