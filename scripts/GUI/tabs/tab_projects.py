@@ -1,5 +1,5 @@
 import os
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QComboBox, QHBoxLayout, QStyledItemDelegate, QPushButton, QSpacerItem, \
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QStyledItemDelegate, QPushButton, QSpacerItem, \
     QSizePolicy, QLabel
 from PyQt6.QtCore import Qt, pyqtSignal, QSize, QTimer
 from PyQt6.QtGui import QPainter, QColor, QBrush, QPen, QFont
@@ -52,14 +52,6 @@ class QToggleSwitch(QWidget):
         self.update()
 
 
-class CenteredItemDelegate(QStyledItemDelegate):
-    """Délégué personnalisé pour centrer les éléments dans le menu déroulant."""
-
-    def initStyleOption(self, option, index):
-        super().initStyleOption(option, index)
-        option.displayAlignment = Qt.AlignmentFlag.AlignCenter
-
-
 class ProjectsTab(QWidget):
     def __init__(self):
         super().__init__()
@@ -67,36 +59,10 @@ class ProjectsTab(QWidget):
         if "reset_updates" not in parameters_dict:
             parameters_dict["reset_updates"] = 0.0
 
-        if "selected_profile" not in parameters_dict:
-            parameters_dict["selected_profile"] = "Basic"
-
         # Ajouter un layout principal
         main_layout = QVBoxLayout()
 
         # Ajouter un espace extensible avant le contenu principal
-        main_layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
-
-        # Ajouter une étiquette pour la section "Projects"
-        project_label = QLabel("SELECT PROJECT")
-        project_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        project_label.setStyleSheet("font-size: 24px; font-weight: bold; color: black;")
-        main_layout.addWidget(project_label)
-
-        # Section Menu déroulant
-        center_layout = QHBoxLayout()
-        self.dropdown = QComboBox()
-        self.dropdown.addItem("Basic")  # Projet par défaut
-        self.dropdown.setItemDelegate(CenteredItemDelegate(self.dropdown))
-        self.dropdown.setEditable(True)
-        self.dropdown.lineEdit().setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.dropdown.setFixedWidth(200)  # Largeur de 200px pour le menu déroulant
-        self.populate_dropdown_with_json_files()
-        self.dropdown.editTextChanged.connect(self.handle_new_project)
-        self.dropdown.currentTextChanged.connect(self.save_selected_project)
-        center_layout.addWidget(self.dropdown)
-        main_layout.addLayout(center_layout)
-
-        # Ajouter un séparateur
         main_layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
         # Ajouter une étiquette pour la section "Reset Project"
@@ -133,29 +99,6 @@ class ProjectsTab(QWidget):
 
         # Appliquer le layout final
         self.setLayout(main_layout)
-
-    def populate_dropdown_with_json_files(self):
-        """Recherche et ajoute les fichiers .json depuis ../../datas/updates dans le menu déroulant."""
-        json_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../datas/updates"))
-        if os.path.exists(json_dir) and os.path.isdir(json_dir):
-            json_files = [file for file in os.listdir(json_dir) if file.endswith(".json")]
-            if json_files:
-                self.dropdown.addItems([os.path.splitext(file)[0] for file in json_files])
-            else:
-                self.dropdown.addItem("Aucun fichier JSON trouvé")
-        else:
-            self.dropdown.addItem("Répertoire introuvable")
-
-    def handle_new_project(self, text):
-        """Ajoute un nouveau projet si non existant et le sélectionne."""
-        if text and text not in [self.dropdown.itemText(i) for i in range(self.dropdown.count())]:
-            self.dropdown.addItem(text)
-            self.dropdown.setCurrentText(text)
-        self.save_selected_project(text)
-
-    def save_selected_project(self, text):
-        """Enregistre le projet sélectionné."""
-        parameters_dict["selected_profile"] = text
 
     def toggle_label_color(self, label):
         """Alterner la couleur de l'étiquette "RESET PROJECT ?"."""
