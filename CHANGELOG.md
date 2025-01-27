@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
   - removing no or bad adduct spectrum
   - refactoring adduct normalization
 
+
 - **20_12_2024**: 
   - New modern GUI (Graphical User Interface).
   - Adding dependencies to requirements.txt
