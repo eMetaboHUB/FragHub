@@ -78,6 +78,11 @@ def format_parameters():
 
     OUTPUT_DIRECTORY:
         {parameters_dict["output_directory"]}
+        
+    OUTPUT_FORMAT:
+        CSV: {"YES" if parameters_dict['csv'] else "NO"}
+        MSP: {"YES" if parameters_dict['msp'] else "NO"}
+        jSON: {"YES" if parameters_dict['json'] else "NO"}
 
     ===================== PARAMETERS =====================
     normalize_intensity: {"ON" if parameters_dict["normalize_intensity"] else "OFF"}
@@ -97,23 +102,29 @@ def format_parameters():
 
 def format_fitered_out():
     fitered_out_string = f""" 
-    ======================= FILTERED OUT =======================
-    No peaks list: {deletion_report.no_peaks_list}
-    No smiles, no inchi, no inchikey: {deletion_report.no_smiles_no_inchi_no_inchikey}
-    No precursor mz: {deletion_report.no_precursor_mz}
-    No or bad adduct: {deletion_report.no_or_bad_adduct}
-    Low entropy score: {deletion_report.low_entropy_score}
-    Minimum peaks not required: {deletion_report.minimum_peaks_not_requiered}
-    All peaks above precursor mz: {deletion_report.all_peaks_above_precursor_mz}
-    No peaks in mz range: {deletion_report.no_peaks_in_mz_range}
-    Minimum high peaks not required: {deletion_report.minimum_high_peaks_not_requiered}
+    ==================== FILTERED OUT ====================
+    POS LC Exp: {global_report.report_dict["pos_lc_exp_spectrum_number"]}
 
     """
 
     return fitered_out_string
 
+
 def format_spectrum_numbers():
-    pass
+    spectrum_numbers_string = f""" 
+    ================== SPECTRUM NUMBER ==================
+    POS LC Exp: {global_report.report_dict["pos_lc_exp_spectrum_number"]}
+    NEG LC Exp: {global_report.report_dict["neg_lc_exp_spectrum_number"]}
+    POS LC InSilico: {global_report.report_dict["pos_lc_insilico_spectrum_number"]}
+    NEG LC InSilico: {global_report.report_dict["neg_lc_insilico_spectrum_number"]}
+    POS GC Exp: {global_report.report_dict["pos_gc_exp_spectrum_number"]}
+    NEG GC Exp: {global_report.report_dict["neg_gc_exp_spectrum_number"]}
+    POS GC InSilico: {global_report.report_dict["pos_gc_insilico_spectrum_number"]}
+    NEG GC InSilico: {global_report.report_dict["neg_gc_insilico_spectrum_number"]}
+
+    """
+
+    return spectrum_numbers_string
 
 def format_unique_inchikeys():
     pass
@@ -121,6 +132,7 @@ def format_unique_inchikeys():
 def format_report():
     parameters_string = format_parameters()
     fitered_out_string = format_fitered_out()
+    spectrum_numbers_string = format_spectrum_numbers()
     pass
 
 
