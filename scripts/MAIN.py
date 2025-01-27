@@ -53,12 +53,12 @@ ordered_columns = ["FILENAME",
 
 def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None, step_callback=None, completion_callback=None, deletion_callback=None):
 
-    profile_name = parameters_dict["selected_profile"]
+    output_directory = parameters_dict["output_directory"]
 
     if parameters_dict['reset_updates'] == 1.0:
-        reset_updates(profile_name)
+        reset_updates(output_directory)
 
-    init_project(profile_name)
+    init_project(output_directory)
 
     start_time = time.time()
 

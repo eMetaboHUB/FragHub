@@ -8,8 +8,6 @@ def remove_files(directory):
     """
 
     for filename in os.listdir(directory):  # iterate through each file in the directory
-        if filename == '.gitkeep':
-            continue  # skip .gitkeep files as we don't want to remove these
         file_path = os.path.join(directory, filename)  # create a complete filepath
 
         if os.path.isfile(file_path):  # if the path is a file
@@ -17,21 +15,21 @@ def remove_files(directory):
         elif os.path.isdir(file_path):  # if the path is a directory
             remove_files(file_path)  # call this function recursively to remove files in subdirectory
 
-def reset_updates(profile_name):
+def reset_updates(output_directory):
     """
     Resets the updates by deleting the contents of the updates.json file and removing any existing output files.
     """
 
-    json_update_path = rf"../datas/updates/{profile_name}.json"  # path to the relevant update.json file
-    ouput_path = os.path.join(parameters_dict["output_directory"],profile_name)  # path to the relevant output directory
+    json_update_path = os.path.join(output_directory, "updates.json")  # path to the relevant update.json file
+    output_path = output_directory  # path to the relevant output directory
 
     # Reset the json file - Writing an empty json object to the file effectively clears it
     with open(json_update_path, 'w') as f:
         json.dump({}, f)
 
     # Remove output files
-    if os.path.exists(ouput_path):  # if the output directory exists
-        remove_files(ouput_path)  # call the remove_files function to remove all files in the directory
+    if os.path.exists(output_path):  # if the output directory exists
+        remove_files(output_path)  # call the remove_files function to remove all files in the directory
 
 def init_project(profile_name):
     """
