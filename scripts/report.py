@@ -64,6 +64,22 @@ def calculate_spectrum_number(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, 
 
 
 def format_parameters():
+    """
+    Formats and presents the parameters dictionary into a structured string format for better readability.
+    The function extracts input and output files, output directory configuration, and a variety of processing
+    parameters, presenting them in a categorized and human-readable manner. It is specifically tailored for
+    an input dictionary expected to have a predefined structure for file types and processing configurations.
+
+    Arguments:
+        parameters_dict (dict): A dictionary containing input file paths, output configurations, and processing
+            parameter settings. Each key represents a parameter, its value either being a specific configuration
+            or control flag.
+
+    Returns:
+        str: A formatted string summarizing the provided configuration and parameters, including input files,
+            output format, directory details, and parameter-specific configurations. Detailed sections include
+            file classifications and processing behavior based on input.
+    """
     parameters_string = f""" 
     ======================= FILES =======================
     INPUT_FILES:
@@ -108,6 +124,17 @@ def format_parameters():
 
 
 def format_fitered_out():
+    """
+    Generate a summary report of items that have been filtered out based on specific
+    criteria. This function formats the filtering summary into a predefined structured
+    string.
+
+    Returns
+    -------
+    str
+        A formatted string summarizing the items that were filtered out.
+
+    """
     filtered_out_string = f""" 
     ======================= FILTERED OUT =======================
     No peaks list: {deletion_report.no_peaks_list}
@@ -126,6 +153,18 @@ def format_fitered_out():
 
 
 def format_spectrum_numbers():
+    """
+    Generate a summary string containing detailed spectrum information alongside
+    a total spectrum count. Computes the total spectrum number by summing individual
+    components and formats it into a structured multi-line string for better readability.
+
+    Returns
+    -------
+    str
+        A formatted string containing spectrum information including individual
+        spectrum numbers categorized by type and mode (Positive LC Exp, Negative GC
+        Insilico, etc.) and the total spectrum number.
+    """
     total_spectrum_number = (
             global_report.report_dict["pos_lc_exp_spectrum_number"] +
             global_report.report_dict["neg_lc_exp_spectrum_number"] +
@@ -155,6 +194,18 @@ def format_spectrum_numbers():
 
 
 def format_unique_inchikeys():
+    """
+    Generates a detailed formatted string containing counts of unique InChIKeys from a global report
+    dictionary. The unique InChIKeys are categorized based on spectrum type (LC/GC), ionization mode
+    (POS/NEG), and source type (Exp/InSilico).
+
+    Returns
+    -------
+    str
+        A formatted multiline string containing unique InChIKey counts for each category and the
+        total count.
+
+    """
     unique_inchikeys_string = f""" 
     ================= UNIQUE INCHIKEYS ==================
     POS LC Exp: {global_report.report_dict["pos_lc_exp_spectrum_unique_inchikey"]}
@@ -174,6 +225,19 @@ def format_unique_inchikeys():
 
 
 def format_report():
+    """
+    Generates a formatted report string by concatenating strings representing different
+    sections of the report.
+
+    This function combines information about parameters, filtered-out data, spectrum
+    numbers, and unique InChIKeys into a single formatted report string.
+
+    Returns:
+        str: The concatenated formatted string containing the report details.
+
+    Raises:
+        None
+    """
     parameters_string = format_parameters()
     filtered_out_string = format_fitered_out()
     spectrum_numbers_string = format_spectrum_numbers()
@@ -183,6 +247,31 @@ def format_report():
 
 
 def report(output_directory, POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico):
+    """
+    Generate a formatted report based on input data and write it to a specified output directory.
+
+    This function calculates spectra and unique InChIKeys from the given input lists.
+    It then generates a formatted report and writes the content to a file named "report.txt"
+    in the specified output directory.
+
+    Parameters:
+        output_directory (str): The directory where the output file, "report.txt", will be written.
+        POS_LC (list): Positive liquid chromatography input data.
+        POS_LC_insilico (list): In-silico generated data for positive liquid chromatography.
+        POS_GC (list): Positive gas chromatography input data.
+        POS_GC_insilico (list): In-silico generated data for positive gas chromatography.
+        NEG_LC (list): Negative liquid chromatography input data.
+        NEG_LC_insilico (list): In-silico generated data for negative liquid chromatography.
+        NEG_GC (list): Negative gas chromatography input data.
+        NEG_GC_insilico (list): In-silico generated data for negative gas chromatography.
+
+    Raises:
+        FileNotFoundError: If the specified output directory does not exist.
+        IOError: If there is an error writing to the file in the specified output directory.
+
+    Returns:
+        None
+    """
     # Calculs des spectres et des InChIKeys uniques
     calculate_spectrum_number(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico)
     calculate_unique_inchikeys(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_LC_insilico, NEG_GC, NEG_GC_insilico)
