@@ -83,13 +83,13 @@ def format_parameters():
     ======================= FILES =======================
     INPUT_FILES:
         MSP:
-    {"".join([f"\t\t\t{file}\n" for file in parameters_dict["input_directory"] if file.endswith(".msp")]) or "\t\t\t-- no file --\n"}
+{"".join([f"\t\t\t{file}\n" for file in parameters_dict["input_directory"] if file.endswith(".msp")]) or "\t\t\t-- no file --\n"}
         JSON:
-    {"".join([f"\t\t\t{file}\n" for file in parameters_dict["input_directory"] if file.endswith(".json")]) or "\t\t\t-- no file --\n"}
+{"".join([f"\t\t\t{file}\n" for file in parameters_dict["input_directory"] if file.endswith(".json")]) or "\t\t\t-- no file --\n"}
         CSV:
-    {"".join([f"\t\t\t{file}\n" for file in parameters_dict["input_directory"] if file.endswith(".csv")]) or "\t\t\t-- no file --\n"}
+{"".join([f"\t\t\t{file}\n" for file in parameters_dict["input_directory"] if file.endswith(".csv")]) or "\t\t\t-- no file --\n"}
         MGF:
-    {"".join([f"\t\t\t{file}\n" for file in parameters_dict["input_directory"] if file.endswith(".mgf")]) or "\t\t\t-- no file --\n"}
+{"".join([f"\t\t\t{file}\n" for file in parameters_dict["input_directory"] if file.endswith(".mgf")]) or "\t\t\t-- no file --\n"}
 
     OUTPUT_DIRECTORY:
         {parameters_dict["output_directory"]}
