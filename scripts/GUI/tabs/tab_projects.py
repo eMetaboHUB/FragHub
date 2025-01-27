@@ -1,6 +1,5 @@
 import os
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QStyledItemDelegate, QPushButton, QSpacerItem, \
-    QSizePolicy, QLabel
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QLabel
 from PyQt6.QtCore import Qt, pyqtSignal, QSize, QTimer
 from PyQt6.QtGui import QPainter, QColor, QBrush, QPen, QFont
 from ..utils.global_vars import parameters_dict  # Importer le dictionnaire global
@@ -11,14 +10,16 @@ class QToggleSwitch(QWidget):
 
     def __init__(self, parent=None, initial_state=False):
         super().__init__(parent)
-        self.setFixedSize(100, 50)  # Dimensions augmentées du toggle switch
+        self.setFixedSize(100, 50)  # Dimensions du toggle
         self._state = initial_state
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self._enabled = False  # La capacité de changer l'état est désactivée par défaut
+        self.setCursor(Qt.CursorShape.ForbiddenCursor)  # Curseur changé pour interdire l'interaction au départ
 
     def mousePressEvent(self, event):
-        self._state = not self._state  # Inverser l'état
-        self.update()  # Redessiner le switch
-        self.stateChanged.emit(self._state)  # Émettre le signal
+        if self._enabled:  # Permettre de basculer uniquement si le bouton est activé
+            self._state = not self._state  # Inverser l'état
+            self.update()  # Redessiner le switch
+            self.stateChanged.emit(self._state)  # Émettre le signal
 
     def paintEvent(self, event):
         painter = QPainter(self)
@@ -28,7 +29,7 @@ class QToggleSwitch(QWidget):
         painter.setBrush(QBrush(background_color))
         painter.setPen(Qt.PenStyle.NoPen)
         painter.drawRoundedRect(rect, rect.height() // 2, rect.height() // 2)
-        font = QFont("Arial", 12, QFont.Weight.Bold)  # Police plus grande pour le texte "YES/NO"
+        font = QFont("Arial", 12, QFont.Weight.Bold)
         painter.setFont(font)
         text_color = QColor("#FFFFFF")
         painter.setPen(text_color)
@@ -42,7 +43,7 @@ class QToggleSwitch(QWidget):
         painter.drawEllipse(button_x, 5, rect.height() - 10, rect.height() - 10)
 
     def sizeHint(self):
-        return QSize(100, 50)  # Taille adaptée
+        return QSize(100, 50)
 
     def isChecked(self):
         return self._state
@@ -51,48 +52,56 @@ class QToggleSwitch(QWidget):
         self._state = state
         self.update()
 
+    def setEnabled(self, enabled):
+        self._enabled = enabled  # Active ou désactive la capacité d'interaction
+        self.setCursor(Qt.CursorShape.PointingHandCursor if enabled else Qt.CursorShape.ForbiddenCursor)
+        self.update()
+
 
 class ProjectsTab(QWidget):
+    output_directory_changed_signal = pyqtSignal(str)
+
     def __init__(self):
         super().__init__()
 
         if "reset_updates" not in parameters_dict:
             parameters_dict["reset_updates"] = 0.0
 
-        # Ajouter un layout principal
+        # Layout principal
         main_layout = QVBoxLayout()
 
-        # Ajouter un espace extensible avant le contenu principal
+        # Ajouter un espace extensible
         main_layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
-        # Ajouter une étiquette pour la section "Reset Project"
+        # Ajouter une étiquette pour l'option "RESET PROJECT"
         reset_label = QLabel("RESET PROJECT ?")
         reset_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         reset_label.setStyleSheet("font-size: 32px; font-weight: bold; color: red;")
         main_layout.addWidget(reset_label)
 
-        # Démarrage du clignotement du texte
+        # Clignotement du label
         self.color_state = True
         self.timer = QTimer(self)
         self.timer.timeout.connect(lambda: self.toggle_label_color(reset_label))
         self.timer.start(500)
 
-        # Ajouter un toggle switch en dessous de l'étiquette
-        initial_state = parameters_dict.get("reset_updates", 0.0) == 1.0
-        self.toggle_switch = QToggleSwitch(initial_state=initial_state)
-        self.toggle_switch.stateChanged.connect(self.handle_toggle)
+        # Ajouter le toggle switch
+        self.toggle_switch = QToggleSwitch(initial_state=False)  # Toujours "NO" au départ
         main_layout.addWidget(self.toggle_switch, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        # Ajouter un espace extensible après le contenu principal
+        # Connecter le signal pour surveiller les changements de répertoire
+        self.output_directory_changed_signal.connect(self.check_output_directory)
+
+        # Ajouter un espace extensible après
         main_layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
-        # Ajouter un bouton d'information général en bas à droite
+        # Ajouter un bouton d'information en bas à droite
         info_button_layout = QHBoxLayout()
         info_button_layout.setAlignment(Qt.AlignmentFlag.AlignRight)
         info_button = QPushButton("🛈")
         info_button.setFixedSize(30, 30)
         info_button.setToolTip(
-            "FragHub projects allow you to save the splash keys of previous spectra processed.\nSo that at the next update, only new spectra from the database are processed, and added to previous FragHub processes.\nEnter the name of your project to create a new one, or select an existing one.\n\nReseting project allows you to delete splash keys and output files from the selected project, in order to start a new project from scratch."
+            "Reseting the project deletes splash keys and output files from the selected project, to start fresh."
         )
         info_button_layout.addWidget(info_button)
         main_layout.addLayout(info_button_layout)
@@ -101,13 +110,19 @@ class ProjectsTab(QWidget):
         self.setLayout(main_layout)
 
     def toggle_label_color(self, label):
-        """Alterner la couleur de l'étiquette "RESET PROJECT ?"."""
+        """Clignotement de l'étiquette RESET PROJECT."""
         if self.color_state:
             label.setStyleSheet("font-size: 32px; font-weight: bold; color: #FF4040;")
         else:
             label.setStyleSheet("font-size: 32px; font-weight: bold; color: #8B0000;")
         self.color_state = not self.color_state
 
-    def handle_toggle(self, state):
-        """Traiter le changement d'état du toggle switch."""
-        parameters_dict["reset_updates"] = 1.0 if state else 0.0
+    def check_output_directory(self, directory):
+        """Vérifier la présence du fichier `.fraghub` dans le répertoire sélectionné."""
+        if directory:
+            fraghub_file = os.path.join(directory, ".fraghub")
+            if os.path.isfile(fraghub_file):
+                self.toggle_switch.setEnabled(True)  # Débloquer le toggle switch
+            else:
+                self.toggle_switch.setEnabled(False)  # Bloquer le toggle switch
+                self.toggle_switch.setChecked(False)  # Rester sur "NO" par défaut
