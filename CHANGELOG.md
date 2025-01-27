@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
   - bug(fix): let thread safely terminate in no new spectrum to process
   - removing no or bad adduct spectrum
   - refactoring adduct normalization
+  - adding report.txt in output directory
 
 
 - **20_12_2024**: 
