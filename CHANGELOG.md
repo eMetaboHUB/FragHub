@@ -1,5 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
+
+
+- **29_01_2025**:
+  - changing licence from MIT to CC-BY-NC 4.0
+
+
 - **27_01_2025**:
   - Refactoring updates and project logic.
 
