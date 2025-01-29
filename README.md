@@ -5,7 +5,7 @@
 # FragHub  (1.2.4)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![Required_Python](https://img.shields.io/badge/Python-3.12-blue)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC--BY--NC%204.0-lightgrey)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14620928.svg)](https://doi.org/10.5281/zenodo.14620928)
 
 
