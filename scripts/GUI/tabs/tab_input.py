@@ -1,8 +1,9 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QLabel, QHBoxLayout
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QLabel, QHBoxLayout, QComboBox
 from PyQt6.QtGui import QFont, QIcon, QPixmap
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtWidgets import QFileDialog
 from ..utils.global_vars import parameters_dict  # Importer le dictionnaire global
+import os
 
 
 class InputTab(QWidget):
@@ -31,7 +32,12 @@ class InputTab(QWidget):
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.layout.addWidget(label)
 
-        # Espacement et bouton d'infos
+        # Ajouter un menu déroulant sous le label
+        self.file_menu = QComboBox()
+        self.file_menu.setPlaceholderText("No files selected")  # Texte par défaut
+        self.layout.addWidget(self.file_menu)
+
+        # Espacement et bouton d'informations
         self.layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
         info_button_layout = QHBoxLayout()
@@ -49,4 +55,12 @@ class InputTab(QWidget):
         """Gestionnaire de sélection de fichiers pour l'onglet INPUT."""
         files, _ = QFileDialog.getOpenFileNames(self, "Choisir des fichiers")
         if files:
+            # Mise à jour du dictionnaire global
             parameters_dict["input_directory"] = files
+
+            # Ajouter les noms de fichiers au menu déroulant
+            self.file_menu.clear()  # Nettoyer le menu existant
+            for file_path in files:
+                basename = os.path.basename(file_path)  # Récupérer juste le nom du fichier
+                self.file_menu.addItem(basename)  # Ajouter au menu déroulant
+
