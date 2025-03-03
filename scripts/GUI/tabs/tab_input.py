@@ -34,8 +34,9 @@ class InputTab(QWidget):
 
         # Ajouter un menu déroulant sous le label
         self.file_menu = QComboBox()
-        self.file_menu.setPlaceholderText("No files selected")  # Texte par défaut
-        self.layout.addWidget(self.file_menu)
+        self.file_menu.setFixedWidth(200)  # Réduire la largeur à 200px
+        self.file_menu.setPlaceholderText("No files selected")  # Texte initial
+        self.layout.addWidget(self.file_menu, alignment=Qt.AlignmentFlag.AlignCenter)
 
         # Espacement et bouton d'informations
         self.layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
@@ -64,3 +65,6 @@ class InputTab(QWidget):
                 basename = os.path.basename(file_path)  # Récupérer juste le nom du fichier
                 self.file_menu.addItem(basename)  # Ajouter au menu déroulant
 
+            # Afficher directement le premier fichier si disponible
+            if files:
+                self.file_menu.setCurrentText(os.path.basename(files[0]))
