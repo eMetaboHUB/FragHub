@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+- **25_03_2025**:
+  - fixing peaks list regex parsing error when formulas in peaks comment.
+  
 
 - **29_01_2025**:
   - changing licence from MIT to CC-BY-NC 4.0
