@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="scripts/GUI/assets/FragHub_icon.png" alt="FragHub Icon" /> 1.2.5
+  <img src="scripts/GUI/assets/FragHub_icon.png" alt="FragHub Icon" /> 1.2.6
 </div>
 
-# FragHub  (1.2.5)
+# FragHub  (1.2.6)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![Required_Python](https://img.shields.io/badge/Python-3.12-blue)
 ![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC--BY--NC%204.0-lightgrey)

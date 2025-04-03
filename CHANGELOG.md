@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+
+- **03_04_2025**:
+  - fixing missing last msp spectrum in msp files in some cases.
+
+
 - **25_03_2025**:
   - fixing peaks list regex parsing error when formulas in peaks comment.
   
