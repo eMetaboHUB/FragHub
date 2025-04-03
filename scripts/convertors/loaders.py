@@ -17,7 +17,10 @@ def load_spectrum_list_from_msp(msp_file_path, progress_callback=None, total_ite
     spectrum_list (List[str]): The list of spectra read from the file, where each spectrum is represented as a string.
     """
     # Étape 1 : Compter le nombre de spectres
-    num_spectra = sum(1 for line in open(msp_file_path, 'r', encoding="UTF-8") if line.strip() == '')
+    with open(msp_file_path, 'r', encoding="UTF-8") as file:
+        # Compter les spectres (lignes vides)
+        num_spectra = sum(1 for line in file if line.strip() == '')
+        file.seek(0)  # Remettre le curseur au début
 
     # Étape 2 : Exécuter le callback pour initialiser les totaux si défini
     if total_items_callback:
@@ -38,42 +41,34 @@ def load_spectrum_list_from_msp(msp_file_path, progress_callback=None, total_ite
 
     # Étape 5 : Initialiser un buffer pour contenir temporairement les données
     buffer = [f"FILENAME: {filename}\n"]  # initialisation du buffer avec le nom du fichier
+    processed_spectra = 0
 
     # Étape 6 : Ouvrir le fichier et lire ligne par ligne
     with open(msp_file_path, 'r', encoding="UTF-8") as file:
-
-        # Initialisez un compteur pour suivre les progrès
-        processed_spectra = 0
-
         for line in file:
-
-            # Si la ligne est vide, cela signifie que le spectre est terminé
-            if line.strip() == '':
-                # Vérifier si le buffer contient des données
-                if buffer:
-                    # Joignez toutes les données du buffer en une seule chaîne
+            if line.strip() == '':  # Fin d'un spectre
+                if buffer and len(buffer) > 1:  # Vérifier que le buffer contient des données pertinentes
                     spectrum = '\n'.join(buffer)
                     spectrum = re.sub(
                         r"FILENAME: .*\n",
-                        f"FILENAME: {filename}\n",
+                        f"FILENAME: {os.path.basename(msp_file_path)}\n",
                         spectrum,
                         flags=re.IGNORECASE
                     )
-                    # Ajouter le spectre à la liste
                     spectrum_list.append(spectrum)
+                    buffer = [f"FILENAME: {os.path.basename(msp_file_path)}\n"]  # Réinitialisation du buffer
 
-                    # Réinitialiser le buffer
-                    buffer = [f"FILENAME: {filename}\n"]
-
-                    # Mise à jour de la progression
+                    # Mise à jour des progrès
                     processed_spectra += 1
-
                     if progress_callback:
-                        progress_callback(processed_spectra)  # Met à jour directement avec le spectre traité
-
-            # Si la ligne n'est pas vide, ajoutez-la au buffer
+                        progress_callback(processed_spectra)
             else:
                 buffer.append(line.strip())
+
+        # Étape 4 : Vérifier le dernier spectre resté dans le buffer
+        if buffer and len(buffer) > 1:  # Ajouter le contenu du dernier spectre non traité
+            spectrum = '\n'.join(buffer)
+            spectrum_list.append(spectrum)
 
     # Retourne la liste des spectres extraits
     return spectrum_list
