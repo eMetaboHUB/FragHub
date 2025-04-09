@@ -47,6 +47,7 @@ def normalize_values(metadata_dict):
         metadata_dict = normalize_ionmode(metadata_dict)
 
         # ckeck if adduct in pos is really pos (exemple)
+        print(metadata_dict, "\n\n")
         metadata_dict = check_for_bad_adduct(metadata_dict)
 
         if metadata_dict:

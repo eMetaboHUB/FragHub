@@ -45,6 +45,7 @@ def clean_instrument_type(instrument_type):
     :return: The cleaned instrument string.
     :rtype: str
     """
+    print("before clean_instrument_type: ", instrument_type)
     # If the given instrument type string contains "-tof", this line replaces
     # it with "tof"
     instrument_type = re.sub("-tof", "tof", instrument_type)
@@ -79,12 +80,7 @@ def clean_instrument_type(instrument_type):
     # If the given instrument type string contains "... uplc ...", this line removes it
     instrument_type = re.sub("... uplc ...", " ", instrument_type)
 
-    #normalize IE/EI type by IE
-    instrument_type = re.sub("\bEI\b", "IE", instrument_type, flags=re.IGNORECASE)
 
-    instrument_type = re.sub("\bBE\b", "EB", instrument_type, flags=re.IGNORECASE)
-
-    # Returns the cleaned instrument type string
     return instrument_type
 
 def clean_comment(comment):
