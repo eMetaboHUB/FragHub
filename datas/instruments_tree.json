@@ -585,26 +585,26 @@
               "SOLUTION": "UNKNOWN, LC-APPI-UNKNOWN, LOW"
             }
           },
+          "maldi": {
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-MALDI-UNKNOWN, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-MALDI-UNKNOWN, LOW"
+            },
+            "high": {
+              "SOLUTION": "UNKNOWN, LC-MALDI-UNKNOWN, HIGH"
+            }
+          },
           "ci": {
+            "unknown": {
+              "SOLUTION": "UNKNOWN, GC-CI-UNKNOWN, UNKNOWN"
+            },
             "low": {
               "SOLUTION": "UNKNOWN, GC-CI-UNKNOWN, LOW"
             },
             "high": {
               "SOLUTION": "UNKNOWN, GC-CI-UNKNOWN, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, GC-CI-UNKNOWN, UNKNOWN"
-            }
-          },
-          "maldi": {
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-MALDI-UNKNOWN, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-MALDI-UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "UNKNOWN, LC-MALDI-UNKNOWN, HIGH"
             }
           },
           "ptr": {
@@ -634,47 +634,59 @@
               "SOLUTION": "UNKNOWN, LC-FD-UNKNOWN, UNKNOWN"
             }
           },
-          "ie": {
-            "low": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-IE-UNKNOWN, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-IE-UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-IE-UNKNOWN, HIGH"
-            }
-          },
           "ei": {
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-EI-UNKNOWN, LOW"
+            },
             "unknown": {
               "SOLUTION": "UNKNOWN, LC-EI-UNKNOWN, UNKNOWN"
             },
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-EI-UNKNOWN, LOW"
+            "high": {
+              "SOLUTION": "UNKNOWN, LC-EI-UNKNOWN, HIGH"
+            }
+          }
+        },
+        "ittof": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-ITTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-ITTOF, HIGH"
+            }
+          },
+          "esi": {
+            "high": {
+              "SOLUTION": "UNKNOWN, LC-ESI-ITTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-ESI-ITTOF, UNKNOWN"
+            }
+          },
+          "apci": {
+            "high": {
+              "SOLUTION": "UNKNOWN, LC-APCI-ITTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-APCI-ITTOF, UNKNOWN"
             }
           }
         },
         "b": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-B, LOW"
+            }
+          },
           "ci": {
             "low": {
               "SOLUTION": "UNKNOWN, GC-CI-B, LOW"
             },
-            "high": {
-              "SOLUTION": "UNKNOWN, GC-CI-B, HIGH"
-            },
             "unknown": {
               "SOLUTION": "UNKNOWN, GC-CI-B, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "low": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-B, LOW"
-            },
-            "high": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-B, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-B, UNKNOWN"
             }
           },
           "fab": {
@@ -695,6 +707,17 @@
           }
         },
         "qq": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-QQ, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-QQ, HIGH"
+            },
+            "low": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-QQ, LOW"
+            }
+          },
           "esi": {
             "high": {
               "SOLUTION": "UNKNOWN, LC-ESI-QQ, HIGH"
@@ -705,26 +728,15 @@
             "low": {
               "SOLUTION": "UNKNOWN, LC-ESI-QQ, LOW"
             }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-QQ, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-QQ, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-QQ, LOW"
-            }
           }
         },
         "q": {
-          "apci": {
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-APCI-Q, LOW"
-            },
+          "unknown": {
             "unknown": {
-              "SOLUTION": "UNKNOWN, LC-APCI-Q, UNKNOWN"
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-Q, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-Q, LOW"
             }
           },
           "esi": {
@@ -735,38 +747,30 @@
               "SOLUTION": "UNKNOWN, LC-ESI-Q, UNKNOWN"
             }
           },
-          "unknown": {
+          "apci": {
             "low": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-Q, LOW"
+              "SOLUTION": "UNKNOWN, LC-APCI-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-Q, UNKNOWN"
+              "SOLUTION": "UNKNOWN, LC-APCI-Q, UNKNOWN"
             }
           }
         },
-        "ittof": {
-          "esi": {
+        "qittof": {
+          "maldi": {
             "high": {
-              "SOLUTION": "UNKNOWN, LC-ESI-ITTOF, HIGH"
+              "SOLUTION": "UNKNOWN, LC-MALDI-QITTOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, LC-ESI-ITTOF, UNKNOWN"
+              "SOLUTION": "UNKNOWN, LC-MALDI-QITTOF, UNKNOWN"
             }
           },
           "unknown": {
-            "high": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-ITTOF, HIGH"
-            },
             "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-ITTOF, UNKNOWN"
-            }
-          },
-          "apci": {
-            "high": {
-              "SOLUTION": "UNKNOWN, LC-APCI-ITTOF, HIGH"
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-QITTOF, UNKNOWN"
             },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-APCI-ITTOF, UNKNOWN"
+            "high": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-QITTOF, HIGH"
             }
           }
         },
@@ -793,24 +797,6 @@
             },
             "high": {
               "SOLUTION": "UNKNOWN, LC-APCI-ITFT, HIGH"
-            }
-          }
-        },
-        "qittof": {
-          "maldi": {
-            "high": {
-              "SOLUTION": "UNKNOWN, LC-MALDI-QITTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-MALDI-QITTOF, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-QITTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-QITTOF, HIGH"
             }
           }
         },
@@ -874,39 +860,21 @@
             }
           }
         },
-        "ebeb": {
-          "fab": {
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-FAB-EBEB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-FAB-EBEB, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "low": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EBEB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EBEB, UNKNOWN"
-            }
-          }
-        },
         "eb": {
-          "ie": {
-            "low": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-IE-EB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-IE-EB, UNKNOWN"
-            }
-          },
           "fab": {
             "low": {
               "SOLUTION": "UNKNOWN, LC-FAB-EB, LOW"
             },
             "unknown": {
               "SOLUTION": "UNKNOWN, LC-FAB-EB, UNKNOWN"
+            }
+          },
+          "ei": {
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-EI-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-EI-EB, UNKNOWN"
             }
           },
           "unknown": {
@@ -953,12 +921,12 @@
               "SOLUTION": "UNKNOWN, LC-ESI-QFT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-IE-QFT, UNKNOWN"
+              "SOLUTION": "UNKNOWN, LC-EI-QFT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-IE-QFT, HIGH"
+              "SOLUTION": "UNKNOWN, LC-EI-QFT, HIGH"
             }
           },
           "apci": {
@@ -1003,12 +971,12 @@
               "SOLUTION": "UNKNOWN, GC-CI-FT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-IE-FT, UNKNOWN"
+              "SOLUTION": "UNKNOWN, LC-EI-FT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-IE-FT, HIGH"
+              "SOLUTION": "UNKNOWN, LC-EI-FT, HIGH"
             }
           },
           "apci": {
@@ -1248,71 +1216,21 @@
             }
           }
         },
-        "qq": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-UNKNOWN-QQ, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "UNKNOWN, LC-UNKNOWN-QQ, HIGH"
-            },
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-UNKNOWN-QQ, LOW"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-ESI-QQ, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "UNKNOWN, LC-ESI-QQ, HIGH"
-            },
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-ESI-QQ, LOW"
-            }
-          }
-        },
-        "q": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-UNKNOWN-Q, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-UNKNOWN-Q, LOW"
-            }
-          },
-          "apci": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-APCI-Q, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-APCI-Q, LOW"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-ESI-Q, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-ESI-Q, LOW"
-            }
-          }
-        },
         "ittof": {
+          "esi": {
+            "high": {
+              "SOLUTION": "UNKNOWN, LC-ESI-ITTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-ESI-ITTOF, UNKNOWN"
+            }
+          },
           "unknown": {
             "unknown": {
               "SOLUTION": "UNKNOWN, LC-UNKNOWN-ITTOF, UNKNOWN"
             },
             "high": {
               "SOLUTION": "UNKNOWN, LC-UNKNOWN-ITTOF, HIGH"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-ESI-ITTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "UNKNOWN, LC-ESI-ITTOF, HIGH"
             }
           },
           "apci": {
@@ -1324,21 +1242,71 @@
             }
           }
         },
-        "itft": {
+        "q": {
           "esi": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-ESI-ITFT, UNKNOWN"
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-ESI-Q, LOW"
             },
-            "high": {
-              "SOLUTION": "UNKNOWN, LC-ESI-ITFT, HIGH"
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-ESI-Q, UNKNOWN"
             }
           },
+          "apci": {
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-APCI-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-APCI-Q, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-UNKNOWN-Q, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-UNKNOWN-Q, LOW"
+            }
+          }
+        },
+        "qq": {
+          "esi": {
+            "high": {
+              "SOLUTION": "UNKNOWN, LC-ESI-QQ, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-ESI-QQ, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-ESI-QQ, LOW"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-UNKNOWN-QQ, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "UNKNOWN, LC-UNKNOWN-QQ, HIGH"
+            },
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-UNKNOWN-QQ, LOW"
+            }
+          }
+        },
+        "itft": {
           "unknown": {
             "high": {
               "SOLUTION": "UNKNOWN, LC-UNKNOWN-ITFT, HIGH"
             },
             "unknown": {
               "SOLUTION": "UNKNOWN, LC-UNKNOWN-ITFT, UNKNOWN"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-ESI-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "UNKNOWN, LC-ESI-ITFT, HIGH"
             }
           },
           "apci": {
@@ -1391,24 +1359,6 @@
             },
             "unknown": {
               "SOLUTION": "UNKNOWN, LC-UNKNOWN-B, UNKNOWN"
-            }
-          }
-        },
-        "ebeb": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-UNKNOWN-EBEB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-UNKNOWN-EBEB, UNKNOWN"
-            }
-          },
-          "fab": {
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-FAB-EBEB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-FAB-EBEB, UNKNOWN"
             }
           }
         },
@@ -1520,27 +1470,53 @@
         }
       },
       "gc": {
-        "unknown": {
+        "b": {
+          "ci": {
+            "low": {
+              "SOLUTION": "UNKNOWN, GC-CI-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, GC-CI-B, UNKNOWN"
+            }
+          },
           "unknown": {
             "unknown": {
-              "SOLUTION": "UNKNOWN, GC-UNKNOWN-UNKNOWN, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-B, UNKNOWN"
             },
             "low": {
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-B, LOW"
+            }
+          }
+        },
+        "unknown": {
+          "unknown": {
+            "low": {
               "SOLUTION": "UNKNOWN, GC-UNKNOWN-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-UNKNOWN, UNKNOWN"
             },
             "high": {
               "SOLUTION": "UNKNOWN, GC-UNKNOWN-UNKNOWN, HIGH"
             }
           },
           "ci": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, GC-CI-UNKNOWN, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "UNKNOWN, GC-CI-UNKNOWN, LOW"
             },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, GC-CI-UNKNOWN, UNKNOWN"
+            },
             "high": {
               "SOLUTION": "UNKNOWN, GC-CI-UNKNOWN, HIGH"
+            }
+          },
+          "apci": {
+            "high": {
+              "SOLUTION": "UNKNOWN, GC-APCI-UNKNOWN, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, GC-APCI-UNKNOWN, UNKNOWN"
             }
           },
           "ptr": {
@@ -1554,55 +1530,33 @@
               "SOLUTION": "UNKNOWN, GC-PTR-UNKNOWN, UNKNOWN"
             }
           },
-          "ie": {
-            "low": {
-              "SOLUTION": "UNKNOWN, GC-IE-UNKNOWN, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, GC-IE-UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "UNKNOWN, GC-IE-UNKNOWN, HIGH"
-            }
-          },
-          "apci": {
-            "high": {
-              "SOLUTION": "UNKNOWN, GC-APCI-UNKNOWN, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, GC-APCI-UNKNOWN, UNKNOWN"
-            }
-          },
           "ei": {
             "low": {
               "SOLUTION": "UNKNOWN, GC-EI-UNKNOWN, LOW"
             },
             "unknown": {
               "SOLUTION": "UNKNOWN, GC-EI-UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "UNKNOWN, GC-EI-UNKNOWN, HIGH"
             }
           }
         },
-        "b": {
+        "qtof": {
           "unknown": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, GC-UNKNOWN-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "UNKNOWN, GC-UNKNOWN-B, LOW"
-            },
             "high": {
-              "SOLUTION": "UNKNOWN, GC-UNKNOWN-B, HIGH"
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-QTOF, UNKNOWN"
             }
           },
-          "ci": {
+          "apci": {
             "unknown": {
-              "SOLUTION": "UNKNOWN, GC-CI-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "UNKNOWN, GC-CI-B, LOW"
+              "SOLUTION": "UNKNOWN, GC-APCI-QTOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "UNKNOWN, GC-CI-B, HIGH"
+              "SOLUTION": "UNKNOWN, GC-APCI-QTOF, HIGH"
             }
           }
         },
@@ -1675,12 +1629,12 @@
               "SOLUTION": "UNKNOWN, GC-UNKNOWN-EB, UNKNOWN"
             }
           },
-          "ie": {
+          "ei": {
             "low": {
-              "SOLUTION": "UNKNOWN, GC-IE-EB, LOW"
+              "SOLUTION": "UNKNOWN, GC-EI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, GC-IE-EB, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-EI-EB, UNKNOWN"
             }
           }
         },
@@ -1693,12 +1647,12 @@
               "SOLUTION": "UNKNOWN, GC-CI-QFT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "UNKNOWN, GC-IE-QFT, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-EI-QFT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "UNKNOWN, GC-IE-QFT, HIGH"
+              "SOLUTION": "UNKNOWN, GC-EI-QFT, HIGH"
             }
           },
           "apci": {
@@ -1745,12 +1699,12 @@
               "SOLUTION": "UNKNOWN, GC-CI-FT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "UNKNOWN, GC-IE-FT, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-EI-FT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "UNKNOWN, GC-IE-FT, HIGH"
+              "SOLUTION": "UNKNOWN, GC-EI-FT, HIGH"
             }
           },
           "apci": {
@@ -2991,44 +2945,44 @@
     "lkb 9000b": {
       "gc": {
         "unknown": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, UNKNOWN"
-            }
-          },
           "ci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000B, GC-CI-B, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "Shimadzu LKB-9000B, GC-CI-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu LKB-9000B, GC-CI-B, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, LOW"
             }
           }
         },
         "b": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, LOW"
-            }
-          },
           "ci": {
             "unknown": {
               "SOLUTION": "Shimadzu LKB-9000B, GC-CI-B, UNKNOWN"
             },
             "low": {
               "SOLUTION": "Shimadzu LKB-9000B, GC-CI-B, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, UNKNOWN"
             }
           }
         }
       },
       "unknown": {
-        "b": {
+        "unknown": {
           "ci": {
             "unknown": {
               "SOLUTION": "Shimadzu LKB-9000B, GC-CI-B, UNKNOWN"
@@ -3046,7 +3000,7 @@
             }
           }
         },
-        "unknown": {
+        "b": {
           "ci": {
             "low": {
               "SOLUTION": "Shimadzu LKB-9000B, GC-CI-B, LOW"
@@ -3061,84 +3015,6 @@
             },
             "low": {
               "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, LOW"
-            }
-          }
-        }
-      }
-    },
-    "lkb 9000": {
-      "unknown": {
-        "unknown": {
-          "ci": {
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, UNKNOWN"
-            }
-          }
-        },
-        "b": {
-          "ci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, HIGH"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, UNKNOWN"
-            }
-          }
-        }
-      },
-      "gc": {
-        "unknown": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, UNKNOWN"
-            }
-          },
-          "ci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, HIGH"
-            }
-          }
-        },
-        "b": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, HIGH"
-            }
-          },
-          "ci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, HIGH"
             }
           }
         }
@@ -3203,20 +3079,20 @@
           }
         },
         "qit": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "Shimadzu Axima, LC-UNKNOWN-QIT, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu Axima, LC-UNKNOWN-QIT, UNKNOWN"
-            }
-          },
           "maldi": {
             "unknown": {
               "SOLUTION": "Shimadzu Axima, LC-MALDI-QIT, UNKNOWN"
             },
             "low": {
               "SOLUTION": "Shimadzu Axima, LC-MALDI-QIT, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "Shimadzu Axima, LC-UNKNOWN-QIT, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu Axima, LC-UNKNOWN-QIT, UNKNOWN"
             }
           }
         }
@@ -3243,20 +3119,20 @@
           }
         },
         "unknown": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "Shimadzu 2010A, LC-UNKNOWN-Q, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 2010A, LC-UNKNOWN-Q, UNKNOWN"
-            }
-          },
           "esi": {
             "unknown": {
               "SOLUTION": "Shimadzu 2010A, LC-ESI-Q, UNKNOWN"
             },
             "low": {
               "SOLUTION": "Shimadzu 2010A, LC-ESI-Q, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "Shimadzu 2010A, LC-UNKNOWN-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 2010A, LC-UNKNOWN-Q, UNKNOWN"
             }
           }
         }
@@ -3281,14 +3157,6 @@
           }
         },
         "q": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "Shimadzu 2010A, LC-UNKNOWN-Q, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 2010A, LC-UNKNOWN-Q, UNKNOWN"
-            }
-          },
           "esi": {
             "unknown": {
               "SOLUTION": "Shimadzu 2010A, LC-ESI-Q, UNKNOWN"
@@ -3296,83 +3164,13 @@
             "low": {
               "SOLUTION": "Shimadzu 2010A, LC-ESI-Q, LOW"
             }
-          }
-        }
-      }
-    },
-    "2020": {
-      "lc": {
-        "q": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
-            }
-          },
-          "apci": {
-            "low": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
-            }
-          }
-        },
-        "unknown": {
-          "apci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
-            }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
+              "SOLUTION": "Shimadzu 2010A, LC-UNKNOWN-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
-            }
-          }
-        }
-      },
-      "unknown": {
-        "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
-            }
-          },
-          "apci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
-            }
-          }
-        },
-        "q": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
-            }
-          },
-          "apci": {
-            "low": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
+              "SOLUTION": "Shimadzu 2010A, LC-UNKNOWN-Q, UNKNOWN"
             }
           }
         }
@@ -3381,38 +3179,38 @@
     "8045": {
       "lc": {
         "qq": {
+          "unknown": {
+            "high": {
+              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, UNKNOWN"
+            }
+          },
           "esi": {
             "high": {
               "SOLUTION": "Shimadzu 8045, LC-ESI-QQ, HIGH"
             },
             "unknown": {
               "SOLUTION": "Shimadzu 8045, LC-ESI-QQ, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, HIGH"
             }
           }
         },
         "unknown": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, UNKNOWN"
-            }
-          },
           "esi": {
             "unknown": {
               "SOLUTION": "Shimadzu 8045, LC-ESI-QQ, UNKNOWN"
             },
             "high": {
               "SOLUTION": "Shimadzu 8045, LC-ESI-QQ, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, UNKNOWN"
             }
           }
         }
@@ -3428,11 +3226,11 @@
             }
           },
           "esi": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 8045, LC-ESI-QQ, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Shimadzu 8045, LC-ESI-QQ, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 8045, LC-ESI-QQ, UNKNOWN"
             }
           }
         },
@@ -3446,11 +3244,89 @@
             }
           },
           "unknown": {
-            "high": {
-              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, HIGH"
+            }
+          }
+        }
+      }
+    },
+    "2020": {
+      "lc": {
+        "unknown": {
+          "apci": {
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
+            }
+          }
+        },
+        "q": {
+          "apci": {
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
+            }
+          }
+        }
+      },
+      "unknown": {
+        "unknown": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
+            }
+          },
+          "apci": {
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
+            }
+          }
+        },
+        "q": {
+          "apci": {
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
             }
           }
         }
@@ -3459,38 +3335,38 @@
     "18a": {
       "lc": {
         "ittof": {
-          "esi": {
-            "high": {
-              "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, UNKNOWN"
-            }
-          },
           "unknown": {
             "unknown": {
               "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, UNKNOWN"
             },
             "high": {
               "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, HIGH"
+            }
+          },
+          "esi": {
+            "high": {
+              "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, UNKNOWN"
             }
           }
         },
         "unknown": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, UNKNOWN"
-            }
-          },
           "esi": {
             "unknown": {
               "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, UNKNOWN"
             },
             "high": {
               "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, UNKNOWN"
             }
           }
         }
@@ -3535,7 +3411,25 @@
       }
     },
     "esquire 3000 plus": {
-      "unknown": {
+      "lc": {
+        "qit": {
+          "esi": {
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, UNKNOWN"
+            }
+          }
+        },
         "unknown": {
           "unknown": {
             "unknown": {
@@ -3551,30 +3445,12 @@
             },
             "high": {
               "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, HIGH"
-            }
-          }
-        },
-        "qit": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, HIGH"
-            }
-          },
-          "esi": {
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, UNKNOWN"
             }
           }
         }
       },
-      "lc": {
-        "unknown": {
+      "unknown": {
+        "qit": {
           "unknown": {
             "unknown": {
               "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, UNKNOWN"
@@ -3584,61 +3460,61 @@
             }
           },
           "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, UNKNOWN"
             }
           }
         },
-        "qit": {
-          "esi": {
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, UNKNOWN"
-            }
-          },
+        "unknown": {
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, UNKNOWN"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, HIGH"
             }
           }
         }
       }
     },
     "maxis plus hd": {
-      "lc": {
-        "qtof": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            }
-          },
+      "unknown": {
+        "unknown": {
           "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, HIGH"
             }
           }
         },
-        "unknown": {
+        "qtof": {
           "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, UNKNOWN"
             }
           },
           "unknown": {
@@ -3651,7 +3527,25 @@
           }
         }
       },
-      "unknown": {
+      "lc": {
+        "unknown": {
+          "esi": {
+            "high": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, UNKNOWN"
+            }
+          }
+        },
         "qtof": {
           "esi": {
             "unknown": {
@@ -3667,24 +3561,6 @@
             },
             "unknown": {
               "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            }
-          }
-        },
-        "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, HIGH"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, HIGH"
             }
           }
         }
@@ -3692,31 +3568,31 @@
     },
     "esquire 4000": {
       "unknown": {
-        "qit": {
-          "esi": {
-            "high": {
-              "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, UNKNOWN"
-            }
-          },
+        "unknown": {
           "unknown": {
             "unknown": {
               "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, UNKNOWN"
             },
             "high": {
               "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, HIGH"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, HIGH"
             }
           }
         },
-        "unknown": {
+        "qit": {
           "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, HIGH"
             }
           },
           "esi": {
@@ -3730,6 +3606,24 @@
         }
       },
       "lc": {
+        "qit": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, UNKNOWN"
+            }
+          }
+        },
         "unknown": {
           "unknown": {
             "unknown": {
@@ -3740,29 +3634,11 @@
             }
           },
           "esi": {
-            "high": {
-              "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, UNKNOWN"
-            }
-          }
-        },
-        "qit": {
-          "esi": {
+            },
             "high": {
               "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, HIGH"
             }
           }
         }
@@ -3770,31 +3646,31 @@
     },
     "esquire 3000": {
       "unknown": {
-        "qit": {
+        "unknown": {
           "esi": {
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, HIGH"
             }
           },
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, UNKNOWN"
             }
           }
         },
-        "unknown": {
+        "qit": {
           "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, HIGH"
             }
           },
           "esi": {
@@ -3809,20 +3685,20 @@
       },
       "lc": {
         "qit": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, UNKNOWN"
-            }
-          },
           "esi": {
             "high": {
               "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, HIGH"
             },
             "unknown": {
               "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, HIGH"
             }
           }
         },
@@ -3836,11 +3712,11 @@
             }
           },
           "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, UNKNOWN"
             }
           }
         }
@@ -3848,39 +3724,39 @@
     },
     "maxis ii hd": {
       "unknown": {
-        "qtof": {
-          "esi": {
-            "high": {
-              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, UNKNOWN"
-            }
-          },
+        "unknown": {
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, UNKNOWN"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, HIGH"
             }
           }
         },
-        "unknown": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, HIGH"
-            }
-          },
+        "qtof": {
           "unknown": {
             "unknown": {
               "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, UNKNOWN"
             },
             "high": {
               "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, HIGH"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, HIGH"
             }
           }
         }
@@ -3896,29 +3772,29 @@
             }
           },
           "esi": {
-            "high": {
-              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, HIGH"
             }
           }
         },
         "qtof": {
           "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, UNKNOWN"
             }
           },
           "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, HIGH"
             }
           }
         }
@@ -3927,12 +3803,12 @@
     "microtof q": {
       "unknown": {
         "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
+          "apci": {
             "high": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, HIGH"
+              "SOLUTION": "Bruker micrOTOF-Q, LC-APCI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-APCI-QTOF, UNKNOWN"
             }
           },
           "esi": {
@@ -3941,48 +3817,72 @@
             },
             "unknown": {
               "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         },
         "qtof": {
           "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, UNKNOWN"
+            }
+          },
+          "apci": {
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-APCI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-APCI-QTOF, HIGH"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, HIGH"
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, UNKNOWN"
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         }
       },
       "lc": {
-        "qtof": {
+        "unknown": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, HIGH"
+            }
+          },
           "unknown": {
             "high": {
               "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, HIGH"
             },
             "unknown": {
               "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, UNKNOWN"
-            }
-          },
-          "esi": {
-            "high": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, UNKNOWN"
             }
           }
         },
-        "unknown": {
+        "qtof": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, HIGH"
+            }
+          },
           "unknown": {
             "unknown": {
               "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, UNKNOWN"
@@ -3990,13 +3890,43 @@
             "high": {
               "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, HIGH"
             }
-          },
-          "esi": {
+          }
+        }
+      },
+      "gc": {
+        "unknown": {
+          "apci": {
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-APCI-QTOF, UNKNOWN"
+            },
             "high": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, HIGH"
+              "SOLUTION": "Bruker micrOTOF-Q, GC-APCI-QTOF, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, UNKNOWN"
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, UNKNOWN"
+            }
+          }
+        },
+        "qtof": {
+          "apci": {
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-APCI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-APCI-QTOF, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         }
@@ -4014,53 +3944,53 @@
             }
           },
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         },
         "unknown": {
+          "esi": {
+            "high": {
+              "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, UNKNOWN"
+            }
+          },
           "unknown": {
             "high": {
               "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, HIGH"
             },
             "unknown": {
               "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, HIGH"
             }
           }
         }
       },
       "lc": {
-        "unknown": {
+        "qtof": {
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, UNKNOWN"
             }
           },
           "esi": {
-            "high": {
-              "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, HIGH"
             }
           }
         },
-        "qtof": {
+        "unknown": {
           "esi": {
             "unknown": {
               "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, UNKNOWN"
@@ -4070,11 +4000,11 @@
             }
           },
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         }
@@ -4082,45 +4012,45 @@
     },
     "maxis hd": {
       "lc": {
-        "unknown": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            }
-          },
+        "qtof": {
           "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, HIGH"
             }
           }
         },
-        "qtof": {
+        "unknown": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, HIGH"
+            }
+          },
           "unknown": {
             "unknown": {
               "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, UNKNOWN"
             },
             "high": {
               "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, HIGH"
-            }
-          },
-          "esi": {
-            "high": {
-              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, UNKNOWN"
             }
           }
         }
       },
       "unknown": {
-        "unknown": {
+        "qtof": {
           "esi": {
             "high": {
               "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, HIGH"
@@ -4130,35 +4060,73 @@
             }
           },
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         },
-        "qtof": {
+        "unknown": {
           "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, HIGH"
             }
           },
           "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, UNKNOWN"
             }
           }
         }
       }
     },
     "esquire": {
+      "lc": {
+        "qit": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, UNKNOWN"
+            }
+          }
+        },
+        "unknown": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, UNKNOWN"
+            }
+          },
+          "esi": {
+            "low": {
+              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, UNKNOWN"
+            }
+          }
+        }
+      },
       "unknown": {
         "unknown": {
           "esi": {
@@ -4170,11 +4138,11 @@
             }
           },
           "unknown": {
-            "low": {
-              "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, LOW"
-            },
             "unknown": {
               "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, LOW"
             }
           }
         },
@@ -4193,50 +4161,50 @@
             },
             "low": {
               "SOLUTION": "Bruker Esquire, LC-ESI-QIT, LOW"
-            }
-          }
-        }
-      },
-      "lc": {
-        "unknown": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, UNKNOWN"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, LOW"
-            }
-          }
-        },
-        "qit": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, LOW"
-            }
-          },
-          "esi": {
-            "low": {
-              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, UNKNOWN"
             }
           }
         }
       }
     },
     "apex qe": {
+      "lc": {
+        "itft": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, UNKNOWN"
+            }
+          }
+        },
+        "unknown": {
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, UNKNOWN"
+            }
+          },
+          "esi": {
+            "high": {
+              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, UNKNOWN"
+            }
+          }
+        }
+      },
       "unknown": {
         "unknown": {
           "esi": {
@@ -4248,11 +4216,11 @@
             }
           },
           "unknown": {
-            "high": {
-              "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, HIGH"
             }
           }
         },
@@ -4263,44 +4231,6 @@
             },
             "unknown": {
               "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, UNKNOWN"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, HIGH"
-            }
-          }
-        }
-      },
-      "lc": {
-        "unknown": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, UNKNOWN"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, HIGH"
-            }
-          }
-        },
-        "itft": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, HIGH"
             }
           },
           "esi": {
@@ -4315,6 +4245,44 @@
       }
     },
     "apex ii": {
+      "lc": {
+        "itft": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, UNKNOWN"
+            }
+          }
+        },
+        "unknown": {
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, UNKNOWN"
+            }
+          },
+          "esi": {
+            "high": {
+              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, UNKNOWN"
+            }
+          }
+        }
+      },
       "unknown": {
         "unknown": {
           "esi": {
@@ -4326,11 +4294,11 @@
             }
           },
           "unknown": {
-            "high": {
-              "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, HIGH"
             }
           }
         },
@@ -4341,44 +4309,6 @@
             },
             "unknown": {
               "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, UNKNOWN"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, HIGH"
-            }
-          }
-        }
-      },
-      "lc": {
-        "unknown": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, UNKNOWN"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, HIGH"
-            }
-          }
-        },
-        "itft": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, HIGH"
             }
           },
           "esi": {
@@ -4394,24 +4324,6 @@
     },
     "maxis": {
       "lc": {
-        "qtof": {
-          "esi": {
-            "high": {
-              "SOLUTION": "Bruker Maxis, LC-ESI-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Maxis, LC-ESI-QTOF, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Maxis, LC-UNKNOWN-QTOF, HIGH"
-            }
-          }
-        },
         "unknown": {
           "unknown": {
             "unknown": {
@@ -4427,6 +4339,24 @@
             },
             "high": {
               "SOLUTION": "Bruker Maxis, LC-ESI-QTOF, HIGH"
+            }
+          }
+        },
+        "qtof": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker Maxis, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis, LC-UNKNOWN-QTOF, HIGH"
+            }
+          },
+          "esi": {
+            "high": {
+              "SOLUTION": "Bruker Maxis, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis, LC-ESI-QTOF, UNKNOWN"
             }
           }
         }
@@ -4472,6 +4402,24 @@
     },
     "flex": {
       "unknown": {
+        "unknown": {
+          "maldi": {
+            "high": {
+              "SOLUTION": "Bruker FLEX, LC-MALDI-QITTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker FLEX, LC-MALDI-QITTOF, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker FLEX, LC-UNKNOWN-QITTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker FLEX, LC-UNKNOWN-QITTOF, HIGH"
+            }
+          }
+        },
         "qittof": {
           "unknown": {
             "high": {
@@ -4487,24 +4435,6 @@
             },
             "high": {
               "SOLUTION": "Bruker FLEX, LC-MALDI-QITTOF, HIGH"
-            }
-          }
-        },
-        "unknown": {
-          "maldi": {
-            "unknown": {
-              "SOLUTION": "Bruker FLEX, LC-MALDI-QITTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker FLEX, LC-MALDI-QITTOF, HIGH"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker FLEX, LC-UNKNOWN-QITTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker FLEX, LC-UNKNOWN-QITTOF, HIGH"
             }
           }
         }
@@ -5099,36 +5029,36 @@
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, LOW"
             }
           },
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, UNKNOWN"
             }
           }
         },
-        "ebeb": {
+        "eb": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, LOW"
             }
           },
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, UNKNOWN"
             }
           }
         }
@@ -5137,36 +5067,36 @@
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, LOW"
             }
           },
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, UNKNOWN"
             }
           }
         },
-        "ebeb": {
+        "eb": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, UNKNOWN"
             }
           },
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, LOW"
             }
           }
         }
@@ -5815,22 +5745,22 @@
               "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, LC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, LOW"
+              "SOLUTION": "JEOL JMS-700V, LC-EI-EB, LOW"
             }
           }
         },
         "eb": {
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, LC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, LOW"
+              "SOLUTION": "JEOL JMS-700V, LC-EI-EB, LOW"
             }
           },
           "unknown": {
@@ -5853,12 +5783,12 @@
               "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, LOW"
             }
           }
         },
@@ -5871,12 +5801,12 @@
               "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, LOW"
             }
           }
         }
@@ -9195,12 +9125,12 @@
               "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-CI-QFT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-IE-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-IE-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, HIGH"
             }
           },
           "apci": {
@@ -9237,12 +9167,12 @@
               "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-APCI-QFT, UNKNOWN"
             }
           },
-          "ie": {
+          "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-IE-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-IE-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, UNKNOWN"
             }
           },
           "ci": {
@@ -9257,12 +9187,12 @@
       },
       "unknown": {
         "unknown": {
-          "ie": {
+          "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, UNKNOWN-IE-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, UNKNOWN-IE-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, UNKNOWN"
             }
           },
           "unknown": {
@@ -9315,12 +9245,12 @@
               "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-APCI-QFT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, UNKNOWN-IE-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, UNKNOWN-IE-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, HIGH"
             }
           }
         }
@@ -10301,12 +10231,12 @@
     "gc orbitrap": {
       "gc": {
         "ft": {
-          "ie": {
+          "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-IE-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-IE-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, UNKNOWN"
             }
           },
           "apci": {
@@ -10343,12 +10273,12 @@
               "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-CI-FT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-IE-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-IE-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, HIGH"
             }
           },
           "apci": {
@@ -10387,12 +10317,12 @@
               "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-CI-FT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, UNKNOWN-IE-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, UNKNOWN-IE-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, HIGH"
             }
           },
           "apci": {
@@ -10405,12 +10335,12 @@
           }
         },
         "ft": {
-          "ie": {
+          "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, UNKNOWN-IE-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, UNKNOWN-IE-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, UNKNOWN"
             }
           },
           "apci": {
@@ -25674,25 +25604,25 @@
   "shimadzu": {
     "lkb 9000b": {
       "unknown": {
-        "unknown": {
+        "b": {
           "ci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000B, GC-CI-B, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "Shimadzu LKB-9000B, GC-CI-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu LKB-9000B, GC-CI-B, UNKNOWN"
             }
           },
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, UNKNOWN"
             }
           }
         },
-        "b": {
+        "unknown": {
           "unknown": {
             "unknown": {
               "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, UNKNOWN"
@@ -25722,11 +25652,11 @@
             }
           },
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, UNKNOWN"
             }
           }
         },
@@ -25745,84 +25675,6 @@
             },
             "unknown": {
               "SOLUTION": "Shimadzu LKB-9000B, GC-UNKNOWN-B, UNKNOWN"
-            }
-          }
-        }
-      }
-    },
-    "lkb 9000": {
-      "gc": {
-        "unknown": {
-          "ci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, HIGH"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, HIGH"
-            }
-          }
-        },
-        "b": {
-          "ci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, HIGH"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, UNKNOWN"
-            }
-          }
-        }
-      },
-      "unknown": {
-        "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, HIGH"
-            }
-          },
-          "ci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, HIGH"
-            }
-          }
-        },
-        "b": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-UNKNOWN-B, HIGH"
-            }
-          },
-          "ci": {
-            "high": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu LKB-9000, GC-CI-B, UNKNOWN"
             }
           }
         }
@@ -25830,152 +25682,7 @@
     },
     "unknown": {
       "unknown": {
-        "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, UNKNOWN, HIGH"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, UNKNOWN, LOW"
-            }
-          },
-          "ci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, GC-CI-UNKNOWN, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, GC-CI-UNKNOWN, LOW"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, GC-CI-UNKNOWN, HIGH"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-UNKNOWN, HIGH"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-UNKNOWN, LOW"
-            }
-          },
-          "apci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-APCI-UNKNOWN, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, LC-APCI-UNKNOWN, LOW"
-            }
-          },
-          "maldi": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-MALDI-UNKNOWN, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, LC-MALDI-UNKNOWN, LOW"
-            }
-          }
-        },
-        "b": {
-          "ci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, GC-CI-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, GC-CI-B, LOW"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, GC-CI-B, HIGH"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-B, LOW"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-B, HIGH"
-            }
-          }
-        },
-        "qq": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-QQ, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-QQ, HIGH"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-QQ, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-QQ, HIGH"
-            }
-          }
-        },
-        "q": {
-          "apci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-APCI-Q, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, LC-APCI-Q, LOW"
-            }
-          },
-          "esi": {
-            "low": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-Q, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-Q, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-Q, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-Q, LOW"
-            }
-          }
-        },
-        "ittof": {
-          "esi": {
-            "high": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-ITTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-ITTOF, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-ITTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-ITTOF, HIGH"
-            }
-          }
-        },
         "qit": {
-          "maldi": {
-            "low": {
-              "SOLUTION": "Shimadzu instrument, LC-MALDI-QIT, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-MALDI-QIT, UNKNOWN"
-            }
-          },
           "unknown": {
             "unknown": {
               "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-QIT, UNKNOWN"
@@ -25983,11 +25690,117 @@
             "low": {
               "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-QIT, LOW"
             }
+          },
+          "maldi": {
+            "low": {
+              "SOLUTION": "Shimadzu instrument, LC-MALDI-QIT, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-MALDI-QIT, UNKNOWN"
+            }
           }
-        }
-      },
-      "lc": {
+        },
+        "unknown": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-UNKNOWN, HIGH"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-UNKNOWN, LOW"
+            }
+          },
+          "ci": {
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, GC-CI-UNKNOWN, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu instrument, GC-CI-UNKNOWN, LOW"
+            }
+          },
+          "maldi": {
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-MALDI-UNKNOWN, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu instrument, LC-MALDI-UNKNOWN, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "Shimadzu instrument, UNKNOWN, LOW"
+            },
+            "high": {
+              "SOLUTION": "Shimadzu instrument, UNKNOWN, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, UNKNOWN, UNKNOWN"
+            }
+          },
+          "apci": {
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-APCI-UNKNOWN, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu instrument, LC-APCI-UNKNOWN, LOW"
+            }
+          }
+        },
+        "b": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-B, LOW"
+            }
+          },
+          "ci": {
+            "low": {
+              "SOLUTION": "Shimadzu instrument, GC-CI-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, GC-CI-B, UNKNOWN"
+            }
+          }
+        },
+        "qq": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-QQ, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-QQ, HIGH"
+            }
+          },
+          "esi": {
+            "high": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-QQ, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-QQ, UNKNOWN"
+            }
+          }
+        },
         "q": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-Q, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-Q, LOW"
+            }
+          },
+          "apci": {
+            "low": {
+              "SOLUTION": "Shimadzu instrument, LC-APCI-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-APCI-Q, UNKNOWN"
+            }
+          },
           "esi": {
             "low": {
               "SOLUTION": "Shimadzu instrument, LC-ESI-Q, LOW"
@@ -25995,13 +25808,119 @@
             "unknown": {
               "SOLUTION": "Shimadzu instrument, LC-ESI-Q, UNKNOWN"
             }
-          },
+          }
+        },
+        "ittof": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-Q, UNKNOWN"
+              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-ITTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Shimadzu instrument, UNKNOWN-UNKNOWN-ITTOF, HIGH"
+            }
+          },
+          "esi": {
+            "high": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-ITTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-ITTOF, UNKNOWN"
+            }
+          }
+        }
+      },
+      "lc": {
+        "unknown": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-UNKNOWN, UNKNOWN"
             },
             "low": {
+              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-UNKNOWN, LOW"
+            },
+            "high": {
+              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-UNKNOWN, HIGH"
+            }
+          },
+          "apci": {
+            "low": {
+              "SOLUTION": "Shimadzu instrument, LC-APCI-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-APCI-UNKNOWN, UNKNOWN"
+            }
+          },
+          "esi": {
+            "low": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-UNKNOWN, LOW"
+            },
+            "high": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-UNKNOWN, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-UNKNOWN, UNKNOWN"
+            }
+          },
+          "maldi": {
+            "low": {
+              "SOLUTION": "Shimadzu instrument, LC-MALDI-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-MALDI-UNKNOWN, UNKNOWN"
+            }
+          }
+        },
+        "qit": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-QIT, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-QIT, UNKNOWN"
+            }
+          },
+          "maldi": {
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-MALDI-QIT, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu instrument, LC-MALDI-QIT, LOW"
+            }
+          }
+        },
+        "ittof": {
+          "unknown": {
+            "high": {
+              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-ITTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-ITTOF, UNKNOWN"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-ITTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-ITTOF, HIGH"
+            }
+          }
+        },
+        "q": {
+          "unknown": {
+            "low": {
               "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-Q, UNKNOWN"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-Q, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu instrument, LC-ESI-Q, LOW"
             }
           },
           "apci": {
@@ -26013,49 +25932,13 @@
             }
           }
         },
-        "ittof": {
-          "esi": {
-            "high": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-ITTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-ITTOF, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-ITTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-ITTOF, HIGH"
-            }
-          }
-        },
-        "qit": {
-          "maldi": {
-            "low": {
-              "SOLUTION": "Shimadzu instrument, LC-MALDI-QIT, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-MALDI-QIT, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-QIT, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-QIT, LOW"
-            }
-          }
-        },
         "qq": {
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-QQ, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-QQ, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-QQ, UNKNOWN"
             }
           },
           "esi": {
@@ -26066,59 +25949,34 @@
               "SOLUTION": "Shimadzu instrument, LC-ESI-QQ, HIGH"
             }
           }
-        },
-        "unknown": {
-          "esi": {
-            "high": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-UNKNOWN, HIGH"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-UNKNOWN, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-ESI-UNKNOWN, UNKNOWN"
-            }
-          },
-          "apci": {
-            "low": {
-              "SOLUTION": "Shimadzu instrument, LC-APCI-UNKNOWN, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-APCI-UNKNOWN, UNKNOWN"
-            }
-          },
-          "maldi": {
-            "low": {
-              "SOLUTION": "Shimadzu instrument, LC-MALDI-UNKNOWN, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-MALDI-UNKNOWN, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-UNKNOWN, HIGH"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, LC-UNKNOWN-UNKNOWN, LOW"
-            }
-          }
         }
       },
       "gc": {
-        "b": {
+        "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "Shimadzu instrument, GC-UNKNOWN-B, UNKNOWN"
+              "SOLUTION": "Shimadzu instrument, GC-UNKNOWN-UNKNOWN, UNKNOWN"
             },
+            "low": {
+              "SOLUTION": "Shimadzu instrument, GC-UNKNOWN-UNKNOWN, LOW"
+            }
+          },
+          "ci": {
+            "low": {
+              "SOLUTION": "Shimadzu instrument, GC-CI-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, GC-CI-UNKNOWN, UNKNOWN"
+            }
+          }
+        },
+        "b": {
+          "unknown": {
             "low": {
               "SOLUTION": "Shimadzu instrument, GC-UNKNOWN-B, LOW"
             },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, GC-UNKNOWN-B, HIGH"
+            "unknown": {
+              "SOLUTION": "Shimadzu instrument, GC-UNKNOWN-B, UNKNOWN"
             }
           },
           "ci": {
@@ -26127,33 +25985,6 @@
             },
             "low": {
               "SOLUTION": "Shimadzu instrument, GC-CI-B, LOW"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, GC-CI-B, HIGH"
-            }
-          }
-        },
-        "unknown": {
-          "ci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, GC-CI-UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, GC-CI-UNKNOWN, HIGH"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, GC-CI-UNKNOWN, LOW"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu instrument, GC-UNKNOWN-UNKNOWN, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu instrument, GC-UNKNOWN-UNKNOWN, LOW"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu instrument, GC-UNKNOWN-UNKNOWN, HIGH"
             }
           }
         }
@@ -26171,29 +26002,29 @@
             }
           },
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 2010A, LC-UNKNOWN-Q, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "Shimadzu 2010A, LC-UNKNOWN-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 2010A, LC-UNKNOWN-Q, UNKNOWN"
             }
           }
         },
         "unknown": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 2010A, LC-ESI-Q, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu 2010A, LC-ESI-Q, LOW"
-            }
-          },
           "unknown": {
             "low": {
               "SOLUTION": "Shimadzu 2010A, LC-UNKNOWN-Q, LOW"
             },
             "unknown": {
               "SOLUTION": "Shimadzu 2010A, LC-UNKNOWN-Q, UNKNOWN"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Shimadzu 2010A, LC-ESI-Q, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu 2010A, LC-ESI-Q, LOW"
             }
           }
         }
@@ -26258,43 +26089,25 @@
           }
         },
         "qit": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu Axima, LC-UNKNOWN-QIT, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu Axima, LC-UNKNOWN-QIT, LOW"
-            }
-          },
           "maldi": {
-            "low": {
-              "SOLUTION": "Shimadzu Axima, LC-MALDI-QIT, LOW"
-            },
             "unknown": {
               "SOLUTION": "Shimadzu Axima, LC-MALDI-QIT, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu Axima, LC-MALDI-QIT, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "Shimadzu Axima, LC-UNKNOWN-QIT, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu Axima, LC-UNKNOWN-QIT, UNKNOWN"
             }
           }
         }
       },
       "lc": {
-        "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu Axima, LC-UNKNOWN-QIT, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu Axima, LC-UNKNOWN-QIT, LOW"
-            }
-          },
-          "maldi": {
-            "low": {
-              "SOLUTION": "Shimadzu Axima, LC-MALDI-QIT, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu Axima, LC-MALDI-QIT, UNKNOWN"
-            }
-          }
-        },
         "qit": {
           "unknown": {
             "unknown": {
@@ -26305,89 +26118,29 @@
             }
           },
           "maldi": {
-            "low": {
-              "SOLUTION": "Shimadzu Axima, LC-MALDI-QIT, LOW"
-            },
             "unknown": {
               "SOLUTION": "Shimadzu Axima, LC-MALDI-QIT, UNKNOWN"
-            }
-          }
-        }
-      }
-    },
-    "2020": {
-      "lc": {
-        "unknown": {
-          "apci": {
-            "low": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "low": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
-            }
-          }
-        },
-        "q": {
-          "apci": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
-            }
-          },
-          "unknown": {
-            "low": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
-            }
-          }
-        }
-      },
-      "unknown": {
-        "q": {
-          "apci": {
-            "low": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
+              "SOLUTION": "Shimadzu Axima, LC-MALDI-QIT, LOW"
             }
           }
         },
         "unknown": {
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
-            },
             "low": {
-              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
+              "SOLUTION": "Shimadzu Axima, LC-UNKNOWN-QIT, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu Axima, LC-UNKNOWN-QIT, UNKNOWN"
             }
           },
-          "apci": {
+          "maldi": {
             "unknown": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
+              "SOLUTION": "Shimadzu Axima, LC-MALDI-QIT, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
+              "SOLUTION": "Shimadzu Axima, LC-MALDI-QIT, LOW"
             }
           }
         }
@@ -26395,6 +26148,24 @@
     },
     "8045": {
       "unknown": {
+        "unknown": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, HIGH"
+            }
+          },
+          "esi": {
+            "high": {
+              "SOLUTION": "Shimadzu 8045, LC-ESI-QQ, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 8045, LC-ESI-QQ, UNKNOWN"
+            }
+          }
+        },
         "qq": {
           "esi": {
             "high": {
@@ -26410,38 +26181,12 @@
             },
             "high": {
               "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, HIGH"
-            }
-          }
-        },
-        "unknown": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, UNKNOWN"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 8045, LC-ESI-QQ, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu 8045, LC-ESI-QQ, HIGH"
             }
           }
         }
       },
       "lc": {
-        "qq": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, UNKNOWN"
-            }
-          },
+        "unknown": {
           "esi": {
             "high": {
               "SOLUTION": "Shimadzu 8045, LC-ESI-QQ, HIGH"
@@ -26449,15 +26194,23 @@
             "unknown": {
               "SOLUTION": "Shimadzu 8045, LC-ESI-QQ, UNKNOWN"
             }
-          }
-        },
-        "unknown": {
+          },
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, UNKNOWN"
+            }
+          }
+        },
+        "qq": {
+          "unknown": {
+            "high": {
+              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 8045, LC-UNKNOWN-QQ, UNKNOWN"
             }
           },
           "esi": {
@@ -26471,33 +26224,111 @@
         }
       }
     },
-    "18a": {
+    "2020": {
       "lc": {
-        "unknown": {
+        "q": {
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, UNKNOWN"
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
             },
-            "high": {
-              "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, HIGH"
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
             }
           },
+          "apci": {
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
+            }
+          }
+        },
+        "unknown": {
+          "apci": {
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
+            }
+          }
+        }
+      },
+      "unknown": {
+        "unknown": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
+            }
+          },
+          "apci": {
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
+            }
+          }
+        },
+        "q": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-UNKNOWN-Q, UNKNOWN"
+            }
+          },
+          "apci": {
+            "unknown": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Shimadzu 2020, LC-APCI-Q, LOW"
+            }
+          }
+        }
+      }
+    },
+    "18a": {
+      "unknown": {
+        "unknown": {
           "esi": {
             "unknown": {
               "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, UNKNOWN"
             },
             "high": {
               "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, UNKNOWN"
             }
           }
         },
         "ittof": {
           "esi": {
-            "high": {
-              "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, HIGH"
             }
           },
           "unknown": {
@@ -26510,7 +26341,25 @@
           }
         }
       },
-      "unknown": {
+      "lc": {
+        "unknown": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, HIGH"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, HIGH"
+            }
+          }
+        },
         "ittof": {
           "unknown": {
             "unknown": {
@@ -26526,24 +26375,6 @@
             },
             "high": {
               "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, HIGH"
-            }
-          }
-        },
-        "unknown": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Shimadzu 18A, LC-ESI-ITTOF, HIGH"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Shimadzu 18A, LC-UNKNOWN-ITTOF, UNKNOWN"
             }
           }
         }
@@ -26552,44 +26383,6 @@
   },
   "bruker": {
     "esquire 3000 plus": {
-      "lc": {
-        "qit": {
-          "esi": {
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, UNKNOWN"
-            }
-          }
-        },
-        "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, HIGH"
-            }
-          },
-          "esi": {
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, UNKNOWN"
-            }
-          }
-        }
-      },
       "unknown": {
         "qit": {
           "esi": {
@@ -26601,89 +26394,127 @@
             }
           },
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, UNKNOWN"
             }
           }
         },
         "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, HIGH"
-            }
-          },
           "esi": {
             "high": {
               "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, HIGH"
             },
             "unknown": {
               "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, UNKNOWN"
+            }
+          }
+        }
+      },
+      "lc": {
+        "unknown": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, UNKNOWN"
+            }
+          }
+        },
+        "qit": {
+          "esi": {
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-ESI-QIT, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000 plus, LC-UNKNOWN-QIT, HIGH"
             }
           }
         }
       }
     },
     "maxis plus hd": {
-      "unknown": {
+      "lc": {
         "qtof": {
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, UNKNOWN"
             }
           },
           "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, UNKNOWN"
             }
           }
         },
         "unknown": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            }
-          },
           "esi": {
             "unknown": {
               "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, UNKNOWN"
             },
             "high": {
               "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         }
       },
-      "lc": {
+      "unknown": {
         "unknown": {
+          "esi": {
+            "high": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, UNKNOWN"
+            }
+          },
           "unknown": {
             "high": {
               "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, HIGH"
             },
             "unknown": {
               "SOLUTION": "Bruker Maxis plus HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, HIGH"
             }
           }
         },
@@ -26697,33 +26528,33 @@
             }
           },
           "esi": {
-            "high": {
-              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis plus HD, LC-ESI-QTOF, HIGH"
             }
           }
         }
       }
     },
     "esquire 4000": {
-      "unknown": {
+      "lc": {
         "qit": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, HIGH"
-            }
-          },
           "esi": {
             "high": {
               "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, HIGH"
             },
             "unknown": {
               "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, UNKNOWN"
             }
           }
         },
@@ -26746,7 +26577,7 @@
           }
         }
       },
-      "lc": {
+      "unknown": {
         "qit": {
           "unknown": {
             "high": {
@@ -26757,54 +26588,36 @@
             }
           },
           "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, UNKNOWN"
             }
           }
         },
         "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, HIGH"
-            }
-          },
           "esi": {
             "high": {
               "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, HIGH"
             },
             "unknown": {
               "SOLUTION": "Bruker Esquire 4000, LC-ESI-QIT, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Esquire 4000, LC-UNKNOWN-QIT, HIGH"
             }
           }
         }
       }
     },
     "esquire 3000": {
-      "lc": {
-        "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, HIGH"
-            }
-          },
-          "esi": {
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, UNKNOWN"
-            }
-          }
-        },
+      "unknown": {
         "qit": {
           "esi": {
             "unknown": {
@@ -26820,36 +26633,54 @@
             },
             "unknown": {
               "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, UNKNOWN"
+            }
+          }
+        },
+        "unknown": {
+          "esi": {
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, HIGH"
             }
           }
         }
       },
-      "unknown": {
+      "lc": {
         "qit": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, HIGH"
-            }
-          },
           "esi": {
-            "high": {
-              "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000, LC-ESI-QIT, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, UNKNOWN"
             }
           }
         },
         "unknown": {
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Esquire 3000, LC-UNKNOWN-QIT, UNKNOWN"
             }
           },
           "esi": {
@@ -26865,6 +26696,24 @@
     },
     "maxis ii hd": {
       "unknown": {
+        "qtof": {
+          "esi": {
+            "high": {
+              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, HIGH"
+            }
+          }
+        },
         "unknown": {
           "unknown": {
             "unknown": {
@@ -26880,24 +26729,6 @@
             },
             "high": {
               "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, HIGH"
-            }
-          }
-        },
-        "qtof": {
-          "esi": {
-            "high": {
-              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         }
@@ -26905,59 +26736,59 @@
       "lc": {
         "qtof": {
           "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, UNKNOWN"
             }
           },
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         },
         "unknown": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, HIGH"
-            }
-          },
           "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis II HD, LC-UNKNOWN-QTOF, HIGH"
+            }
+          },
+          "esi": {
+            "high": {
+              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis II HD, LC-ESI-QTOF, UNKNOWN"
             }
           }
         }
       }
     },
     "microtof q": {
-      "unknown": {
+      "lc": {
         "qtof": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, HIGH"
+            }
+          },
           "esi": {
             "unknown": {
               "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, UNKNOWN"
             },
             "high": {
               "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, HIGH"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         },
@@ -26980,14 +26811,60 @@
           }
         }
       },
-      "lc": {
+      "gc": {
+        "unknown": {
+          "apci": {
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-APCI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-APCI-QTOF, HIGH"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, HIGH"
+            }
+          }
+        },
+        "qtof": {
+          "apci": {
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-APCI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-APCI-QTOF, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, UNKNOWN"
+            }
+          }
+        }
+      },
+      "unknown": {
         "unknown": {
           "unknown": {
             "high": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, HIGH"
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, UNKNOWN"
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, UNKNOWN"
+            }
+          },
+          "apci": {
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-APCI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-APCI-QTOF, HIGH"
             }
           },
           "esi": {
@@ -27002,43 +26879,33 @@
         "qtof": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, UNKNOWN"
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-UNKNOWN-QTOF, HIGH"
+              "SOLUTION": "Bruker micrOTOF-Q, GC-UNKNOWN-QTOF, HIGH"
+            }
+          },
+          "apci": {
+            "high": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-APCI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-APCI-QTOF, UNKNOWN"
             }
           },
           "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker micrOTOF-Q, LC-ESI-QTOF, UNKNOWN"
             }
           }
         }
       }
     },
     "impact hd": {
-      "unknown": {
-        "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, HIGH"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, HIGH"
-            }
-          }
-        },
+      "lc": {
         "qtof": {
           "esi": {
             "high": {
@@ -27054,44 +26921,62 @@
             },
             "high": {
               "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, HIGH"
+            }
+          }
+        },
+        "unknown": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         }
       },
-      "lc": {
+      "unknown": {
         "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, HIGH"
-            }
-          },
           "esi": {
             "high": {
               "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, HIGH"
             },
             "unknown": {
               "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         },
         "qtof": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, UNKNOWN"
-            }
-          },
           "esi": {
             "unknown": {
               "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, UNKNOWN"
             },
             "high": {
               "SOLUTION": "Bruker Impact HD, LC-ESI-QTOF, HIGH"
+            }
+          },
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Impact HD, LC-UNKNOWN-QTOF, UNKNOWN"
             }
           }
         }
@@ -27100,38 +26985,38 @@
     "maxis hd": {
       "lc": {
         "qtof": {
+          "esi": {
+            "high": {
+              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, UNKNOWN"
+            }
+          },
           "unknown": {
             "unknown": {
               "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, UNKNOWN"
             },
             "high": {
               "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, HIGH"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, HIGH"
             }
           }
         },
         "unknown": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, HIGH"
-            }
-          },
           "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, HIGH"
+            }
+          },
+          "esi": {
+            "high": {
+              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, UNKNOWN"
             }
           }
         }
@@ -27139,19 +27024,19 @@
       "unknown": {
         "qtof": {
           "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, HIGH"
             }
           },
           "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker Maxis HD, LC-ESI-QTOF, UNKNOWN"
             }
           }
         },
@@ -27165,51 +27050,101 @@
             }
           },
           "unknown": {
-            "high": {
-              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis HD, LC-UNKNOWN-QTOF, HIGH"
             }
           }
         }
       }
     },
     "unknown": {
-      "unknown": {
-        "unknown": {
-          "unknown": {
+      "lc": {
+        "qtof": {
+          "esi": {
             "unknown": {
-              "SOLUTION": "Bruker instrument, UNKNOWN, UNKNOWN"
+              "SOLUTION": "Bruker instrument, LC-ESI-QTOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Bruker instrument, UNKNOWN, HIGH"
+              "SOLUTION": "Bruker instrument, LC-ESI-QTOF, HIGH"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QTOF, HIGH"
+            }
+          }
+        },
+        "qit": {
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker instrument, LC-ESI-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker instrument, LC-ESI-QIT, HIGH"
             },
             "low": {
-              "SOLUTION": "Bruker instrument, UNKNOWN, LOW"
+              "SOLUTION": "Bruker instrument, LC-ESI-QIT, LOW"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QIT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QIT, HIGH"
+            },
+            "low": {
+              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QIT, LOW"
+            }
+          }
+        },
+        "unknown": {
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker instrument, LC-UNKNOWN-UNKNOWN, HIGH"
+            },
+            "low": {
+              "SOLUTION": "Bruker instrument, LC-UNKNOWN-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker instrument, LC-UNKNOWN-UNKNOWN, UNKNOWN"
             }
           },
           "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker instrument, LC-ESI-UNKNOWN, UNKNOWN"
+            },
             "high": {
               "SOLUTION": "Bruker instrument, LC-ESI-UNKNOWN, HIGH"
             },
             "low": {
               "SOLUTION": "Bruker instrument, LC-ESI-UNKNOWN, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker instrument, LC-ESI-UNKNOWN, UNKNOWN"
             }
           },
           "maldi": {
-            "high": {
-              "SOLUTION": "Bruker instrument, LC-MALDI-UNKNOWN, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker instrument, LC-MALDI-UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker instrument, LC-MALDI-UNKNOWN, HIGH"
             }
           }
         },
         "qittof": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QITTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QITTOF, HIGH"
+            }
+          },
           "maldi": {
             "high": {
               "SOLUTION": "Bruker instrument, LC-MALDI-QITTOF, HIGH"
@@ -27217,16 +27152,28 @@
             "unknown": {
               "SOLUTION": "Bruker instrument, LC-MALDI-QITTOF, UNKNOWN"
             }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker instrument, UNKNOWN-UNKNOWN-QITTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker instrument, UNKNOWN-UNKNOWN-QITTOF, UNKNOWN"
-            }
           }
         },
+        "itft": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker instrument, LC-UNKNOWN-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker instrument, LC-UNKNOWN-ITFT, HIGH"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker instrument, LC-ESI-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker instrument, LC-ESI-ITFT, HIGH"
+            }
+          }
+        }
+      },
+      "unknown": {
         "qtof": {
           "esi": {
             "high": {
@@ -27243,6 +27190,14 @@
             "unknown": {
               "SOLUTION": "Bruker instrument, UNKNOWN-UNKNOWN-QTOF, UNKNOWN"
             }
+          },
+          "apci": {
+            "unknown": {
+              "SOLUTION": "Bruker instrument, LC-APCI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker instrument, LC-APCI-QTOF, HIGH"
+            }
           }
         },
         "qit": {
@@ -27250,11 +27205,11 @@
             "high": {
               "SOLUTION": "Bruker instrument, LC-ESI-QIT, HIGH"
             },
-            "low": {
-              "SOLUTION": "Bruker instrument, LC-ESI-QIT, LOW"
-            },
             "unknown": {
               "SOLUTION": "Bruker instrument, LC-ESI-QIT, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Bruker instrument, LC-ESI-QIT, LOW"
             }
           },
           "unknown": {
@@ -27286,86 +27241,6 @@
               "SOLUTION": "Bruker instrument, UNKNOWN-UNKNOWN-ITFT, UNKNOWN"
             }
           }
-        }
-      },
-      "lc": {
-        "qtof": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker instrument, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker instrument, LC-ESI-QTOF, HIGH"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QTOF, UNKNOWN"
-            }
-          }
-        },
-        "qit": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker instrument, LC-ESI-QIT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker instrument, LC-ESI-QIT, HIGH"
-            },
-            "low": {
-              "SOLUTION": "Bruker instrument, LC-ESI-QIT, LOW"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QIT, HIGH"
-            },
-            "low": {
-              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QIT, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QIT, UNKNOWN"
-            }
-          }
-        },
-        "itft": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker instrument, LC-UNKNOWN-ITFT, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker instrument, LC-UNKNOWN-ITFT, UNKNOWN"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker instrument, LC-ESI-ITFT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker instrument, LC-ESI-ITFT, HIGH"
-            }
-          }
-        },
-        "qittof": {
-          "maldi": {
-            "unknown": {
-              "SOLUTION": "Bruker instrument, LC-MALDI-QITTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker instrument, LC-MALDI-QITTOF, HIGH"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QITTOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker instrument, LC-UNKNOWN-QITTOF, UNKNOWN"
-            }
-          }
         },
         "unknown": {
           "esi": {
@@ -27387,15 +27262,79 @@
               "SOLUTION": "Bruker instrument, LC-MALDI-UNKNOWN, UNKNOWN"
             }
           },
-          "unknown": {
+          "apci": {
             "high": {
-              "SOLUTION": "Bruker instrument, LC-UNKNOWN-UNKNOWN, HIGH"
-            },
-            "low": {
-              "SOLUTION": "Bruker instrument, LC-UNKNOWN-UNKNOWN, LOW"
+              "SOLUTION": "Bruker instrument, LC-APCI-UNKNOWN, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Bruker instrument, LC-UNKNOWN-UNKNOWN, UNKNOWN"
+              "SOLUTION": "Bruker instrument, LC-APCI-UNKNOWN, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker instrument, UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker instrument, UNKNOWN, HIGH"
+            },
+            "low": {
+              "SOLUTION": "Bruker instrument, UNKNOWN, LOW"
+            }
+          }
+        },
+        "qittof": {
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker instrument, UNKNOWN-UNKNOWN-QITTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker instrument, UNKNOWN-UNKNOWN-QITTOF, UNKNOWN"
+            }
+          },
+          "maldi": {
+            "unknown": {
+              "SOLUTION": "Bruker instrument, LC-MALDI-QITTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker instrument, LC-MALDI-QITTOF, HIGH"
+            }
+          }
+        }
+      },
+      "gc": {
+        "unknown": {
+          "unknown": {
+            "high": {
+              "SOLUTION": "Bruker instrument, GC-UNKNOWN-UNKNOWN, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker instrument, GC-UNKNOWN-UNKNOWN, UNKNOWN"
+            }
+          },
+          "apci": {
+            "unknown": {
+              "SOLUTION": "Bruker instrument, GC-APCI-UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker instrument, GC-APCI-UNKNOWN, HIGH"
+            }
+          }
+        },
+        "qtof": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker instrument, GC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker instrument, GC-UNKNOWN-QTOF, HIGH"
+            }
+          },
+          "apci": {
+            "high": {
+              "SOLUTION": "Bruker instrument, GC-APCI-QTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker instrument, GC-APCI-QTOF, UNKNOWN"
             }
           }
         }
@@ -27404,38 +27343,38 @@
     "esquire": {
       "unknown": {
         "qit": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, LOW"
-            }
-          },
           "unknown": {
             "low": {
               "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, LOW"
             },
             "unknown": {
               "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, UNKNOWN"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, LOW"
             }
           }
         },
         "unknown": {
-          "esi": {
-            "low": {
-              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, UNKNOWN"
-            }
-          },
           "unknown": {
             "low": {
               "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, LOW"
             },
             "unknown": {
               "SOLUTION": "Bruker Esquire, LC-UNKNOWN-QIT, UNKNOWN"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, LOW"
             }
           }
         }
@@ -27469,11 +27408,11 @@
             }
           },
           "esi": {
-            "low": {
-              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, LOW"
-            },
             "unknown": {
               "SOLUTION": "Bruker Esquire, LC-ESI-QIT, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "Bruker Esquire, LC-ESI-QIT, LOW"
             }
           }
         }
@@ -27482,14 +27421,6 @@
     "apex qe": {
       "unknown": {
         "itft": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, HIGH"
-            }
-          },
           "unknown": {
             "high": {
               "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, HIGH"
@@ -27497,15 +27428,23 @@
             "unknown": {
               "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, UNKNOWN"
             }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, HIGH"
+            }
           }
         },
         "unknown": {
           "esi": {
-            "high": {
-              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, HIGH"
             }
           },
           "unknown": {
@@ -27520,20 +27459,20 @@
       },
       "lc": {
         "unknown": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, HIGH"
-            }
-          },
           "unknown": {
             "high": {
               "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, HIGH"
             },
             "unknown": {
               "SOLUTION": "Bruker APEX QE, LC-UNKNOWN-ITFT, UNKNOWN"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, HIGH"
             }
           }
         },
@@ -27547,11 +27486,11 @@
             }
           },
           "esi": {
-            "high": {
-              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker APEX QE, LC-ESI-ITFT, HIGH"
             }
           }
         }
@@ -27560,14 +27499,6 @@
     "apex ii": {
       "unknown": {
         "itft": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, HIGH"
-            }
-          },
           "unknown": {
             "high": {
               "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, HIGH"
@@ -27575,15 +27506,23 @@
             "unknown": {
               "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, UNKNOWN"
             }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, HIGH"
+            }
           }
         },
         "unknown": {
           "esi": {
-            "high": {
-              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, HIGH"
             }
           },
           "unknown": {
@@ -27598,20 +27537,20 @@
       },
       "lc": {
         "unknown": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, HIGH"
-            }
-          },
           "unknown": {
             "high": {
               "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, HIGH"
             },
             "unknown": {
               "SOLUTION": "Bruker APEX II, LC-UNKNOWN-ITFT, UNKNOWN"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, HIGH"
             }
           }
         },
@@ -27625,11 +27564,11 @@
             }
           },
           "esi": {
-            "high": {
-              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker APEX II, LC-ESI-ITFT, HIGH"
             }
           }
         }
@@ -27675,24 +27614,6 @@
         }
       },
       "unknown": {
-        "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis, LC-UNKNOWN-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Maxis, LC-UNKNOWN-QTOF, HIGH"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "Bruker Maxis, LC-ESI-QTOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "Bruker Maxis, LC-ESI-QTOF, HIGH"
-            }
-          }
-        },
         "qtof": {
           "unknown": {
             "unknown": {
@@ -27710,18 +27631,36 @@
               "SOLUTION": "Bruker Maxis, LC-ESI-QTOF, UNKNOWN"
             }
           }
+        },
+        "unknown": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "Bruker Maxis, LC-UNKNOWN-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis, LC-UNKNOWN-QTOF, HIGH"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "Bruker Maxis, LC-ESI-QTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker Maxis, LC-ESI-QTOF, HIGH"
+            }
+          }
         }
       }
     },
     "flex": {
       "unknown": {
-        "unknown": {
+        "qittof": {
           "unknown": {
-            "high": {
-              "SOLUTION": "Bruker FLEX, LC-UNKNOWN-QITTOF, HIGH"
-            },
             "unknown": {
               "SOLUTION": "Bruker FLEX, LC-UNKNOWN-QITTOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "Bruker FLEX, LC-UNKNOWN-QITTOF, HIGH"
             }
           },
           "maldi": {
@@ -27733,13 +27672,13 @@
             }
           }
         },
-        "qittof": {
+        "unknown": {
           "unknown": {
-            "unknown": {
-              "SOLUTION": "Bruker FLEX, LC-UNKNOWN-QITTOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "Bruker FLEX, LC-UNKNOWN-QITTOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "Bruker FLEX, LC-UNKNOWN-QITTOF, UNKNOWN"
             }
           },
           "maldi": {
@@ -28539,39 +28478,39 @@
   "jeol": {
     "jms hx/hx 110a": {
       "unknown": {
-        "ebeb": {
+        "eb": {
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, UNKNOWN"
             }
           }
         },
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, LOW"
             }
           },
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, UNKNOWN"
             }
           }
         }
@@ -28580,36 +28519,36 @@
         "unknown": {
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, LOW"
             }
           }
         },
-        "ebeb": {
+        "eb": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EB, UNKNOWN"
             }
           },
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EB, LOW"
             }
           }
         }
@@ -29258,22 +29197,22 @@
               "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, LOW"
             }
           }
         },
         "eb": {
-          "ie": {
+          "ei": {
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, UNKNOWN"
             }
           },
           "unknown": {
@@ -29296,22 +29235,22 @@
               "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, LC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, LOW"
+              "SOLUTION": "JEOL JMS-700V, LC-EI-EB, LOW"
             }
           }
         },
         "eb": {
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, LC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, LOW"
+              "SOLUTION": "JEOL JMS-700V, LC-EI-EB, LOW"
             }
           },
           "unknown": {
@@ -29363,12 +29302,12 @@
               "SOLUTION": "JEOL instrument, LC-FD-UNKNOWN, UNKNOWN"
             }
           },
-          "ie": {
+          "ei": {
             "low": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-IE-UNKNOWN, LOW"
+              "SOLUTION": "JEOL instrument, LC-EI-UNKNOWN, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-IE-UNKNOWN, UNKNOWN"
+              "SOLUTION": "JEOL instrument, LC-EI-UNKNOWN, UNKNOWN"
             }
           },
           "esi": {
@@ -29397,12 +29336,12 @@
               "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EB, UNKNOWN"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-IE-EB, UNKNOWN"
+              "SOLUTION": "JEOL instrument, LC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-IE-EB, LOW"
+              "SOLUTION": "JEOL instrument, LC-EI-EB, LOW"
             }
           },
           "fab": {
@@ -29437,24 +29376,6 @@
             },
             "high": {
               "SOLUTION": "JEOL instrument, LC-MALDI-TOF, HIGH"
-            }
-          }
-        },
-        "ebeb": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EBEB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EBEB, UNKNOWN"
-            }
-          },
-          "fab": {
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, LOW"
             }
           }
         },
@@ -29565,24 +29486,6 @@
             }
           }
         },
-        "ebeb": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-UNKNOWN-EBEB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL instrument, LC-UNKNOWN-EBEB, LOW"
-            }
-          },
-          "fab": {
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, LOW"
-            }
-          }
-        },
         "eb": {
           "unknown": {
             "unknown": {
@@ -29646,12 +29549,12 @@
               "SOLUTION": "JEOL instrument, GC-CI-UNKNOWN, LOW"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "JEOL instrument, GC-IE-UNKNOWN, UNKNOWN"
+              "SOLUTION": "JEOL instrument, GC-EI-UNKNOWN, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL instrument, GC-IE-UNKNOWN, LOW"
+              "SOLUTION": "JEOL instrument, GC-EI-UNKNOWN, LOW"
             }
           }
         },
@@ -29664,12 +29567,12 @@
               "SOLUTION": "JEOL instrument, GC-UNKNOWN-EB, LOW"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "JEOL instrument, GC-IE-EB, UNKNOWN"
+              "SOLUTION": "JEOL instrument, GC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL instrument, GC-IE-EB, LOW"
+              "SOLUTION": "JEOL instrument, GC-EI-EB, LOW"
             }
           }
         },
@@ -33272,12 +33175,12 @@
               "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-UNKNOWN-QFT, UNKNOWN"
             }
           },
-          "ie": {
+          "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-IE-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-IE-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, UNKNOWN"
             }
           },
           "ci": {
@@ -33306,12 +33209,12 @@
               "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-CI-QFT, UNKNOWN"
             }
           },
-          "ie": {
+          "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-IE-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-IE-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, UNKNOWN"
             }
           },
           "apci": {
@@ -33342,12 +33245,12 @@
               "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-APCI-QFT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, UNKNOWN-IE-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, UNKNOWN-IE-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, HIGH"
             }
           },
           "ci": {
@@ -33360,12 +33263,12 @@
           }
         },
         "qft": {
-          "ie": {
+          "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, UNKNOWN-IE-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, UNKNOWN-IE-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, UNKNOWN"
             }
           },
           "unknown": {
@@ -34620,12 +34523,12 @@
               "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-CI-FT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, UNKNOWN-IE-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, UNKNOWN-IE-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, HIGH"
             }
           },
           "apci": {
@@ -34654,12 +34557,12 @@
               "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-CI-FT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, UNKNOWN-IE-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, UNKNOWN-IE-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, HIGH"
             }
           },
           "apci": {
@@ -34698,12 +34601,12 @@
               "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-UNKNOWN-FT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-IE-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-IE-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, UNKNOWN"
             }
           }
         },
@@ -34716,12 +34619,12 @@
               "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-CI-FT, UNKNOWN"
             }
           },
-          "ie": {
+          "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-IE-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-IE-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, UNKNOWN"
             }
           },
           "apci": {
@@ -35661,15 +35564,10 @@
               "SOLUTION": "Thermo Fisher Scientific instrument, GC-CI-UNKNOWN, UNKNOWN"
             }
           },
-          "ie": {
-            "high": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, UNKNOWN-IE-UNKNOWN, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, UNKNOWN-IE-UNKNOWN, UNKNOWN"
-            }
-          },
           "ei": {
+            "high": {
+              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-UNKNOWN, HIGH"
+            },
             "low": {
               "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-UNKNOWN, LOW"
             },
@@ -35779,12 +35677,12 @@
               "SOLUTION": "Thermo Fisher Scientific instrument, GC-CI-QFT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, UNKNOWN-IE-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-QFT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, UNKNOWN-IE-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-QFT, HIGH"
             }
           }
         },
@@ -35821,12 +35719,12 @@
               "SOLUTION": "Thermo Fisher Scientific instrument, GC-CI-FT, HIGH"
             }
           },
-          "ie": {
+          "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, UNKNOWN-IE-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-FT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, UNKNOWN-IE-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-FT, HIGH"
             }
           }
         },
@@ -36065,12 +35963,15 @@
       },
       "gc": {
         "unknown": {
-          "ie": {
+          "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, GC-IE-UNKNOWN, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-UNKNOWN, HIGH"
+            },
+            "low": {
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-UNKNOWN, LOW"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, GC-IE-UNKNOWN, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-UNKNOWN, UNKNOWN"
             }
           },
           "apci": {
@@ -36090,14 +35991,6 @@
             },
             "unknown": {
               "SOLUTION": "Thermo Fisher Scientific instrument, GC-CI-UNKNOWN, UNKNOWN"
-            }
-          },
-          "ei": {
-            "low": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-UNKNOWN, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-UNKNOWN, UNKNOWN"
             }
           },
           "unknown": {
@@ -36129,12 +36022,12 @@
               "SOLUTION": "Thermo Fisher Scientific instrument, GC-CI-QFT, UNKNOWN"
             }
           },
-          "ie": {
+          "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, GC-IE-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-QFT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, GC-IE-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-QFT, UNKNOWN"
             }
           },
           "apci": {
@@ -36163,12 +36056,12 @@
               "SOLUTION": "Thermo Fisher Scientific instrument, GC-CI-FT, UNKNOWN"
             }
           },
-          "ie": {
+          "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, GC-IE-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-FT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, GC-IE-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-FT, UNKNOWN"
             }
           },
           "apci": {
