@@ -82,6 +82,8 @@ def clean_instrument_type(instrument_type):
     #normalize IE/EI type by IE
     instrument_type = re.sub("\bEI\b", "IE", instrument_type, flags=re.IGNORECASE)
 
+    instrument_type = re.sub("\bBE\b", "EB", instrument_type, flags=re.IGNORECASE)
+
     # Returns the cleaned instrument type string
     return instrument_type
 
