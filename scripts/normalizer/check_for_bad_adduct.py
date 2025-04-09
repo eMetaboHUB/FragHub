@@ -25,7 +25,7 @@ def check_for_bad_adduct(metadata_dict):
     ionmode = metadata_dict['IONMODE']
 
     instrument_type = metadata_dict["INSTRUMENTTYPE"]
-    if re.search("\b(IE|EI)\b", instrument_type, flags=re.IGNORECASE):
+    if re.search(r"\bEI\b", instrument_type):
         if not adduct:
             return metadata_dict
 
