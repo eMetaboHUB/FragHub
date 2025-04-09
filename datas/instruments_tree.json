@@ -619,11 +619,11 @@
             }
           },
           "fab": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-FAB-UNKNOWN, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "UNKNOWN, LC-FAB-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-FAB-UNKNOWN, UNKNOWN"
             }
           },
           "fd": {
@@ -634,20 +634,23 @@
               "SOLUTION": "UNKNOWN, LC-FD-UNKNOWN, UNKNOWN"
             }
           },
+          "ie": {
+            "low": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-IE-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-IE-UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-IE-UNKNOWN, HIGH"
+            }
+          },
           "ei": {
             "unknown": {
               "SOLUTION": "UNKNOWN, LC-EI-UNKNOWN, UNKNOWN"
             },
             "low": {
               "SOLUTION": "UNKNOWN, LC-EI-UNKNOWN, LOW"
-            }
-          },
-          "ie": {
-            "high": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-IE-UNKNOWN, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-IE-UNKNOWN, UNKNOWN"
             }
           }
         },
@@ -872,14 +875,6 @@
           }
         },
         "ebeb": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EBEB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EBEB, LOW"
-            }
-          },
           "fab": {
             "low": {
               "SOLUTION": "UNKNOWN, LC-FAB-EBEB, LOW"
@@ -887,15 +882,23 @@
             "unknown": {
               "SOLUTION": "UNKNOWN, LC-FAB-EBEB, UNKNOWN"
             }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EBEB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EBEB, UNKNOWN"
+            }
           }
         },
         "eb": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EB, UNKNOWN"
-            },
+          "ie": {
             "low": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EB, LOW"
+              "SOLUTION": "UNKNOWN, UNKNOWN-IE-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-IE-EB, UNKNOWN"
             }
           },
           "fab": {
@@ -904,6 +907,14 @@
             },
             "unknown": {
               "SOLUTION": "UNKNOWN, LC-FAB-EB, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EB, UNKNOWN"
             }
           }
         },
@@ -1091,11 +1102,11 @@
             }
           },
           "fd": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-FD-UNKNOWN, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "UNKNOWN, LC-FD-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-FD-UNKNOWN, UNKNOWN"
             }
           },
           "ei": {
@@ -1357,6 +1368,50 @@
             }
           }
         },
+        "b": {
+          "fd": {
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-FD-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-FD-B, LOW"
+            }
+          },
+          "fab": {
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-FAB-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-FAB-B, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-UNKNOWN-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-UNKNOWN-B, UNKNOWN"
+            }
+          }
+        },
+        "ebeb": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-UNKNOWN-EBEB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-UNKNOWN-EBEB, UNKNOWN"
+            }
+          },
+          "fab": {
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-FAB-EBEB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-FAB-EBEB, UNKNOWN"
+            }
+          }
+        },
         "eb": {
           "unknown": {
             "low": {
@@ -1372,50 +1427,6 @@
             },
             "unknown": {
               "SOLUTION": "UNKNOWN, LC-FAB-EB, UNKNOWN"
-            }
-          }
-        },
-        "b": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-UNKNOWN-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-UNKNOWN-B, UNKNOWN"
-            }
-          },
-          "fd": {
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-FD-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-FD-B, UNKNOWN"
-            }
-          },
-          "fab": {
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-FAB-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-FAB-B, UNKNOWN"
-            }
-          }
-        },
-        "ebeb": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-UNKNOWN-EBEB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-UNKNOWN-EBEB, LOW"
-            }
-          },
-          "fab": {
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-FAB-EBEB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-FAB-EBEB, UNKNOWN"
             }
           }
         },
@@ -1544,11 +1555,14 @@
             }
           },
           "ie": {
-            "high": {
-              "SOLUTION": "UNKNOWN, GC-IE-UNKNOWN, HIGH"
+            "low": {
+              "SOLUTION": "UNKNOWN, GC-IE-UNKNOWN, LOW"
             },
             "unknown": {
               "SOLUTION": "UNKNOWN, GC-IE-UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "UNKNOWN, GC-IE-UNKNOWN, HIGH"
             }
           },
           "apci": {
@@ -1649,6 +1663,24 @@
             },
             "unknown": {
               "SOLUTION": "UNKNOWN, GC-UNKNOWN-CI-TOF, UNKNOWN"
+            }
+          }
+        },
+        "eb": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-EB, UNKNOWN"
+            }
+          },
+          "ie": {
+            "low": {
+              "SOLUTION": "UNKNOWN, GC-IE-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, GC-IE-EB, UNKNOWN"
             }
           }
         },
@@ -5121,14 +5153,6 @@
           }
         },
         "ebeb": {
-          "fab": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
-            }
-          },
           "unknown": {
             "low": {
               "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
@@ -5136,12 +5160,38 @@
             "unknown": {
               "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
             }
+          },
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
+            }
           }
         }
       }
     },
     "jms ax 505 ha": {
       "gc": {
+        "b": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, LOW"
+            }
+          },
+          "ci": {
+            "low": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, UNKNOWN"
+            }
+          }
+        },
         "unknown": {
           "unknown": {
             "low": {
@@ -5157,54 +5207,36 @@
             },
             "low": {
               "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, LOW"
-            }
-          }
-        },
-        "b": {
-          "ci": {
-            "low": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, UNKNOWN"
             }
           }
         }
       },
       "unknown": {
-        "unknown": {
-          "ci": {
-            "low": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, UNKNOWN"
-            }
-          },
+        "b": {
           "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, UNKNOWN"
+            }
+          },
+          "ci": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, LOW"
             }
           }
         },
-        "b": {
+        "unknown": {
           "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, UNKNOWN"
             }
           },
           "ci": {
@@ -5221,20 +5253,20 @@
     "jms hx 110": {
       "unknown": {
         "eb": {
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
-            }
-          },
           "unknown": {
             "unknown": {
               "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
               "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, LOW"
+            }
+          },
+          "fab": {
+            "low": {
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
             }
           }
         },
@@ -5259,20 +5291,20 @@
       },
       "lc": {
         "unknown": {
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
-            }
-          },
           "unknown": {
             "unknown": {
               "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
               "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, LOW"
+            }
+          },
+          "fab": {
+            "low": {
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
             }
           }
         },
@@ -5299,20 +5331,20 @@
     "jms dx 303": {
       "unknown": {
         "b": {
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, UNKNOWN"
-            }
-          },
           "unknown": {
             "unknown": {
               "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, UNKNOWN"
             },
             "low": {
               "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, LOW"
+            }
+          },
+          "fab": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, UNKNOWN"
             }
           }
         },
@@ -5337,38 +5369,38 @@
       },
       "lc": {
         "unknown": {
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, UNKNOWN"
-            }
-          },
           "unknown": {
             "unknown": {
               "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, UNKNOWN"
             },
             "low": {
               "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, LOW"
+            }
+          },
+          "fab": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, UNKNOWN"
             }
           }
         },
         "b": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, UNKNOWN"
-            }
-          },
           "fab": {
             "unknown": {
               "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, UNKNOWN"
             },
             "low": {
               "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, UNKNOWN"
             }
           }
         }
@@ -5377,12 +5409,46 @@
     "jms dx 300": {
       "unknown": {
         "b": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
+            }
+          },
+          "fd": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, UNKNOWN"
+            }
+          },
           "ci": {
             "low": {
               "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
             },
             "unknown": {
               "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
+            }
+          },
+          "fab": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, UNKNOWN"
+            }
+          }
+        },
+        "unknown": {
+          "ci": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
             }
           },
           "fd": {
@@ -5407,92 +5473,12 @@
             },
             "low": {
               "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
-            }
-          }
-        },
-        "unknown": {
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
-            }
-          },
-          "fd": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, UNKNOWN"
-            }
-          },
-          "ci": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
-            }
-          }
-        }
-      },
-      "gc": {
-        "unknown": {
-          "ci": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, LOW"
-            }
-          }
-        },
-        "b": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, UNKNOWN"
-            }
-          },
-          "ci": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
             }
           }
         }
       },
       "lc": {
         "unknown": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
-            }
-          },
           "fab": {
             "low": {
               "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, LOW"
@@ -5507,32 +5493,78 @@
             },
             "unknown": {
               "SOLUTION": "JEOL JMS DX-300, LC-FD-B, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
+            }
+          }
+        },
+        "b": {
+          "fd": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, LOW"
+            }
+          },
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
+            }
+          }
+        }
+      },
+      "gc": {
+        "unknown": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, LOW"
+            }
+          },
+          "ci": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
             }
           }
         },
         "b": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
+              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
+              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, UNKNOWN"
             }
           },
-          "fab": {
+          "ci": {
             "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, UNKNOWN"
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, LOW"
-            }
-          },
-          "fd": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, LOW"
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
             }
           }
         }
@@ -5542,11 +5574,11 @@
       "unknown": {
         "unknown": {
           "esi": {
-            "high": {
-              "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, HIGH"
-            },
             "unknown": {
               "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, HIGH"
             }
           },
           "unknown": {
@@ -5559,58 +5591,58 @@
           }
         },
         "tof": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, HIGH"
-            }
-          },
           "esi": {
             "high": {
               "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, HIGH"
             },
             "unknown": {
               "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, HIGH"
             }
           }
         }
       },
       "lc": {
         "unknown": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, HIGH"
+            }
+          },
           "esi": {
             "high": {
               "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, HIGH"
             },
             "unknown": {
               "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         },
         "tof": {
-          "esi": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, HIGH"
-            }
-          },
           "unknown": {
             "high": {
               "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
               "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, UNKNOWN"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, HIGH"
             }
           }
         }
@@ -5684,17 +5716,55 @@
             }
           },
           "maldi": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS-S3000, LC-MALDI-TOF, UNKNOWN"
-            },
             "high": {
               "SOLUTION": "JEOL JMS-S3000, LC-MALDI-TOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-S3000, LC-MALDI-TOF, UNKNOWN"
             }
           }
         }
       }
     },
     "jms d 300": {
+      "unknown": {
+        "unknown": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS D-300, GC-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS D-300, GC-UNKNOWN-B, LOW"
+            }
+          },
+          "ci": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS D-300, GC-CI-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS D-300, GC-CI-B, LOW"
+            }
+          }
+        },
+        "b": {
+          "ci": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS D-300, GC-CI-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS D-300, GC-CI-B, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL JMS D-300, GC-UNKNOWN-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS D-300, GC-UNKNOWN-B, UNKNOWN"
+            }
+          }
+        }
+      },
       "gc": {
         "b": {
           "ci": {
@@ -5732,41 +5802,81 @@
             }
           }
         }
-      },
+      }
+    },
+    "jms 700v": {
       "unknown": {
         "unknown": {
-          "ci": {
-            "low": {
-              "SOLUTION": "JEOL JMS D-300, GC-CI-B, LOW"
-            },
+          "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS D-300, GC-CI-B, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
             }
           },
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL JMS D-300, GC-UNKNOWN-B, LOW"
-            },
+          "ie": {
             "unknown": {
-              "SOLUTION": "JEOL JMS D-300, GC-UNKNOWN-B, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, LOW"
             }
           }
         },
-        "b": {
-          "ci": {
+        "eb": {
+          "ie": {
             "unknown": {
-              "SOLUTION": "JEOL JMS D-300, GC-CI-B, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS D-300, GC-CI-B, LOW"
+              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, LOW"
             }
           },
           "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
+            },
             "low": {
-              "SOLUTION": "JEOL JMS D-300, GC-UNKNOWN-B, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
+            }
+          }
+        }
+      },
+      "gc": {
+        "eb": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
+            }
+          },
+          "ie": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, LOW"
+            }
+          }
+        },
+        "unknown": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS D-300, GC-UNKNOWN-B, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
+            }
+          },
+          "ie": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, LOW"
             }
           }
         }
@@ -5774,59 +5884,59 @@
     },
     "jms 700": {
       "unknown": {
-        "unknown": {
+        "eb": {
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
+            }
+          },
           "unknown": {
             "unknown": {
               "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
               "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
-            }
-          },
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
             }
           }
         },
-        "eb": {
+        "unknown": {
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
+            }
+          },
           "unknown": {
             "low": {
               "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
               "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
-            }
-          },
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
             }
           }
         }
       },
       "lc": {
         "unknown": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
+            }
+          },
           "fab": {
             "unknown": {
               "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
             },
             "low": {
               "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
             }
           }
         },
@@ -28428,44 +28538,6 @@
   },
   "jeol": {
     "jms hx/hx 110a": {
-      "lc": {
-        "ebeb": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
-            }
-          },
-          "fab": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
-            }
-          }
-        },
-        "unknown": {
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
-            }
-          }
-        }
-      },
       "unknown": {
         "ebeb": {
           "fab": {
@@ -28503,9 +28575,85 @@
             }
           }
         }
+      },
+      "lc": {
+        "unknown": {
+          "fab": {
+            "low": {
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
+            }
+          }
+        },
+        "ebeb": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
+            }
+          },
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
+            }
+          }
+        }
       }
     },
     "jms ax 505 ha": {
+      "unknown": {
+        "unknown": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, LOW"
+            }
+          },
+          "ci": {
+            "low": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, UNKNOWN"
+            }
+          }
+        },
+        "b": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, LOW"
+            }
+          },
+          "ci": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, LOW"
+            }
+          }
+        }
+      },
       "gc": {
         "unknown": {
           "unknown": {
@@ -28543,41 +28691,167 @@
             }
           }
         }
-      },
-      "unknown": {
+      }
+    },
+    "jms dx 300": {
+      "gc": {
         "b": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, LOW"
+              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, UNKNOWN"
+              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, UNKNOWN"
             }
           },
           "ci": {
             "unknown": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, UNKNOWN"
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, LOW"
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
             }
           }
         },
         "unknown": {
           "ci": {
             "low": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, LOW"
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-CI-B, UNKNOWN"
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, LOW"
+            }
+          }
+        }
+      },
+      "lc": {
+        "unknown": {
+          "fab": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, UNKNOWN"
+            }
+          },
+          "fd": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
+            }
+          }
+        },
+        "b": {
+          "fd": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, LOW"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, LOW"
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS AX-505 HA, GC-UNKNOWN-B, UNKNOWN"
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
+            }
+          },
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, LOW"
+            }
+          }
+        }
+      },
+      "unknown": {
+        "b": {
+          "ci": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
+            }
+          },
+          "fab": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, UNKNOWN"
+            }
+          },
+          "fd": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
+            }
+          }
+        },
+        "unknown": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
+            }
+          },
+          "fd": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, LOW"
+            }
+          },
+          "ci": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
+            }
+          },
+          "fab": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, UNKNOWN"
             }
           }
         }
@@ -28585,24 +28859,6 @@
     },
     "jms t100lp": {
       "lc": {
-        "unknown": {
-          "esi": {
-            "high": {
-              "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, HIGH"
-            }
-          }
-        },
         "tof": {
           "esi": {
             "unknown": {
@@ -28618,6 +28874,24 @@
             },
             "unknown": {
               "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, UNKNOWN"
+            }
+          }
+        },
+        "unknown": {
+          "esi": {
+            "high": {
+              "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, HIGH"
             }
           }
         }
@@ -28643,11 +28917,11 @@
         },
         "unknown": {
           "esi": {
-            "high": {
-              "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, HIGH"
-            },
             "unknown": {
               "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "JEOL JMS-T100LP, LC-ESI-TOF, HIGH"
             }
           },
           "unknown": {
@@ -28656,6 +28930,84 @@
             },
             "unknown": {
               "SOLUTION": "JEOL JMS-T100LP, LC-UNKNOWN-TOF, UNKNOWN"
+            }
+          }
+        }
+      }
+    },
+    "jms dx 303": {
+      "lc": {
+        "b": {
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, UNKNOWN"
+            }
+          }
+        },
+        "unknown": {
+          "fab": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, LOW"
+            }
+          }
+        }
+      },
+      "unknown": {
+        "b": {
+          "fab": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, LOW"
+            }
+          }
+        },
+        "unknown": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, UNKNOWN"
+            }
+          },
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, LOW"
             }
           }
         }
@@ -28682,20 +29034,20 @@
           }
         },
         "eb": {
-          "fab": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
-            }
-          },
           "unknown": {
             "low": {
               "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
               "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, UNKNOWN"
+            }
+          },
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
             }
           }
         }
@@ -28720,14 +29072,6 @@
           }
         },
         "unknown": {
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
-            }
-          },
           "unknown": {
             "low": {
               "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, LOW"
@@ -28735,247 +29079,13 @@
             "unknown": {
               "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, UNKNOWN"
             }
-          }
-        }
-      }
-    },
-    "jms dx 303": {
-      "lc": {
-        "unknown": {
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, LOW"
-            }
-          }
-        },
-        "b": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, UNKNOWN"
-            }
           },
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, LOW"
-            }
-          }
-        }
-      },
-      "unknown": {
-        "b": {
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, UNKNOWN"
-            }
-          }
-        },
-        "unknown": {
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-303, LC-FAB-B, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-303, LC-UNKNOWN-B, UNKNOWN"
-            }
-          }
-        }
-      }
-    },
-    "jms dx 300": {
-      "gc": {
-        "unknown": {
-          "ci": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, LOW"
-            }
-          }
-        },
-        "b": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, GC-UNKNOWN-B, UNKNOWN"
-            }
-          },
-          "ci": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
-            }
-          }
-        }
-      },
-      "lc": {
-        "b": {
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
-            }
-          },
-          "fab": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, LOW"
-            }
-          },
-          "fd": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, LOW"
-            }
-          }
-        },
-        "unknown": {
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, UNKNOWN"
-            }
-          },
-          "fd": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
-            }
-          }
-        }
-      },
-      "unknown": {
-        "b": {
-          "ci": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
-            }
-          },
-          "fd": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, UNKNOWN"
-            }
-          },
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
-            }
-          }
-        },
-        "unknown": {
-          "ci": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, GC-CI-B, UNKNOWN"
-            }
-          },
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FAB-B, UNKNOWN"
-            }
-          },
-          "fd": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-FD-B, UNKNOWN"
-            }
-          },
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS DX-300, LC-UNKNOWN-B, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
             }
           }
         }
@@ -29071,11 +29181,11 @@
             }
           },
           "ci": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS D-300, GC-CI-B, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "JEOL JMS D-300, GC-CI-B, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS D-300, GC-CI-B, UNKNOWN"
             }
           }
         },
@@ -29137,6 +29247,84 @@
         }
       }
     },
+    "jms 700v": {
+      "gc": {
+        "unknown": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
+            }
+          },
+          "ie": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, LOW"
+            }
+          }
+        },
+        "eb": {
+          "ie": {
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700V, GC-IE-EB, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
+            }
+          }
+        }
+      },
+      "unknown": {
+        "unknown": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
+            }
+          },
+          "ie": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, LOW"
+            }
+          }
+        },
+        "eb": {
+          "ie": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, UNKNOWN-IE-EB, LOW"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
+            }
+          }
+        }
+      }
+    },
     "unknown": {
       "unknown": {
         "unknown": {
@@ -29144,27 +29332,11 @@
             "unknown": {
               "SOLUTION": "JEOL instrument, UNKNOWN, UNKNOWN"
             },
-            "high": {
-              "SOLUTION": "JEOL instrument, UNKNOWN, HIGH"
-            },
             "low": {
               "SOLUTION": "JEOL instrument, UNKNOWN, LOW"
-            }
-          },
-          "esi": {
-            "high": {
-              "SOLUTION": "JEOL instrument, LC-ESI-UNKNOWN, HIGH"
             },
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-ESI-UNKNOWN, UNKNOWN"
-            }
-          },
-          "maldi": {
             "high": {
-              "SOLUTION": "JEOL instrument, LC-MALDI-UNKNOWN, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-MALDI-UNKNOWN, UNKNOWN"
+              "SOLUTION": "JEOL instrument, UNKNOWN, HIGH"
             }
           },
           "fab": {
@@ -29189,6 +29361,100 @@
             },
             "unknown": {
               "SOLUTION": "JEOL instrument, LC-FD-UNKNOWN, UNKNOWN"
+            }
+          },
+          "ie": {
+            "low": {
+              "SOLUTION": "JEOL instrument, UNKNOWN-IE-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL instrument, UNKNOWN-IE-UNKNOWN, UNKNOWN"
+            }
+          },
+          "esi": {
+            "high": {
+              "SOLUTION": "JEOL instrument, LC-ESI-UNKNOWN, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL instrument, LC-ESI-UNKNOWN, UNKNOWN"
+            }
+          },
+          "maldi": {
+            "high": {
+              "SOLUTION": "JEOL instrument, LC-MALDI-UNKNOWN, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL instrument, LC-MALDI-UNKNOWN, UNKNOWN"
+            }
+          }
+        },
+        "eb": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EB, UNKNOWN"
+            }
+          },
+          "ie": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, UNKNOWN-IE-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL instrument, UNKNOWN-IE-EB, LOW"
+            }
+          },
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, LC-FAB-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL instrument, LC-FAB-EB, LOW"
+            }
+          }
+        },
+        "tof": {
+          "unknown": {
+            "high": {
+              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-TOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-TOF, UNKNOWN"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, LC-ESI-TOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "JEOL instrument, LC-ESI-TOF, HIGH"
+            }
+          },
+          "maldi": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, LC-MALDI-TOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "JEOL instrument, LC-MALDI-TOF, HIGH"
+            }
+          }
+        },
+        "ebeb": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EBEB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EBEB, UNKNOWN"
+            }
+          },
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, LOW"
             }
           }
         },
@@ -29225,50 +29491,61 @@
               "SOLUTION": "JEOL instrument, LC-FD-B, LOW"
             }
           }
-        },
-        "ebeb": {
-          "fab": {
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, LOW"
-            }
-          },
+        }
+      },
+      "lc": {
+        "unknown": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EBEB, LOW"
+              "SOLUTION": "JEOL instrument, LC-UNKNOWN-UNKNOWN, LOW"
+            },
+            "high": {
+              "SOLUTION": "JEOL instrument, LC-UNKNOWN-UNKNOWN, HIGH"
             },
             "unknown": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EBEB, UNKNOWN"
-            }
-          }
-        },
-        "eb": {
-          "fab": {
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-FAB-EB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL instrument, LC-FAB-EB, LOW"
+              "SOLUTION": "JEOL instrument, LC-UNKNOWN-UNKNOWN, UNKNOWN"
             }
           },
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EB, LOW"
-            },
+          "fab": {
             "unknown": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EB, UNKNOWN"
+              "SOLUTION": "JEOL instrument, LC-FAB-UNKNOWN, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL instrument, LC-FAB-UNKNOWN, LOW"
+            }
+          },
+          "fd": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, LC-FD-UNKNOWN, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL instrument, LC-FD-UNKNOWN, LOW"
+            }
+          },
+          "esi": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, LC-ESI-UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "JEOL instrument, LC-ESI-UNKNOWN, HIGH"
+            }
+          },
+          "maldi": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, LC-MALDI-UNKNOWN, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "JEOL instrument, LC-MALDI-UNKNOWN, HIGH"
             }
           }
         },
         "tof": {
           "unknown": {
-            "high": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-TOF, HIGH"
-            },
             "unknown": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-TOF, UNKNOWN"
+              "SOLUTION": "JEOL instrument, LC-UNKNOWN-TOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "JEOL instrument, LC-UNKNOWN-TOF, HIGH"
             }
           },
           "esi": {
@@ -29287,51 +29564,22 @@
               "SOLUTION": "JEOL instrument, LC-MALDI-TOF, HIGH"
             }
           }
-        }
-      },
-      "lc": {
-        "unknown": {
+        },
+        "ebeb": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, LC-UNKNOWN-EBEB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL instrument, LC-UNKNOWN-EBEB, LOW"
+            }
+          },
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL instrument, LC-FAB-UNKNOWN, UNKNOWN"
+              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL instrument, LC-FAB-UNKNOWN, LOW"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "JEOL instrument, LC-UNKNOWN-UNKNOWN, HIGH"
-            },
-            "low": {
-              "SOLUTION": "JEOL instrument, LC-UNKNOWN-UNKNOWN, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-UNKNOWN-UNKNOWN, UNKNOWN"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-ESI-UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "JEOL instrument, LC-ESI-UNKNOWN, HIGH"
-            }
-          },
-          "maldi": {
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-MALDI-UNKNOWN, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "JEOL instrument, LC-MALDI-UNKNOWN, HIGH"
-            }
-          },
-          "fd": {
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-FD-UNKNOWN, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL instrument, LC-FD-UNKNOWN, LOW"
+              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, LOW"
             }
           }
         },
@@ -29378,54 +29626,18 @@
               "SOLUTION": "JEOL instrument, LC-FD-B, LOW"
             }
           }
-        },
-        "ebeb": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-UNKNOWN-EBEB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL instrument, LC-UNKNOWN-EBEB, LOW"
-            }
-          },
-          "fab": {
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, LOW"
-            }
-          }
-        },
-        "tof": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "JEOL instrument, LC-UNKNOWN-TOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-UNKNOWN-TOF, UNKNOWN"
-            }
-          },
-          "esi": {
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-ESI-TOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "JEOL instrument, LC-ESI-TOF, HIGH"
-            }
-          },
-          "maldi": {
-            "unknown": {
-              "SOLUTION": "JEOL instrument, LC-MALDI-TOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "JEOL instrument, LC-MALDI-TOF, HIGH"
-            }
-          }
         }
       },
       "gc": {
         "unknown": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL instrument, GC-UNKNOWN-UNKNOWN, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL instrument, GC-UNKNOWN-UNKNOWN, UNKNOWN"
+            }
+          },
           "ci": {
             "unknown": {
               "SOLUTION": "JEOL instrument, GC-CI-UNKNOWN, UNKNOWN"
@@ -29434,12 +29646,30 @@
               "SOLUTION": "JEOL instrument, GC-CI-UNKNOWN, LOW"
             }
           },
-          "unknown": {
-            "low": {
-              "SOLUTION": "JEOL instrument, GC-UNKNOWN-UNKNOWN, LOW"
-            },
+          "ie": {
             "unknown": {
-              "SOLUTION": "JEOL instrument, GC-UNKNOWN-UNKNOWN, UNKNOWN"
+              "SOLUTION": "JEOL instrument, GC-IE-UNKNOWN, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL instrument, GC-IE-UNKNOWN, LOW"
+            }
+          }
+        },
+        "eb": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, GC-UNKNOWN-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL instrument, GC-UNKNOWN-EB, LOW"
+            }
+          },
+          "ie": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, GC-IE-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL instrument, GC-IE-EB, LOW"
             }
           }
         },
@@ -29465,63 +29695,63 @@
     },
     "jms 700": {
       "lc": {
-        "eb": {
-          "fab": {
-            "low": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
-            }
-          },
+        "unknown": {
           "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
+            }
+          },
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
             }
           }
         },
-        "unknown": {
-          "fab": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
-            }
-          },
+        "eb": {
           "unknown": {
-            "low": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
-            },
             "unknown": {
               "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
+            }
+          },
+          "fab": {
+            "low": {
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
             }
           }
         }
       },
       "unknown": {
-        "eb": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
-            }
-          },
+        "unknown": {
           "fab": {
-            "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
-            },
             "low": {
               "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
             }
           }
         },
-        "unknown": {
+        "eb": {
           "fab": {
             "unknown": {
               "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
