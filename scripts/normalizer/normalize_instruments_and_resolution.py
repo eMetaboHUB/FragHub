@@ -79,7 +79,7 @@ def clean_instrument_type(instrument_type):
 
     # If the given instrument type string contains "... uplc ...", this line removes it
     instrument_type = re.sub("... uplc ...", " ", instrument_type)
-
+    print("after clean_instrument: ", instrument_type)
 
     return instrument_type
 
