@@ -20,8 +20,10 @@ def take_coresponding_mass_diff(metadata_dict):
     The adduct_massdiff_dict referenced in this function is a dictionary which has a mapping of precursor types
     to their corresponding mass differences. This dictionary should be defined globally or in the function's scope.
     """
-    if not metadata_dict["PRECURSORTYPE"]:
-        return None
+    instrument_type = metadata_dict["INSTRUMENTTYPE"]
+    if re.search("\b(IE|EI)\b", instrument_type, flags=re.IGNORECASE):
+        if not metadata_dict["PRECURSORTYPE"]:
+            return None
 
     if metadata_dict["PRECURSORTYPE"] in globals_vars.adduct_massdiff_dict:  # Check if the precursor type exists in the mass difference dictionary
         mass_diff = float(globals_vars.adduct_massdiff_dict[metadata_dict["PRECURSORTYPE"]])  # Convert the mass difference to float and assign it to a variable

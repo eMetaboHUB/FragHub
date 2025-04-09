@@ -24,6 +24,11 @@ def check_for_bad_adduct(metadata_dict):
     adduct = metadata_dict['PRECURSORTYPE']
     ionmode = metadata_dict['IONMODE']
 
+    instrument_type = metadata_dict["INSTRUMENTTYPE"]
+    if re.search("\b(IE|EI)\b", instrument_type, flags=re.IGNORECASE):
+        if not adduct:
+            return metadata_dict
+
     if adduct == "M":
         if ionmode == 'positive':
             adduct = "M+"
