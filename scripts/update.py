@@ -1,8 +1,8 @@
-import os.path
-
 from calculate_maximized_chunk_size import *
 import concurrent.futures
 import deletion_report
+import pandas as pd
+import os.path
 import json
 
 def init_json_update_file(json_update_file):
@@ -29,10 +29,11 @@ def init_json_update_file(json_update_file):
 def check_for_update(spectrum):
     """
     :param spectrum: The spectrum to check for updates.
-    :return: If the spectrum is not found in the dictionary or the dictionary is empty, returns the spectrum and the fraghub_id_spectrum. Otherwise, returns None.
+    :return: If the spectrum is not found in the dictionary or the dictionary is empty, returns the spectrum and the fraghub_id_spectrum. Otherwise, appends the spectrum to the deleted_spectrum_list and returns None.
     """
     # Extract the SPLASH from the provided spectrum
     fraghub_id_spectrum = spectrum["SPLASH"]
+
     # Get the dictionary of SPLASH from the json file
     fraghub_id_dict = json_update_file["SPLASH_LIST"]
 
@@ -41,8 +42,12 @@ def check_for_update(spectrum):
         # If the dictionary is empty, or the SPLASH is not present in the dictionary, an update is needed. Return the spectrum and the SPLASH
         return spectrum, fraghub_id_spectrum
     else:
-        # If the SPLASH is found in the dictionary, an update is not needed. Return None
+        # If the SPLASH is found in the dictionary, an update is not needed.
+        # Append the spectrum to the deleted_spectrum_list
+        deletion_report.deleted_spectrum_list.append(spectrum)
+        # Return None since no update is needed
         return None
+
 
 def check_for_update_processing(spectrum_list, output_directory, progress_callback=None, total_items_callback=None,
                                 prefix_callback=None, item_type_callback=None):
@@ -124,6 +129,14 @@ def check_for_update_processing(spectrum_list, output_directory, progress_callba
         json.dump(json_update_file, f, ensure_ascii=False, indent=4)
 
     deletion_report.previously_cleaned = total - len(final_spectrum_list)
+
+    deleted_spectrums_dir = os.path.join(output_directory, 'DELETED_SPECTRUMS')
+    previously_cleaned_file = os.path.join(deleted_spectrums_dir, 'previously_cleaned.csv')
+    deleted_spectra_df = pd.DataFrame(deletion_report.deleted_spectrum_list)
+    deleted_spectra_df.to_csv(previously_cleaned_file, sep='\t', index=False, quotechar='"')
+
+    # Reinitialize the deleted_spectrum_list to free memory
+    deletion_report.deleted_spectrum_list = []
 
     # Return the final spectrum list, the update flag, and the first run flag
     return final_spectrum_list, update, first_run
