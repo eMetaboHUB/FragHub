@@ -457,10 +457,10 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "UNKNOWN, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-EI-QQQ, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "UNKNOWN, LC-EI-QQQ, LOW"
+              "SOLUTION": "UNKNOWN, GC-EI-QQQ, LOW"
             }
           }
         },
@@ -543,6 +543,28 @@
             },
             "unknown": {
               "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-TOF, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-TOF, LOW"
+            }
+          },
+          "ci": {
+            "high": {
+              "SOLUTION": "UNKNOWN, GC-CI-TOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, GC-CI-TOF, UNKNOWN"
+            }
+          },
+          "ptr": {
+            "low": {
+              "SOLUTION": "UNKNOWN, GC-PTR-TOF, LOW"
+            },
+            "high": {
+              "SOLUTION": "UNKNOWN, GC-PTR-TOF, HIGH"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, GC-PTR-TOF, UNKNOWN"
             }
           },
           "maldi": {
@@ -636,13 +658,13 @@
           },
           "ei": {
             "low": {
-              "SOLUTION": "UNKNOWN, LC-EI-UNKNOWN, LOW"
+              "SOLUTION": "UNKNOWN, GC-EI-UNKNOWN, LOW"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, LC-EI-UNKNOWN, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-EI-UNKNOWN, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "UNKNOWN, LC-EI-UNKNOWN, HIGH"
+              "SOLUTION": "UNKNOWN, GC-EI-UNKNOWN, HIGH"
             }
           }
         },
@@ -754,6 +776,14 @@
             "unknown": {
               "SOLUTION": "UNKNOWN, LC-APCI-Q, UNKNOWN"
             }
+          },
+          "ci": {
+            "low": {
+              "SOLUTION": "UNKNOWN, GC-CI-Q, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, GC-CI-Q, UNKNOWN"
+            }
           }
         },
         "qittof": {
@@ -800,97 +830,55 @@
             }
           }
         },
-        "ptr-tof": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-PTR-TOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-PTR-TOF, HIGH"
-            },
-            "low": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-PTR-TOF, LOW"
-            }
-          },
-          "ptr": {
-            "low": {
-              "SOLUTION": "UNKNOWN, GC-PTR-PTR-TOF, LOW"
-            },
-            "high": {
-              "SOLUTION": "UNKNOWN, GC-PTR-PTR-TOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, GC-PTR-PTR-TOF, UNKNOWN"
-            }
-          }
-        },
-        "ci-tof": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-CI-TOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-CI-TOF, HIGH"
-            }
-          },
-          "ci": {
-            "high": {
-              "SOLUTION": "UNKNOWN, GC-CI-CI-TOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, GC-CI-CI-TOF, UNKNOWN"
-            }
-          }
-        },
-        "ci-q": {
-          "unknown": {
-            "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-CI-Q, UNKNOWN"
-            },
-            "low": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-CI-Q, LOW"
-            }
-          },
-          "ci": {
-            "low": {
-              "SOLUTION": "UNKNOWN, GC-CI-CI-Q, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, GC-CI-CI-Q, UNKNOWN"
-            }
-          }
-        },
-        "be": {
+        "ebeb": {
           "fab": {
             "low": {
-              "SOLUTION": "UNKNOWN, LC-FAB-BE, LOW"
+              "SOLUTION": "UNKNOWN, LC-FAB-EBEB, LOW"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, LC-FAB-BE, UNKNOWN"
-            }
-          },
-          "ei": {
-            "low": {
-              "SOLUTION": "UNKNOWN, LC-EI-BE, LOW"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, LC-EI-BE, UNKNOWN"
+              "SOLUTION": "UNKNOWN, LC-FAB-EBEB, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-BE, LOW"
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EBEB, LOW"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EBEB, UNKNOWN"
+            }
+          }
+        },
+        "eb": {
+          "ei": {
+            "low": {
+              "SOLUTION": "UNKNOWN, GC-EI-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, GC-EI-EB, UNKNOWN"
+            }
+          },
+          "fab": {
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-FAB-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-FAB-EB, UNKNOWN"
+            }
+          },
+          "unknown": {
+            "low": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, UNKNOWN-UNKNOWN-EB, UNKNOWN"
             }
           },
           "esi": {
             "low": {
-              "SOLUTION": "UNKNOWN, LC-ESI-BE, LOW"
+              "SOLUTION": "UNKNOWN, LC-ESI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, LC-ESI-BE, UNKNOWN"
+              "SOLUTION": "UNKNOWN, LC-ESI-EB, UNKNOWN"
             }
           }
         },
@@ -913,10 +901,10 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "UNKNOWN, LC-EI-QFT, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-EI-QFT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "UNKNOWN, LC-EI-QFT, HIGH"
+              "SOLUTION": "UNKNOWN, GC-EI-QFT, HIGH"
             }
           },
           "apci": {
@@ -963,10 +951,10 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "UNKNOWN, LC-EI-FT, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-EI-FT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "UNKNOWN, LC-EI-FT, HIGH"
+              "SOLUTION": "UNKNOWN, GC-EI-FT, HIGH"
             }
           },
           "apci": {
@@ -1352,29 +1340,47 @@
             }
           }
         },
-        "be": {
+        "ebeb": {
           "unknown": {
             "low": {
-              "SOLUTION": "UNKNOWN, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "UNKNOWN, LC-UNKNOWN-EBEB, LOW"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "UNKNOWN, LC-UNKNOWN-EBEB, UNKNOWN"
             }
           },
           "fab": {
             "low": {
-              "SOLUTION": "UNKNOWN, LC-FAB-BE, LOW"
+              "SOLUTION": "UNKNOWN, LC-FAB-EBEB, LOW"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "UNKNOWN, LC-FAB-EBEB, UNKNOWN"
+            }
+          }
+        },
+        "eb": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-UNKNOWN-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-UNKNOWN-EB, UNKNOWN"
+            }
+          },
+          "fab": {
+            "low": {
+              "SOLUTION": "UNKNOWN, LC-FAB-EB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "UNKNOWN, LC-FAB-EB, UNKNOWN"
             }
           },
           "esi": {
             "low": {
-              "SOLUTION": "UNKNOWN, LC-ESI-BE, LOW"
+              "SOLUTION": "UNKNOWN, LC-ESI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, LC-ESI-BE, UNKNOWN"
+              "SOLUTION": "UNKNOWN, LC-ESI-EB, UNKNOWN"
             }
           }
         },
@@ -1540,81 +1546,71 @@
             }
           }
         },
-        "ci-q": {
+        "q": {
           "ci": {
             "unknown": {
-              "SOLUTION": "UNKNOWN, GC-CI-CI-Q, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-CI-Q, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "UNKNOWN, GC-CI-CI-Q, LOW"
+              "SOLUTION": "UNKNOWN, GC-CI-Q, LOW"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "UNKNOWN, GC-UNKNOWN-CI-Q, LOW"
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, GC-UNKNOWN-CI-Q, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-Q, UNKNOWN"
             }
           }
         },
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "unknown": {
-              "SOLUTION": "UNKNOWN, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-PTR-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "UNKNOWN, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "UNKNOWN, GC-PTR-TOF, HIGH"
             },
             "low": {
-              "SOLUTION": "UNKNOWN, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "UNKNOWN, GC-PTR-TOF, LOW"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "UNKNOWN, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-TOF, HIGH"
             },
             "low": {
-              "SOLUTION": "UNKNOWN, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-TOF, UNKNOWN"
             }
-          }
-        },
-        "ci-tof": {
+          },
           "ci": {
             "unknown": {
-              "SOLUTION": "UNKNOWN, GC-CI-CI-TOF, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-CI-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "UNKNOWN, GC-CI-CI-TOF, HIGH"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "UNKNOWN, GC-UNKNOWN-CI-TOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "UNKNOWN, GC-UNKNOWN-CI-TOF, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-CI-TOF, HIGH"
             }
           }
         },
-        "be": {
+        "eb": {
           "unknown": {
             "low": {
-              "SOLUTION": "UNKNOWN, GC-UNKNOWN-BE, LOW"
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, GC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-UNKNOWN-EB, UNKNOWN"
             }
           },
           "ei": {
             "low": {
-              "SOLUTION": "UNKNOWN, GC-EI-BE, LOW"
+              "SOLUTION": "UNKNOWN, GC-EI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "UNKNOWN, GC-EI-BE, UNKNOWN"
+              "SOLUTION": "UNKNOWN, GC-EI-EB, UNKNOWN"
             }
           }
         },
@@ -4460,77 +4456,77 @@
     },
     "ptrtof 1000 utlra": {
       "gc": {
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, LOW"
             }
           }
         },
         "unknown": {
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, UNKNOWN"
             }
           },
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, LOW"
             }
           }
         }
       },
       "unknown": {
-        "ptr-tof": {
+        "tof": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, LOW"
             }
           },
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, UNKNOWN"
             }
           }
         },
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, LOW"
             }
           },
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, UNKNOWN"
             }
           }
         }
@@ -4538,77 +4534,77 @@
     },
     "ptrtof 4000": {
       "unknown": {
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, HIGH"
             }
           }
         },
         "unknown": {
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, HIGH"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         }
       },
       "gc": {
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         },
         "unknown": {
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, HIGH"
             }
           }
         }
@@ -4619,36 +4615,36 @@
         "unknown": {
           "ci": {
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, LOW"
             }
           }
         },
-        "ci-q": {
+        "q": {
           "ci": {
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, UNKNOWN"
             }
           }
         }
@@ -4657,36 +4653,36 @@
         "unknown": {
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, UNKNOWN"
             }
           },
           "ci": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, LOW"
             }
           }
         },
-        "ci-q": {
+        "q": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, LOW"
             }
           },
           "ci": {
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, UNKNOWN"
             }
           }
         }
@@ -4694,77 +4690,77 @@
     },
     "ptrtof 6000": {
       "unknown": {
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, HIGH"
             }
           }
         },
         "unknown": {
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           },
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, HIGH"
             }
           }
         }
       },
       "gc": {
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         },
         "unknown": {
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, HIGH"
             }
           }
         }
@@ -4772,39 +4768,39 @@
     },
     "ptrtof 1000": {
       "gc": {
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         },
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, LOW"
             }
           },
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, UNKNOWN"
             }
           }
         }
@@ -4813,36 +4809,36 @@
         "unknown": {
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, LOW"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         },
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, LOW"
             }
           }
         }
@@ -4853,36 +4849,36 @@
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, HIGH"
             }
           },
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, UNKNOWN"
             }
           }
         },
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, HIGH"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         }
@@ -4891,36 +4887,36 @@
         "unknown": {
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, UNKNOWN"
             }
           },
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, HIGH"
             }
           }
         },
-        "ptr-tof": {
+        "tof": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, HIGH"
             }
           },
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, UNKNOWN"
             }
           }
         }
@@ -4928,39 +4924,39 @@
     },
     "ptr3": {
       "gc": {
-        "ci-tof": {
+        "tof": {
           "ci": {
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, HIGH"
             }
           }
         },
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, HIGH"
             }
           },
           "ci": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, HIGH"
             }
           }
         }
@@ -4969,36 +4965,36 @@
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, HIGH"
             }
           },
           "ci": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, HIGH"
             }
           }
         },
-        "ci-tof": {
+        "tof": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, HIGH"
             }
           },
           "ci": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, HIGH"
             }
           }
         }
@@ -5009,36 +5005,36 @@
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
             }
           },
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
             }
           }
         },
-        "be": {
+        "ebeb": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
             }
           },
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
             }
           }
         }
@@ -5047,36 +5043,36 @@
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
             }
           },
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
             }
           }
         },
-        "be": {
+        "ebeb": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
             }
           },
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
             }
           }
         }
@@ -5162,39 +5158,39 @@
     },
     "jms hx 110": {
       "unknown": {
-        "be": {
+        "eb": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, LOW"
             }
           },
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
             }
           }
         },
         "unknown": {
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, LOW"
             }
           }
         }
@@ -5203,36 +5199,36 @@
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, LOW"
             }
           },
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
             }
           }
         },
-        "be": {
+        "eb": {
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, UNKNOWN"
             }
           }
         }
@@ -5719,74 +5715,74 @@
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
             }
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, LC-EI-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, LC-EI-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, LOW"
             }
           }
         },
-        "be": {
+        "eb": {
           "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, LC-EI-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, LC-EI-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, LOW"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
             }
           }
         }
       },
       "gc": {
-        "be": {
+        "eb": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
             }
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-EI-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-EI-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, LOW"
             }
           }
         },
         "unknown": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
             }
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-EI-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-EI-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, LOW"
             }
           }
         }
@@ -5794,39 +5790,39 @@
     },
     "jms 700": {
       "unknown": {
-        "be": {
+        "eb": {
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
             }
           }
         },
         "unknown": {
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
             }
           }
         }
@@ -5835,36 +5831,36 @@
         "unknown": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
             }
           },
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
             }
           }
         },
-        "be": {
+        "eb": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
             }
           },
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
             }
           }
         }
@@ -5872,77 +5868,77 @@
     },
     "m 4100": {
       "lc": {
-        "be": {
+        "eb": {
           "esi": {
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, UNKNOWN"
             }
           }
         },
         "unknown": {
           "esi": {
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, LOW"
             }
           }
         }
       },
       "unknown": {
-        "be": {
+        "eb": {
           "esi": {
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, LOW"
             }
           }
         },
         "unknown": {
           "unknown": {
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, UNKNOWN"
             }
           },
           "esi": {
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, LOW"
             }
           }
         }
@@ -9169,10 +9165,10 @@
         "unknown": {
           "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, UNKNOWN"
             }
           },
           "unknown": {
@@ -9227,10 +9223,10 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, HIGH"
             }
           }
         }
@@ -9717,10 +9713,10 @@
           },
           "ei": {
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, GC-EI-QQQ, LOW"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, GC-EI-QQQ, UNKNOWN"
             }
           }
         },
@@ -9735,10 +9731,10 @@
           },
           "ei": {
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, GC-EI-QQQ, LOW"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, GC-EI-QQQ, UNKNOWN"
             }
           }
         }
@@ -10299,10 +10295,10 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, HIGH"
             }
           },
           "apci": {
@@ -10317,10 +10313,10 @@
         "ft": {
           "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, UNKNOWN"
             }
           },
           "apci": {
@@ -10401,20 +10397,20 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, GC-EI-QQQ, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, GC-EI-QQQ, LOW"
             }
           }
         },
         "qqq": {
           "ei": {
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, GC-EI-QQQ, LOW"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, GC-EI-QQQ, UNKNOWN"
             }
           },
           "unknown": {
@@ -10635,20 +10631,20 @@
           },
           "ei": {
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific Trace 1310, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific Trace 1310, GC-EI-QQQ, LOW"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific Trace 1310, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific Trace 1310, GC-EI-QQQ, UNKNOWN"
             }
           }
         },
         "unknown": {
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific Trace 1310, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific Trace 1310, GC-EI-QQQ, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific Trace 1310, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific Trace 1310, GC-EI-QQQ, LOW"
             }
           },
           "unknown": {
@@ -10935,10 +10931,10 @@
           },
           "ei": {
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, GC-EI-QQQ, LOW"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, GC-EI-QQQ, UNKNOWN"
             }
           }
         },
@@ -10953,10 +10949,10 @@
           },
           "ei": {
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, GC-EI-QQQ, LOW"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, GC-EI-QQQ, UNKNOWN"
             }
           }
         }
@@ -27714,77 +27710,77 @@
   "ionicon": {
     "ptrtof 1000 utlra": {
       "gc": {
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         },
         "unknown": {
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         }
       },
       "unknown": {
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         },
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-UNKNOWN-TOF, LOW"
             }
           },
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000 utlra, GC-PTR-TOF, UNKNOWN"
             }
           }
         }
@@ -27795,74 +27791,74 @@
         "unknown": {
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, LOW"
             }
           }
         },
-        "ptr-tof": {
+        "tof": {
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           },
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, UNKNOWN"
             }
           }
         }
       },
       "unknown": {
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         },
         "unknown": {
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-PTR-TOF, LOW"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 1000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         }
@@ -27873,74 +27869,74 @@
         "unknown": {
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, HIGH"
             }
           }
         },
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, HIGH"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         }
       },
       "unknown": {
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         },
         "unknown": {
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-PTR-TOF, HIGH"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 4000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         }
@@ -27951,74 +27947,74 @@
         "unknown": {
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, HIGH"
             }
           }
         },
-        "ptr-tof": {
+        "tof": {
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           },
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, HIGH"
             }
           }
         }
       },
       "unknown": {
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, HIGH"
             }
           }
         },
         "unknown": {
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-PTR-TOF, HIGH"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 6000, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         }
@@ -28026,77 +28022,77 @@
     },
     "ptr qms 500": {
       "gc": {
-        "ci-q": {
+        "q": {
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, UNKNOWN"
             }
           },
           "ci": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, LOW"
             }
           }
         },
         "unknown": {
           "ci": {
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, LOW"
             }
           }
         }
       },
       "unknown": {
-        "ci-q": {
+        "q": {
           "ci": {
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, UNKNOWN"
             }
           }
         },
         "unknown": {
           "ci": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-CI-Q, LOW"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, LOW"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON PTR-QMS 500, GC-UNKNOWN-Q, UNKNOWN"
             }
           }
         }
@@ -28107,36 +28103,36 @@
         "unknown": {
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, UNKNOWN"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         },
-        "ptr-tof": {
+        "tof": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, HIGH"
             }
           },
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, HIGH"
             }
           }
         }
@@ -28145,36 +28141,36 @@
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, HIGH"
             }
           },
           "ptr": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, UNKNOWN"
             }
           }
         },
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-PTR-TOF, HIGH"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR-TOF 10k, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         }
@@ -28217,63 +28213,53 @@
             }
           }
         },
-        "ptr-tof": {
+        "tof": {
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON instrument, UNKNOWN-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON instrument, UNKNOWN-UNKNOWN-TOF, HIGH"
             },
             "low": {
-              "SOLUTION": "IONICON instrument, UNKNOWN-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON instrument, UNKNOWN-UNKNOWN-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON instrument, UNKNOWN-UNKNOWN-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON instrument, UNKNOWN-UNKNOWN-TOF, UNKNOWN"
+            }
+          },
+          "ci": {
+            "unknown": {
+              "SOLUTION": "IONICON instrument, GC-CI-TOF, UNKNOWN"
+            },
+            "high": {
+              "SOLUTION": "IONICON instrument, GC-CI-TOF, HIGH"
             }
           },
           "ptr": {
             "unknown": {
-              "SOLUTION": "IONICON instrument, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON instrument, GC-PTR-TOF, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON instrument, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON instrument, GC-PTR-TOF, LOW"
             },
             "high": {
-              "SOLUTION": "IONICON instrument, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON instrument, GC-PTR-TOF, HIGH"
             }
           }
         },
-        "ci-tof": {
+        "q": {
           "ci": {
             "unknown": {
-              "SOLUTION": "IONICON instrument, GC-CI-CI-TOF, UNKNOWN"
-            },
-            "high": {
-              "SOLUTION": "IONICON instrument, GC-CI-CI-TOF, HIGH"
-            }
-          },
-          "unknown": {
-            "high": {
-              "SOLUTION": "IONICON instrument, UNKNOWN-UNKNOWN-CI-TOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "IONICON instrument, UNKNOWN-UNKNOWN-CI-TOF, UNKNOWN"
-            }
-          }
-        },
-        "ci-q": {
-          "ci": {
-            "unknown": {
-              "SOLUTION": "IONICON instrument, GC-CI-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON instrument, GC-CI-Q, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON instrument, GC-CI-CI-Q, LOW"
+              "SOLUTION": "IONICON instrument, GC-CI-Q, LOW"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON instrument, UNKNOWN-UNKNOWN-CI-Q, LOW"
+              "SOLUTION": "IONICON instrument, UNKNOWN-UNKNOWN-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON instrument, UNKNOWN-UNKNOWN-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON instrument, UNKNOWN-UNKNOWN-Q, UNKNOWN"
             }
           }
         }
@@ -28314,63 +28300,53 @@
             }
           }
         },
-        "ptr-tof": {
+        "tof": {
           "ptr": {
             "low": {
-              "SOLUTION": "IONICON instrument, GC-PTR-PTR-TOF, LOW"
+              "SOLUTION": "IONICON instrument, GC-PTR-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON instrument, GC-PTR-PTR-TOF, UNKNOWN"
+              "SOLUTION": "IONICON instrument, GC-PTR-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON instrument, GC-PTR-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON instrument, GC-PTR-TOF, HIGH"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON instrument, GC-UNKNOWN-PTR-TOF, HIGH"
+              "SOLUTION": "IONICON instrument, GC-UNKNOWN-TOF, HIGH"
             },
             "low": {
-              "SOLUTION": "IONICON instrument, GC-UNKNOWN-PTR-TOF, LOW"
+              "SOLUTION": "IONICON instrument, GC-UNKNOWN-TOF, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON instrument, GC-UNKNOWN-PTR-TOF, UNKNOWN"
-            }
-          }
-        },
-        "ci-tof": {
-          "unknown": {
-            "high": {
-              "SOLUTION": "IONICON instrument, GC-UNKNOWN-CI-TOF, HIGH"
-            },
-            "unknown": {
-              "SOLUTION": "IONICON instrument, GC-UNKNOWN-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON instrument, GC-UNKNOWN-TOF, UNKNOWN"
             }
           },
           "ci": {
             "unknown": {
-              "SOLUTION": "IONICON instrument, GC-CI-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON instrument, GC-CI-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON instrument, GC-CI-CI-TOF, HIGH"
+              "SOLUTION": "IONICON instrument, GC-CI-TOF, HIGH"
             }
           }
         },
-        "ci-q": {
+        "q": {
           "unknown": {
             "low": {
-              "SOLUTION": "IONICON instrument, GC-UNKNOWN-CI-Q, LOW"
+              "SOLUTION": "IONICON instrument, GC-UNKNOWN-Q, LOW"
             },
             "unknown": {
-              "SOLUTION": "IONICON instrument, GC-UNKNOWN-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON instrument, GC-UNKNOWN-Q, UNKNOWN"
             }
           },
           "ci": {
             "unknown": {
-              "SOLUTION": "IONICON instrument, GC-CI-CI-Q, UNKNOWN"
+              "SOLUTION": "IONICON instrument, GC-CI-Q, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "IONICON instrument, GC-CI-CI-Q, LOW"
+              "SOLUTION": "IONICON instrument, GC-CI-Q, LOW"
             }
           }
         }
@@ -28381,36 +28357,36 @@
         "unknown": {
           "ci": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, HIGH"
             }
           },
           "unknown": {
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, HIGH"
             },
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, UNKNOWN"
             }
           }
         },
-        "ci-tof": {
+        "tof": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, HIGH"
             }
           },
           "ci": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, HIGH"
             }
           }
         }
@@ -28419,36 +28395,36 @@
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, HIGH"
             }
           },
           "ci": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, HIGH"
             }
           }
         },
-        "ci-tof": {
+        "tof": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-UNKNOWN-TOF, HIGH"
             }
           },
           "ci": {
             "unknown": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, UNKNOWN"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "IONICON PTR3, GC-CI-CI-TOF, HIGH"
+              "SOLUTION": "IONICON PTR3, GC-CI-TOF, HIGH"
             }
           }
         }
@@ -28458,39 +28434,39 @@
   "jeol": {
     "jms hx/hx 110a": {
       "unknown": {
-        "be": {
+        "ebeb": {
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
             }
           }
         },
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
             }
           },
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
             }
           }
         }
@@ -28499,36 +28475,36 @@
         "unknown": {
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
             }
           }
         },
-        "be": {
+        "ebeb": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-UNKNOWN-EBEB, UNKNOWN"
             }
           },
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX/HX 110A, LC-FAB-EBEB, LOW"
             }
           }
         }
@@ -28937,74 +28913,74 @@
         "unknown": {
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, LOW"
             }
           }
         },
-        "be": {
+        "eb": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, UNKNOWN"
             }
           },
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
             }
           }
         }
       },
       "unknown": {
-        "be": {
+        "eb": {
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, LOW"
             }
           }
         },
         "unknown": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-UNKNOWN-EB, UNKNOWN"
             }
           },
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-HX 110, LC-FAB-EB, LOW"
             }
           }
         }
@@ -29171,36 +29147,36 @@
         "unknown": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
             }
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-EI-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-EI-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, LOW"
             }
           }
         },
-        "be": {
+        "eb": {
           "ei": {
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-EI-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-EI-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
             }
           }
         }
@@ -29209,36 +29185,36 @@
         "unknown": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
             }
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, LC-EI-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, LC-EI-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, LOW"
             }
           }
         },
-        "be": {
+        "eb": {
           "ei": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, LC-EI-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700V, LC-EI-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-EI-EB, LOW"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700V, GC-UNKNOWN-EB, UNKNOWN"
             }
           }
         }
@@ -29284,10 +29260,10 @@
           },
           "ei": {
             "low": {
-              "SOLUTION": "JEOL instrument, LC-EI-UNKNOWN, LOW"
+              "SOLUTION": "JEOL instrument, GC-EI-UNKNOWN, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL instrument, LC-EI-UNKNOWN, UNKNOWN"
+              "SOLUTION": "JEOL instrument, GC-EI-UNKNOWN, UNKNOWN"
             }
           },
           "esi": {
@@ -29307,29 +29283,29 @@
             }
           }
         },
-        "be": {
+        "eb": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EB, UNKNOWN"
             }
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "JEOL instrument, LC-EI-BE, UNKNOWN"
+              "SOLUTION": "JEOL instrument, GC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL instrument, LC-EI-BE, LOW"
+              "SOLUTION": "JEOL instrument, GC-EI-EB, LOW"
             }
           },
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL instrument, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL instrument, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL instrument, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL instrument, LC-FAB-EB, LOW"
             }
           }
         },
@@ -29356,6 +29332,24 @@
             },
             "high": {
               "SOLUTION": "JEOL instrument, LC-MALDI-TOF, HIGH"
+            }
+          }
+        },
+        "ebeb": {
+          "unknown": {
+            "low": {
+              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EBEB, LOW"
+            },
+            "unknown": {
+              "SOLUTION": "JEOL instrument, UNKNOWN-UNKNOWN-EBEB, UNKNOWN"
+            }
+          },
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, LOW"
             }
           }
         },
@@ -29466,21 +29460,39 @@
             }
           }
         },
-        "be": {
+        "ebeb": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL instrument, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL instrument, LC-UNKNOWN-EBEB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL instrument, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL instrument, LC-UNKNOWN-EBEB, LOW"
             }
           },
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL instrument, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL instrument, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL instrument, LC-FAB-EBEB, LOW"
+            }
+          }
+        },
+        "eb": {
+          "unknown": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, LC-UNKNOWN-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL instrument, LC-UNKNOWN-EB, LOW"
+            }
+          },
+          "fab": {
+            "unknown": {
+              "SOLUTION": "JEOL instrument, LC-FAB-EB, UNKNOWN"
+            },
+            "low": {
+              "SOLUTION": "JEOL instrument, LC-FAB-EB, LOW"
             }
           }
         },
@@ -29538,21 +29550,21 @@
             }
           }
         },
-        "be": {
+        "eb": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL instrument, GC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL instrument, GC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL instrument, GC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL instrument, GC-UNKNOWN-EB, LOW"
             }
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "JEOL instrument, GC-EI-BE, UNKNOWN"
+              "SOLUTION": "JEOL instrument, GC-EI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL instrument, GC-EI-BE, LOW"
+              "SOLUTION": "JEOL instrument, GC-EI-EB, LOW"
             }
           }
         },
@@ -29581,36 +29593,36 @@
         "unknown": {
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
             }
           },
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
             }
           }
         },
-        "be": {
+        "eb": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
             }
           },
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
             }
           }
         }
@@ -29619,36 +29631,36 @@
         "unknown": {
           "fab": {
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
             }
           }
         },
-        "be": {
+        "eb": {
           "fab": {
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-FAB-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-FAB-EB, LOW"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "JEOL JMS-700, LC-UNKNOWN-EB, UNKNOWN"
             }
           }
         }
@@ -29696,21 +29708,21 @@
         }
       },
       "lc": {
-        "be": {
+        "eb": {
           "esi": {
             "low": {
-              "SOLUTION": "Hitachi instrument, LC-ESI-BE, LOW"
+              "SOLUTION": "Hitachi instrument, LC-ESI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "Hitachi instrument, LC-ESI-BE, UNKNOWN"
+              "SOLUTION": "Hitachi instrument, LC-ESI-EB, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "Hitachi instrument, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "Hitachi instrument, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "Hitachi instrument, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "Hitachi instrument, LC-UNKNOWN-EB, UNKNOWN"
             }
           }
         },
@@ -29752,21 +29764,21 @@
             }
           }
         },
-        "be": {
+        "eb": {
           "esi": {
             "low": {
-              "SOLUTION": "Hitachi instrument, LC-ESI-BE, LOW"
+              "SOLUTION": "Hitachi instrument, LC-ESI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "Hitachi instrument, LC-ESI-BE, UNKNOWN"
+              "SOLUTION": "Hitachi instrument, LC-ESI-EB, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "Hitachi instrument, UNKNOWN-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "Hitachi instrument, UNKNOWN-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Hitachi instrument, UNKNOWN-UNKNOWN-BE, LOW"
+              "SOLUTION": "Hitachi instrument, UNKNOWN-UNKNOWN-EB, LOW"
             }
           }
         },
@@ -29878,77 +29890,77 @@
     },
     "m 4100": {
       "lc": {
-        "be": {
+        "eb": {
           "esi": {
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, UNKNOWN"
             }
           },
           "unknown": {
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, UNKNOWN"
             }
           }
         },
         "unknown": {
           "esi": {
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, UNKNOWN"
             }
           },
           "unknown": {
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, LOW"
             }
           }
         }
       },
       "unknown": {
-        "be": {
+        "eb": {
           "unknown": {
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, LOW"
             }
           },
           "esi": {
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, UNKNOWN"
             }
           }
         },
         "unknown": {
           "unknown": {
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, LOW"
             },
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-UNKNOWN-EB, UNKNOWN"
             }
           },
           "esi": {
             "unknown": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, UNKNOWN"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Hitachi M-4100, LC-ESI-BE, LOW"
+              "SOLUTION": "Hitachi M-4100, LC-ESI-EB, LOW"
             }
           }
         }
@@ -33227,10 +33239,10 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, HIGH"
             }
           },
           "ci": {
@@ -33245,10 +33257,10 @@
         "qft": {
           "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, HIGH"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, LC-EI-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap Q-Exactive, GC-EI-QFT, UNKNOWN"
             }
           },
           "unknown": {
@@ -33985,10 +33997,10 @@
         "unknown": {
           "ei": {
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, GC-EI-QQQ, LOW"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, GC-EI-QQQ, UNKNOWN"
             }
           },
           "unknown": {
@@ -34011,10 +34023,10 @@
           },
           "ei": {
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, GC-EI-QQQ, LOW"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific TSQ QUANTUM AM, GC-EI-QQQ, UNKNOWN"
             }
           }
         }
@@ -34505,10 +34517,10 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, HIGH"
             }
           },
           "apci": {
@@ -34539,10 +34551,10 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, LC-EI-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific GC Orbitrap, GC-EI-FT, HIGH"
             }
           },
           "apci": {
@@ -34639,10 +34651,10 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, GC-EI-QQQ, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, GC-EI-QQQ, LOW"
             }
           }
         },
@@ -34657,10 +34669,10 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, GC-EI-QQQ, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific TSQ Vantage, GC-EI-QQQ, LOW"
             }
           }
         }
@@ -34911,10 +34923,10 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific Trace 1310, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific Trace 1310, GC-EI-QQQ, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific Trace 1310, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific Trace 1310, GC-EI-QQQ, LOW"
             }
           }
         },
@@ -34929,10 +34941,10 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific Trace 1310, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific Trace 1310, GC-EI-QQQ, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific Trace 1310, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific Trace 1310, GC-EI-QQQ, LOW"
             }
           }
         }
@@ -35249,20 +35261,20 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, GC-EI-QQQ, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, GC-EI-QQQ, LOW"
             }
           }
         },
         "qqq": {
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, GC-EI-QQQ, UNKNOWN"
             },
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific TSQ 7000, GC-EI-QQQ, LOW"
             }
           },
           "unknown": {
@@ -35546,13 +35558,13 @@
           },
           "ei": {
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-UNKNOWN, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-UNKNOWN, HIGH"
             },
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-UNKNOWN, LOW"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-UNKNOWN, LOW"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-UNKNOWN, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-UNKNOWN, UNKNOWN"
             }
           }
         },
@@ -35659,10 +35671,10 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-QFT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-QFT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-QFT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-QFT, HIGH"
             }
           }
         },
@@ -35701,20 +35713,20 @@
           },
           "ei": {
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-FT, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-FT, UNKNOWN"
             },
             "high": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-FT, HIGH"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-FT, HIGH"
             }
           }
         },
         "qqq": {
           "ei": {
             "low": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-QQQ, LOW"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-QQQ, LOW"
             },
             "unknown": {
-              "SOLUTION": "Thermo Fisher Scientific instrument, LC-EI-QQQ, UNKNOWN"
+              "SOLUTION": "Thermo Fisher Scientific instrument, GC-EI-QQQ, UNKNOWN"
             }
           },
           "esi": {
