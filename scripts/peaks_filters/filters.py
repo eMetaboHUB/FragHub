@@ -57,6 +57,8 @@ def apply_filters(spectrum, peak_array, precursormz, parameters_dict):
         # keep peaks within a certain mz range
         peak_array = keep_mz_in_range(peak_array, mz_from, mz_to)
         if peak_array.size == 0:
+            spectrum['DELETION_REASON'] = "spectrum deleted because peaks list is empty after removing peaks out of mz range choiced by the user"
+            deletion_report.deleted_spectrum_list.append(spectrum)
             deletion_report.no_peaks_in_mz_range += 1
             return np.array([])
 
