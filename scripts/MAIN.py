@@ -103,7 +103,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
     if step_callback:
         step_callback("-- REMOVING DUPLICATAS --")
     time.sleep(0.01)
-    spectrum_list = remove_duplicatas(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    spectrum_list = remove_duplicatas(spectrum_list, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     deletion_callback(f"duplicatas removed: {deletion_report.duplicatas_removed}")
 
     first_run = False
@@ -127,7 +127,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         if step_callback:
             step_callback("-- CLEANING SPECTRUMS --")
         time.sleep(0.01)
-        spectrum_list = spectrum_cleaning_processing(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+        spectrum_list = spectrum_cleaning_processing(spectrum_list, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
         deletion_callback(
             f"""
             No peaks list: {deletion_report.no_peaks_list}
@@ -152,7 +152,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         if step_callback:
             step_callback("--  MOLS DERIVATION AND MASS CALCULATION --")
         time.sleep(0.01)
-        spectrum_list = mols_derivation_and_calculation(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+        spectrum_list = mols_derivation_and_calculation(spectrum_list, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
         deletion_callback(f"No smiles, no inchi, no inchikey (updated): {deletion_report.no_smiles_no_inchi_no_inchikey}")
 
         # STEP 6: completing missing metadata from pubchem datas

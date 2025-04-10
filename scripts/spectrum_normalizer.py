@@ -11,7 +11,7 @@ import re
 
 np.set_printoptions(suppress=True)
 
-def peak_list_cleaning(peak_list, precursormz):
+def peak_list_cleaning(spectrum, peak_list, precursormz):
     """
     This function serves the purpose of converting a list of peak tuples (mz and intensity values) into a numpy array.
 
@@ -35,7 +35,7 @@ def peak_list_cleaning(peak_list, precursormz):
 
     # Apply appropriate set of filters to the sorted numpy array of peaks.
     # The filters use the precursor mz value and pre-defined parameters.
-    peak_list = apply_filters(peak_list, precursormz, parameters_dict)
+    peak_list = apply_filters(spectrum, peak_list, precursormz, parameters_dict)
 
     # Return the sorted and preset-filtered numpy array of peaks.
     return peak_list
@@ -83,6 +83,8 @@ def spectrum_cleaning(spectrum):
     peak_list = spectrum["PEAKS_LIST"]
     # If peak_list is not present in the spectrum dictionary, it returns None
     if not peak_list:
+        spectrum['DELETION_REASON'] = "spectrum deleted because peaks list is empty"
+        deletion_report.deleted_spectrum_list.append(spectrum)
         deletion_report.no_peaks_list += 1
         return None
     spectrum = normalize_values(spectrum)
@@ -97,14 +99,18 @@ def spectrum_cleaning(spectrum):
             float_precursor_mz = float(spectrum["PRECURSORMZ"].replace(",", "."))
             # Float value of 'PRECURSORMZ' needs to be greater than 0
             if float_precursor_mz <= 0.0:
+                spectrum['DELETION_REASON'] = "spectrum deleted because precursor mz is less than or equal to zero."
+                deletion_report.deleted_spectrum_list.append(spectrum)
                 deletion_report.no_precursor_mz += 1
                 return None
             # Converts peak list to a numpy array
-            peak_list_np = peak_list_cleaning(peak_list, float_precursor_mz)
+            peak_list_np = peak_list_cleaning(spectrum, peak_list, float_precursor_mz)
             spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
             if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
                 if re.search(globals_vars.float_check_pattern, str(spectrum["ENTROPY"])):
                     if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
+                        spectrum['DELETION_REASON'] = "spectrum deleted because it's entropy score is lower than the threshold selected by the user."
+                        deletion_report.deleted_spectrum_list.append(spectrum)
                         deletion_report.low_entropy_score += 1
                         return None
             # If numpy array is empty, it returns none
@@ -116,15 +122,19 @@ def spectrum_cleaning(spectrum):
             spectrum["PEAKS_LIST"] = peak_list_np
             return spectrum
         else:
+            spectrum['DELETION_REASON'] = "spectrum deleted because precursor mz field is empty or contains invalid characters (not a floating number)."
+            deletion_report.deleted_spectrum_list.append(spectrum)
             deletion_report.no_precursor_mz += 1
             return None
     elif "_GC_IE" in spectrum["FILENAME"] or re.search(r"\bEI\b", spectrum["INSTRUMENTTYPE"]):
         float_precursor_mz = None
-        peak_list_np = peak_list_cleaning(peak_list, float_precursor_mz)
+        peak_list_np = peak_list_cleaning(spectrum, peak_list, float_precursor_mz)
         spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
         if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
             if re.search(globals_vars.float_check_pattern, str(spectrum["ENTROPY"])):
                 if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
+                    spectrum['DELETION_REASON'] = "spectrum deleted because it's entropy score is lower than the threshold selected by the user."
+                    deletion_report.deleted_spectrum_list.append(spectrum)
                     deletion_report.low_entropy_score += 1
                     return None
         # If numpy array is empty, it returns none
@@ -138,7 +148,67 @@ def spectrum_cleaning(spectrum):
 
     return spectrum
 
-def spectrum_cleaning_processing(spectrum_list, progress_callback=None, total_items_callback=None, prefix_callback=None,
+
+def write_deleted_spectrums(output_directory):
+    """
+    Groups the deleted spectrums by the DELETION_REASON and writes each group to a separate CSV file.
+
+    This function creates a directory named 'DELETED_SPECTRUMS' inside the given output directory,
+    if it does not already exist. It groups the spectrums by "DELETION_REASON" using if-elif for specific
+    reasoning and then writes each group to a predefined filename set manually.
+
+    Arguments:
+    - output_directory (str): The path to the directory where the deleted spectrums directory
+      and files should be created.
+
+    Returns:
+    - None
+    """
+    # Ensure the target directory exists
+    deleted_spectrums_dir = os.path.join(output_directory, 'DELETED_SPECTRUMS')
+
+    # Convert the list of dictionaries into a DataFrame
+    spectrums_df = pd.DataFrame(deletion_report.deleted_spectrum_list)
+
+    # Group the data by DELETION_REASON
+    grouped = spectrums_df.groupby("DELETION_REASON")
+
+    # Iterate through the groups explicitly checking for known reasons
+    for reason, group in grouped:
+        if reason == "spectrum deleted because peaks list is empty":
+            file_name = "peaks_list_is_empty.csv"
+        elif reason == "spectrum deleted because precursor mz is less than or equal to zero.":
+            file_name = "precursor_mz_less_than_or_equal_zero.csv"
+        elif reason == "spectrum deleted because it's entropy score is lower than the threshold selected by the user.":
+            file_name = "entropy_score_lower_than_threshold.csv"
+        elif reason == "spectrum deleted because precursor mz field is empty or contains invalid characters (not a floating number).":
+            file_name = "precursor_mz_invalid_or_empty.csv"
+        elif reason == "spectrum deleted because it has neither inchi nor smiles nor inchikey":
+            file_name = "no_inchi_smiles_or_inchikey.csv"
+        elif reason == "spectrum deleted because its adduct field is empty or the value entered is not an adduct":
+            file_name = "adduct_empty_or_invalid.csv"
+        elif reason == "spectrum deleted because the adduct corresponds to the wrong ionization mode (neg adduct in pos ionmode).":
+            file_name = "wrong_adduct_neg_in_pos.csv"
+        elif reason == "spectrum deleted because the adduct corresponds to the wrong ionization mode (pos adduct in neg ionmode).":
+            file_name = "wrong_adduct_pos_in_neg.csv"
+        elif reason == "spectrum deleted because its number of peaks is below the threshold chosen by the user":
+            file_name = "number_of_peaks_below_threshold.csv"
+        elif reason == "spectrum deleted because peaks list is empty after removing peaks above precursor m/z":
+            file_name = "peaks_empty_after_above_precursor_mz_removal.csv"
+        elif reason == "spectrum deleted because peaks list is empty after removing peaks out of mz range choiced by the use":
+            file_name = "peaks_empty_after_mz_range_removal.csv"
+        elif reason == "spectrum deleted because peaks list does not contain minimum number of high peaks required according to the value choiced by the user":
+            file_name = "insufficient_high_peaks.csv"
+
+        # Write the group to a CSV file
+        file_path = os.path.join(deleted_spectrums_dir, file_name)
+        group.to_csv(file_path, sep='\t', index=False, quotechar='"')
+
+    # Clear the deleted spectrum list in memory
+    deletion_report.deleted_spectrum_list = []
+
+
+def spectrum_cleaning_processing(spectrum_list, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None,
                                  item_type_callback=None):
     """
     Main function used for performing spectrum cleaning operation on multiple spectrums.
@@ -202,6 +272,7 @@ def spectrum_cleaning_processing(spectrum_list, progress_callback=None, total_it
         if progress_callback:
             progress_callback(processed_items)
 
+    write_deleted_spectrums(output_directory)
+
     # Return the final cleaned spectrum list
     return final
-

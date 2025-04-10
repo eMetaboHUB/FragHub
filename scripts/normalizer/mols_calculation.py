@@ -5,6 +5,7 @@ import deletion_report
 import globals_vars
 import pandas as pd
 import re
+import os
 
 RDLogger.DisableLog('rdApp.*') # Disable rdkit log (warning) messages
 
@@ -87,7 +88,8 @@ def map_transformations(row, unique_transforms):
     # Return the transformed row
     return row
 
-def mols_derivation_and_calculation(CONCATENATE_DF, progress_callback=None, total_items_callback=None,
+
+def mols_derivation_and_calculation(CONCATENATE_DF, output_directory, progress_callback=None, total_items_callback=None,
                                     prefix_callback=None, item_type_callback=None):
     """
     Derives and calculates molecular properties based on unique INCHI and SMILES in the given DataFrame with progress reporting using callbacks.
@@ -97,7 +99,8 @@ def mols_derivation_and_calculation(CONCATENATE_DF, progress_callback=None, tota
     :param total_items_callback: A function to set the total number of items to process.
     :param prefix_callback: A function to dynamically set the prefix for the operation (if needed).
     :param item_type_callback: A function to specify the type of items (e.g., "molecules").
-    :return: DataFrame with calculated molecular properties.
+    :return: Tuple where the first element is the filtered DataFrame with calculated properties,
+             and the second element is another DataFrame with dropped rows.
     """
 
     # Set the progress-related prefix, if provided
@@ -155,15 +158,33 @@ def mols_derivation_and_calculation(CONCATENATE_DF, progress_callback=None, tota
     # Apply the mask to retain only valid rows
     CONCATENATE_DF = CONCATENATE_DF[mask]
 
-    befor = len(CONCATENATE_DF)
+    # Store the length of the DataFrame before dropping nulls
+    before = len(CONCATENATE_DF)
 
     # Step 5: Drop null values in critical columns
-    CONCATENATE_DF = CONCATENATE_DF.dropna(subset=['EXACTMASS', 'AVERAGEMASS', 'SMILES', 'INCHI', 'INCHIKEY'])
-    after = len(CONCATENATE_DF)
-    missing = after - befor
+    critical_columns = ['EXACTMASS', 'AVERAGEMASS', 'SMILES', 'INCHI', 'INCHIKEY']
+    rows_to_drop = CONCATENATE_DF[CONCATENATE_DF[critical_columns].isnull().any(axis=1)]  # Rows to drop
+    CONCATENATE_DF = CONCATENATE_DF.dropna(subset=critical_columns)  # Filtered DataFrame
 
+    rows_to_drop['DELETION_REASON'] = "spectrum deleted because it has neither inchi nor smiles nor inchikey, even after re calculation"
+
+    # Step 6: Write dropped rows to a CSV file
+    if not rows_to_drop.empty:
+        # Ensure the target directory exists
+        deletion_dir = os.path.join(output_directory, "DELETED_SPECTRUMS")
+
+        # Define file name and path
+        deleted_file_path = os.path.join(deletion_dir, "deleted_no_inchi_smiles_inchikey_after_re_calculation.csv")
+
+        # Write the rows_to_drop DataFrame to the CSV file
+        rows_to_drop.to_csv(deleted_file_path, index=False, sep='\t', encoding='utf-8')
+
+        del rows_to_drop
+
+    # Calculate the number of missing rows
+    after = len(CONCATENATE_DF)
+    missing = before - after  # Number of deleted rows
     deletion_report.no_smiles_no_inchi_no_inchikey += missing
 
-    # Return the final transformed DataFrame
+    # Return both the filtered DataFrame and the dropped rows
     return CONCATENATE_DF
-
