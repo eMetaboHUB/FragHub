@@ -1,7 +1,7 @@
 import deletion_report
 import numpy as np
 
-def check_minimum_peak_requiered(peak_array, n_peaks):
+def check_minimum_peak_requiered(spectrum, peak_array, n_peaks):
     """
     This function checks if the number of peaks in an array is not less than a certain amount.
 
@@ -17,6 +17,8 @@ def check_minimum_peak_requiered(peak_array, n_peaks):
     returned. This is represented as a (0,2) shape numpy array, indicating no data in two dimensions.
     """
     if len(peak_array) < int(n_peaks):  # If the amount of peaks in 'peak_array' is less than 'n_peaks'...
+        spectrum['DELETION_REASON'] = "spectrum deleted because its number of peaks is below the threshold chosen by the user"
+        deletion_report.deleted_spectrum_list.append(spectrum)
         deletion_report.minimum_peaks_not_requiered += 1
         return np.empty((0, 2))  # return an empty numpy array
     else:
