@@ -148,7 +148,36 @@ def spectrum_cleaning(spectrum):
 
     return spectrum
 
-def spectrum_cleaning_processing(spectrum_list, progress_callback=None, total_items_callback=None, prefix_callback=None,
+
+def write_deleted_spectrums(output_directory):
+    """
+    Writes deleted spectrums data to a CSV file within a specific directory.
+
+    This function creates a directory named 'DELETED_SPECTRUMS' inside the
+    given output directory, if it does not already exist. It then writes
+    the list of deleted spectrums stored in the deletion report to a file
+    named 'cleaned_spectra.csv' in that directory. The list of deleted
+    spectrums in the deletion report is cleared after the CSV file is
+    created.
+
+    Arguments:
+    output_directory (str): The path to the directory where the deleted
+        spectrums directory and file should be created.
+
+    Raises:
+    None
+
+    Returns:
+    None
+    """
+    deleted_spectrums_dir = os.path.join(output_directory, 'DELETED_SPECTRUMS')
+    cleaned_spectra_file = os.path.join(deleted_spectrums_dir, 'cleaned_spectra.csv')
+    deleted_spectra_df = pd.DataFrame(deletion_report.deleted_spectrum_list)
+    deleted_spectra_df.to_csv(cleaned_spectra_file, sep='\t', index=False, quotechar='"')
+    deletion_report.deleted_spectrum_list = []
+
+
+def spectrum_cleaning_processing(spectrum_list, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None,
                                  item_type_callback=None):
     """
     Main function used for performing spectrum cleaning operation on multiple spectrums.
@@ -212,6 +241,7 @@ def spectrum_cleaning_processing(spectrum_list, progress_callback=None, total_it
         if progress_callback:
             progress_callback(processed_items)
 
+    write_deleted_spectrums(output_directory)
+
     # Return the final cleaned spectrum list
     return final
-
