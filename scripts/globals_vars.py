@@ -9,7 +9,7 @@ import re
 
 # ============ Parsors regex ============
 global is_adduct_pattern
-is_adduct_pattern = re.compile(r"m(\-|\+)", flags=re.IGNORECASE)
+is_adduct_pattern = re.compile(r"m\]?(\-|\+)", flags=re.IGNORECASE)
 
 global metadata_strip_value_pattern
 metadata_strip_value_pattern = re.compile(r"^\"|\"$")
