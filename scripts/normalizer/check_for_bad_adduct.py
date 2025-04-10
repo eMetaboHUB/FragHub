@@ -41,17 +41,23 @@ def check_for_bad_adduct(metadata_dict):
 
 
     if not re.search(globals_vars.is_adduct_pattern, adduct):
+        metadata_dict['DELETION_REASON'] = "spectrum deleted because its adduct field is empty or the value entered is not an adduct"
+        deletion_report.deleted_spectrum_list.append(metadata_dict)
         deletion_report.no_or_bad_adduct += 1
         return None
 
     if ionmode == 'positive':
         if adduct.endswith('-'):
+            metadata_dict['DELETION_REASON'] = "spectrum deleted because the adduct corresponds to the wrong ionization mode (neg adduct in pos ionmode)."
+            deletion_report.deleted_spectrum_list.append(metadata_dict)
             deletion_report.no_or_bad_adduct += 1
             return None
         else:
             return metadata_dict
     elif ionmode == 'negative':
         if adduct.endswith('+'):
+            metadata_dict['DELETION_REASON'] = "spectrum deleted because the adduct corresponds to the wrong ionization mode (pos adduct in neg ionmode)."
+            deletion_report.deleted_spectrum_list.append(metadata_dict)
             deletion_report.no_or_bad_adduct += 1
             return None
         else:
