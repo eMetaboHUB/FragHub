@@ -7,7 +7,7 @@ from .reduce_peak_list import *
 import deletion_report
 import numpy as np
 
-def apply_filters(peak_array, precursormz, parameters_dict):
+def apply_filters(spectrum, peak_array, precursormz, parameters_dict):
     """
     Function to apply various filters on a given peak_array according to the provided parameters.
 
@@ -27,7 +27,7 @@ def apply_filters(peak_array, precursormz, parameters_dict):
     # apply filters in a sequence
     if parameters_dict['check_minimum_peak_requiered'] == 1.0:
         # filter out peaks below a minimum threshold
-        peak_array = check_minimum_peak_requiered(peak_array, n_peaks)
+        peak_array = check_minimum_peak_requiered(spectrum, peak_array, n_peaks)
         # if no peaks pass this filter, return an empty array
         if peak_array.size == 0:
             return np.array([])
