@@ -11,7 +11,7 @@ import re
 
 np.set_printoptions(suppress=True)
 
-def peak_list_cleaning(peak_list, precursormz):
+def peak_list_cleaning(spectrum, peak_list, precursormz):
     """
     This function serves the purpose of converting a list of peak tuples (mz and intensity values) into a numpy array.
 
@@ -35,7 +35,7 @@ def peak_list_cleaning(peak_list, precursormz):
 
     # Apply appropriate set of filters to the sorted numpy array of peaks.
     # The filters use the precursor mz value and pre-defined parameters.
-    peak_list = apply_filters(peak_list, precursormz, parameters_dict)
+    peak_list = apply_filters(spectrum, peak_list, precursormz, parameters_dict)
 
     # Return the sorted and preset-filtered numpy array of peaks.
     return peak_list
@@ -104,7 +104,7 @@ def spectrum_cleaning(spectrum):
                 deletion_report.no_precursor_mz += 1
                 return None
             # Converts peak list to a numpy array
-            peak_list_np = peak_list_cleaning(peak_list, float_precursor_mz)
+            peak_list_np = peak_list_cleaning(spectrum, peak_list, float_precursor_mz)
             spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
             if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
                 if re.search(globals_vars.float_check_pattern, str(spectrum["ENTROPY"])):
@@ -128,7 +128,7 @@ def spectrum_cleaning(spectrum):
             return None
     elif "_GC_IE" in spectrum["FILENAME"] or re.search(r"\bEI\b", spectrum["INSTRUMENTTYPE"]):
         float_precursor_mz = None
-        peak_list_np = peak_list_cleaning(peak_list, float_precursor_mz)
+        peak_list_np = peak_list_cleaning(spectrum, peak_list, float_precursor_mz)
         spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
         if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
             if re.search(globals_vars.float_check_pattern, str(spectrum["ENTROPY"])):
