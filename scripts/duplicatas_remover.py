@@ -1,12 +1,9 @@
 import deletion_report
 import pandas as pd
-import ast
+import os
 
-import time
-
-
-def remove_duplicatas(spectrum_list, progress_callback=None, total_items_callback=None, prefix_callback=None,
-                      item_type_callback=None):
+def remove_duplicatas(spectrum_list, output_directory, progress_callback=None, total_items_callback=None,
+                      prefix_callback=None, item_type_callback=None):
     """
     Remove duplicate entries from a given spectrum list based on the maximum
     'row_size' for each unique SPLASH identifier. The function computes a temporary
@@ -18,6 +15,9 @@ def remove_duplicatas(spectrum_list, progress_callback=None, total_items_callbac
     spectrum_list : DataFrame
         A pandas DataFrame where each row represents a spectrum, and each spectrum
         must have a 'SPLASH' identifier used to identify duplicates in the DataFrame.
+
+    output_directory : str
+        The base directory where `DELETED_SPECTRUMS` and the CSV file will be stored.
 
     progress_callback : callable, optional
         A function to report progress (processed items).
@@ -67,8 +67,13 @@ def remove_duplicatas(spectrum_list, progress_callback=None, total_items_callbac
     deleted_spectra = deleted_spectra.drop(columns=['row_size'])
     deleted_spectra['DELETION_REASON'] = "spectrum deleted because it's a duplicatas"
 
-    # Ajouter les spectres supprimés à la liste deletion_report.deleted_spectrum_list
-    deletion_report.deleted_spectrum_list.extend(deleted_spectra.to_dict(orient='records'))
+    deleted_spectrums_dir = os.path.join(output_directory, 'DELETED_SPECTRUMS')
+
+    # Écrire les doublons supprimés dans un fichier CSV
+    deleted_spectra_file = os.path.join(deleted_spectrums_dir, 'duplicatas_removed.csv')
+    deleted_spectra.to_csv(deleted_spectra_file, sep='\t', index=False, quotechar='"')
+
+    del deleted_spectra
 
     # Garder uniquement les spectres uniques
     spectrum_list = spectrum_list.loc[unique_splash_indices]
