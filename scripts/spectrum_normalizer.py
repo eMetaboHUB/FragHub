@@ -120,6 +120,8 @@ def spectrum_cleaning(spectrum):
             spectrum["PEAKS_LIST"] = peak_list_np
             return spectrum
         else:
+            spectrum['DELETION_REASON'] = "spectrum deleted because precursor mz field is empty or contains invalid characters (not a floating number)."
+            deletion_report.deleted_spectrum_list.append(spectrum)
             deletion_report.no_precursor_mz += 1
             return None
     elif "_GC_IE" in spectrum["FILENAME"] or re.search(r"\bEI\b", spectrum["INSTRUMENTTYPE"]):
