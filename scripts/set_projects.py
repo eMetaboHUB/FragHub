@@ -79,3 +79,8 @@ def init_project(output_directory):
             if not os.path.isdir(dir_path):
                 # ...create the subdirectory
                 os.makedirs(dir_path)
+
+    # Create the DELETED_SPECTRUMS directory
+    deleted_spectrums_dir = os.path.join(output_directory, "DELETED_SPECTRUMS")
+    if not os.path.isdir(deleted_spectrums_dir):
+        os.makedirs(deleted_spectrums_dir)
