@@ -99,6 +99,8 @@ def spectrum_cleaning(spectrum):
             float_precursor_mz = float(spectrum["PRECURSORMZ"].replace(",", "."))
             # Float value of 'PRECURSORMZ' needs to be greater than 0
             if float_precursor_mz <= 0.0:
+                spectrum['DELETION_REASON'] = "spectrum deleted because precursor mz is less than or equal to zero."
+                deletion_report.deleted_spectrum_list.append(spectrum)
                 deletion_report.no_precursor_mz += 1
                 return None
             # Converts peak list to a numpy array
