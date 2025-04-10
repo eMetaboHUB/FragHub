@@ -83,6 +83,8 @@ def spectrum_cleaning(spectrum):
     peak_list = spectrum["PEAKS_LIST"]
     # If peak_list is not present in the spectrum dictionary, it returns None
     if not peak_list:
+        spectrum['DELETION_REASON'] = "spectrum deleted because peaks list is empty"
+        deletion_report.deleted_spectrum_list.append(spectrum)
         deletion_report.no_peaks_list += 1
         return None
     spectrum = normalize_values(spectrum)
