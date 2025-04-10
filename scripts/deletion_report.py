@@ -31,3 +31,6 @@ minimum_high_peaks_not_requiered = 0
 
 global no_or_bad_adduct
 no_or_bad_adduct = 0
+
+global deleted_spectrum_list
+deleted_spectrum_list = []
