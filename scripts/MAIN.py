@@ -152,7 +152,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         if step_callback:
             step_callback("--  MOLS DERIVATION AND MASS CALCULATION --")
         time.sleep(0.01)
-        spectrum_list = mols_derivation_and_calculation(spectrum_list, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+        spectrum_list = mols_derivation_and_calculation(spectrum_list, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
         deletion_callback(f"No smiles, no inchi, no inchikey (updated): {deletion_report.no_smiles_no_inchi_no_inchikey}")
 
         # STEP 6: completing missing metadata from pubchem datas
