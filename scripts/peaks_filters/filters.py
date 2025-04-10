@@ -37,6 +37,8 @@ def apply_filters(spectrum, peak_array, precursormz, parameters_dict):
         peak_array = remove_peak_above_precursormz(peak_array, precursormz)
         # if no peaks pass this filter, return an empty array
         if peak_array.size == 0:
+            spectrum['DELETION_REASON'] = "spectrum deleted because peaks list is empty after removing peaks above precursor m/z "
+            deletion_report.deleted_spectrum_list.append(spectrum)
             deletion_report.all_peaks_above_precursor_mz += 1
             return np.array([])
 
