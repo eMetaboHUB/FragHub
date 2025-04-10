@@ -30,6 +30,12 @@ def normalize_values(metadata_dict):
 
     # If after the above operations the metadata_dict is not empty continue with the normalization
     if metadata_dict:
+        # Normalize Ionization in the metadata
+        metadata_dict = normalize_ionization(metadata_dict)
+
+        # Normalize the instruments and resolution data in the metadata
+        metadata_dict = normalize_instruments_and_resolution(metadata_dict)
+
         # Normalize adduct data in the metadata
         metadata_dict = normalize_adduct(metadata_dict)
 
@@ -54,10 +60,5 @@ def normalize_values(metadata_dict):
             # Normalize Retention Time in the metadata which can be represented in different units
             metadata_dict = normalize_retentiontime(metadata_dict)
 
-            # Normalize Ionization in the metadata
-            metadata_dict = normalize_ionization(metadata_dict)
-
-            # Normalize the instruments and resolution data in the metadata
-            metadata_dict = normalize_instruments_and_resolution(metadata_dict)
 
     return metadata_dict
