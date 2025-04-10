@@ -65,10 +65,11 @@ def apply_filters(spectrum, peak_array, precursormz, parameters_dict):
     if parameters_dict['check_minimum_of_high_peaks_requiered'] == 1.0:
         # filter out peaks below a minimum intensity percent
         peak_array = check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peaks)
-
-    # if no peaks pass the filters, return an empty array
-    if peak_array.size == 0:
-        return np.array([])
+        # if no peaks pass the filters, return an empty array
+        if peak_array.size == 0:
+            spectrum['DELETION_REASON'] = "spectrum deleted because peaks list does not contain minimum number of high peaks required according to the value choiced by the  user"
+            deletion_report.deleted_spectrum_list.append(spectrum)
+            return np.array([])
 
     # return the filtered peak array
     return peak_array
