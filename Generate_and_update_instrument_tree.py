@@ -44,7 +44,7 @@ def format_solution(row, non_unknown_marques):
 
     # complete LC ou GC si on à la type d'ionisation
     if row['SPECTRUM_TYPE'] == 'UNKNOWN' and row['IONISATION'] != 'UNKNOWN':
-        if row['IONISATION'] in ['ESI', 'APPI', 'APCI', 'MALDI', 'FAB', 'FD', 'EI']:
+        if row['IONISATION'] in ['ESI', 'APPI', 'APCI', 'MALDI', 'FAB', 'FD']:
             SPECTRUM_TYPE = 'LC'
         elif row['IONISATION'] in ['CI', 'PTR', 'EI']:
             SPECTRUM_TYPE = 'GC'
