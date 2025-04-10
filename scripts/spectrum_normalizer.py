@@ -133,6 +133,8 @@ def spectrum_cleaning(spectrum):
         if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
             if re.search(globals_vars.float_check_pattern, str(spectrum["ENTROPY"])):
                 if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
+                    spectrum['DELETION_REASON'] = "spectrum deleted because it's entropy score is lower than the threshold selected by the user."
+                    deletion_report.deleted_spectrum_list.append(spectrum)
                     deletion_report.low_entropy_score += 1
                     return None
         # If numpy array is empty, it returns none
