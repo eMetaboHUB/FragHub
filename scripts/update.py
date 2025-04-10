@@ -42,6 +42,7 @@ def check_for_update(spectrum):
         # If the dictionary is empty, or the SPLASH is not present in the dictionary, an update is needed. Return the spectrum and the SPLASH
         return spectrum, fraghub_id_spectrum
     else:
+        spectrum['DELETION_REASON'] = "spectrum deleted because already processed in a previous run."
         # If the SPLASH is found in the dictionary, an update is not needed.
         # Append the spectrum to the deleted_spectrum_list
         deletion_report.deleted_spectrum_list.append(spectrum)
