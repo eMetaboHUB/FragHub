@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+- **11_04_2025**:
+  - fix adduct regex pattern
+  - improve spectrum deletion callback by writing deleted spectrum in DELETION_REASONS sub folder with a detailed reason.
+
 
 - **03_04_2025**:
   - fixing missing last msp spectrum in msp files in some cases.
