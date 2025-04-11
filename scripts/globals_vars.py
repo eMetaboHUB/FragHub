@@ -140,13 +140,12 @@ adduct_dataframe_NEG = adduct_dataframe[adduct_dataframe['ionmode'] == "negative
 adduct_dict_POS = dict(zip(adduct_dataframe_POS['known_adduct'], adduct_dataframe_POS['fraghub_default']))
 adduct_massdiff_dict_POS = dict(zip(adduct_dataframe_POS['fraghub_default'], adduct_dataframe_POS['massdiff']))
 del adduct_dataframe_POS
-del adduct_dict_POS
 
 # Création des dictionnaires pour "negative"
 adduct_dict_NEG = dict(zip(adduct_dataframe_NEG['known_adduct'], adduct_dataframe_NEG['fraghub_default']))
 adduct_massdiff_dict_NEG = dict(zip(adduct_dataframe_NEG['fraghub_default'], adduct_dataframe_NEG['massdiff']))
 del adduct_dataframe_NEG
-del adduct_dict_NEG
+
 del adduct_dataframe
 
 # ================
