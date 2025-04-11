@@ -99,6 +99,7 @@ empty_pattern = re.compile(r"(^CCS:( .*)?)|(^\$:00in-source( .*)?)|(^0( .*)?)|(^
 global ontologies_df
 files = [f for f in os.listdir(os.path.abspath("../datas/ontologies_datas")) if 'ontologies_dict' in f]
 ontologies_df = pd.concat((pd.read_csv(os.path.join(os.path.abspath("../datas/ontologies_datas/"), f), sep=";", encoding="UTF-8") for f in files), ignore_index=True)
+del files
 
 # ================
 
@@ -124,13 +125,29 @@ with ThreadPoolExecutor() as executor:
 # Concaténer tous les DataFrames
 global pubchem_datas
 pubchem_datas = pd.concat(all_dfs, ignore_index=True)
+del all_dfs
 
 # ================
 
-global adduct_dict, adduct_massdiff_dict
+global adduct_dict, adduct_massdiff_dict_POS, adduct_massdiff_dict_NEG
 adduct_dataframe = pd.read_csv(os.path.abspath("../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
-adduct_dict = dict(zip(adduct_dataframe['known_adduct'], adduct_dataframe['fraghub_default']))
-adduct_massdiff_dict = dict(zip(adduct_dataframe['fraghub_default'], adduct_dataframe['massdiff']))
+
+# Filtrage des modes ioniques (positive et negative)
+adduct_dataframe_POS = adduct_dataframe[adduct_dataframe['ionmode'] == "positive"]
+adduct_dataframe_NEG = adduct_dataframe[adduct_dataframe['ionmode'] == "negative"]
+
+# Création des dictionnaires pour "positive"
+adduct_dict_POS = dict(zip(adduct_dataframe_POS['known_adduct'], adduct_dataframe_POS['fraghub_default']))
+adduct_massdiff_dict_POS = dict(zip(adduct_dataframe_POS['fraghub_default'], adduct_dataframe_POS['massdiff']))
+del adduct_dataframe_POS
+del adduct_dict_POS
+
+# Création des dictionnaires pour "negative"
+adduct_dict_NEG = dict(zip(adduct_dataframe_NEG['known_adduct'], adduct_dataframe_NEG['fraghub_default']))
+adduct_massdiff_dict_NEG = dict(zip(adduct_dataframe_NEG['fraghub_default'], adduct_dataframe_NEG['massdiff']))
+del adduct_dataframe_NEG
+del adduct_dict_NEG
+del adduct_dataframe
 
 # ================
 
@@ -143,6 +160,7 @@ with open('../datas/instruments_tree.json', 'r') as f:
 global keys_dict
 Key_dataframe = pd.read_csv(os.path.abspath("../datas/key_to_convert.csv"),sep=";", encoding="UTF-8") # Remplacez 'your_file.csv' par le chemin de votre fichier
 keys_dict = dict(zip(Key_dataframe['known_synonym'], Key_dataframe['fraghub_default'].str.upper()))
+del Key_dataframe
 
 # ======================================================================================================================
 
