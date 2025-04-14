@@ -129,7 +129,7 @@ del all_dfs
 
 # ================
 
-global adduct_dict, adduct_massdiff_dict_POS, adduct_massdiff_dict_NEG
+global adduct_massdiff_dict_POS, adduct_massdiff_dict_NEG, adduct_dict_POS, adduct_dict_NEG
 adduct_dataframe = pd.read_csv(os.path.abspath("../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
 
 # Filtrage des modes ioniques (positive et negative)
