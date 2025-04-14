@@ -1,7 +1,7 @@
-from calculate_maximized_chunk_size import *
-from .keys_convertor import *
+from scripts.calculate_maximized_chunk_size import *
+from scripts.convertors.keys_convertor import *
 import concurrent.futures
-import globals_vars
+import scripts.globals_vars
 import re
 
 
