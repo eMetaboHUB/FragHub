@@ -207,16 +207,16 @@ def format_unique_inchikeys():
     """
     unique_inchikeys_string = f""" 
     ================= UNIQUE INCHIKEYS ==================
-    POS LC Exp: {global_report.report_dict["pos_lc_exp_spectrum_unique_inchikey"]}
-    NEG LC Exp: {global_report.report_dict["neg_lc_exp_spectrum_unique_inchikey"]}
-    POS LC InSilico: {global_report.report_dict["pos_lc_insilico_spectrum_unique_inchikey"]}
-    NEG LC InSilico: {global_report.report_dict["neg_lc_insilico_spectrum_unique_inchikey"]}
-    POS GC Exp: {global_report.report_dict["pos_gc_exp_spectrum_unique_inchikey"]}
-    NEG GC Exp: {global_report.report_dict["neg_gc_exp_spectrum_unique_inchikey"]}
-    POS GC InSilico: {global_report.report_dict["pos_gc_insilico_spectrum_unique_inchikey"]}
-    NEG GC InSilico: {global_report.report_dict["neg_gc_insilico_spectrum_unique_inchikey"]}
+    POS LC Exp: {scripts.global_report.report_dict["pos_lc_exp_spectrum_unique_inchikey"]}
+    NEG LC Exp: {scripts.global_report.report_dict["neg_lc_exp_spectrum_unique_inchikey"]}
+    POS LC InSilico: {scripts.global_report.report_dict["pos_lc_insilico_spectrum_unique_inchikey"]}
+    NEG LC InSilico: {scripts.global_report.report_dict["neg_lc_insilico_spectrum_unique_inchikey"]}
+    POS GC Exp: {scripts.global_report.report_dict["pos_gc_exp_spectrum_unique_inchikey"]}
+    NEG GC Exp: {scripts.global_report.report_dict["neg_gc_exp_spectrum_unique_inchikey"]}
+    POS GC InSilico: {scripts.global_report.report_dict["pos_gc_insilico_spectrum_unique_inchikey"]}
+    NEG GC InSilico: {scripts.global_report.report_dict["neg_gc_insilico_spectrum_unique_inchikey"]}
 
-    TOTAL Unique InChIKeys: {global_report.report_dict["TOTAL_unique_inchikey"]}
+    TOTAL Unique InChIKeys: {scripts.global_report.report_dict["TOTAL_unique_inchikey"]}
     
     """
 
