@@ -1,10 +1,10 @@
-from .check_minimum_of_high_peaks_requiered import *
-from .remove_peak_above_precursormz import *
-from .check_minimum_peak_requiered import *
-from .normalize_intensity import *
-from .keep_mz_in_range import *
-from .reduce_peak_list import *
-import deletion_report
+from scripts.peaks_filters.check_minimum_of_high_peaks_requiered import *
+from scripts.peaks_filters.remove_peak_above_precursormz import *
+from scripts.peaks_filters.check_minimum_peak_requiered import *
+from scripts.peaks_filters.normalize_intensity import *
+from scripts.peaks_filters.keep_mz_in_range import *
+from scripts.peaks_filters.reduce_peak_list import *
+import scripts.deletion_report
 import numpy as np
 
 def apply_filters(spectrum, peak_array, precursormz, parameters_dict):

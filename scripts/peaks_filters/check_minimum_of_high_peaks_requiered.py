@@ -1,4 +1,4 @@
-import deletion_report
+import scripts.deletion_report
 import numpy as np
 
 def check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peaks):

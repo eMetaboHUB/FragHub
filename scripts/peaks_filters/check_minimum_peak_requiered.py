@@ -1,4 +1,4 @@
-import deletion_report
+import scripts.deletion_report
 import numpy as np
 
 def check_minimum_peak_requiered(spectrum, peak_array, n_peaks):
