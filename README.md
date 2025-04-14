@@ -23,6 +23,16 @@ Key features:<br>
 
 **Warning**: All spectra deemed inconsistent, i.e., those lacking SMILES and InChI, precursor m/z, and adduct information, are removed during the processing by FragHub.![img_9.png](img_9.png)
 
+
+## PREREQUISTES
+
+1) Download **Python 3.12** here: https://www.python.org/downloads/release/python-3120/ <br>
+2) Execute setup
+3) **IMPORTANT**: don't forget to check "Add python to PATH"<br>
+![img_13.png](img_13.png)
+4) Click Install Now
+
+
 ## INSTALLATION
 
 To install all dependencies, double-click on the install script corresponding to your OS.<br>
