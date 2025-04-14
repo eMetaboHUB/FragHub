@@ -12,7 +12,7 @@ class Spectrum:
     #     [m/z]:[intensity][ ]...
     DECIMAL_REGEX = r'[+-]?\d+(\.\d+)?([Ee][+-]?\d+)?'
     ION_REGEX = DECIMAL_REGEX +':'+ DECIMAL_REGEX
-    SPECTRUM_REGEX = '^'+ ION_REGEX +'(\s'+ ION_REGEX +')*$'
+    SPECTRUM_REGEX = r'^' + ION_REGEX + r'(\s' + ION_REGEX + r')*$'
 
     
     def __init__(self, spectrum, spectrum_type):
