@@ -37,7 +37,7 @@ class MainWindow(QMainWindow):
         # Ajouter le logo FragHub en haut
         banner = QLabel()
         pixmap = QPixmap("./GUI/assets/FragHub_icon.png").scaled(
-            130, 130, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation
+            200, 200, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation
         )
         banner.setPixmap(pixmap)
         banner.setAlignment(Qt.AlignmentFlag.AlignCenter)
