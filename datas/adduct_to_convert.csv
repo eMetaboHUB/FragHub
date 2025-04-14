@@ -374,7 +374,7 @@ M-2H+Ca+K;[(M-2H+Ca)+K]+;76.910099;positive
 M-3H+Ca+Ca;[M-3H+Ca+Ca]+;76.901158;positive
 M+H-CH3;[M+H-CH3]+;-14.016224;negative
 M-NH3+H;[(M-NH3)+H]+;-16.019324;negative
-M-H2O+H;[(M-H2O)+H]+;-17.008024;negative
+M-H2O+H;[(M-H2O)+H]+;-17.008024;positive
 M-CO+H;[(M-CO)+H]+;-26.987624;negative
 M-C2H4+H;[(M-C2H4)+H]+;-27.024024;negative
 M-CO2+H;[(M-CO2)+H]+;-42.982524;negative
