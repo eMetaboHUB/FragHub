@@ -12,9 +12,9 @@ def calculate_maximized_chunk_size(data_list: list) -> int:
     :return: Taille optimale d'un chunk pour maximiser l'utilisation des ressources.
     """
     # Obtenez le nombre maximal de threads logiques (CPU disponibles)
-    cpu_count = globals_vars.cpu_count
+    cpu_count = scripts.globals_vars.cpu_count
     # Mémoire disponible (en octets)
-    available_memory = globals_vars.available_memory
+    available_memory = scripts.globals_vars.available_memory
 
     # Estimer la taille moyenne d'un élément en mémoire (en octets) d'après le premier élément
 
