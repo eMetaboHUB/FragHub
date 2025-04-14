@@ -26,8 +26,10 @@ def normalize_adduct(metadata_dict):
 
     # Check if the normalized 'adduct' value exists in a previously defined dictionary 'adduct_dict'
     # If yes, replace the 'PRECURSORTYPE' value in the metadata dictionary with the corresponding value from 'adduct_dict'
-    if adduct in globals_vars.adduct_dict:
-        metadata_dict['PRECURSORTYPE'] = globals_vars.adduct_dict[adduct]
+    if adduct in globals_vars.adduct_dict_POS:
+        metadata_dict['PRECURSORTYPE'] = globals_vars.adduct_dict_POS[adduct]
+    if adduct in globals_vars.adduct_dict_NEG:
+        metadata_dict['PRECURSORTYPE'] = globals_vars.adduct_dict_NEG[adduct]
 
     # Return the metadata dictionary with normalized 'PRECURSORTYPE' value
     return metadata_dict

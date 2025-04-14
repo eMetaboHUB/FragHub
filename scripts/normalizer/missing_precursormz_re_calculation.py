@@ -25,10 +25,15 @@ def take_coresponding_mass_diff(metadata_dict):
         if not metadata_dict["PRECURSORTYPE"]:
             return None
 
-    if metadata_dict["PRECURSORTYPE"] in globals_vars.adduct_massdiff_dict:  # Check if the precursor type exists in the mass difference dictionary
-        mass_diff = float(globals_vars.adduct_massdiff_dict[metadata_dict["PRECURSORTYPE"]])  # Convert the mass difference to float and assign it to a variable
+    if metadata_dict["PRECURSORTYPE"] in globals_vars.adduct_massdiff_dict_POS:  # Check if the precursor type exists in the mass difference dictionary
+        mass_diff = float(globals_vars.adduct_massdiff_dict_POS[metadata_dict["PRECURSORTYPE"]])  # Convert the mass difference to float and assign it to a variable
         return mass_diff  # Return the mass difference
+    if metadata_dict["PRECURSORTYPE"] in globals_vars.adduct_massdiff_dict_NEG:  # Check if the precursor type exists in the mass difference dictionary
+        mass_diff = float(globals_vars.adduct_massdiff_dict_NEG[metadata_dict["PRECURSORTYPE"]])  # Convert the mass difference to float and assign it to a variable
+        return mass_diff  # Return the mass difference
+
     return None  # If the precursor type was not found in the dictionary, return None
+
 
 def precursor_mz_need_re_calculation(metadata_dict):
     """

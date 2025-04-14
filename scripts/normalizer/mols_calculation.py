@@ -169,17 +169,16 @@ def mols_derivation_and_calculation(CONCATENATE_DF, output_directory, progress_c
     rows_to_drop['DELETION_REASON'] = "spectrum deleted because it has neither inchi nor smiles nor inchikey, even after re calculation"
 
     # Step 6: Write dropped rows to a CSV file
-    if not rows_to_drop.empty:
-        # Ensure the target directory exists
-        deletion_dir = os.path.join(output_directory, "DELETED_SPECTRUMS")
+    # Ensure the target directory exists
+    deletion_dir = os.path.join(output_directory, "DELETED_SPECTRUMS")
 
-        # Define file name and path
-        deleted_file_path = os.path.join(deletion_dir, "deleted_no_inchi_smiles_inchikey_after_re_calculation.csv")
+    # Define file name and path
+    deleted_file_path = os.path.join(deletion_dir, "deleted_no_inchi_smiles_inchikey_after_re_calculation.csv")
 
-        # Write the rows_to_drop DataFrame to the CSV file
-        rows_to_drop.to_csv(deleted_file_path, index=False, sep='\t', encoding='utf-8')
+    # Write the rows_to_drop DataFrame to the CSV file
+    rows_to_drop.to_csv(deleted_file_path, index=False, sep='\t', encoding='utf-8')
 
-        del rows_to_drop
+    del rows_to_drop
 
     # Calculate the number of missing rows
     after = len(CONCATENATE_DF)
