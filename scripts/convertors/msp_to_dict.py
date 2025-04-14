@@ -18,7 +18,7 @@ def extract_metadata_and_peak_list(spectrum):
     metadata, peak_list = None, None
 
     # Use a regex pattern to search for matches within the input spectrum
-    match = re.search(globals_vars.metadata_peak_list_split_pattern_msp, spectrum)
+    match = re.search(scripts.globals_vars.metadata_peak_list_split_pattern_msp, spectrum)
 
     # If a match is found, assign the groups to metadata and peak_list variables
     if match:
@@ -41,14 +41,14 @@ def check_for_metadata_in_comments(metadata_matches):
     # Iterating over each metadata match
     for match in metadata_matches:
         # If a comment field exists in the given match
-        if re.search(globals_vars.comment_pattern, match[0]):
+        if re.search(scripts.globals_vars.comment_pattern, match[0]):
             # Add the match to the new list
             new_metadata_matches.append(match)
 
             # Check if the comment field contains any "=" character
             if "=" in match[1]:
                 # Look for sub-fields in the comment
-                sub_fields_matches = re.findall(globals_vars.sub_fields_pattern, match[1])
+                sub_fields_matches = re.findall(scripts.globals_vars.sub_fields_pattern, match[1])
 
                 # If sub-fields are found, add them in the new list as separate tuples
                 if sub_fields_matches:
@@ -84,7 +84,7 @@ def metadata_to_dict(metadata):
     metadata_dict = {}
 
     # Using regex to find all matches in the metadata string that follow the specified pattern
-    metadata_matches = re.findall(globals_vars.metadata_pattern_msp, metadata)
+    metadata_matches = re.findall(scripts.globals_vars.metadata_pattern_msp, metadata)
 
     # If we have found matches, further process them. If not, return an empty dictionary
     if metadata_matches:
@@ -94,7 +94,7 @@ def metadata_to_dict(metadata):
 
         # Removing any computational metadata as they do not provide useful information
         if temp:
-            temp = [t for t in temp if not re.search(globals_vars.computed_pattern, t[0])]
+            temp = [t for t in temp if not re.search(scripts.globals_vars.computed_pattern, t[0])]
 
         # If temp isn't False then it contains parsed metadata for processing
         if temp != False:
@@ -104,10 +104,10 @@ def metadata_to_dict(metadata):
         # Processing each match found and preparing a dictionary
         for match in metadata_matches:
             # Extracting field name from the match using sub-regex, also making it lowercase and removing starting and trailing spaces
-            field_name = re.sub(globals_vars.metadata_fields_name_pattern, '', match[0]).lower().strip()
+            field_name = re.sub(scripts.globals_vars.metadata_fields_name_pattern, '', match[0]).lower().strip()
 
             # Extracting field value from the match using sub-regex
-            field_value = re.sub(globals_vars.metadata_strip_value_pattern, "", match[1])
+            field_value = re.sub(scripts.globals_vars.metadata_strip_value_pattern, "", match[1])
 
             # Storing the field name and value in our dictionary
             metadata_dict[field_name] = field_value
@@ -133,7 +133,7 @@ def peak_list_to_array(peak_list):
 
     If there are no matches found (meaning no peaks were found in the peak_list string), the function returns an empty list.
     """
-    peak_list = re.findall(globals_vars.peak_list_split_pattern, peak_list)  # use regex to find all peaks in the string
+    peak_list = re.findall(scripts.globals_vars.peak_list_split_pattern, peak_list)  # use regex to find all peaks in the string
 
     # If peak matches found return list of lists, where inner lists are pair of floats
     if peak_list:
