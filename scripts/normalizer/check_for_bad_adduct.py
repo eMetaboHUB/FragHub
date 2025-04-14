@@ -47,7 +47,7 @@ def check_for_bad_adduct(metadata_dict):
         return None
 
     if ionmode == 'positive':
-        if adduct in globals_vars.adduct_dataframe_NEG:
+        if adduct in globals_vars.adduct_massdiff_dict_NEG:
             metadata_dict['DELETION_REASON'] = "spectrum deleted because the adduct corresponds to the wrong ionization mode (neg adduct in pos ionmode)."
             deletion_report.deleted_spectrum_list.append(metadata_dict)
             deletion_report.no_or_bad_adduct += 1
@@ -55,7 +55,7 @@ def check_for_bad_adduct(metadata_dict):
         else:
             return metadata_dict
     elif ionmode == 'negative':
-        if adduct in globals_vars.adduct_dataframe_POS:
+        if adduct in globals_vars.adduct_massdiff_dict_POS:
             metadata_dict['DELETION_REASON'] = "spectrum deleted because the adduct corresponds to the wrong ionization mode (pos adduct in neg ionmode)."
             deletion_report.deleted_spectrum_list.append(metadata_dict)
             deletion_report.no_or_bad_adduct += 1
