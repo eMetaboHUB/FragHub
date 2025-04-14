@@ -21,7 +21,7 @@ def apply_transformations(inchi_smiles):
 
     # Check if the input string does not contain 'InChI='. If true, some corrections will be applied to the string
     if 'InChI=' not in inchi_smiles:
-        inchi_smiles = re.sub(globals_vars.indigo_smiles_correction_pattern, "", inchi_smiles)
+        inchi_smiles = re.sub(scripts.globals_vars.indigo_smiles_correction_pattern, "", inchi_smiles)
 
     # Check if the modified input string is indeed a string
     if isinstance(inchi_smiles, str):
