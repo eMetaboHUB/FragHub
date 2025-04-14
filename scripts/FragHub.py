@@ -27,7 +27,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("FragHub 1.2.6")
+        self.setWindowTitle("FragHub 1.3.0")
         self.setWindowIcon(QIcon("./GUI/assets/FragHub_icon.png"))
         self.setGeometry(100, 100, 1280, 720)
 
