@@ -1,4 +1,14 @@
 import sys
+import os
+
+# Si le fichier est exécuté comme un exécutable PyInstaller
+if getattr(sys, 'frozen', False):
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    # Si le fichier est exécuté comme un script Python
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QHBoxLayout,
     QWidget, QPushButton, QLabel, QProgressBar, QTabWidget
@@ -7,14 +17,14 @@ from PyQt6.QtGui import QFont, QPixmap, QIcon
 from PyQt6.QtCore import Qt, pyqtSignal
 from threading import Thread
 import time
-from GUI.tabs.tab_input import InputTab
-from GUI.tabs.tab_output import OutputTab
-from GUI.tabs.tab_filters import FiltersTab
-from GUI.tabs.tab_output_settings import OutputSettingTab
-from GUI.tabs.tab_projects import ProjectsTab
-from progress_window import ProgressWindow
+from scripts.GUI.tabs.tab_input import InputTab
+from scripts.GUI.tabs.tab_output import OutputTab
+from scripts.GUI.tabs.tab_filters import FiltersTab
+from scripts.GUI.tabs.tab_output_settings import OutputSettingTab
+from scripts.GUI.tabs.tab_projects import ProjectsTab
+from scripts.progress_window import ProgressWindow
 
-from MAIN import MAIN
+from scripts.MAIN import MAIN
 import traceback
 import ctypes
 

@@ -1,11 +1,11 @@
-from GUI.utils.global_vars import parameters_dict
-from peaks_filters.entropy_calculation import *
-from calculate_maximized_chunk_size import *
-from normalizer.values_normalizer import *
-from peaks_filters.filters import *
+from scripts.GUI.utils.global_vars import parameters_dict
+from scripts.peaks_filters.entropy_calculation import *
+from scripts.calculate_maximized_chunk_size import *
+from scripts.normalizer.values_normalizer import *
+from scripts.peaks_filters.filters import *
 import concurrent.futures
-import deletion_report
-import globals_vars
+import scripts.deletion_report
+import scripts.globals_vars
 import numpy as np
 import re
 

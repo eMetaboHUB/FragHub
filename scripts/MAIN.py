@@ -1,18 +1,18 @@
-from GUI.utils.global_vars import parameters_dict
-from normalizer.mols_calculation import *
-from complete_from_pubchem_datas import *
-from convertors.parsing_to_dict import *
-from ontologies_completion import *
-from convertors.csv_to_msp import *
-from spectrum_normalizer import *
-from duplicatas_remover import *
-from splash_generator import *
-from set_projects import *
-import deletion_report
-from splitter import *
-from writers import *
-from update import *
-from report import *
+from scripts.GUI.utils.global_vars import parameters_dict
+from scripts.normalizer.mols_calculation import *
+from scripts.complete_from_pubchem_datas import *
+from scripts.convertors.parsing_to_dict import *
+from scripts.ontologies_completion import *
+from scripts.convertors.csv_to_msp import *
+from scripts.spectrum_normalizer import *
+from scripts.duplicatas_remover import *
+from scripts.splash_generator import *
+from scripts.set_projects import *
+import scripts.deletion_report
+from scripts.splitter import *
+from scripts.writers import *
+from scripts.update import *
+from scripts.report import *
 import time
 import sys
 import os

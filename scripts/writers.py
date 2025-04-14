@@ -1,4 +1,4 @@
-from set_projects import parameters_dict
+from scripts.set_projects import parameters_dict
 import pandas as pd
 import numpy as np
 import json

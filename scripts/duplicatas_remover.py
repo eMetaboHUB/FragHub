@@ -1,4 +1,4 @@
-import deletion_report
+import scripts.deletion_report
 import pandas as pd
 import os
 

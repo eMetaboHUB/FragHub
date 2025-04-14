@@ -2,8 +2,25 @@ from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 import psutil
 import json
+import sys
 import os
 import re
+
+# Récupérer BASE_DIR dynamiquement
+if getattr(sys, 'frozen', False):  # Si exécuté depuis l'exécutable PyInstaller
+    BASE_DIR = sys._MEIPASS
+else:  # Mode normal (non-congelé, exécuté en tant que script Python)
+    # BASE_DIR pointe sur le dossier parent du projet (racine)
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+# Construire le chemin vers le dossier ontologies_datas
+ONTOLOGIES_PATH = os.path.join(BASE_DIR, "datas", "ontologies_datas")
+PUBCHEM_PATH = os.path.join(BASE_DIR, "datas", "pubchem_datas")
+ADDUCT_PATH = os.path.join(BASE_DIR, "datas")
+INSTRUMENT_TREE_PATH = os.path.join(BASE_DIR, "datas")
+KEYS_PATH = os.path.join(BASE_DIR, "datas")
+
+
 
 # =================================================== REGEX PATTERN ====================================================
 
@@ -97,14 +114,20 @@ empty_pattern = re.compile(r"(^CCS:( .*)?)|(^\$:00in-source( .*)?)|(^0( .*)?)|(^
 # =================================================== READ FILES =======================================================
 
 global ontologies_df
-files = [f for f in os.listdir(os.path.abspath("../datas/ontologies_datas")) if 'ontologies_dict' in f]
-ontologies_df = pd.concat((pd.read_csv(os.path.join(os.path.abspath("../datas/ontologies_datas/"), f), sep=";", encoding="UTF-8") for f in files), ignore_index=True)
+files = [f for f in os.listdir(ONTOLOGIES_PATH) if 'ontologies_dict' in f]
+ontologies_df = pd.concat(
+    (pd.read_csv(os.path.join(ONTOLOGIES_PATH, f), sep=";", encoding="UTF-8") for f in files),
+    ignore_index=True
+)
+
+# Nettoyer la mémoire
 del files
+
 
 # ================
 
 # Dossier contenant les fichiers CSV
-folder_path = '../datas/pubchem_datas/'
+folder_path = PUBCHEM_PATH
 # Liste pour stocker chaque DataFrame
 all_dfs = []
 # Fonction pour lire un fichier CSV
@@ -130,7 +153,7 @@ del all_dfs
 # ================
 
 global adduct_massdiff_dict_POS, adduct_massdiff_dict_NEG, adduct_dict_POS, adduct_dict_NEG
-adduct_dataframe = pd.read_csv(os.path.abspath("../datas/adduct_to_convert.csv"), sep=";", encoding="UTF-8")
+adduct_dataframe = pd.read_csv(os.path.abspath(os.path.join(ADDUCT_PATH,"adduct_to_convert.csv")), sep=";", encoding="UTF-8")
 
 # Filtrage des modes ioniques (positive et negative)
 adduct_dataframe_POS = adduct_dataframe[adduct_dataframe['ionmode'] == "positive"]
@@ -151,13 +174,13 @@ del adduct_dataframe
 # ================
 
 global instrument_tree
-with open('../datas/instruments_tree.json', 'r') as f:
+with open(os.path.join(INSTRUMENT_TREE_PATH,'instruments_tree.json'), 'r') as f:
     instrument_tree = json.load(f)
 
 # ================
 
 global keys_dict
-Key_dataframe = pd.read_csv(os.path.abspath("../datas/key_to_convert.csv"),sep=";", encoding="UTF-8") # Remplacez 'your_file.csv' par le chemin de votre fichier
+Key_dataframe = pd.read_csv(os.path.abspath(os.path.join(KEYS_PATH,"key_to_convert.csv")),sep=";", encoding="UTF-8") # Remplacez 'your_file.csv' par le chemin de votre fichier
 keys_dict = dict(zip(Key_dataframe['known_synonym'], Key_dataframe['fraghub_default'].str.upper()))
 del Key_dataframe
 

@@ -1,7 +1,7 @@
-from calculate_maximized_chunk_size import *
-from splash.spectrum_type import SpectrumType
-from splash.spectrum import Spectrum
-from splash.splash import Splash
+from scripts.calculate_maximized_chunk_size import *
+from scripts.splash.spectrum_type import SpectrumType
+from scripts.splash.spectrum import Spectrum
+from scripts.splash.splash import Splash
 import concurrent.futures
 import os
 

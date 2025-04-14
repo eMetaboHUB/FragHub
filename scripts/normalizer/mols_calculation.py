@@ -1,8 +1,8 @@
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from rdkit.Chem.Descriptors import ExactMolWt, MolWt
 from rdkit import RDLogger, Chem
-import deletion_report
-import globals_vars
+import scripts.deletion_report
+import scripts.globals_vars
 import pandas as pd
 import re
 import os

@@ -1,4 +1,4 @@
-import global_report
+import scripts.global_report
 import re
 
 def split_pos_neg(CONCATENATE_DF, progress_callback=None, total_items_callback=None, prefix_callback=None,

@@ -1,8 +1,8 @@
-from .json_to_dict import *
-from .msp_to_dict import *
-from .csv_to_dict import *
-from .mgf_to_dict import *
-from .loaders import *
+from scripts.convertors.json_to_dict import *
+from scripts.convertors.msp_to_dict import *
+from scripts.convertors.csv_to_dict import *
+from scripts.convertors.mgf_to_dict import *
+from scripts.convertors.loaders import *
 import pandas as pd
 import time
 import json

@@ -1,6 +1,6 @@
-from calculate_maximized_chunk_size import *
+from scripts.calculate_maximized_chunk_size import *
 import concurrent.futures
-import deletion_report
+import scripts.deletion_report
 import pandas as pd
 import os.path
 import json

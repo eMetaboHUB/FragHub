@@ -1,7 +1,7 @@
-from GUI.utils.global_vars import parameters_dict
+from scripts.GUI.utils.global_vars import parameters_dict
 from datetime import datetime
-import deletion_report
-import global_report
+import scripts.deletion_report
+import scripts.global_report
 import os
 
 def calculate_unique_inchikeys(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df):
