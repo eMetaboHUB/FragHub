@@ -6,7 +6,7 @@ if getattr(sys, 'frozen', False):
     BASE_DIR = os.path.dirname(sys.executable)
 else:
     # Si le fichier est exécuté comme un script Python
-    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 
 
 from PyQt6.QtWidgets import (
@@ -38,7 +38,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("FragHub 1.3.0")
-        self.setWindowIcon(QIcon("./GUI/assets/FragHub_icon.png"))
+        self.setWindowIcon(QIcon(os.path.join(BASE_DIR,"GUI/assets/FragHub_icon.png")))
         self.setGeometry(100, 100, 1280, 720)
 
         # Création du layout principal
@@ -46,7 +46,7 @@ class MainWindow(QMainWindow):
 
         # Ajouter le logo FragHub en haut
         banner = QLabel()
-        pixmap = QPixmap("./GUI/assets/FragHub_icon.png").scaled(
+        pixmap = QPixmap(os.path.join(BASE_DIR,"GUI/assets/FragHub_icon.png")).scaled(
             200, 200, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation
         )
         banner.setPixmap(pixmap)
@@ -138,7 +138,7 @@ class MainWindow(QMainWindow):
 
 def run_GUI():
     app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon("./GUI/assets/FragHub_Python_icon.ico"))
+    app.setWindowIcon(QIcon(os.path.join(BASE_DIR,"GUI/assets/FragHub_Python_icon.ico")))
     window = MainWindow()
     window.show()
     app.exec()
