@@ -13,7 +13,7 @@ def normalize_adduct(metadata_dict):
     :return: The modified metadata dictionary with normalized adduct value.
     """
     instrument_type = metadata_dict["INSTRUMENTTYPE"]
-    if re.search("\b(IE|EI)\b", instrument_type, flags=re.IGNORECASE):
+    if re.search("\b(GC)\b", instrument_type, flags=re.IGNORECASE):
         return metadata_dict
 
     # Get the 'PRECURSORTYPE' from the provided metadata dictionary
