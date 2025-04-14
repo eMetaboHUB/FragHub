@@ -129,15 +129,15 @@ def check_for_update_processing(spectrum_list, output_directory, progress_callba
     with open(update_file_path, 'w') as f:
         json.dump(json_update_file, f, ensure_ascii=False, indent=4)
 
-    deletion_report.previously_cleaned = total - len(final_spectrum_list)
+    scripts.deletion_report.previously_cleaned = total - len(final_spectrum_list)
 
     deleted_spectrums_dir = os.path.join(output_directory, 'DELETED_SPECTRUMS')
     previously_cleaned_file = os.path.join(deleted_spectrums_dir, 'previously_cleaned.csv')
-    deleted_spectra_df = pd.DataFrame(deletion_report.deleted_spectrum_list)
+    deleted_spectra_df = pd.DataFrame(scripts.deletion_report.deleted_spectrum_list)
     deleted_spectra_df.to_csv(previously_cleaned_file, sep='\t', index=False, quotechar='"')
 
     # Reinitialize the deleted_spectrum_list to free memory
-    deletion_report.deleted_spectrum_list = []
+    scripts.deletion_report.deleted_spectrum_list = []
 
     # Return the final spectrum list, the update flag, and the first run flag
     return final_spectrum_list, update, first_run
