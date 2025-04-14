@@ -12,7 +12,7 @@ def normalize_empties(metadata_dict):
     for k, v in metadata_dict.items():  # traversing all items (key-value pairs) in the dictionary
 
         if isinstance(v, str):  # if the value is a string
-            if re.fullmatch(globals_vars.empty_pattern, v):  # if the value matches the 'empty_pattern' regex
+            if re.fullmatch(scripts.globals_vars.empty_pattern, v):  # if the value matches the 'empty_pattern' regex
                 metadata_dict[k] = ''  # replace value in dictionary with empty string
 
         # if the value is a float or numpy float and is NaN,

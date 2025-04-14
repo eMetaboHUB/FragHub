@@ -21,15 +21,15 @@ def normalize_adduct(metadata_dict):
 
     # Normalize the obtained 'PRECURSORTYPE' value using regex substitution
     # Note: 'sub_adduct_pattern' is a previously defined regular expression pattern
-    adduct = re.sub(globals_vars.sub_adduct_pattern, "", adduct)
-    adduct = re.sub(globals_vars.sub_signe_end_adduct_pattern, "", adduct)
+    adduct = re.sub(scripts.globals_vars.sub_adduct_pattern, "", adduct)
+    adduct = re.sub(scripts.globals_vars.sub_signe_end_adduct_pattern, "", adduct)
 
     # Check if the normalized 'adduct' value exists in a previously defined dictionary 'adduct_dict'
     # If yes, replace the 'PRECURSORTYPE' value in the metadata dictionary with the corresponding value from 'adduct_dict'
-    if adduct in globals_vars.adduct_dict_POS:
-        metadata_dict['PRECURSORTYPE'] = globals_vars.adduct_dict_POS[adduct]
-    if adduct in globals_vars.adduct_dict_NEG:
-        metadata_dict['PRECURSORTYPE'] = globals_vars.adduct_dict_NEG[adduct]
+    if adduct in scripts.globals_vars.adduct_dict_POS:
+        metadata_dict['PRECURSORTYPE'] = scripts.globals_vars.adduct_dict_POS[adduct]
+    if adduct in scripts.globals_vars.adduct_dict_NEG:
+        metadata_dict['PRECURSORTYPE'] = scripts.globals_vars.adduct_dict_NEG[adduct]
 
     # Return the metadata dictionary with normalized 'PRECURSORTYPE' value
     return metadata_dict

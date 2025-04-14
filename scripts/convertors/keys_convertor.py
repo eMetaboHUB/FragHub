@@ -15,12 +15,12 @@ def convert_keys(metadata_dict):
     # Creating a dictionary comprehension that converts all keys from metadata to lower case
     # and matches them with the keys available in keys_dict and keys_list.
     # The output is a dictionary where the keys are mapped from keys_dict and the values come from metadata_dict.
-    converted = {globals_vars.keys_dict[key.lower()]: val for key, val in metadata_dict.items() if key.lower() in globals_vars.keys_dict and globals_vars.keys_dict[key.lower()] in globals_vars.keys_list}
+    converted = {scripts.globals_vars.keys_dict[key.lower()]: val for key, val in metadata_dict.items() if key.lower() in scripts.globals_vars.keys_dict and scripts.globals_vars.keys_dict[key.lower()] in globals_vars.keys_list}
     del metadata_dict
 
     # After initial conversion, there might still be some keys from keys_list that are not in the converted dictionary.
     # This line adds those missing keys to the converted dictionary with an empty string ("") as their value.
-    converted.update({key: "" for key in globals_vars.keys_list if key not in converted})
+    converted.update({key: "" for key in scripts.globals_vars.keys_list if key not in converted})
 
     # Returning the result that is a dictionary with matching and new keys.
     return converted

@@ -84,8 +84,8 @@ def spectrum_cleaning(spectrum):
     # If peak_list is not present in the spectrum dictionary, it returns None
     if not peak_list:
         spectrum['DELETION_REASON'] = "spectrum deleted because peaks list is empty"
-        deletion_report.deleted_spectrum_list.append(spectrum)
-        deletion_report.no_peaks_list += 1
+        scripts.deletion_report.deleted_spectrum_list.append(spectrum)
+        scripts.deletion_report.no_peaks_list += 1
         return None
     spectrum = normalize_values(spectrum)
     # If normalization of spectrum fails, it returns None
@@ -93,25 +93,25 @@ def spectrum_cleaning(spectrum):
         return None
     # Checks if "PRECURSORMZ" exists in the spectrum
     if "PRECURSORMZ" in spectrum and ("_GC" not in spectrum["FILENAME"] and not re.search(r"\bGC\b", spectrum["INSTRUMENTTYPE"])):
-        if re.search(globals_vars.float_check_pattern, str(spectrum["PRECURSORMZ"])):
+        if re.search(scripts.globals_vars.float_check_pattern, str(spectrum["PRECURSORMZ"])):
             # 'PRECURSORMZ' modification with match from a regular expression search for 'float_check_pattern'
-            spectrum["PRECURSORMZ"] = re.search(globals_vars.float_check_pattern, str(spectrum["PRECURSORMZ"])).group(1)
+            spectrum["PRECURSORMZ"] = re.search(scripts.globals_vars.float_check_pattern, str(spectrum["PRECURSORMZ"])).group(1)
             float_precursor_mz = float(spectrum["PRECURSORMZ"].replace(",", "."))
             # Float value of 'PRECURSORMZ' needs to be greater than 0
             if float_precursor_mz <= 0.0:
                 spectrum['DELETION_REASON'] = "spectrum deleted because precursor mz is less than or equal to zero."
-                deletion_report.deleted_spectrum_list.append(spectrum)
-                deletion_report.no_precursor_mz += 1
+                scripts.deletion_report.deleted_spectrum_list.append(spectrum)
+                scripts.deletion_report.no_precursor_mz += 1
                 return None
             # Converts peak list to a numpy array
             peak_list_np = peak_list_cleaning(spectrum, peak_list, float_precursor_mz)
             spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
             if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
-                if re.search(globals_vars.float_check_pattern, str(spectrum["ENTROPY"])):
+                if re.search(scripts.globals_vars.float_check_pattern, str(spectrum["ENTROPY"])):
                     if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
                         spectrum['DELETION_REASON'] = "spectrum deleted because it's entropy score is lower than the threshold selected by the user."
-                        deletion_report.deleted_spectrum_list.append(spectrum)
-                        deletion_report.low_entropy_score += 1
+                        scripts.deletion_report.deleted_spectrum_list.append(spectrum)
+                        scripts.deletion_report.low_entropy_score += 1
                         return None
             # If numpy array is empty, it returns none
             if peak_list_np.size == 0:
@@ -123,19 +123,19 @@ def spectrum_cleaning(spectrum):
             return spectrum
         else:
             spectrum['DELETION_REASON'] = "spectrum deleted because precursor mz field is empty or contains invalid characters (not a floating number)."
-            deletion_report.deleted_spectrum_list.append(spectrum)
-            deletion_report.no_precursor_mz += 1
+            scripts.deletion_report.deleted_spectrum_list.append(spectrum)
+            scripts.deletion_report.no_precursor_mz += 1
             return None
     elif "_GC" in spectrum["FILENAME"] or re.search(r"\bGC\b", spectrum["INSTRUMENTTYPE"]):
         float_precursor_mz = None
         peak_list_np = peak_list_cleaning(spectrum, peak_list, float_precursor_mz)
         spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
         if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
-            if re.search(globals_vars.float_check_pattern, str(spectrum["ENTROPY"])):
+            if re.search(scripts.globals_vars.float_check_pattern, str(spectrum["ENTROPY"])):
                 if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
                     spectrum['DELETION_REASON'] = "spectrum deleted because it's entropy score is lower than the threshold selected by the user."
-                    deletion_report.deleted_spectrum_list.append(spectrum)
-                    deletion_report.low_entropy_score += 1
+                    scripts.deletion_report.deleted_spectrum_list.append(spectrum)
+                    scripts.deletion_report.low_entropy_score += 1
                     return None
         # If numpy array is empty, it returns none
         if peak_list_np.size == 0:
@@ -168,7 +168,7 @@ def write_deleted_spectrums(output_directory):
     deleted_spectrums_dir = os.path.join(output_directory, 'DELETED_SPECTRUMS')
 
     # Convert the list of dictionaries into a DataFrame
-    spectrums_df = pd.DataFrame(deletion_report.deleted_spectrum_list)
+    spectrums_df = pd.DataFrame(scripts.deletion_report.deleted_spectrum_list)
 
     # Group the data by DELETION_REASON
     grouped = spectrums_df.groupby("DELETION_REASON")
@@ -205,7 +205,7 @@ def write_deleted_spectrums(output_directory):
         group.to_csv(file_path, sep='\t', index=False, quotechar='"')
 
     # Clear the deleted spectrum list in memory
-    deletion_report.deleted_spectrum_list = []
+    scripts.deletion_report.deleted_spectrum_list = []
 
 
 def spectrum_cleaning_processing(spectrum_list, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None,

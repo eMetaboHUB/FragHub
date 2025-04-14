@@ -16,7 +16,7 @@ def normalize_ms_level(metadata_dict):
         ms_level = None
 
     if ms_level:  # Check if it exists or not None.
-        ms_level = re.findall(globals_vars.ms_level_pattern, ms_level)  # Find all occurrences of the pattern in the MS level value.
+        ms_level = re.findall(scripts.globals_vars.ms_level_pattern, ms_level)  # Find all occurrences of the pattern in the MS level value.
 
         if ms_level:  # If pattern found,
 

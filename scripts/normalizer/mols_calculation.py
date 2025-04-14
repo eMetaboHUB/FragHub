@@ -153,7 +153,7 @@ def mols_derivation_and_calculation(CONCATENATE_DF, output_directory, progress_c
     CONCATENATE_DF = CONCATENATE_DF.apply(apply_row_mapping, axis=1)
 
     # Step 4: Validate the 'INCHIKEY' column using a predefined pattern
-    mask = CONCATENATE_DF['INCHIKEY'].str.fullmatch(globals_vars.inchikey_pattern, na=False)
+    mask = CONCATENATE_DF['INCHIKEY'].str.fullmatch(scripts.globals_vars.inchikey_pattern, na=False)
 
     # Apply the mask to retain only valid rows
     CONCATENATE_DF = CONCATENATE_DF[mask]
@@ -183,7 +183,7 @@ def mols_derivation_and_calculation(CONCATENATE_DF, output_directory, progress_c
     # Calculate the number of missing rows
     after = len(CONCATENATE_DF)
     missing = before - after  # Number of deleted rows
-    deletion_report.no_smiles_no_inchi_no_inchikey += missing
+    scripts.deletion_report.no_smiles_no_inchi_no_inchikey += missing
 
     # Return both the filtered DataFrame and the dropped rows
     return CONCATENATE_DF

@@ -90,6 +90,6 @@ def remove_duplicatas(spectrum_list, output_directory, progress_callback=None, t
     spectrum_list = spectrum_list.to_dict(orient='records')
 
     # Mettre à jour le rapport de suppression
-    deletion_report.duplicatas_removed = total_items - len(spectrum_list)
+    scripts.deletion_report.duplicatas_removed = total_items - len(spectrum_list)
 
     return spectrum_list

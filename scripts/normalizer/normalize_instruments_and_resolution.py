@@ -157,7 +157,7 @@ def search_for_brand(tree_path, instrument_infos):
     # try to execute the following instruction
     try:
         # For each key in the instrument tree dictionary
-        for key in globals_vars.instrument_tree.keys():
+        for key in scripts.globals_vars.instrument_tree.keys():
             # If the key (brand) is found in the instrument_infos string
             if re.search(rf"(\b|^|$){key}(\b|^|$)", instrument_infos):
                 # Append the found key (brand) to the tree_path list
@@ -183,7 +183,7 @@ def search_for_model(tree_path, instrument_infos):
     # Start by assuming no exception will occur
     try:
         # Loop through the keys present in the first level of instrument_tree dictionary
-        for key in globals_vars.instrument_tree[tree_path[0]].keys():
+        for key in scripts.globals_vars.instrument_tree[tree_path[0]].keys():
             # Using a regular expression, search for the key in instrument_infos.
             # rf"(\b){key}(\b)" is a pattern that matches the key surrounded by word boundaries to avoid partial matches.
             if re.search(rf"(\b|^|$){key}(\b|^|$)", instrument_infos):
@@ -217,7 +217,7 @@ def search_for_spectrum_type(tree_path, instrument_infos):
     :return: The tree_path List with found spectrum type appended, or 'unknown' if not found. None if an exception occurred.
     """
     try:  # Try to execute the following block of code
-        for key in globals_vars.instrument_tree[tree_path[0]][tree_path[1]].keys():  # This block of code iterates over each key found in the 2nd depth of the dictionary
+        for key in scripts.globals_vars.instrument_tree[tree_path[0]][tree_path[1]].keys():  # This block of code iterates over each key found in the 2nd depth of the dictionary
             if re.search(rf"(\b|^|$){key}(\b|^|$)", instrument_infos):  # If the key is found in the instrument data string
                 tree_path.append(key)  # Then append the found key value to the tree path
                 return tree_path  # Return the updated tree path
@@ -241,7 +241,7 @@ def search_for_instrument_type(tree_path, instrument_infos):
     try:
 
         # Loop through the keys in the instrument tree at the provided tree path
-        for key in globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]].keys():
+        for key in scripts.globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]].keys():
 
             # Use regex to find if the current key exists in instrument_infos
             # If it does, append it to the tree_path and return the updated tree_path
@@ -269,7 +269,7 @@ def search_for_ionisation(tree_path, instrument_infos):
     """
     try:
         # Iterating over keys in the instrument tree at the specified path
-        for key in globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]].keys():
+        for key in scripts.globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]].keys():
             # If the key is present in instrument_infos, append it to the path and return
             if re.search(rf"(\b|^|$){key}(\b|^|$)", instrument_infos):
                 tree_path.append(key)
@@ -378,10 +378,10 @@ def normalize_instruments_and_resolution(metadata_dict):
     # Try to retrieve the instrument's resolution and specific solution
     try:
         # Determine if the instrument has high or low resolution, if neither can be determined, mark as unknown
-        resolution = "high" if "high" in globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]] else "low" if "low" in globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]] else "unknown"
+        resolution = "high" if "high" in scripts.globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]] else "low" if "low" in scripts.globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]] else "unknown"
 
         # Retrieve the corresponding solution for the determined resolution
-        solution = globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]][resolution]["SOLUTION"]
+        solution = scripts.globals_vars.instrument_tree[tree_path[0]][tree_path[1]][tree_path[2]][tree_path[3]][tree_path[4]][resolution]["SOLUTION"]
 
         # Split the solution string into separate components
         solution = solution.split(',')

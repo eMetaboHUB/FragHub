@@ -25,11 +25,11 @@ def take_coresponding_mass_diff(metadata_dict):
         if not metadata_dict["PRECURSORTYPE"]:
             return None
 
-    if metadata_dict["PRECURSORTYPE"] in globals_vars.adduct_massdiff_dict_POS:  # Check if the precursor type exists in the mass difference dictionary
-        mass_diff = float(globals_vars.adduct_massdiff_dict_POS[metadata_dict["PRECURSORTYPE"]])  # Convert the mass difference to float and assign it to a variable
+    if metadata_dict["PRECURSORTYPE"] in scripts.globals_vars.adduct_massdiff_dict_POS:  # Check if the precursor type exists in the mass difference dictionary
+        mass_diff = float(scripts.globals_vars.adduct_massdiff_dict_POS[metadata_dict["PRECURSORTYPE"]])  # Convert the mass difference to float and assign it to a variable
         return mass_diff  # Return the mass difference
-    if metadata_dict["PRECURSORTYPE"] in globals_vars.adduct_massdiff_dict_NEG:  # Check if the precursor type exists in the mass difference dictionary
-        mass_diff = float(globals_vars.adduct_massdiff_dict_NEG[metadata_dict["PRECURSORTYPE"]])  # Convert the mass difference to float and assign it to a variable
+    if metadata_dict["PRECURSORTYPE"] in scripts.globals_vars.adduct_massdiff_dict_NEG:  # Check if the precursor type exists in the mass difference dictionary
+        mass_diff = float(scripts.globals_vars.adduct_massdiff_dict_NEG[metadata_dict["PRECURSORTYPE"]])  # Convert the mass difference to float and assign it to a variable
         return mass_diff  # Return the mass difference
 
     return None  # If the precursor type was not found in the dictionary, return None
@@ -43,10 +43,10 @@ def precursor_mz_need_re_calculation(metadata_dict):
     :return: This function returns 'True' if the 'PRECURSORMZ' value in the metadata dictionary needs to be recalculated, and 'False' otherwise.
     """
     # Check if 'PRECURSORMZ' value matches the float_check_pattern
-    if not re.search(globals_vars.float_check_pattern, str(metadata_dict["PRECURSORMZ"])):
+    if not re.search(scripts.globals_vars.float_check_pattern, str(metadata_dict["PRECURSORMZ"])):
         # If 'PRECURSORMZ' value doesn't match the float_check_pattern, return True indicating that the value needs to be recalculated
         return True
-    elif float(re.search(globals_vars.float_check_pattern, str(metadata_dict["PRECURSORMZ"])).group(1).replace(",", ".")) <= 0.0:
+    elif float(re.search(scripts.globals_vars.float_check_pattern, str(metadata_dict["PRECURSORMZ"])).group(1).replace(",", ".")) <= 0.0:
         # If 'PRECURSORMZ' value is less than or equal to 0.0, return True indicating that the value needs to be recalculated.
         return True
     return False

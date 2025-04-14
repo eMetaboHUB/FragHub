@@ -18,7 +18,7 @@ def normalize_retentiontime(metadata_dict):
         retientiontime = ""
 
     # Regular expression match for different patterns of time representation.
-    match = re.search(globals_vars.retention_time_pattern, retientiontime)
+    match = re.search(scripts.globals_vars.retention_time_pattern, retientiontime)
 
     # If match found, normalization process begins.
     if match:

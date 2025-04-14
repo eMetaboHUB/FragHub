@@ -23,7 +23,7 @@ def check_minimum_of_high_peaks_requiered(peak_array, intensity_percent, no_peak
     # If the number of peaks in the filtered array is less than the required number of peaks,
     # return an empty array (0,2)
     if len(filtered_array) < int(no_peaks):
-        deletion_report.minimum_high_peaks_not_requiered += 1
+        scripts.deletion_report.minimum_high_peaks_not_requiered += 1
         return np.empty((0, 2))
     else:  # Otherwise, return the original peak array
         return peak_array

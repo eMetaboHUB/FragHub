@@ -45,7 +45,7 @@ def check_for_update(spectrum):
         spectrum['DELETION_REASON'] = "spectrum deleted because already processed in a previous run."
         # If the SPLASH is found in the dictionary, an update is not needed.
         # Append the spectrum to the deleted_spectrum_list
-        deletion_report.deleted_spectrum_list.append(spectrum)
+        scripts.deletion_report.deleted_spectrum_list.append(spectrum)
         # Return None since no update is needed
         return None
 

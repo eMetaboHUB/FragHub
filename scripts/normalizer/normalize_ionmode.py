@@ -13,10 +13,10 @@ def normalize_ionmode(metadata_dict):
     ionmode = metadata_dict["IONMODE"]
 
     # If the pattern for positive ion mode is found in ion mode, change it to normalized form "positive"
-    if re.search(globals_vars.ionmode_pos_pattern, ionmode):
+    if re.search(scripts.globals_vars.ionmode_pos_pattern, ionmode):
         ionmode = "positive"
     # If the pattern for negative ion mode is found in ion mode, change it to normalized form "negative"
-    elif re.search(globals_vars.ionmode_neg_pattern, ionmode):
+    elif re.search(scripts.globals_vars.ionmode_neg_pattern, ionmode):
         ionmode = "negative"
 
     # update the "IONMODE" key in metadata dictionary with normalized ion mode value

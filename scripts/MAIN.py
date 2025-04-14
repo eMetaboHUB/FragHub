@@ -104,7 +104,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         step_callback("-- REMOVING DUPLICATAS --")
     time.sleep(0.01)
     spectrum_list = remove_duplicatas(spectrum_list, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
-    deletion_callback(f"duplicatas removed: {deletion_report.duplicatas_removed}")
+    deletion_callback(f"duplicatas removed: {scripts.deletion_report.duplicatas_removed}")
 
     first_run = False
     update = False
@@ -115,7 +115,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         step_callback("-- CHECKING FOR UPDATES --")
     time.sleep(0.01)
     spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
-    deletion_callback(f"previously cleaned: {deletion_report.previously_cleaned}")
+    deletion_callback(f"previously cleaned: {scripts.deletion_report.previously_cleaned}")
 
     if spectrum_list:
 
@@ -130,15 +130,15 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         spectrum_list = spectrum_cleaning_processing(spectrum_list, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
         deletion_callback(
             f"""
-            No peaks list: {deletion_report.no_peaks_list}
-            No smiles, no inchi, no inchikey: {deletion_report.no_smiles_no_inchi_no_inchikey}
-            No precursor mz: {deletion_report.no_precursor_mz}
-            No or bad adduct: {deletion_report.no_or_bad_adduct}
-            Low entropy score: {deletion_report.low_entropy_score}
-            Minimum peaks not required: {deletion_report.minimum_peaks_not_requiered}
-            All peaks above precursor mz: {deletion_report.all_peaks_above_precursor_mz}
-            No peaks in mz range: {deletion_report.no_peaks_in_mz_range}
-            Minimum high peaks not required: {deletion_report.minimum_high_peaks_not_requiered}
+            No peaks list: {scripts.deletion_report.no_peaks_list}
+            No smiles, no inchi, no inchikey: {scripts.deletion_report.no_smiles_no_inchi_no_inchikey}
+            No precursor mz: {scripts.deletion_report.no_precursor_mz}
+            No or bad adduct: {scripts.deletion_report.no_or_bad_adduct}
+            Low entropy score: {scripts.deletion_report.low_entropy_score}
+            Minimum peaks not required: {scripts.deletion_report.minimum_peaks_not_requiered}
+            All peaks above precursor mz: {scripts.deletion_report.all_peaks_above_precursor_mz}
+            No peaks in mz range: {scripts.deletion_report.no_peaks_in_mz_range}
+            Minimum high peaks not required: {scripts.deletion_report.minimum_high_peaks_not_requiered}
             """
         )
 
@@ -153,7 +153,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             step_callback("--  MOLS DERIVATION AND MASS CALCULATION --")
         time.sleep(0.01)
         spectrum_list = mols_derivation_and_calculation(spectrum_list, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
-        deletion_callback(f"No smiles, no inchi, no inchikey (updated): {deletion_report.no_smiles_no_inchi_no_inchikey}")
+        deletion_callback(f"No smiles, no inchi, no inchikey (updated): {scripts.deletion_report.no_smiles_no_inchi_no_inchikey}")
 
         # STEP 6: completing missing metadata from pubchem datas
         time.sleep(0.01)
@@ -223,7 +223,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df, NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
         deletion_callback(
-            f"Total deletions: {sum([deletion_report.duplicatas_removed, deletion_report.previously_cleaned, deletion_report.no_peaks_list, deletion_report.no_smiles_no_inchi_no_inchikey, deletion_report.no_precursor_mz, deletion_report.low_entropy_score, deletion_report.minimum_peaks_not_requiered, deletion_report.all_peaks_above_precursor_mz, deletion_report.no_peaks_in_mz_range, deletion_report.minimum_high_peaks_not_requiered])}"
+            f"Total deletions: {sum([scripts.deletion_report.duplicatas_removed, scripts.deletion_report.previously_cleaned, scripts.deletion_report.no_peaks_list, scripts.deletion_report.no_smiles_no_inchi_no_inchikey, scripts.deletion_report.no_precursor_mz, scripts.deletion_report.low_entropy_score, scripts.deletion_report.minimum_peaks_not_requiered, scripts.deletion_report.all_peaks_above_precursor_mz, scripts.deletion_report.no_peaks_in_mz_range, scripts.deletion_report.minimum_high_peaks_not_requiered])}"
         )
     else:
         deletion_callback("There is no new spectrums to process. Exiting code !")

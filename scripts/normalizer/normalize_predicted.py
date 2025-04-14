@@ -21,7 +21,7 @@ def in_filename_or_name(filename, name):
     # Check if the string "MSMS_Public" is not in the filename
     if "MSMS_Public" not in filename:
         # If "MSMS_Public" is not in the filename, check if it matches the In_Silico_pattern
-        if re.search(globals_vars.In_Silico_pattern, filename+" "+name):
+        if re.search(scripts.globals_vars.In_Silico_pattern, filename+" "+name):
             # If both conditions are met, return True
             return True
     # If either of the conditions is not met, return False
@@ -51,7 +51,7 @@ def normalize_predicted(metadata_dict):
 
     # If 'COMMENT' field matches the pattern, or 'PREDICTED' is 'true', or 'MSMS_Public' in the filename:
     #    set 'PREDICTED' field in the metadata dictionary to 'true'
-    if re.search(globals_vars.In_Silico_pattern, comment_field) or predicted == "true" or in_filename_or_name(filename, name):
+    if re.search(scripts.globals_vars.In_Silico_pattern, comment_field) or predicted == "true" or in_filename_or_name(filename, name):
         metadata_dict["PREDICTED"] = "true"
     else:  # Otherwise, set the 'PREDICTED' field in the metadata dictionary to 'false'
         metadata_dict["PREDICTED"] = "false"

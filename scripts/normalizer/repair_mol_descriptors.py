@@ -21,7 +21,7 @@ def repair_inchi(metadata_dict):
     # If InChI string is present, the function modifies it.
     if inchi:
         # Replacing the pattern with "InChI=" in the existing InChI string
-        inchi = re.sub(globals_vars.repair_inchi_pattern, "InChI=", inchi)
+        inchi = re.sub(scripts.globals_vars.repair_inchi_pattern, "InChI=", inchi)
 
         # Updating the InChI key in metadata dictionary with the modified InChI string
         metadata_dict['INCHI'] = inchi
@@ -41,40 +41,40 @@ def repair_mol_descriptors(metadata_dict):
     inchikey = metadata_dict['INCHIKEY']
 
     # If the respective patterns match the respective values, repair the InChI and return the updated dict
-    if re.search(globals_vars.smiles_pattern, smiles) and re.search(globals_vars.inchi_pattern, inchi) and re.search(globals_vars.inchikey_pattern, inchikey):
+    if re.search(scripts.globals_vars.smiles_pattern, smiles) and re.search(scripts.globals_vars.inchi_pattern, inchi) and re.search(scripts.globals_vars.inchikey_pattern, inchikey):
         metadata_dict = repair_inchi(metadata_dict)
         return metadata_dict
 
     # If the patterns of InChI and InChIKey do not match but SMILES pattern matches InChI,
     # then update InChI value to SMILES and set the InChI to blank
-    if re.search(globals_vars.smiles_pattern, inchi):
-        if not re.search(globals_vars.inchi_pattern, inchi) and not re.search(globals_vars.inchikey_pattern, inchi):
+    if re.search(scripts.globals_vars.smiles_pattern, inchi):
+        if not re.search(scripts.globals_vars.inchi_pattern, inchi) and not re.search(scripts.globals_vars.inchikey_pattern, inchi):
             metadata_dict['SMILES'] = inchi
             metadata_dict['INCHI'] = ''
 
     # If the patterns of InChi and InChiKey do not match but SMILES pattern matches InChIKey,
     # update the InChIKey value to SMILES and set the InChIKey to blank
-    if re.search(globals_vars.smiles_pattern, inchikey):
-        if not re.search(globals_vars.inchi_pattern, inchikey) and not re.search(globals_vars.inchikey_pattern, inchikey):
+    if re.search(scripts.globals_vars.smiles_pattern, inchikey):
+        if not re.search(scripts.globals_vars.inchi_pattern, inchikey) and not re.search(scripts.globals_vars.inchikey_pattern, inchikey):
             metadata_dict['SMILES'] = inchikey
             metadata_dict['INCHIKEY'] = ''
 
     # If SMILES matches InChI pattern, set the InChI to SMILES and set SMILES to blank
-    if re.search(globals_vars.inchi_pattern, smiles):
+    if re.search(scripts.globals_vars.inchi_pattern, smiles):
         metadata_dict['INCHI'] = smiles
         metadata_dict['SMILES'] = ''
 
     # If InChIKey matches InChI pattern, set the InChI to InChIKey and set the InChiKey to blank
-    if re.search(globals_vars.inchi_pattern, inchikey):
+    if re.search(scripts.globals_vars.inchi_pattern, inchikey):
         metadata_dict['INCHI'] = inchikey
         metadata_dict['INCHIKEY'] = ''
 
     # If InChI matches InChiKey pattern, set the InChiKey to InChI and set InChI to blank
-    if re.search(globals_vars.inchikey_pattern, inchi):
+    if re.search(scripts.globals_vars.inchikey_pattern, inchi):
         metadata_dict['INCHIKEY'] = inchi
         metadata_dict['INCHI'] = ''
 
-    if re.search(globals_vars.inchikey_pattern, smiles):
+    if re.search(scripts.globals_vars.inchikey_pattern, smiles):
         metadata_dict['INCHIKEY'] = smiles
         metadata_dict['SMILES'] = ''
 

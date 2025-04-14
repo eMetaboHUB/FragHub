@@ -31,7 +31,7 @@ def complete_from_pubchem_datas(CONCATENATE_DF, progress_callback=None, total_it
 
     # Enrich the DataFrame by merging with pubchem_datas
     enriched_df = concatenate_df_copy.merge(
-        globals_vars.pubchem_datas,
+        scripts.globals_vars.pubchem_datas,
         on='INCHIKEY',
         suffixes=('', '_pubchem'),
         how='left'

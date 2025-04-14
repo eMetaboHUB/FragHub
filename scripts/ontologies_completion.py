@@ -42,7 +42,7 @@ def ontologies_completion(spectrum_list, progress_callback=None, total_items_cal
     # Fusionner spectrum_list avec ontologies_df sur 'INCHIKEY'
     completed_df = pd.merge(
         spectrum_list,
-        globals_vars.ontologies_df[
+        scripts.globals_vars.ontologies_df[
             ["INCHIKEY", "CLASSYFIRE_SUPERCLASS", "CLASSYFIRE_CLASS", "CLASSYFIRE_SUBCLASS", "NPCLASS_PATHWAY",
              "NPCLASS_SUPERCLASS", "NPCLASS_CLASS"]
         ],

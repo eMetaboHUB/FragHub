@@ -18,14 +18,14 @@ def normalize_ionization(metadata_dict):
     :return: The modified metadata dictionary with normalized ionization mode.
     :rtype: dict
     """
-    ionization_mode = re.search(globals_vars.ionization_mode_pattern, metadata_dict["IONIZATION"])
+    ionization_mode = re.search(scripts.globals_vars.ionization_mode_pattern, metadata_dict["IONIZATION"])
     if ionization_mode:
         ionization_mode = ionization_mode.group(1)
         if ionization_mode == "ACPI":  # correct known typo in ionization mode spelling
             ionization_mode = "APCI"
         metadata_dict["IONIZATION"] = ionization_mode
     else:
-        ionization_mode_in_INSTRUMENTTYPE = re.search(globals_vars.ionization_mode_pattern, metadata_dict["INSTRUMENTTYPE"])
+        ionization_mode_in_INSTRUMENTTYPE = re.search(scripts.globals_vars.ionization_mode_pattern, metadata_dict["INSTRUMENTTYPE"])
         if ionization_mode_in_INSTRUMENTTYPE:
             ionization_mode_in_INSTRUMENTTYPE = ionization_mode_in_INSTRUMENTTYPE.group(1)
             if ionization_mode_in_INSTRUMENTTYPE == "ACPI":  # correct known typo in ionization mode spelling

@@ -38,8 +38,8 @@ def apply_filters(spectrum, peak_array, precursormz, parameters_dict):
         # if no peaks pass this filter, return an empty array
         if peak_array.size == 0:
             spectrum['DELETION_REASON'] = "spectrum deleted because peaks list is empty after removing peaks above precursor m/z"
-            deletion_report.deleted_spectrum_list.append(spectrum)
-            deletion_report.all_peaks_above_precursor_mz += 1
+            scripts.deletion_report.deleted_spectrum_list.append(spectrum)
+            scripts.deletion_report.all_peaks_above_precursor_mz += 1
             return np.array([])
 
     if parameters_dict['reduce_peak_list'] == 1.0:
@@ -58,8 +58,8 @@ def apply_filters(spectrum, peak_array, precursormz, parameters_dict):
         peak_array = keep_mz_in_range(peak_array, mz_from, mz_to)
         if peak_array.size == 0:
             spectrum['DELETION_REASON'] = "spectrum deleted because peaks list is empty after removing peaks out of mz range choiced by the user"
-            deletion_report.deleted_spectrum_list.append(spectrum)
-            deletion_report.no_peaks_in_mz_range += 1
+            scripts.deletion_report.deleted_spectrum_list.append(spectrum)
+            scripts.deletion_report.no_peaks_in_mz_range += 1
             return np.array([])
 
     if parameters_dict['check_minimum_of_high_peaks_requiered'] == 1.0:
@@ -68,7 +68,7 @@ def apply_filters(spectrum, peak_array, precursormz, parameters_dict):
         # if no peaks pass the filters, return an empty array
         if peak_array.size == 0:
             spectrum['DELETION_REASON'] = "spectrum deleted because peaks list does not contain minimum number of high peaks required according to the value choiced by the user"
-            deletion_report.deleted_spectrum_list.append(spectrum)
+            scripts.deletion_report.deleted_spectrum_list.append(spectrum)
             return np.array([])
 
     # return the filtered peak array
