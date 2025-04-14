@@ -11,7 +11,7 @@ import os
 
 # Si le fichier est exécuté comme un exécutable PyInstaller
 if getattr(sys, 'frozen', False):
-    BASE_DIR = os.path.dirname(sys.executable)
+    BASE_DIR = sys._MEIPASS
 else:
     # Si le fichier est exécuté comme un script Python
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
