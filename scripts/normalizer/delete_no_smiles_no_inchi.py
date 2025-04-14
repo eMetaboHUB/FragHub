@@ -1,4 +1,4 @@
-import deletion_report
+import scripts.deletion_report
 
 def delete_no_smiles_no_inchi_no_inchikey(metadata_dict):
     """

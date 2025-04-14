@@ -1,5 +1,5 @@
-import deletion_report
-import globals_vars
+import scripts.deletion_report
+import scripts.globals_vars
 import re
 
 def check_for_bad_adduct(metadata_dict):

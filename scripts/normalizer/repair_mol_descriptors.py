@@ -1,4 +1,4 @@
-import globals_vars
+import scripts.globals_vars
 import re
 
 

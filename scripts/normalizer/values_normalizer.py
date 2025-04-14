@@ -1,15 +1,15 @@
-from .normalize_instruments_and_resolution import *
-from .missing_precursormz_re_calculation import *
-from .delete_no_smiles_no_inchi import *
-from .normalize_retentiontime import *
-from .repair_mol_descriptors import *
-from .check_for_bad_adduct import *
-from .normalize_ionization import *
-from .normalize_predicted import *
-from .normalize_ms_level import *
-from .normalize_empties import *
-from .normalize_ionmode import *
-from .normalize_adduct import *
+from scripts.normalizer.normalize_instruments_and_resolution import *
+from scripts.normalizer.missing_precursormz_re_calculation import *
+from scripts.normalizer.delete_no_smiles_no_inchi import *
+from scripts.normalizer.normalize_retentiontime import *
+from scripts.normalizer.repair_mol_descriptors import *
+from scripts.normalizer.check_for_bad_adduct import *
+from scripts.normalizer.normalize_ionization import *
+from scripts.normalizer.normalize_predicted import *
+from scripts.normalizer.normalize_ms_level import *
+from scripts.normalizer.normalize_empties import *
+from scripts.normalizer.normalize_ionmode import *
+from scripts.normalizer.normalize_adduct import *
 
 def normalize_values(metadata_dict):
     """

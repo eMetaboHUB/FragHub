@@ -1,7 +1,7 @@
 from rdkit.Chem.Descriptors import ExactMolWt
 from rdkit import RDLogger, Chem
 import pandas as pd
-import globals_vars
+import scripts.globals_vars
 import re
 import os
 
