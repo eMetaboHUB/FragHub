@@ -1,6 +1,6 @@
-from .keys_convertor import *
+from scripts.convertors.keys_convertor import *
 import pandas as pd
-import globals_vars
+import scripts.globals_vars
 import re
 
 def parse_peak_list(peak_list_string):
