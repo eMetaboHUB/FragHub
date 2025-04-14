@@ -92,7 +92,7 @@ def spectrum_cleaning(spectrum):
     if not spectrum:
         return None
     # Checks if "PRECURSORMZ" exists in the spectrum
-    if "PRECURSORMZ" in spectrum and ("_GC_IE" not in spectrum["FILENAME"] and not re.search(r"\bEI\b", spectrum["INSTRUMENTTYPE"])):
+    if "PRECURSORMZ" in spectrum and ("_GC" not in spectrum["FILENAME"] and not re.search(r"\bGC\b", spectrum["INSTRUMENTTYPE"])):
         if re.search(globals_vars.float_check_pattern, str(spectrum["PRECURSORMZ"])):
             # 'PRECURSORMZ' modification with match from a regular expression search for 'float_check_pattern'
             spectrum["PRECURSORMZ"] = re.search(globals_vars.float_check_pattern, str(spectrum["PRECURSORMZ"])).group(1)
@@ -126,7 +126,7 @@ def spectrum_cleaning(spectrum):
             deletion_report.deleted_spectrum_list.append(spectrum)
             deletion_report.no_precursor_mz += 1
             return None
-    elif "_GC_IE" in spectrum["FILENAME"] or re.search(r"\bEI\b", spectrum["INSTRUMENTTYPE"]):
+    elif "_GC" in spectrum["FILENAME"] or re.search(r"\bGC\b", spectrum["INSTRUMENTTYPE"]):
         float_precursor_mz = None
         peak_list_np = peak_list_cleaning(spectrum, peak_list, float_precursor_mz)
         spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
