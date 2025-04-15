@@ -7,8 +7,11 @@ from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal
 import os
 import zipfile
 from pathlib import Path
-import platform
 import ctypes  # For setting AppUserModelID (Windows Taskbar Icon)
+import platform
+
+if platform.system() == "Windows":
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub.Installer")
 
 
 class InstallerThread(QThread):
@@ -224,7 +227,6 @@ class InstallerApp(QWidget):
 
 if __name__ == "__main__":
     # Define the AppUserModelID for taskbar icon visibility
-    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub.Installer")
 
     app = QApplication([])
 
