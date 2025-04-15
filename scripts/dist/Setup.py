@@ -1,23 +1,14 @@
+from PyQt6.QtWidgets import (
+    QApplication, QWidget, QVBoxLayout, QPushButton, QCheckBox, QProgressBar,
+    QFileDialog, QLabel, QMessageBox
+)
+from PyQt6.QtGui import QIcon
+from PyQt6.QtCore import Qt, QSize
 import os
 import zipfile
 from pathlib import Path
 import platform
-from PyQt6.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QPushButton, QCheckBox,
-    QProgressBar, QFileDialog, QLabel, QMessageBox
-)
-from PyQt6.QtGui import QIcon
-from PyQt6.QtCore import Qt, QSize
-
-# Ajout pour définir l'AppUserModelID
-import ctypes
-
-# Import Windows-specific modules conditionally
-if platform.system() == "Windows":
-    try:
-        import win32com.client  # PyWin32 for creating Windows shortcuts
-    except ImportError:
-        win32com = None  # If PyWin32 is not installed, disable shortcut creation functionality
+import ctypes  # For setting AppUserModelID (Windows Taskbar Icon)
 
 
 class InstallerApp(QWidget):
@@ -29,32 +20,31 @@ class InstallerApp(QWidget):
         # Set the window and taskbar icon
         window_icon_path = r"D:\Axel\PYTHON\FragHub\scripts\dist\setup_gui\assets\FragHub_Python_icon.ico"
         if os.path.exists(window_icon_path):
-            self.setWindowIcon(QIcon(window_icon_path))  # Set icon for both window and taskbar
+            self.setWindowIcon(QIcon(window_icon_path))
         else:
             QMessageBox.warning(self, "Missing Icon", f"Taskbar and window icon not found at: {window_icon_path}")
 
         # Main layout
         layout = QVBoxLayout()
 
-        # Label for the directory selection
+        # Add title information
         self.info_label = QLabel("Choose Install Directory:")
         self.info_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.info_label.setStyleSheet("font-size: 14px; font-weight: bold; margin-bottom: 10px;")
         layout.addWidget(self.info_label)
 
-        # Button for selecting directory (visible, no white background)
+        # Button for directory selection
         self.select_dir_button = QPushButton()
         self.configure_directory_button(self.select_dir_button, "setup_gui/assets/directory.png", QSize(64, 64))
         self.select_dir_button.clicked.connect(self.select_directory)
         layout.addWidget(self.select_dir_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        # Label to display the selected directory
+        # Directory label
         self.selected_dir_label = QLabel("No directory selected")
         self.selected_dir_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.selected_dir_label.setWordWrap(True)
         layout.addWidget(self.selected_dir_label)
 
-        # Checkbox to create a shortcut
+        # Checkbox for shortcut creation
         self.create_shortcut_checkbox = QCheckBox("Create Desktop Shortcut")
         layout.addWidget(self.create_shortcut_checkbox)
 
@@ -64,10 +54,16 @@ class InstallerApp(QWidget):
         self.progress_bar.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.progress_bar)
 
+        # Label for percentage (under the progress bar)
+        self.progress_label = QLabel("0%")
+        self.progress_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.progress_label.setStyleSheet("font-size: 12px; color: #0078d7;")  # Add some styling for visibility
+        layout.addWidget(self.progress_label)
+
         # Install button
         self.install_button = QPushButton("Install")
-        self.install_button.clicked.connect(self.install)
         layout.addWidget(self.install_button)
+        self.install_button.clicked.connect(self.install)
 
         # Set main layout
         self.setLayout(layout)
@@ -77,12 +73,12 @@ class InstallerApp(QWidget):
 
     def configure_directory_button(self, button: QPushButton, image_path: str, size: QSize):
         """
-        Configures the 'Choose install directory' button as a visible button without a white background.
+        Configures the 'Choose install directory' button as a visible button with an icon.
         """
         if os.path.exists(image_path):
             button.setIcon(QIcon(image_path))
             button.setIconSize(size)
-            button.setFixedSize(size.width() + 20, size.height() + 20)  # Bigger button with padding
+            button.setFixedSize(size.width() + 20, size.height() + 20)  # Add padding to the button
             button.setStyleSheet(
                 """
                 QPushButton {
@@ -99,7 +95,7 @@ class InstallerApp(QWidget):
                 """
             )
         else:
-            QMessageBox.warning(self, "Missing Icon", f"Could not find the icon at '{image_path}'.")
+            QMessageBox.warning(self, "Missing Icon", f"Directory icon not found at: {image_path}")
 
     def select_directory(self):
         """Opens a dialog box to select a directory."""
@@ -112,7 +108,7 @@ class InstallerApp(QWidget):
             self.selected_dir_label.setText("No directory selected")
 
     def install(self):
-        """Performs the installation: extracts files and creates a shortcut."""
+        """Performs the installation: extracts files and updates progress."""
         if not self.selected_directory:
             QMessageBox.warning(self, "Error", "Please select a directory!")
             return
@@ -131,7 +127,7 @@ class InstallerApp(QWidget):
                 total_files = len(files)
                 for i, file in enumerate(files):
                     zip_ref.extract(file, self.selected_directory)
-                    self.progress_bar.setValue(int((i + 1) / total_files * 100))
+                    self.update_progress(i + 1, total_files)
 
             QMessageBox.information(self, "Success", "Extraction complete!")
 
@@ -141,6 +137,14 @@ class InstallerApp(QWidget):
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"An error occurred: {e}")
+
+    def update_progress(self, completed, total):
+        """
+        Updates the progress bar and the percentage label below.
+        """
+        percentage = int((completed / total) * 100)
+        self.progress_bar.setValue(percentage)
+        self.progress_label.setText(f"{percentage}%")  # Update the label with the current percentage
 
     def create_shortcut(self):
         """Creates a desktop shortcut depending on the OS."""
@@ -160,19 +164,17 @@ class InstallerApp(QWidget):
 
     def create_windows_shortcut(self, shortcut_path, target):
         """Creates a Windows shortcut."""
-        if win32com:
-            try:
-                shell = win32com.client.Dispatch("WScript.Shell")
-                shortcut = shell.CreateShortcut(str(shortcut_path))
-                shortcut.TargetPath = str(target)
-                shortcut.WorkingDirectory = str(target.parent)
-                shortcut.IconLocation = str(target)
-                shortcut.save()
-                QMessageBox.information(self, "Success", "Shortcut created on the desktop.")
-            except Exception as e:
-                QMessageBox.critical(self, "Error", f"Couldn't create shortcut: {e}")
-        else:
-            QMessageBox.critical(self, "Error", "PyWin32 is not installed. Cannot create shortcut on Windows.")
+        import win32com.client  # Conditional import
+        try:
+            shell = win32com.client.Dispatch("WScript.Shell")
+            shortcut = shell.CreateShortcut(str(shortcut_path))
+            shortcut.TargetPath = str(target)
+            shortcut.WorkingDirectory = str(target.parent)
+            shortcut.IconLocation = str(target)
+            shortcut.save()
+            QMessageBox.information(self, "Success", "Shortcut created on the desktop.")
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Couldn't create shortcut: {e}")
 
     def create_linux_macos_shortcut(self, shortcut_path, target):
         """Creates a shortcut on Linux or macOS (as a .desktop file)."""
@@ -197,17 +199,17 @@ class InstallerApp(QWidget):
 
 
 if __name__ == "__main__":
-    # Définir l'AppUserModelID (obligatoire pour l'icône dans la barre des tâches)
+    # Define the AppUserModelID for taskbar icon visibility
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub.Installer")
 
     app = QApplication([])
 
-    # Définir l'icône globale pour l'application
+    # Set the global application icon
     app.setWindowIcon(QIcon(r"D:\Axel\PYTHON\FragHub\scripts\dist\setup_gui\assets\FragHub_Python_icon.ico"))
 
-    # Créer la fenêtre principale
+    # Create and show the main window
     window = InstallerApp()
     window.show()
 
-    # Lancer l'application
+    # Run the application
     app.exec()
