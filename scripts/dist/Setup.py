@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal
 import os
+import sys
 import zipfile
 from pathlib import Path
 import ctypes  # For setting AppUserModelID (Windows Taskbar Icon)
@@ -12,6 +13,13 @@ import platform
 
 if platform.system() == "Windows":
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub.Installer")
+
+# Si le fichier est exécuté comme un exécutable PyInstaller
+if getattr(sys, 'frozen', False):
+    BASE_DIR = sys._MEIPASS
+else:
+    # Si le fichier est exécuté comme un script Python
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 
 
 class InstallerThread(QThread):
@@ -50,7 +58,7 @@ class InstallerApp(QWidget):
         self.resize(400, 300)
 
         # Set the window icon
-        window_icon_path = r"D:\Axel\PYTHON\FragHub\scripts\dist\setup_gui\assets\FragHub_Python_icon.ico"
+        window_icon_path = os.path.join(BASE_DIR, r"setup_gui/assets/FragHub_Python_icon.ico")
         if os.path.exists(window_icon_path):
             self.setWindowIcon(QIcon(window_icon_path))
 
@@ -65,7 +73,7 @@ class InstallerApp(QWidget):
 
         # Button for directory selection
         self.select_dir_button = QPushButton()
-        self.configure_directory_button(self.select_dir_button, "setup_gui/assets/directory.png", QSize(64, 64))
+        self.configure_directory_button(self.select_dir_button, os.path.join(BASE_DIR, "setup_gui/assets/directory.png"), QSize(64, 64))
         self.select_dir_button.clicked.connect(self.select_directory)
         layout.addWidget(self.select_dir_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
@@ -231,7 +239,7 @@ if __name__ == "__main__":
     app = QApplication([])
 
     # Set the application icon
-    app.setWindowIcon(QIcon(r"D:\Axel\PYTHON\FragHub\scripts\dist\setup_gui\assets\FragHub_Python_icon.ico"))
+    app.setWindowIcon(QIcon(os.path.join(BASE_DIR, r"setup_gui/assets/FragHub_Python_icon.ico")))
 
     # Show the installer GUI
     window = InstallerApp()
