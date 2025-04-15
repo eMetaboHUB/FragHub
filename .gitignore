@@ -7,3 +7,5 @@
 /scripts/dist/FragHub/
 /scripts/dist/FragHub.zip
 /cmd_pyinstaller.txt
+/scripts/dist/build/
+/scripts/dist/dist/
