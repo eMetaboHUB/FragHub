@@ -3,5 +3,6 @@
 /datas/update.json
 /datas/adduct_to_convert.xlsx
 /scripts/build/
-/scripts/dist/
 /scripts/FragHub.spec
+/scripts/dist/FragHub/
+/scripts/dist/FragHub.zip
