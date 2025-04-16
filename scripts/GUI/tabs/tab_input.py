@@ -25,7 +25,7 @@ class InputTab(QWidget):
 
         # Créer le bouton de sélection de fichiers
         button = QPushButton()
-        button.setIcon(QIcon(os.path.join(BASE_DIR,'GUI/assets/files_icon.png')))
+        button.setIcon(QIcon(os.path.join(BASE_DIR,'../assets/files_icon.png')))
         button.setIconSize(QSize(128, 128))
         button.setFixedSize(140, 140)
         button.clicked.connect(self.browse_files)  # Connecter la fonction
