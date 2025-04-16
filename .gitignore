@@ -1,11 +1,7 @@
-/TOOLS/Generate_csv_from_original_files/datas/HMDB.csv
-/cmf_id_test/report.csv
-/datas/update.json
 /datas/adduct_to_convert.xlsx
 /scripts/build/
 /scripts/FragHub.spec
 /scripts/dist/FragHub/
 /scripts/dist/FragHub.zip
-/cmd_pyinstaller.txt
 /scripts/dist/build/
 /scripts/dist/dist/
