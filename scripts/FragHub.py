@@ -501,7 +501,6 @@ def run_GUI():
     # L'application attendra ici, traitant les événements (y compris l'animation du spinner)
     # jusqu'à ce que app.quit() soit appelé (par ex. en cas d'erreur ou fermeture normale)
     exit_code = app.exec()
-    print(f"Application exiting with code {exit_code}")
     sys.exit(exit_code)
 
 # --- Bloc d'exécution principal (Inchangé) ---
