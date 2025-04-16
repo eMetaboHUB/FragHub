@@ -12,7 +12,7 @@ if getattr(sys, 'frozen', False):
     BASE_DIR = sys._MEIPASS
 else:
     # Si le fichier est exécuté comme un script Python
-    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 
 class InputTab(QWidget):
@@ -25,7 +25,7 @@ class InputTab(QWidget):
 
         # Créer le bouton de sélection de fichiers
         button = QPushButton()
-        button.setIcon(QIcon(os.path.join(BASE_DIR,'../assets/files_icon.png')))
+        button.setIcon(QIcon(os.path.join(BASE_DIR,'./GUI/assets/files_icon.png')))
         button.setIconSize(QSize(128, 128))
         button.setFixedSize(140, 140)
         button.clicked.connect(self.browse_files)  # Connecter la fonction
