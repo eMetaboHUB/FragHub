@@ -73,7 +73,8 @@ class InstallerApp(QWidget):
 
         # Button for directory selection
         self.select_dir_button = QPushButton()
-        self.configure_directory_button(self.select_dir_button, os.path.join(BASE_DIR, "setup_gui/assets/directory.png"), QSize(64, 64))
+        self.configure_directory_button(self.select_dir_button,
+                                        os.path.join(BASE_DIR, "setup_gui/assets/directory.png"), QSize(64, 64))
         self.select_dir_button.clicked.connect(self.select_directory)
         layout.addWidget(self.select_dir_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
@@ -84,6 +85,7 @@ class InstallerApp(QWidget):
 
         # Checkbox for shortcut creation
         self.create_shortcut_checkbox = QCheckBox("Create Desktop Shortcut")
+        self.create_shortcut_checkbox.setChecked(True)  # Par défaut, la case est cochée
         layout.addWidget(self.create_shortcut_checkbox)
 
         # Progress bar
