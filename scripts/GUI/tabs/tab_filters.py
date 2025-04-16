@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import QSize, pyqtSignal, Qt
 from PyQt6.QtGui import QPainter, QColor, QBrush, QPen
-from ..utils.global_vars import parameters_dict
+from scripts.GUI.utils.global_vars import parameters_dict
 
 
 # Classe toggle personnalisée avec "ON/OFF"

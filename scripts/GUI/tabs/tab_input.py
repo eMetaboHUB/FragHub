@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSpacerItem, QSiz
 from PyQt6.QtGui import QFont, QIcon, QPixmap
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtWidgets import QFileDialog
-from ..utils.global_vars import parameters_dict  # Importer le dictionnaire global
+from scripts.GUI.utils.global_vars import parameters_dict  # Importer le dictionnaire global
 import os
 
 import sys

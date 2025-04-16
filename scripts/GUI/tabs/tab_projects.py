@@ -2,7 +2,7 @@ import os
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QLabel
 from PyQt6.QtCore import Qt, pyqtSignal, QSize, QTimer
 from PyQt6.QtGui import QPainter, QColor, QBrush, QPen, QFont
-from ..utils.global_vars import parameters_dict  # Importer le dictionnaire global
+from scripts.GUI.utils.global_vars import parameters_dict  # Importer le dictionnaire global
 
 
 class QToggleSwitch(QWidget):
