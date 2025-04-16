@@ -171,41 +171,42 @@ def write_deleted_spectrums(output_directory):
     spectrums_df = pd.DataFrame(scripts.deletion_report.deleted_spectrum_list)
 
     # Group the data by DELETION_REASON
-    grouped = spectrums_df.groupby("DELETION_REASON")
+    if "DELETION_REASON" in spectrums_df.columns:
+        grouped = spectrums_df.groupby("DELETION_REASON")
 
-    # Iterate through the groups explicitly checking for known reasons
-    for reason, group in grouped:
-        if reason == "spectrum deleted because peaks list is empty":
-            file_name = "peaks_list_is_empty.csv"
-        elif reason == "spectrum deleted because precursor mz is less than or equal to zero.":
-            file_name = "precursor_mz_less_than_or_equal_zero.csv"
-        elif reason == "spectrum deleted because it's entropy score is lower than the threshold selected by the user.":
-            file_name = "entropy_score_lower_than_threshold.csv"
-        elif reason == "spectrum deleted because precursor mz field is empty or contains invalid characters (not a floating number).":
-            file_name = "precursor_mz_invalid_or_empty.csv"
-        elif reason == "spectrum deleted because it has neither inchi nor smiles nor inchikey":
-            file_name = "no_inchi_smiles_or_inchikey.csv"
-        elif reason == "spectrum deleted because its adduct field is empty or the value entered is not an adduct":
-            file_name = "adduct_empty_or_invalid.csv"
-        elif reason == "spectrum deleted because the adduct corresponds to the wrong ionization mode (neg adduct in pos ionmode).":
-            file_name = "wrong_adduct_neg_in_pos.csv"
-        elif reason == "spectrum deleted because the adduct corresponds to the wrong ionization mode (pos adduct in neg ionmode).":
-            file_name = "wrong_adduct_pos_in_neg.csv"
-        elif reason == "spectrum deleted because its number of peaks is below the threshold chosen by the user":
-            file_name = "number_of_peaks_below_threshold.csv"
-        elif reason == "spectrum deleted because peaks list is empty after removing peaks above precursor m/z":
-            file_name = "peaks_empty_after_above_precursor_mz_removal.csv"
-        elif reason == "spectrum deleted because peaks list is empty after removing peaks out of mz range choiced by the use":
-            file_name = "peaks_empty_after_mz_range_removal.csv"
-        elif reason == "spectrum deleted because peaks list does not contain minimum number of high peaks required according to the value choiced by the user":
-            file_name = "insufficient_high_peaks.csv"
+        # Iterate through the groups explicitly checking for known reasons
+        for reason, group in grouped:
+            if reason == "spectrum deleted because peaks list is empty":
+                file_name = "peaks_list_is_empty.csv"
+            elif reason == "spectrum deleted because precursor mz is less than or equal to zero.":
+                file_name = "precursor_mz_less_than_or_equal_zero.csv"
+            elif reason == "spectrum deleted because it's entropy score is lower than the threshold selected by the user.":
+                file_name = "entropy_score_lower_than_threshold.csv"
+            elif reason == "spectrum deleted because precursor mz field is empty or contains invalid characters (not a floating number).":
+                file_name = "precursor_mz_invalid_or_empty.csv"
+            elif reason == "spectrum deleted because it has neither inchi nor smiles nor inchikey":
+                file_name = "no_inchi_smiles_or_inchikey.csv"
+            elif reason == "spectrum deleted because its adduct field is empty or the value entered is not an adduct":
+                file_name = "adduct_empty_or_invalid.csv"
+            elif reason == "spectrum deleted because the adduct corresponds to the wrong ionization mode (neg adduct in pos ionmode).":
+                file_name = "wrong_adduct_neg_in_pos.csv"
+            elif reason == "spectrum deleted because the adduct corresponds to the wrong ionization mode (pos adduct in neg ionmode).":
+                file_name = "wrong_adduct_pos_in_neg.csv"
+            elif reason == "spectrum deleted because its number of peaks is below the threshold chosen by the user":
+                file_name = "number_of_peaks_below_threshold.csv"
+            elif reason == "spectrum deleted because peaks list is empty after removing peaks above precursor m/z":
+                file_name = "peaks_empty_after_above_precursor_mz_removal.csv"
+            elif reason == "spectrum deleted because peaks list is empty after removing peaks out of mz range choiced by the use":
+                file_name = "peaks_empty_after_mz_range_removal.csv"
+            elif reason == "spectrum deleted because peaks list does not contain minimum number of high peaks required according to the value choiced by the user":
+                file_name = "insufficient_high_peaks.csv"
 
-        # Write the group to a CSV file
-        file_path = os.path.join(deleted_spectrums_dir, file_name)
-        group.to_csv(file_path, sep='\t', index=False, quotechar='"')
+            # Write the group to a CSV file
+            file_path = os.path.join(deleted_spectrums_dir, file_name)
+            group.to_csv(file_path, sep='\t', index=False, quotechar='"')
 
-    # Clear the deleted spectrum list in memory
-    scripts.deletion_report.deleted_spectrum_list = []
+        # Clear the deleted spectrum list in memory
+        scripts.deletion_report.deleted_spectrum_list = []
 
 
 def spectrum_cleaning_processing(spectrum_list, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None,
