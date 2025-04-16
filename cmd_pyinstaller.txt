@@ -1,0 +1,4 @@
+(.venv) PS D:\Axel\PYTHON\FragHub\scripts> pyinstaller --windowed --icon=GUI/assets/FragHub_Python_icon.ico --name=FragHub --add-data="../datas;datas" --add-data="GUI/assets;GUI/assets" FragHub.py
+
+
+(.venv) PS D:\Axel\PYTHON\FragHub\scripts\dist> pyinstaller --onefile --windowed --icon="setup_gui/assets/FragHub_Python_icon.ico" --add-data "setup_gui/assets;setup_gui/assets" --add-data "FragHub.zip;." --name=setup_windows_x64 setup.py
