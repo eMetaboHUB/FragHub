@@ -1,12 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-- **14_04_2025**:
+- **16_04_2025**:
   - fix adduct regex pattern
   - improve spectrum deletion callback by writing deleted spectrum in DELETION_REASONS sub folder with a detailed reason.
   - extend precursormz and adduct checks exception to all GC spectrums.
   - modifiy adduct ionmode check with "pos", "neg" in adduct dico.
   - direct integration of spectra-hash (https://github.com/berlinguyinca/spectra-hash) into fraghub.
+  - Correcting and adduct some adducts to adduct dict
+  - Adding loading screen to GUI
+  - adding new gc instruments to instrument dict.
+  - 
 
 
 - **03_04_2025**:
