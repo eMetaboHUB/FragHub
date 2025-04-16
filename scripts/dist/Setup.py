@@ -151,9 +151,9 @@ class InstallerApp(QWidget):
             self.selected_dir_label.setText("Please select a directory first!")
             return
 
-        zip_path = Path(__file__).with_name("FragHub.zip")
+        zip_path = Path(__file__).with_name("FragHub_1.3.0.zip")
         if not zip_path.exists():
-            self.selected_dir_label.setText("FragHub.zip not found!")
+            self.selected_dir_label.setText("FragHub_1.3.0.zip not found!")
             return
 
         # Start installation in a separate thread
@@ -191,7 +191,7 @@ class InstallerApp(QWidget):
 
     def create_shortcut(self):
         """Creates a desktop shortcut depending on the OS."""
-        target = Path(self.selected_directory) / "FragHub" / "FragHub.exe"
+        target = Path(self.selected_directory) / "FragHub_1.3.0" / "FragHub_1.3.0.exe"
         desktop = Path(os.path.join(os.path.expanduser("~"), "Desktop"))
 
         if not target.exists():
@@ -199,9 +199,9 @@ class InstallerApp(QWidget):
             return
 
         if platform.system() == "Windows":
-            self.create_windows_shortcut(desktop / "FragHub.lnk", target)
+            self.create_windows_shortcut(desktop / "FragHub_1.3.0.lnk", target)
         elif platform.system() in ["Linux", "Darwin"]:  # Linux or macOS
-            self.create_linux_macos_shortcut(desktop / "FragHub.desktop", target)
+            self.create_linux_macos_shortcut(desktop / "FragHub_1.3.0.desktop", target)
 
     def create_windows_shortcut(self, shortcut_path, target):
         """Creates a Windows shortcut."""
