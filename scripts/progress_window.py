@@ -8,6 +8,7 @@ import sys
 import time
 import ctypes
 import os
+import platform
 
 # Si le fichier est exécuté comme un exécutable PyInstaller
 if getattr(sys, 'frozen', False):
@@ -16,7 +17,8 @@ else:
     # Si le fichier est exécuté comme un script Python
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 
-ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub")
+if platform.system() == "Windows":
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub")
 
 def format_time(time_in_seconds):
     """Format the time in seconds to HH:mm:ss"""

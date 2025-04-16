@@ -3,6 +3,7 @@ import os
 import traceback
 import ctypes
 import time
+import platform
 from threading import Thread
 
 # Configuration de BASE_DIR
@@ -194,7 +195,8 @@ class LoadingSplashScreen(QWidget):
 
 # --- Définition de AppUserModelID (Inchangé) ---
 try:
-    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub")
+    if platform.system() == "Windows":
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub")
 except AttributeError:
      print("Note: Could not set AppUserModelID (not on Windows or ctypes issue).")
      pass
