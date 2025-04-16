@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QPushButton, QCheckBox, QProgressBar,
-    QFileDialog, QLabel
+    QFileDialog, QLabel, QMessageBox
 )
 from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal
@@ -10,6 +10,7 @@ import zipfile
 from pathlib import Path
 import ctypes  # For setting AppUserModelID (Windows Taskbar Icon)
 import platform
+import shutil
 
 if platform.system() == "Windows":
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub.Installer")
@@ -146,7 +147,7 @@ class InstallerApp(QWidget):
             self.selected_dir_label.setText("No directory selected")
 
     def install(self):
-        """Starts the installation in a separate thread."""
+        """Démarre l'installation en supprimant uniquement les fichiers liés, si nécessaire."""
         if not self.selected_directory:
             self.selected_dir_label.setText("Please select a directory first!")
             return
@@ -156,14 +157,69 @@ class InstallerApp(QWidget):
             self.selected_dir_label.setText("FragHub_1.3.0.zip not found!")
             return
 
-        # Start installation in a separate thread
-        self.installer_thread = InstallerThread(zip_path, Path(self.selected_directory))
+        install_dir = Path(self.selected_directory)
+
+        # Vérifier l'existence d'une installation précédente
+        if self.previous_installation_exists(install_dir, zip_path):
+            response = QMessageBox.question(
+                self,
+                "Existing Installation Detected",
+                "A previous installation of FragHub was detected.\n"
+                "Do you want to remove it before proceeding?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            )
+
+            if response == QMessageBox.StandardButton.Yes:
+                # Supprimer les fichiers liés à l'application uniquement
+                try:
+                    self.remove_previous_installation(install_dir, zip_path)
+                    self.selected_dir_label.setText("Previous installation removed successfully.")
+                except Exception as e:
+                    self.selected_dir_label.setText(f"Failed to remove previous installation: {e}")
+                    return
+
+            else:
+                self.selected_dir_label.setText("Installation cancelled.")
+                return
+
+        # Lancer l'installation dans un thread séparé
+        self.installer_thread = InstallerThread(zip_path, install_dir)
         self.installer_thread.progress_changed.connect(self.update_progress)
         self.installer_thread.installation_complete.connect(self.installation_complete)
         self.installer_thread.error_occurred.connect(self.installation_failed)
-        self.installer_thread.start()  # Lance le thread d'installation
-
+        self.installer_thread.start()
         self.selected_dir_label.setText("Installing...")
+
+    def previous_installation_exists(self, install_dir: Path, zip_path: Path) -> bool:
+        """Vérifie si les fichiers de l'installation précédente existent."""
+        if not install_dir.exists():
+            return False
+
+        # Liste des fichiers contenus dans le ZIP
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_files = zip_ref.namelist()
+
+        # Vérifier si au moins un fichier du ZIP existe dans le dossier d'installation
+        for file in zip_files:
+            if (install_dir / file).exists():
+                return True
+
+        return False
+
+    def remove_previous_installation(self, install_dir: Path, zip_path: Path):
+        """Supprime uniquement les fichiers liés à l'application."""
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_files = zip_ref.namelist()
+
+        for file in zip_files:
+            file_path = install_dir / file
+            try:
+                if file_path.is_file() or file_path.is_symlink():
+                    file_path.unlink()  # Supprime le fichier ou le lien symbolique
+                elif file_path.is_dir() and file_path.exists():
+                    shutil.rmtree(file_path)  # Supprime le dossier
+            except Exception as e:
+                print(f"Failed to delete {file_path}: {e}")
 
     def update_progress(self, progress):
         """Updates the progress bar and percentage label."""
