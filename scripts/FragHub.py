@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import sys
 import os
 import traceback
@@ -142,10 +141,17 @@ class LoadingSplashScreen(QWidget):
             center_point = QApplication.primaryScreen().availableGeometry().center()
             self.move(center_point.x() - self.width() // 2, center_point.y() - self.height() // 2)
 
-    def showMessage(self, message, alignment=Qt.AlignmentFlag.AlignCenter, color=Qt.GlobalColor.white):
+    def showMessage(self, message, font_size=28, alignment=Qt.AlignmentFlag.AlignCenter, color=Qt.GlobalColor.white):
+        """Affiche un message dans le splash screen avec une taille de police configurable."""
         self.message_label.setText(message)
         self.message_label.setAlignment(alignment)
-        # Note: La couleur n'est pas utilisée ici, elle est définie dans le style CSS.
+        self.message_label.setStyleSheet(f"""
+            QLabel {{
+                color: white;
+                font-weight: bold;
+                font-size: {font_size}px;  /* Appliquer la taille spécifiée */
+            }}
+        """)
 
     def closeEvent(self, event):
         self.spinner.stop_animation()
@@ -298,45 +304,51 @@ class StartupWorker(QObject):
     # Signal émis en cas d'erreur
     error = pyqtSignal(str)
     # Signal pour mettre à jour le message du splash screen
-    update_splash_message = pyqtSignal(str)
+    update_splash_message = pyqtSignal(str, int)
 
     def __init__(self, base_dir):
         super().__init__()
         self._base_dir = base_dir
 
+    def showMessage(self, message, font_size=28, alignment=Qt.AlignmentFlag.AlignCenter, color=Qt.GlobalColor.white):
+        """Affiche un message dans le splash screen avec taille de police configurable."""
+        self.message_label.setText(message)
+        self.message_label.setAlignment(alignment)
+        self.message_label.setStyleSheet(f"""
+            QLabel {{
+                color: white;
+                font-weight: bold;
+                font-size: {font_size}px;  /* Ajustement dynamique de la taille de la police */
+            }}
+        """)
+
     def run_startup_tasks(self):
         """Exécute l'importation et autres tâches longues."""
         try:
-            # --- Tâche potentiellement longue 1: Importation ---
-            self.update_splash_message.emit("Loading core components...")
-            # Assurez-vous que le chemin est correct pour l'importation
-            # Si 'scripts' n'est pas dans sys.path, ajoutez BASE_DIR ou son parent
-            # Exemple:
-            # if self._base_dir not in sys.path:
-            #     sys.path.insert(0, os.path.dirname(self._base_dir)) # Si MAIN est dans../scripts
-            #     print(f"Temporarily added to sys.path: {os.path.dirname(self._base_dir)}")
+            # --- Tâche potentiellement longue 1 : Importation ---
+            self.update_splash_message.emit("Loading FragHub, please wait...", 20)  # Message 1
+            time.sleep(1)  # Simule un léger retard pour montrer le spinner
 
-            # Tentative d'importation
+            # Importer le composant principal
             from scripts.MAIN import MAIN as imported_main
-            self.update_splash_message.emit("Core components loaded.")
 
-            # --- Tâche potentiellement longue 2 (Optionnel): Pré-chargement ---
-            # Si MainWindow.__init__ est très long, certaines parties pourraient
-            # être faites ici si elles ne touchent pas directement à l'UI.
-            # Pour l'instant, on ne fait que l'import.
-            time.sleep(1) # Simuler un délai supplémentaire si nécessaire pour voir le spinner
+            # --- Tâche potentiellement longue 2 : Préparation ---
+            self.update_splash_message.emit("Initializing main window", 20)  # Message 2
+            time.sleep(1)
 
-            # Émettre le signal de succès avec la fonction importée
+            # Émettre le signal de fin en cas de succès
             self.finished.emit(imported_main)
 
         except ImportError as e:
             error_msg = f"Failed to import 'scripts.MAIN': {e}\n{traceback.format_exc()}"
             print(f"ERROR in worker thread: {error_msg}")
-            self.error.emit(error_msg) # Émettre le signal d'erreur
+            self.error.emit(error_msg)  # Émettre le signal d'erreur
         except Exception as e:
             error_msg = f"Unexpected error during startup tasks: {e}\n{traceback.format_exc()}"
             print(f"ERROR in worker thread: {error_msg}")
-            self.error.emit(error_msg) # Émettre le signal d'erreur
+            self.error.emit(error_msg)  # Émettre le signal d'erreur
+
+
 # --- Fin de StartupWorker ---
 
 
@@ -381,7 +393,6 @@ def run_GUI():
     # --- Slots (fonctions internes à run_GUI) ---
     def on_startup_complete(imported_main_function):
         """Appelé quand le worker a fini avec succès."""
-        print("Startup tasks complete. Initializing main window.")
         shared_state['main_function'] = imported_main_function
 
         # Créer la fenêtre principale MAINTENANT sur le thread principal
@@ -411,10 +422,10 @@ def run_GUI():
         QMessageBox.critical(None, "Fatal Startup Error", error_message)
         app.quit() # Quitter l'application en cas d'erreur de démarrage
 
-    def update_splash(message):
+    def update_splash(message, font_size=28):
         """Met à jour le message sur le splash screen."""
         if shared_state['splash_screen']:
-            shared_state['splash_screen'].showMessage(message)
+            shared_state['splash_screen'].showMessage(message, font_size=font_size)
 
     # --- Connect Signals and Slots ---
     startup_thread.started.connect(startup_worker.run_startup_tasks)
