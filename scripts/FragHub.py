@@ -35,6 +35,39 @@ except ImportError as e:
     # Dans une vraie application, afficher une QMessageBox ici avant de quitter
     sys.exit(f"Erreur critique d'importation: {e}")
 
+
+class StreamCapturer:
+    """
+    Capture le flux de sortie (stdout / stderr) et le stocke dans un buffer.
+    """
+
+    def __init__(self, original_stream, signal=None):
+        self.original_stream = original_stream  # stdout ou stderr d'origine
+        self.signal = signal  # Signal optionnel pour transmettre les messages capturés
+        self.buffer = []  # Stockage des messages capturés
+
+    def write(self, message):
+        # Stocker le message dans le buffer
+        self.buffer.append(message)
+        # Si un signal est défini, l'émettre
+        if self.signal:
+            self.signal.emit(message)
+        # Envoyer également le message dans le flux d'origine pour debugger via terminal
+        self.original_stream.write(message)
+
+    def flush(self):
+        # Nécessaire pour éviter les erreurs lors d'appels système via sys.stdout/sys.stderr
+        self.original_stream.flush()
+
+    def get_captured_text(self):
+        # Retourne tout le contenu capturé
+        return ''.join(self.buffer)
+
+    def clear(self):
+        # Réinitialise le buffer
+        self.buffer = []
+
+
 # --- Widget Spinner Personnalisé (Inchangé par rapport à votre version corrigée) ---
 class InfiniteSpinnerWidget(QWidget):
     def __init__(self, parent=None):
@@ -350,6 +383,27 @@ class StartupWorker(QObject):
 
 
 # --- Fin de StartupWorker ---
+# --- Exception Hook Global ---
+def exception_hook(exctype, value, tb):
+    """
+    Capture toutes les exceptions non interceptées et affiche une QMessageBox.
+    """
+    # Format du traceback
+    error_message = ''.join(traceback.format_exception(exctype, value, tb))
+
+    # Écrire dans stderr pour le tracer même sans UI
+    sys.stderr.write(f"Uncaught exception:\n{error_message}")
+
+    # Afficher l'erreur dans une boîte de dialogue
+    message_box = QMessageBox()
+    message_box.setIcon(QMessageBox.Icon.Critical)
+    message_box.setWindowTitle("Unhandled Exception")
+    message_box.setText("An unexpected error occurred!")
+    message_box.setDetailedText(error_message)
+    message_box.exec()
+
+    # Quitter l'application après l'erreur
+    sys.exit(1)
 
 
 # --- Fonction run_GUI (MODIFIÉE pour utiliser le threading) ---
