@@ -255,16 +255,53 @@ class InstallerApp(QWidget):
 
     def create_shortcut(self):
         """Creates a desktop shortcut depending on the OS."""
-        target = Path(self.selected_directory) / "FragHub_1.3.0" / "FragHub_1.3.0.exe"
-        desktop = Path(os.path.join(os.path.expanduser("~"), "Desktop"))
+        # Détecter le système d'exploitation
+        system = platform.system()
 
-        if not target.exists():
-            self.selected_dir_label.setText("Target for shortcut not found!")
+        # Base du répertoire sélectionné
+        base_path = Path(self.selected_directory)
+
+        # Valider que le répertoire sélectionné existe
+        if not base_path.exists() or not base_path.is_dir():
+            self.selected_dir_label.setText("Selected directory is invalid!")
             return
 
-        if platform.system() == "Windows":
+        # Localiser le dossier contenant "FragHub"
+        fraghub_dir = None
+        for item in base_path.iterdir():
+            if item.is_dir() and "FragHub" in item.name:
+                fraghub_dir = item
+                break
+
+        if not fraghub_dir:
+            self.selected_dir_label.setText("Target directory containing 'FragHub' not found!")
+            return
+
+        # Définir le suffixe attendu pour les exécutables selon le système
+        expected_suffix = (
+            ".exe" if system == "Windows" else
+            ".app" if system == "Darwin" else
+            ""
+        )
+
+        # Localiser le fichier exécutable contenant "FragHub" dans ce dossier
+        target = None
+        for item in fraghub_dir.iterdir():
+            if item.is_file() and "FragHub" in item.name and item.suffix == expected_suffix:
+                target = item
+                break
+
+        if not target or not target.exists():
+            self.selected_dir_label.setText("Target executable containing 'FragHub' not found!")
+            return
+
+        # Localiser le bureau de l'utilisateur
+        desktop = Path(os.path.join(os.path.expanduser("~"), "Desktop"))
+
+        # Créer le raccourci selon le système
+        if system == "Windows":
             self.create_windows_shortcut(desktop / "FragHub_1.3.0.lnk", target)
-        elif platform.system() in ["Linux", "Darwin"]:  # Linux or macOS
+        elif system in ["Linux", "Darwin"]:  # macOS ou Linux
             self.create_linux_macos_shortcut(desktop / "FragHub_1.3.0.desktop", target)
 
     def create_windows_shortcut(self, shortcut_path, target):
