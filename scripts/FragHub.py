@@ -194,12 +194,8 @@ class LoadingSplashScreen(QWidget):
 
 
 # --- Définition de AppUserModelID (Inchangé) ---
-try:
-    if platform.system() == "Windows":
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub")
-except AttributeError:
-     print("Note: Could not set AppUserModelID (not on Windows or ctypes issue).")
-     pass
+if platform.system() == "Windows":
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub")
 
 
 # --- Classe MainWindow (Inchangée) ---
