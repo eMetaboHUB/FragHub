@@ -152,8 +152,16 @@ class InstallerApp(QWidget):
             self.selected_dir_label.setText("Please select a directory first!")
             return
 
-        zip_path = Path(__file__).with_name("FragHub_1.3.0.zip")
-        if not zip_path.exists():
+        zip_path = None
+
+        # Recherche du fichier ZIP contenant "FragHub"
+        for file in Path(__file__).parent.glob("*.zip"):
+            if "FragHub" in file.name:
+                zip_path = file
+                break
+
+        # Vérifier si le fichier a été trouvé
+        if not zip_path or not zip_path.exists():
             self.selected_dir_label.setText("FragHub_1.3.0.zip not found!")
             return
 
