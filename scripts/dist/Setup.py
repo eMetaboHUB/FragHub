@@ -241,9 +241,10 @@ class InstallerApp(QWidget):
         self.progress_bar.setValue(100)
         self.progress_label.setText("100%")
 
-        # Create desktop shortcut if requested
-        if self.create_shortcut_checkbox.isChecked():
-            self.create_shortcut()
+        # Create desktop shortcut if requested and on Windows
+        if platform.system() == "Windows" and hasattr(self, "create_shortcut_checkbox"):
+            if self.create_shortcut_checkbox.isChecked():
+                self.create_shortcut()
 
         # Change the button to Exit
         self.install_button.setText("Exit")
