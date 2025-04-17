@@ -89,6 +89,11 @@ class InstallerApp(QWidget):
         self.create_shortcut_checkbox.setChecked(True)  # Par défaut, la case est cochée
         layout.addWidget(self.create_shortcut_checkbox)
 
+        # Désactiver la case à cocher sur Linux ou macOS
+        if platform.system() in ["Linux", "Darwin"]:  # Vérifie si l'OS est Linux ou macOS
+            self.create_shortcut_checkbox.setChecked(False)
+            self.create_shortcut_checkbox.setEnabled(False)
+
         # Progress bar
         self.progress_bar = QProgressBar()
         self.progress_bar.setValue(0)
@@ -255,6 +260,11 @@ class InstallerApp(QWidget):
 
     def create_shortcut(self):
         """Creates a desktop shortcut depending on the OS."""
+        # Vérifie si l'OS est Windows avant de créer le raccourci
+        if platform.system() != "Windows":
+            self.selected_dir_label.setText("Shortcut creation is only supported on Windows.")
+            return
+
         # Mise à jour de la logique pour inclure le répertoire et l'exécutable contenant "FragHub"
         target = None
         for item in Path(self.selected_directory).iterdir():
@@ -268,10 +278,7 @@ class InstallerApp(QWidget):
             self.selected_dir_label.setText("Target for shortcut not found!")
             return
 
-        if platform.system() == "Windows":
-            self.create_windows_shortcut(desktop / "FragHub_1.3.0.lnk", target)
-        elif platform.system() in ["Linux", "Darwin"]:  # Linux or macOS
-            self.create_linux_macos_shortcut(desktop / "FragHub_1.3.0.desktop", target)
+        self.create_windows_shortcut(desktop / "FragHub_1.3.0.lnk", target)
 
     def create_windows_shortcut(self, shortcut_path, target):
         """Creates a Windows shortcut."""
