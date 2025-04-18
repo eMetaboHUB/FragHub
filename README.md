@@ -26,9 +26,11 @@ Key features:<br>
 **Warning**: All spectra deemed inconsistent, i.e., those lacking SMILES and InChI, precursor m/z, and adduct information, are removed during the processing by FragHub.![img_9.png](img_9.png)
 
 ## INSTALLATION
+Download FragHub executable corresponding to your OS HERE:<br>
 
-To install all dependencies, double-click on the install script corresponding to your OS.<br>
-NB: **Make sure that python is in the path variables and that you run Python >= 3.12**<br>
+Windows x64: put link here later<br>
+Linux x64: put link here later<br>
+macOS arm64: put link here later<br>
 
 ## USE
 
