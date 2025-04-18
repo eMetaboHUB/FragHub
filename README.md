@@ -26,17 +26,19 @@ Key features:<br>
 **Warning**: All spectra deemed inconsistent, i.e., those lacking SMILES and InChI, precursor m/z, and adduct information, are removed during the processing by FragHub.![img_9.png](img_9.png)
 
 ## INSTALLATION
-Download FragHub executable corresponding to your OS HERE:<br>
-
-Windows x64: put link here later<br>
-Linux x64: put link here later<br>
-macOS arm64: put link here later<br>
+1) Download FragHub executable corresponding to your OS HERE:<br>
+   Windows x64: put link here later<br>
+   Linux x64: put link here later<br>
+   macOS arm64: put link here later<br>
+2) Execute setup installer
+3) select installation folder
+4) click install
 
 ## USE
 
 To use this programme:
 
-1) Double-click on your corresponding OS run script into scripts folder.<br>
+1) Go to install directory then run FragHub executable (feel free to create shortcut).
 >NB: If you have a file that contains **only** In-Silico spectra AND this is not specified within the filename or the spectrum, you can simply suffix the filename with "_insilico", like this: "UNPD_ISDB_R_p01_insilico.mgf".<br>
 <br>
 >NB: If you have a file that contains **only** GC spectra AND this is not specified within the filename or the spectrum, you can simply suffix the filename with "_GC", like this: "GMD_20111121_MDN35_ALK_MSP_GC.msp".<br>
