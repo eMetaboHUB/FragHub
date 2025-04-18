@@ -145,6 +145,7 @@ def format_fitered_out():
     All peaks above precursor mz: {scripts.deletion_report.all_peaks_above_precursor_mz}
     No peaks in mz range: {scripts.deletion_report.no_peaks_in_mz_range}
     Minimum high peaks not required: {scripts.deletion_report.minimum_high_peaks_not_requiered}
+    Duplicatas removed: {scripts.deletion_report.duplicatas_removed}
     
     """
 
