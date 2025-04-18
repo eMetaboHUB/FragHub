@@ -8,6 +8,8 @@
 ![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC--BY--NC%204.0-lightgrey)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14761050.svg)](https://doi.org/10.5281/zenodo.14761050)
 
+## INSTALL INSTRUCTIONS BELLOW
+[See install instructions](#installation)
 
 ## DESCRIPTION
 ![img_10.png](img_10.png)
@@ -22,16 +24,6 @@ Key features:<br>
 - **Compatibility with various analysis software**: Standardized spectra produced by FragHub are compatible with multiple analysis software, including MSdial, MZmine, and Flash Entropy Search, providing users with maximum flexibility in choosing analysis tools.
 
 **Warning**: All spectra deemed inconsistent, i.e., those lacking SMILES and InChI, precursor m/z, and adduct information, are removed during the processing by FragHub.![img_9.png](img_9.png)
-
-
-## PREREQUISTES
-
-1) Download **Python 3.12** here: https://www.python.org/downloads/release/python-3120/ <br>
-2) Execute setup
-3) **IMPORTANT**: don't forget to check "Add python to PATH"<br>
-![img_13.png](img_13.png)
-4) Click Install Now
-
 
 ## INSTALLATION
 
