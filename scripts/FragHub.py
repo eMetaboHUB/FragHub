@@ -410,7 +410,10 @@ def run_GUI():
     app = QApplication(app_args)
 
     # Configuration de l'icône de l'application (inchangé)
-    app_icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_Python_icon.ico")
+    if platform.system() == "Darwin":
+        app_icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_Python_icon.icns")
+    else:
+        app_icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_Python_icon.ico")
     if not os.path.exists(app_icon_path):
         app_icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_icon.png")
     if os.path.exists(app_icon_path):

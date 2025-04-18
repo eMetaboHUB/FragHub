@@ -313,7 +313,11 @@ if __name__ == "__main__":
     app = QApplication([])
 
     # Set the application icon
-    app.setWindowIcon(QIcon(os.path.join(BASE_DIR, r"setup_gui/assets/FragHub_Python_icon.ico")))
+    if platform.system() == "Darwin":
+        app.setWindowIcon(QIcon(os.path.join(BASE_DIR, r"setup_gui/assets/FragHub_Python_icon.icns")))
+    else:
+        app.setWindowIcon(QIcon(os.path.join(BASE_DIR, r"setup_gui/assets/FragHub_Python_icon.ico")))
+
 
     # Show the installer GUI
     window = InstallerApp()
