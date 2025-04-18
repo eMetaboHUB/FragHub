@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-- **16_04_2025**:
+- **18_04_2025**:
   - fix adduct regex pattern
   - improve spectrum deletion callback by writing deleted spectrum in DELETION_REASONS sub folder with a detailed reason.
   - extend precursormz and adduct checks exception to all GC spectrums.
@@ -10,7 +10,8 @@ All notable changes to this project will be documented in this file.
   - Correcting and adduct some adducts to adduct dict
   - Adding loading screen to GUI
   - adding new gc instruments to instrument dict.
-  - 
+  - auto add [M+H]+ or [M-H]- in In-Silico if adduct is missing.
+  - creating FragHub executable for Windows, Linux, and macOS with Python fully integrated.
 
 
 - **03_04_2025**:
