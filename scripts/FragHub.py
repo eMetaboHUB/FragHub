@@ -561,8 +561,18 @@ def run_GUI():
     app_args = sys.argv if hasattr(sys, 'argv') else ['']
     app = QApplication(app_args)
 
-    # ... (le reste de votre code run_GUI pour l'icône, splash, QThread, worker, signaux, slots locaux, démarrage du thread...)
-    # ... (assurez-vous que la création de MainWindow se fait bien dans on_startup_complete)
+    # Configuration de l'icône de l'application (inchangé)
+    if platform.system() == "Darwin":
+        app_icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_Python_icon.icns")
+    else:
+        app_icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_Python_icon.ico")
+    if not os.path.exists(app_icon_path):
+        app_icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_icon.png")
+    if os.path.exists(app_icon_path):
+        app.setWindowIcon(QIcon(app_icon_path))
+    else:
+        print(f"Warning: Application icon not found at {app_icon_path} or fallback path.")
+
     # --- Splash Screen Setup ---
     splash_pix_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_icon.png")
     splash_pixmap = QPixmap(splash_pix_path)
