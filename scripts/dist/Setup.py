@@ -25,32 +25,82 @@ else:
 
 
 class InstallerThread(QThread):
-    progress_changed = pyqtSignal(int)
-    installation_complete = pyqtSignal()
-    error_occurred = pyqtSignal(str)
+    """
+    A QThread worker that extracts a ZIP archive to a specified directory.
+    It uses Python's zipfile module on Windows and the 'unzip' command
+    on other operating systems (macOS, Linux).
+    """
+    progress_changed = pyqtSignal(int) # Signal emitted during progress (currently only 100% at end)
+    installation_complete = pyqtSignal() # Signal emitted on successful completion
+    error_occurred = pyqtSignal(str)   # Signal emitted if an error occurs
 
     def __init__(self, zip_path: Path, install_dir: Path):
+        """
+        Initializes the thread.
+
+        Args:
+            zip_path: Path object pointing to the source ZIP file.
+            install_dir: Path object for the destination directory where files will be extracted.
+        """
         super().__init__()
         self.zip_path = zip_path
         self.install_dir = install_dir
 
     def run(self):
+        """
+        Executes the extraction logic when the thread starts.
+        Determines the OS and calls the appropriate extraction method.
+        """
         try:
-            command = ['unzip', '-o', str(self.zip_path), '-d', str(self.install_dir)]
-            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            stdout, stderr = process.communicate()
+            # Ensure the installation directory exists, create it if necessary.
+            # parents=True creates any necessary parent directories.
+            # exist_ok=True prevents an error if the directory already exists.
+            self.install_dir.mkdir(parents=True, exist_ok=True)
 
-            if process.returncode == 0:
-                self.progress_changed.emit(100)
-                self.installation_complete.emit()
+            if platform.system() == "Windows":
+                # --- Logic for Windows using the zipfile module ---
+                try:
+                    with zipfile.ZipFile(self.zip_path, 'r') as zip_ref:
+                        # extractall extracts all members from the archive into install_dir
+                        zip_ref.extractall(self.install_dir)
+                    # If extraction completes without exceptions:
+                    self.progress_changed.emit(100) # Emit 100% upon completion
+                    self.installation_complete.emit()
+                except zipfile.BadZipFile:
+                    self.error_occurred.emit(f"Error: The file '{self.zip_path.name}' is not a valid ZIP archive.")
+                except Exception as e:
+                    # Catch other potential zipfile errors (permissions, disk full, etc.)
+                    self.error_occurred.emit(f"Error during extraction (zipfile): {e}")
+
             else:
-                self.error_occurred.emit(f"Erreur lors de la décompression: {stderr.decode()}")
+                # --- Logic for macOS/Linux using the unzip command ---
+                try:
+                    command = ['unzip', '-o', str(self.zip_path), '-d', str(self.install_dir)]
+                    # Use subprocess.run for simpler handling of completed processes
+                    # capture_output=True gets stdout and stderr
+                    # text=True decodes stdout/stderr as text (requires Python 3.7+)
+                    # check=False prevents raising an exception on failure; we check returncode manually
+                    process = subprocess.run(command, capture_output=True, text=True, check=False)
 
-        except FileNotFoundError:
-            self.error_occurred.emit("La commande 'unzip' n'a pas été trouvée. Assurez-vous qu'elle est installée sur votre système.")
+                    if process.returncode == 0:
+                        self.progress_changed.emit(100)
+                        self.installation_complete.emit()
+                    else:
+                        # Use stderr if it contains anything, otherwise a generic message
+                        error_message = process.stderr or f"The unzip command failed with return code {process.returncode}"
+                        self.error_occurred.emit(f"Error during extraction (unzip): {error_message.strip()}")
+
+                except FileNotFoundError:
+                    # Occurs if the 'unzip' command is not found in the system's PATH
+                    self.error_occurred.emit("Error: The 'unzip' command was not found. Please ensure it is installed and in the system PATH.")
+                except Exception as e:
+                    # Catch other potential subprocess-related errors
+                    self.error_occurred.emit(f"Error executing the unzip command: {e}")
+
         except Exception as e:
-            self.error_occurred.emit(f"Une erreur inattendue s'est produite: {e}")
-
+            # Catch potential errors even before starting extraction
+            # e.g., permission error when creating install_dir
+            self.error_occurred.emit(f"An unexpected error occurred: {e}")
 
 
 class InstallerApp(QWidget):
