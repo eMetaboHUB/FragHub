@@ -7,6 +7,7 @@ from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal
 import os
 import sys
 import zipfile
+import subprocess
 from pathlib import Path
 import ctypes  # For setting AppUserModelID (Windows Taskbar Icon)
 import platform
@@ -24,10 +25,9 @@ else:
 
 
 class InstallerThread(QThread):
-    """Thread responsable de l'extraction des fichiers et de l'avancement de la barre de progression."""
-    progress_changed = pyqtSignal(int)  # Signal pour mettre à jour la progression
-    installation_complete = pyqtSignal()  # Signal pour indiquer que l'installation est terminée
-    error_occurred = pyqtSignal(str)  # Signal pour gérer les erreurs
+    progress_changed = pyqtSignal(int)
+    installation_complete = pyqtSignal()
+    error_occurred = pyqtSignal(str)
 
     def __init__(self, zip_path: Path, install_dir: Path):
         super().__init__()
@@ -35,21 +35,22 @@ class InstallerThread(QThread):
         self.install_dir = install_dir
 
     def run(self):
-        """Extrait les fichiers du ZIP et met à jour la progression."""
         try:
-            with zipfile.ZipFile(self.zip_path, 'r') as zip_ref:
-                files = zip_ref.namelist()
-                total_files = len(files)
+            command = ['unzip', '-o', str(self.zip_path), '-d', str(self.install_dir)]
+            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            stdout, stderr = process.communicate()
 
-                for i, file in enumerate(files):
-                    zip_ref.extract(file, self.install_dir)
-                    progress = int((i + 1) / total_files * 100)
-                    self.progress_changed.emit(progress)  # Émet le signal pour mettre à jour la barre
+            if process.returncode == 0:
+                self.progress_changed.emit(100)
+                self.installation_complete.emit()
+            else:
+                self.error_occurred.emit(f"Erreur lors de la décompression: {stderr.decode()}")
 
-            self.installation_complete.emit()  # Émet un signal quand c'est terminé
-
+        except FileNotFoundError:
+            self.error_occurred.emit("La commande 'unzip' n'a pas été trouvée. Assurez-vous qu'elle est installée sur votre système.")
         except Exception as e:
-            self.error_occurred.emit(str(e))  # Émet un signal en cas d'erreur
+            self.error_occurred.emit(f"Une erreur inattendue s'est produite: {e}")
+
 
 
 class InstallerApp(QWidget):
