@@ -30,7 +30,7 @@ Key features:<br>
    Windows x64: [Download Windows x64 Installer](https://zenodo.org/api/records/15310779/draft/files/setup_windows_x64.exe/content)<br>
    Linux x64: [Download Linux x64 Installer](https://zenodo.org/api/records/15310779/draft/files/setup_Linux_x64/content)<br>
    macOS arm64: put link here later<br>
-2) Execute setup installer
+2) Execute setup installer (macOS: drag to App)
 3) select installation folder
 4) click install
 
