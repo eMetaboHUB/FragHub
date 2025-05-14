@@ -29,8 +29,10 @@ def check_for_bad_adduct(metadata_dict):
         if not adduct:
             if ionmode == 'positive':
                 metadata_dict['PRECURSORTYPE'] = "[M+H]+"
+                adduct = metadata_dict['PRECURSORTYPE']
             elif ionmode == 'negative':
                 metadata_dict['PRECURSORTYPE'] = "[M-H]-"
+                adduct = metadata_dict['PRECURSORTYPE']
 
     instrument_type = metadata_dict["INSTRUMENTTYPE"]
     if re.search(r"\bGC\b", instrument_type):
