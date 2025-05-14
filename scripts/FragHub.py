@@ -246,7 +246,7 @@ class MainWindow(QMainWindow):
     def __init__(self, main_function_ref):
         super().__init__()
         self.MAIN_function = main_function_ref
-        self.setWindowTitle("FragHub 1.3.0")
+        self.setWindowTitle("FragHub 1.3.1")
         self.setGeometry(100, 100, 1280, 720)
 
         main_layout = QVBoxLayout()
