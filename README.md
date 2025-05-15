@@ -6,7 +6,7 @@
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![Required_Python](https://img.shields.io/badge/Python-3.12-blue)
 ![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC--BY--NC%204.0-lightgrey)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15356456.svg)](https://doi.org/10.5281/zenodo.15356456)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15421997.svg)](https://doi.org/10.5281/zenodo.15421997)
 
 ## INSTALL INSTRUCTIONS BELLOW
 [See install instructions](#installation)
