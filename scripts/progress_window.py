@@ -153,8 +153,11 @@ class ProgressWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        # Stocker la référence à la fenêtre principale
+        self.main_window_ref = parent  # On suppose que 'parent' est une instance de MainWindow.
+
         # Titre et icône de la fenêtre
-        self.setWindowTitle("FragHub 1.3.1")
+        self.setWindowTitle("FragHub 1.3.2")
         self.setWindowIcon(QIcon(os.path.join(BASE_DIR,"GUI/assets/FragHub_icon.png")))
         self.setGeometry(100, 100, 1280, 720)
 
@@ -235,7 +238,7 @@ class ProgressWindow(QMainWindow):
         self.stop_button = QPushButton("STOP")
         self.stop_button.setFixedSize(120, 40)
         self.stop_button.setStyleSheet("background-color: red; color: white; font-weight: bold; font-size: 12px;")
-        self.stop_button.clicked.connect(QApplication.quit)  # Quitte entièrement le programme
+        self.stop_button.clicked.connect(self.finish_button_clicked)  # Connecter à une gestion spécifique
 
         # Centrer le bouton
         button_layout = QHBoxLayout()
@@ -255,6 +258,18 @@ class ProgressWindow(QMainWindow):
         self.completion_callback.connect(self.handle_completion)
 
         self.deletion_callback.connect(self.add_deletion_to_report)
+
+    def finish_button_clicked(self):
+        """
+        Gestionnaire pour le bouton FINISH/STOP.
+        """
+        if self.stop_button.text() == "FINISH":
+            # Retourner à la fenêtre principale
+            self.close()  # Fermer la fenêtre ProgressWindow
+            if self.main_window_ref:
+                self.main_window_ref.show()  # Rendre la fenêtre principale visible à nouveau
+        else:
+            QApplication.quit()  # Quitter l'application comme le comportement STOP
 
     def add_to_report(self, prefix_text, suffix_text):
         """
