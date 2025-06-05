@@ -13,7 +13,7 @@ def normalize_retentiontime(metadata_dict):
 
     # Retrieving the retention time from metadata dictionary.
     try:
-        retientiontime = str(metadata_dict["RETENTIONTIME"])
+        retientiontime = str(metadata_dict["RT"])
     except:
         retientiontime = ""
 
@@ -29,29 +29,29 @@ def normalize_retentiontime(metadata_dict):
         unit = match.group(2).lower()
 
         # If no unit specification found, default unit is considered as minutes (m).
-        # The time value is converted to float and stored as string in 'RETENTIONTIME'.
+        # The time value is converted to float and stored as string in 'RT'.
         if not unit:
             retientiontime = str(float(time))
-            metadata_dict["RETENTIONTIME"] = retientiontime
+            metadata_dict["RT"] = retientiontime
             return metadata_dict
         else:
             # If the unit is minutes.
             # Example: 'm', 'min', 'minute', 'minutes', then directly store as string, considering no normalization is required.
             if unit in ["m", "min", "minute", "minutes"]:
                 retientiontime = str(float(time))
-                metadata_dict["RETENTIONTIME"] = retientiontime
+                metadata_dict["RT"] = retientiontime
                 return metadata_dict
 
             # If the unit is seconds. Example: 's', 'sec', 'second', or 'seconds', then convert it to minutes by dividing by 60.
             elif unit in ["s", "sec", "second", "seconds"]:
                 retientiontime = str(float(time) / 60)
-                metadata_dict["RETENTIONTIME"] = retientiontime
+                metadata_dict["RT"] = retientiontime
                 return metadata_dict
 
             # If the unit is milliseconds. Example: 'ms', 'millisecond', or 'milliseconds', then convert it to minutes by dividing 60000.
             elif unit in ["ms", "millisecond", "milliseconds"]:
                 retientiontime = str(float(time) / 60000)
-                metadata_dict["RETENTIONTIME"] = retientiontime
+                metadata_dict["RT"] = retientiontime
                 return metadata_dict
 
     # If no match found in the above cases, return the metadata dictionary as it is.
