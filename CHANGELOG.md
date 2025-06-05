@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+
+- **05_06_2025**:
+  - replace RETENTIONTIME default field by RT.
+  - Return to the main window when FINISH is pressed.
+  - Correction of spectra moved to in-silico if FragHub output is used as input.
+  - Deduplicate now on SPLASH **and** INCHIKEY. spectra without INCHIKEY are not deleted at the beginning of the process.
+
 - **14_05_2025**:
   - fix adduct in silico correction
 
