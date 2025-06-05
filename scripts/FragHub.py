@@ -308,7 +308,7 @@ class MainWindow(QMainWindow):
             self.hide()
             # Créer et montrer la fenêtre de progression
             # Assurez-vous que ProgressWindow est bien un QWidget ou QDialog
-            self.progress_window = ProgressWindow(parent=None) # parent=None pour la rendre indépendante
+            self.progress_window = ProgressWindow(parent=self) # parent=None pour la rendre indépendante
             self.progress_window.show()
             # Démarrer l'exécution dans un thread séparé
             self.start_execution()
@@ -451,9 +451,8 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         """Gère la fermeture de la fenêtre principale par l'utilisateur (clic sur X)."""
         if self.running:
-            reply = QMessageBox.question(self, 'Quitter FragHub ?',
-                                         "Une tâche est en cours d'exécution.\n"
-                                         "Voulez-vous vraiment arrêter la tâche et quitter ?",
+            reply = QMessageBox.question(self, 'Quit FragHub ?',
+                                         "Are you sure you want to quit?",
                                          QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
                                          QMessageBox.StandardButton.No)
             if reply == QMessageBox.StandardButton.Yes:
