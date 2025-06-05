@@ -51,6 +51,9 @@ def normalize_predicted(metadata_dict):
 
     # If 'COMMENT' field matches the pattern, or 'PREDICTED' is 'true', or 'MSMS_Public' in the filename:
     #    set 'PREDICTED' field in the metadata dictionary to 'true'
+    if predicted == 'false':
+        return metadata_dict
+
     if re.search(scripts.globals_vars.In_Silico_pattern, comment_field) or predicted == "true" or in_filename_or_name(filename, name):
         metadata_dict["PREDICTED"] = "true"
     else:  # Otherwise, set the 'PREDICTED' field in the metadata dictionary to 'false'

@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="scripts/GUI/assets/FragHub_icon.png" alt="FragHub Icon" /> 1.3.1
+  <img src="scripts/GUI/assets/FragHub_icon.png" alt="FragHub Icon" /> 1.3.2
 </div>
 
-# FragHub  (1.3.1)
+# FragHub  (1.3.2)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![Required_Python](https://img.shields.io/badge/Python-3.12-blue)
 ![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC--BY--NC%204.0-lightgrey)
@@ -29,7 +29,7 @@ Key features:<br>
 1) Download FragHub executable corresponding to your OS HERE:<br>
    **Windows** x64: [Download Windows x64 Installer](https://zenodo.org/records/15422292/files/setup_windows_x64.exe?download=1)<br>
    **Linux** x64: [Download Linux x64 Installer](https://zenodo.org/records/15422292/files/setup_Linux_x64?download=1)<br>
-   **macOS** arm64: [Download macOS arm64 Installer](https://zenodo.org/records/15422292/files/FragHub1.3.1.dmg?download=1) (Execute commande 'xattr -cr FragHub_macOS_1.3.1.app' in terminal after download)<br>
+   **macOS** arm64: [Download macOS arm64 Installer](https://zenodo.org/records/15422292/files/FragHub1.3.2.dmg?download=1) (Execute commande 'xattr -cr FragHub_macOS_1.3.2.app' in terminal after download)<br>
 2) Execute setup installer (macOS: drag to App)
 3) select installation folder
 4) click install
