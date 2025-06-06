@@ -162,7 +162,11 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             check_interrupt(stop_flag)
 
             if not spectrum_list:
-                sys.exit("There is no spectrums to process after cleaning. Exiting code !")
+                deletion_callback("-- THERE IS NO SPECTRUMS TO PRECESS AFTER CLEANING, EXITING PROCESS --")
+                time.sleep(0.01)
+                if completion_callback:
+                    completion_callback("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
+                return 0
 
             spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns].astype(str)
 
