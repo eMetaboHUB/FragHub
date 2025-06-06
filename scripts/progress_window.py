@@ -260,16 +260,18 @@ class ProgressWindow(QMainWindow):
         self.deletion_callback.connect(self.add_deletion_to_report)
 
     def finish_button_clicked(self):
-        """
-        Gestionnaire pour le bouton FINISH/STOP.
-        """
+        """Gestion du bouton FINISH dans la fenêtre de progression."""
         if self.stop_button.text() == "FINISH":
-            # Retourner à la fenêtre principale
-            self.close()  # Fermer la fenêtre ProgressWindow
+            # Réinitialiser dans la main_window pour permettre un nouveau démarrage
             if self.main_window_ref:
-                self.main_window_ref.show()  # Rendre la fenêtre principale visible à nouveau
-        else:
-            QApplication.quit()  # Quitter l'application comme le comportement STOP
+                self.main_window_ref.running = False
+                self.main_window_ref.stop_thread_flag = False  # Permet une réinitialisation à Start
+                self.main_window_ref.thread = None  # Réinitialiser le thread précédent
+
+            # Fermez la fenêtre de progression (retour à la fenêtre principale)
+            self.close()
+            if self.main_window_ref:
+                self.main_window_ref.show()
 
     def add_to_report(self, prefix_text, suffix_text):
         """

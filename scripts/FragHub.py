@@ -314,17 +314,25 @@ class MainWindow(QMainWindow):
             self.start_execution()
 
     def start_execution(self):
-        """Démarre l'exécution de la fonction MAIN dans un thread séparé."""
-        if self.MAIN_function is None:
-            print("Erreur critique: Référence à MAIN manquante.")
-            QMessageBox.critical(self, "Erreur Configuration", "Fonction principale non chargée.")
-            self.show()
-            if self.progress_window: self.progress_window.close()
+        """Démarre le traitement lorsque l'utilisateur appuie sur START."""
+        if self.running:
+            print("Un traitement est déjà en cours.")
             return
 
+        # Réinitialisation d'état pour un nouveau traitement
         self.running = True
-        self.stop_thread_flag = False  # Réinitialiser le flag
-        # Utiliser threading.Thread pour la tâche principale
+        self.stop_thread_flag = False  # Réinitialiser le flag d'arrêt au cas où
+        if self.progress_window:
+            self.progress_window.progress_bar_widget.update_total_items(total=100, completed=0)
+            self.progress_window.progress_bar_widget.update_progress_bar(0)
+
+        # Stopper un thread précédent s'il était encore actif
+        if self.thread and self.thread.is_alive():
+            self.stop_thread_flag = True
+            self.thread.join()  # Attendre que le thread se termine proprement
+            self.thread = None
+
+        # Lancer un nouveau thread
         self.thread = Thread(target=self.run_main_function, daemon=True, name="MainWorkerThread_FragHub")
         self.thread.start()
 
@@ -463,6 +471,7 @@ class MainWindow(QMainWindow):
             # Pas besoin d'appeler clean_exit ici si on quitte juste l'appli
             # QApplication.quit() sera appelé par la fermeture normale
             event.accept()  # Accepter la fermeture
+
 
 # --- Fin de MainWindow ---
 
