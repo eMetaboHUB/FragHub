@@ -90,7 +90,11 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
 
         # If there is no msp to process: stop python execution
         if not files_to_process:
-            sys.exit("There is no files to process. Exiting code !")
+            deletion_callback("-- THERE IS NO FILES TO PROCESS, EXITING PROCESS --")
+            time.sleep(0.01)
+            if completion_callback:
+                completion_callback("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
+            return 0
 
         # STEP 2: generating SPLASH KEY
         time.sleep(0.01)
@@ -162,7 +166,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             check_interrupt(stop_flag)
 
             if not spectrum_list:
-                deletion_callback("-- THERE IS NO SPECTRUMS TO PRECESS AFTER CLEANING, EXITING PROCESS --")
+                deletion_callback("-- THERE IS NO SPECTRUMS TO PROCESS AFTER CLEANING, EXITING PROCESS --")
                 time.sleep(0.01)
                 if completion_callback:
                     completion_callback("--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
