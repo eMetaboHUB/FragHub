@@ -25,6 +25,7 @@ def hash_spectrum_data(spectrum_data):
     else:
         return None
 
+
 def generate_splash(spectrum):
     """
 
@@ -60,67 +61,65 @@ def generate_splash(spectrum):
     return spectrum
 
 
-def generate_splash_processing(spectrum_list, files, progress_callback=None, total_items_callback=None,
-                               prefix_callback=None, item_type_callback=None):
+def generate_splash_processing(spectrum_list, files, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
-    Perform parallel processing of the given spectrum list and generate splash for each spectrum,
+    Perform parallel processing of the given spectrum list and generate SPLASH for each spectrum,
     with support for progress reporting via callbacks.
 
     :param spectrum_list: A list of spectra to process.
     :param files: The name of the file related to spectrum_list (used for display purposes).
-    :param progress_callback: A function to update the progress (optional).
+    :param progress_callback: A function to update progress (optional).
     :param total_items_callback: A function to set the total number of items (optional).
     :param prefix_callback: A function to dynamically set the prefix for the operation (optional).
-    :param item_type_callback: A function to specify the type of items processed (optional).
+    :param item_type_callback: A function to specify the type of items being processed (optional).
     :return: A list containing the SPLASH generated for each spectrum.
     """
-    # Extraire le nom du fichier depuis son chemin
+    # Extract the file name from its path
     filename = os.path.basename(files).split("_")[0]
 
-    # Définir le préfixe via le callback, si fourni
+    # Set the prefix via the callback, if provided
     if prefix_callback:
         prefix_callback(f"generating SPLASH for [{filename}]:")
 
-    # Spécifier le type d'éléments via le callback
+    # Specify the type of items via the callback
     if item_type_callback:
         item_type_callback("spectra")
 
-    # Définir le total via le callback (nombre d'éléments dans la liste des spectres)
+    # Set the total via the callback (number of items in the spectrum list)
     if total_items_callback:
-        total_items_callback(len(spectrum_list), 0)  # total = longueur de spectrum_list, completed = 0
+        total_items_callback(len(spectrum_list), 0)  # total = length of spectrum_list, completed = 0
 
-    # Taille des chunks calculée une fois
+    # Calculate the chunk size once
     chunk_size = calculate_maximized_chunk_size(data_list=spectrum_list)
 
-    # Liste pour stocker les résultats finaux
+    # List to store the final results
     final = []
 
-    # Variable pour suivre la progression
+    # Variable to track progress
     processed_items = 0
 
-    # Diviser la liste des spectres en chunks et traiter chaque chunk
+    # Divide the spectrum list into chunks and process each chunk
     for i in range(0, len(spectrum_list), chunk_size):
-        # Créer un chunk de spectres
+        # Create a chunk of spectra
         chunk = spectrum_list[i:i + chunk_size]
 
-        # Utiliser `ThreadPoolExecutor` pour le traitement parallèle
+        # Use `ThreadPoolExecutor` for parallel processing
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            # Appliquer la fonction `generate_splash` à chaque spectre dans le chunk
+            # Apply the `generate_splash` function to each spectrum in the chunk
             results = list(executor.map(generate_splash, chunk))
 
-        # Filtrer les résultats pour exclure les valeurs `None`
+        # Filter results to exclude `None` values
         final.extend([res for res in results if res is not None])
 
-        # Mettre à jour le nombre d'éléments traités
+        # Update the number of processed items
         processed_items += len(chunk)
 
-        # Mettre à jour la progression via le callback, si fourni
+        # Update progress via the callback, if provided
         if progress_callback:
             progress_callback(processed_items)
 
-    # Retourner la liste finale des résultats
+    # Return the final list of results
     return final
-
 
 
 # process_converted_after function processes the converted spectrum list.
@@ -154,6 +153,7 @@ def process_converted_after(spectrum_list, mode, progress_callback=None, total_i
 
     # Return the processed spectrum list
     return spectrum_list
+
 
 def generate_splash_id(FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
