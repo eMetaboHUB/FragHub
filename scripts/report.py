@@ -4,6 +4,7 @@ import scripts.deletion_report
 import scripts.global_report
 import os
 
+
 def calculate_unique_inchikeys(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df):
     """
     Calculate the number of unique INCHIKEYs in each DataFrame and update global_report.report_dict.
@@ -20,13 +21,13 @@ def calculate_unique_inchikeys(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC
     :param NEG_GC_insilico: DataFrame containing negative GC in-silico data.
     """
 
-    # Fonction utilitaire pour compter les `INCHIKEY` uniques
+    # Utility function to count unique `INCHIKEY`s
     def count_unique_inchikeys(df):
-        if 'INCHIKEY' in df.columns:  # Vérification si la colonne INCHIKEY existe
+        if 'INCHIKEY' in df.columns:  # Check if the INCHIKEY column exists
             return df['INCHIKEY'].nunique()
-        return 0  # Retourne 0 si la colonne est absente
+        return 0  # Return 0 if the column is absent
 
-    # Mise à jour du dictionnaire report_dict avec les valeurs calculées
+    # Update the report_dict dictionary with the calculated values
     scripts.global_report.report_dict["pos_lc_exp_spectrum_unique_inchikey"] = count_unique_inchikeys(POS_LC_df)
     scripts.global_report.report_dict["neg_lc_exp_spectrum_unique_inchikey"] = count_unique_inchikeys(NEG_LC_df)
     scripts.global_report.report_dict["pos_lc_insilico_spectrum_unique_inchikey"] = count_unique_inchikeys(POS_LC_In_Silico_df)
@@ -272,19 +273,19 @@ def report(output_directory, POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_I
     Returns:
         None
     """
-    # Calculs des spectres et des InChIKeys uniques
+    # Calculate spectra and unique InChIKeys
     calculate_spectrum_number(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
     calculate_unique_inchikeys(POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df, NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
 
-    # Création du rapport formaté
+    # Create the formatted report
     formated_report = format_report()
 
-    # Générer la date et l'heure au format désiré : DD_MM_YYYY__HH_MM_SS
+    # Generate the current date and time in the desired format: DD_MM_YYYY__HH_MM_SS
     current_datetime = datetime.now().strftime("%d_%m_%Y__%H_%M_%S")
 
-    # Définir le chemin complet pour le fichier avec date et heure
+    # Define the full path for the file with date and time
     report_file_path = os.path.join(output_directory, f"report_{current_datetime}.txt")
 
-    # Écriture du contenu dans le fichier report.txt
+    # Write the content to the report.txt file
     with open(report_file_path, "w") as report_file:
         report_file.write(formated_report)
