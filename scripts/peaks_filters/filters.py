@@ -7,6 +7,7 @@ from scripts.peaks_filters.reduce_peak_list import *
 import scripts.deletion_report
 import numpy as np
 
+
 def apply_filters(spectrum, peak_array, precursormz, parameters_dict):
     """
     Function to apply various filters on a given peak_array according to the provided parameters.
