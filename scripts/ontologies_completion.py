@@ -3,22 +3,21 @@ import scripts.globals_vars
 import os
 
 
-def ontologies_completion(spectrum_list, progress_callback=None, total_items_callback=None, prefix_callback=None,
-                          item_type_callback=None):
+def ontologies_completion(spectrum_list, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     The `ontologies_completion` function enriches a DataFrame containing spectral data with ontological information.
 
     Parameters:
     - spectrum_list (pd.DataFrame): The DataFrame containing spectral data with 'INCHIKEY' and initial ontology columns.
-    - progress_callback (callable, optional): Function to update progress during processing.
-    - total_items_callback (callable, optional): Function to set the total number of items to process.
+    - progress_callback (callable, optional): Function for updating progress during the process.
+    - total_items_callback (callable, optional): Function for setting the total number of items to process.
     - prefix_callback (callable, optional): Function to describe the task being performed.
-    - item_type_callback (callable, optional): Function to define the item type being processed.
+    - item_type_callback (callable, optional): Function to specify the type of items being processed.
 
     Returns:
-    - pd.DataFrame: The enriched DataFrame with completed ontology information.
+    - pd.DataFrame: The enriched DataFrame with the completed ontology information.
     """
-    # Ajouter les colonnes avec des valeurs par défaut 'UNKNOWN'
+    # Add columns with default values 'UNKNOWN'
     spectrum_list['CLASSYFIRE_SUPERCLASS'] = "UNKNOWN"
     spectrum_list['CLASSYFIRE_CLASS'] = "UNKNOWN"
     spectrum_list['CLASSYFIRE_SUBCLASS'] = "UNKNOWN"
@@ -26,10 +25,10 @@ def ontologies_completion(spectrum_list, progress_callback=None, total_items_cal
     spectrum_list['NPCLASS_SUPERCLASS'] = "UNKNOWN"
     spectrum_list['NPCLASS_CLASS'] = "UNKNOWN"
 
-    # Compter le nombre de INCHIKEY uniques dans spectrum_list
+    # Count the number of unique INCHIKEYs in the spectrum_list
     num_keys = spectrum_list['INCHIKEY'].nunique()
 
-    # Initialiser le suivi avec les callbacks
+    # Initialize tracking with the callbacks
     if prefix_callback:
         prefix_callback("updating ontologies:")
 
@@ -37,9 +36,9 @@ def ontologies_completion(spectrum_list, progress_callback=None, total_items_cal
         item_type_callback("rows")
 
     if total_items_callback:
-        total_items_callback(num_keys, 0)  # Définir le total au départ
+        total_items_callback(num_keys, 0)  # Set the total at the start
 
-    # Fusionner spectrum_list avec ontologies_df sur 'INCHIKEY'
+    # Merge spectrum_list with ontologies_df on 'INCHIKEY'
     completed_df = pd.merge(
         spectrum_list,
         scripts.globals_vars.ontologies_df[
@@ -50,14 +49,14 @@ def ontologies_completion(spectrum_list, progress_callback=None, total_items_cal
         how='left'
     )
 
-    # Simuler mise à jour clé par clé pour la progression
+    # Simulate updating key-by-key for progress tracking
     processed_keys = 0
     for _ in range(num_keys):
         processed_keys += 1
         if progress_callback:
             progress_callback(processed_keys)
 
-    # Remplacer les valeurs initiales par les valeurs fusionnées
+    # Replace initial values with the merged ones
     completed_df['CLASSYFIRE_SUPERCLASS'] = completed_df['CLASSYFIRE_SUPERCLASS_y'].combine_first(
         completed_df['CLASSYFIRE_SUPERCLASS_x'])
     completed_df['CLASSYFIRE_CLASS'] = completed_df['CLASSYFIRE_CLASS_y'].combine_first(
@@ -69,7 +68,7 @@ def ontologies_completion(spectrum_list, progress_callback=None, total_items_cal
         completed_df['NPCLASS_SUPERCLASS_x'])
     completed_df['NPCLASS_CLASS'] = completed_df['NPCLASS_CLASS_y'].combine_first(completed_df['NPCLASS_CLASS_x'])
 
-    # Supprimer les colonnes temporaires
+    # Remove temporary columns
     completed_df.drop(
         columns=[
             'CLASSYFIRE_SUPERCLASS_x', 'CLASSYFIRE_SUPERCLASS_y',
