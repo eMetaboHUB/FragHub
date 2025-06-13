@@ -29,6 +29,7 @@ def repair_inchi(metadata_dict):
     # Metadata dictionary is returned (modified or unmodified)
     return metadata_dict
 
+
 def repair_mol_descriptors(metadata_dict):
     """
     Repairs molecular descriptors in a dictionary containing SMILES, InChI, and InChIKey.
