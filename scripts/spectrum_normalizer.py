@@ -40,6 +40,7 @@ def peak_list_cleaning(spectrum, peak_list, precursormz):
     # Return the sorted and preset-filtered numpy array of peaks.
     return peak_list
 
+
 def peak_list_to_str(peak_list_np):
     """
     This function converts a peak list numpy array into a string format. Each peak is represented as a space-separated
@@ -64,6 +65,7 @@ def peak_list_to_str(peak_list_np):
 
     # Return the final string representation of the peak list.
     return peak_list_np
+
 
 def spectrum_cleaning(spectrum):
     """
