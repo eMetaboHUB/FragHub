@@ -28,6 +28,7 @@ def extract_metadata_and_peak_list(spectrum):
     # The results are returned as a tuple (metadata, peak_list)
     return metadata, peak_list
 
+
 def metadata_to_dict(metadata):
     """
     Convert metadata to a dictionary.
@@ -187,5 +188,3 @@ def mgf_to_dict_processing(FINAL_MGF, progress_callback=None, total_items_callba
         start += chunk_size
 
     return FINAL_MGF
-
-
