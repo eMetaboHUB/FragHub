@@ -1,8 +1,7 @@
 import scripts.global_report
 import re
 
-def split_pos_neg(CONCATENATE_DF, progress_callback=None, total_items_callback=None, prefix_callback=None,
-                  item_type_callback=None):
+def split_pos_neg(CONCATENATE_DF, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     This function splits the given DataFrame into two DataFrames based on the value of the `IONMODE` column
     :param CONCATENATE_DF: Initial DataFrame containing mixed type data
@@ -43,8 +42,7 @@ def split_pos_neg(CONCATENATE_DF, progress_callback=None, total_items_callback=N
     return POS, NEG
 
 
-def split_LC_GC(POS, NEG, progress_callback=None, total_items_callback=None, prefix_callback=None,
-                item_type_callback=None):
+def split_LC_GC(POS, NEG, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     This function separates the given positive and negative DataFrames into LC and GC spectrums.
 
@@ -92,38 +90,37 @@ def split_LC_GC(POS, NEG, progress_callback=None, total_items_callback=None, pre
     return POS_LC, POS_GC, NEG_LC, NEG_GC
 
 
-def split_in_silico_exp(dataframe, predicted_value, text, progress_callback=None, total_items_callback=None,
-                        prefix_callback=None, item_type_callback=None):
+def split_in_silico_exp(dataframe, predicted_value, text, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
-    Filtre un DataFrame basé sur une valeur prédite et met à jour la progression via des callbacks.
+    Filters a DataFrame based on a predicted value and updates progress via callbacks.
 
-    :param dataframe: DataFrame à filtrer.
-    :param predicted_value: La valeur à rechercher dans la colonne 'PREDICTED'.
-    :param text: Description ou contexte de l'opération.
-    :param progress_callback: Fonction callable pour notifier la progression.
-    :param total_items_callback: Fonction callable pour définir le total des éléments.
-    :param prefix_callback: Fonction callable pour signaler le contexte de la tâche.
-    :param item_type_callback: Fonction callable pour indiquer le type d'éléments.
-    :return: Le DataFrame filtré.
+    :param dataframe: The DataFrame to filter.
+    :param predicted_value: The value to search in the 'PREDICTED' column.
+    :param text: Description or context of the operation.
+    :param progress_callback: Callable function to report progress.
+    :param total_items_callback: Callable function to set the total number of items.
+    :param prefix_callback: Callable function to report the task context.
+    :param item_type_callback: Callable function to indicate the type of items.
+    :return: The filtered DataFrame.
     """
-    # Initialisation des callbacks : contexte de la tâche et type d'éléments
+    # Initialize callbacks: task context and type of items
     if prefix_callback:
-        prefix_callback(text+":")  # Exemple : "Filtrage des spectres"
+        prefix_callback(text + ":")  # Example: "Filtering spectra"
     if item_type_callback:
         item_type_callback("rows")
 
-    # Nombre total d'éléments dans le DataFrame
+    # Total number of elements in the DataFrame
     total_rows = len(dataframe)
     if total_items_callback:
-        total_items_callback(total_rows, 0)  # Initialisation des éléments à 0
+        total_items_callback(total_rows, 0)  # Initialize with 0 completed items
 
-    # Filtrage du DataFrame
+    # Filter the DataFrame
     filtered_dataframe = dataframe[dataframe['PREDICTED'] == predicted_value]
 
-    # Mettre à jour la barre de progression
+    # Update the progress bar
     filtered_count = len(filtered_dataframe)
     if progress_callback:
-        progress_callback(min(filtered_count, total_rows))  # Limitation à 100 % max
+        progress_callback(min(filtered_count, total_rows))  # Limit to a maximum of 100%
 
     return filtered_dataframe
 
