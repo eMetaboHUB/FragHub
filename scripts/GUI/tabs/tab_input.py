@@ -7,11 +7,11 @@ import os
 
 import sys
 
-# Si le fichier est exécuté comme un exécutable PyInstaller
+# If the file is executed as a PyInstaller executable
 if getattr(sys, 'frozen', False):
     BASE_DIR = sys._MEIPASS
 else:
-    # Si le fichier est exécuté comme un script Python
+    # If the file is executed as a Python script
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 
@@ -20,34 +20,34 @@ class InputTab(QWidget):
         super().__init__()
         self.layout = QVBoxLayout()
 
-        # Ajouter des espaces pour centrer verticalement
+        # Add space to vertically center elements
         self.layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
-        # Créer le bouton de sélection de fichiers
+        # Create the file selection button
         button = QPushButton()
-        button.setIcon(QIcon(os.path.join(BASE_DIR,'./GUI/assets/files_icon.png')))
+        button.setIcon(QIcon(os.path.join(BASE_DIR, './GUI/assets/files_icon.png')))
         button.setIconSize(QSize(128, 128))
         button.setFixedSize(140, 140)
-        button.clicked.connect(self.browse_files)  # Connecter la fonction
+        button.clicked.connect(self.browse_files)  # Connect the function
 
-        # Centrer le bouton
+        # Center the button
         button_layout = QHBoxLayout()
         button_layout.addWidget(button, alignment=Qt.AlignmentFlag.AlignCenter)
         self.layout.addLayout(button_layout)
 
-        # Ajouter étiquette sous le bouton
+        # Add a label below the button
         label = QLabel("Select input files")
         label.setFont(QFont("Arial", 14, QFont.Weight.Bold))
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.layout.addWidget(label)
 
-        # Ajouter un menu déroulant sous le label
+        # Add a dropdown menu below the label
         self.file_menu = QComboBox()
-        self.file_menu.setFixedWidth(200)  # Réduire la largeur à 200px
-        self.file_menu.setPlaceholderText("No files selected")  # Texte initial
+        self.file_menu.setFixedWidth(200)  # Set the width to 200px
+        self.file_menu.setPlaceholderText("No files selected")  # Initial text
         self.layout.addWidget(self.file_menu, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        # Espacement et bouton d'informations
+        # Add spacing and an info button
         self.layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
         info_button_layout = QHBoxLayout()
@@ -62,18 +62,18 @@ class InputTab(QWidget):
         self.setLayout(self.layout)
 
     def browse_files(self):
-        """Gestionnaire de sélection de fichiers pour l'onglet INPUT."""
-        files, _ = QFileDialog.getOpenFileNames(self, "Choisir des fichiers")
+        """File selection handler for the INPUT tab."""
+        files, _ = QFileDialog.getOpenFileNames(self, "Choose files")
         if files:
-            # Mise à jour du dictionnaire global
+            # Update the global dictionary
             parameters_dict["input_directory"] = files
 
-            # Ajouter les noms de fichiers au menu déroulant
-            self.file_menu.clear()  # Nettoyer le menu existant
+            # Add file names to the dropdown menu
+            self.file_menu.clear()  # Clear existing items
             for file_path in files:
-                basename = os.path.basename(file_path)  # Récupérer juste le nom du fichier
-                self.file_menu.addItem(basename)  # Ajouter au menu déroulant
+                basename = os.path.basename(file_path)  # Get only the file name
+                self.file_menu.addItem(basename)  # Add to the dropdown
 
-            # Afficher directement le premier fichier si disponible
+            # Automatically show the first file if available
             if files:
                 self.file_menu.setCurrentText(os.path.basename(files[0]))
