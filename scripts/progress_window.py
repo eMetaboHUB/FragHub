@@ -10,11 +10,11 @@ import ctypes
 import os
 import platform
 
-# Si le fichier est exécuté comme un exécutable PyInstaller
+# If the file is executed as a PyInstaller executable
 if getattr(sys, 'frozen', False):
     BASE_DIR = sys._MEIPASS
 else:
-    # Si le fichier est exécuté comme un script Python
+    # If the file is executed as a Python script
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 
 if platform.system() == "Windows":
@@ -29,36 +29,36 @@ def format_time(time_in_seconds):
 
 class ProgressBarWidget(QWidget):
     """
-    Widget personnalisé pour une barre de progression mise à jour dynamiquement par des signaux.
+    Custom widget for a progress bar dynamically updated through signals.
     """
 
-    # Signal pour indiquer que la progression a atteint 100 %
+    # Signal to indicate that progress has reached 100%
     progress_completed_signal = pyqtSignal(str, str)  # (prefix_text, suffix_text)
 
     def __init__(self, update_progress_signal, update_total_signal, update_prefix_signal, update_item_type_signal,
                  parent=None):
         super().__init__(parent)
 
-        # Layout principal pour organiser les composants de la barre
+        # Main layout to organize the components of the bar
         layout = QHBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)  # Pas de marges intérieures
-        layout.setSpacing(5)  # Espacement entre les éléments
+        layout.setContentsMargins(0, 0, 0, 0)  # No inner margins
+        layout.setSpacing(5)  # Spacing between elements
 
-        # Préfixe de la barre de progression
-        self.progress_prefix = QLabel("Début...")
-        self.progress_prefix.setFont(QFont("Arial", 12))  # Taille de texte ajustée à 12
+        # Progress bar prefix
+        self.progress_prefix = QLabel("Start...")
+        self.progress_prefix.setFont(QFont("Arial", 12))  # Text size set to 12
         self.progress_prefix.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         layout.addWidget(self.progress_prefix)
 
-        # Barre de progression
+        # Progress bar
         self.progress_bar = QProgressBar()
         self.progress_bar.setMinimum(0)
         self.progress_bar.setMaximum(100)
         self.progress_bar.setValue(0)
-        self.progress_bar.setTextVisible(False)  # Texte désactivé pour la barre elle-même
+        self.progress_bar.setTextVisible(False)  # Disable text on the bar itself
         self.progress_bar.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
 
-        # Stylesheet : rendre la barre épaisse
+        # Stylesheet: make the bar thicker
         self.progress_bar.setStyleSheet("""
             QProgressBar {
                 height: 24px;
@@ -73,127 +73,125 @@ class ProgressBarWidget(QWidget):
         """)
         layout.addWidget(self.progress_bar)
 
-        # Suffixe contenant les statistiques
+        # Suffix containing statistics
         self.progress_suffix = QLabel("0.00%")
-        self.progress_suffix.setFont(QFont("Arial", 12))  # Taille de texte ajustée à 12
+        self.progress_suffix.setFont(QFont("Arial", 12))  # Text size set to 12
         self.progress_suffix.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.progress_suffix.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         layout.addWidget(self.progress_suffix)
 
-        # Appliquer le layout au widget
+        # Apply the layout to the widget
         self.setLayout(layout)
 
-        # Variables pour gérer l’état
-        self.total_items = 100  # Valeur par défaut
+        # Variables to manage the state
+        self.total_items = 100  # Default value
         self.start_time = time.time()
         self.item_type = "items"
 
-        # Connexion des signaux
+        # Signal connections
         update_progress_signal.connect(self.update_progress_bar)
         update_total_signal.connect(self.update_total_items)
         update_prefix_signal.connect(self.update_progress_prefix)
         update_item_type_signal.connect(self.update_item_type)
 
     def update_item_type(self, item_type):
-        """Met à jour dynamiquement l'unité des items pour l'affichage."""
+        """Dynamically update the item unit for display."""
         self.item_type = item_type
 
     def update_progress_prefix(self, prefix_text):
-        """Met à jour dynamiquement le texte du préfixe."""
+        """Dynamically update the prefix text."""
         self.progress_prefix.setText(prefix_text)
 
     def update_progress_bar(self, progress):
-        """Met à jour la valeur de la barre et les statistiques affichées."""
+        """Update the bar value and display stats."""
         self.progress_bar.setValue(progress)
 
-        # Calcul des progrès (pourcentage, temps estimé, vitesse)
+        # Calculate progress (percentage, estimated time, speed)
         progress_percent = (progress / self.total_items) * 100 if self.total_items > 0 else 0
         elapsed_time = time.time() - self.start_time
         items_per_second = progress / elapsed_time if elapsed_time > 0 else 0
         remaining_items = self.total_items - progress
         estimated_time_left = remaining_items / items_per_second if items_per_second > 0 else 0
 
-        # Mettre à jour le suffixe de progression
+        # Update the progress suffix
         self.progress_suffix.setText(
             f"{progress_percent:.2f}% | {progress}/{self.total_items} {self.item_type} "
             f"[{format_time(elapsed_time)} < {format_time(estimated_time_left)}, {items_per_second:.2f} {self.item_type}/s]"
         )
 
-        # Vérifier si la barre atteint 100 %
+        # Check if the bar reaches 100%
         if progress >= self.total_items:
-            # Envoyer un signal vers la ProgressWindow pour ajouter un rapport
+            # Emit a signal to the ProgressWindow to add a report
             self.progress_completed_signal.emit(self.progress_prefix.text(), self.progress_suffix.text())
 
     def update_total_items(self, total, completed=0):
-        """Met à jour le nombre total d'items et réinitialise si nécessaire."""
+        """Update the total number of items and reset if necessary."""
         self.total_items = total
         self.progress_bar.setMaximum(total)
 
-        # Réinitialiser le temps écoulé
-        self.start_time = time.time()  # Temps actuel comme nouvelle référence
+        # Reset the elapsed time
+        self.start_time = time.time()  # Current time as a new reference
 
-        # Met à jour la barre avec les nouveaux totaux et le progrès actuel (completed)
+        # Update the bar with the new totals and current progress (completed)
         self.update_progress_bar(completed)
-
 
 class ProgressWindow(QMainWindow):
     """
-    Fenêtre principale avec un onglet Progress (en bas) et un onglet dynamique Report (en haut).
+    Main window with a Progress tab (at the bottom) and a dynamic Report tab (at the top).
     """
 
-    # Signaux PyQt pour mettre à jour la barre de progression
-    update_progress_signal = pyqtSignal(int)  # Progrès actuel
-    update_total_signal = pyqtSignal(int, int)  # Total et étape actuelle
-    update_prefix_signal = pyqtSignal(str)  # Texte de préfixe
-    update_item_type_signal = pyqtSignal(str)  # Type d'items (fichiers, étapes, etc.)
-    update_step_signal = pyqtSignal(str)  # Nouveau signal pour afficher une étape dans l'onglet "Report"
-    completion_callback = pyqtSignal(str)  # Nouveau signal pour indiquer la fin
-    deletion_callback = pyqtSignal(str)  # Nouveau signal pour l'option de suppression
+    # PyQt signals for updating the progress bar
+    update_progress_signal = pyqtSignal(int)  # Current progress
+    update_total_signal = pyqtSignal(int, int)  # Total and current step
+    update_prefix_signal = pyqtSignal(str)  # Prefix text
+    update_item_type_signal = pyqtSignal(str)  # Type of items (files, steps, etc.)
+    update_step_signal = pyqtSignal(str)  # New signal to display a step in the "Report" tab
+    completion_callback = pyqtSignal(str)  # New signal to indicate completion
+    deletion_callback = pyqtSignal(str)  # New signal for deletion actions
 
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        # Stocker la référence à la fenêtre principale
-        self.main_window_ref = parent  # On suppose que 'parent' est une instance de MainWindow.
+        # Store a reference to the main window
+        self.main_window_ref = parent  # Assumes 'parent' is an instance of MainWindow.
 
-        # Titre et icône de la fenêtre
+        # Window title and icon
         self.setWindowTitle("FragHub 1.3.2")
-        self.setWindowIcon(QIcon(os.path.join(BASE_DIR,"GUI/assets/FragHub_icon.png")))
+        self.setWindowIcon(QIcon(os.path.join(BASE_DIR, "GUI/assets/FragHub_icon.png")))
         self.setGeometry(100, 100, 1280, 720)
 
-        # Configure la fenêtre pour apparaître de manière indépendante dans la barre des tâches
+        # Configure the window to appear independently in the taskbar
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint)
-        self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating,
-                          False)  # S'affiche correctement sans voler le focus
+        self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating, False)  # Display without stealing focus
 
-        # Ajouter un banner avec l'icône
+        # Add a banner with the icon
         banner = QLabel()
-        pixmap = QPixmap(os.path.join(BASE_DIR,"GUI/assets/FragHub_icon.png")).scaled(
+        pixmap = QPixmap(os.path.join(BASE_DIR, "GUI/assets/FragHub_icon.png")).scaled(
             200, 200, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation
         )
         banner.setPixmap(pixmap)
         banner.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # Splitter pour diviser l'espace entre les deux widgets
+        # Splitter to divide the space between the two widgets
         splitter = QSplitter(Qt.Orientation.Vertical)
 
-        # Premier QTabWidget (haut) avec un onglet "Report"
+        # First QTabWidget (top) with a "Report" tab
         self.top_tab_widget = QTabWidget()
 
-        # Création de l'onglet "Report"
+        # Create the "Report" tab
         self.report_tab = QWidget()
         self.report_layout = QVBoxLayout()
         self.report_widget = QWidget()
         self.report_content = QVBoxLayout()
         self.report_widget.setLayout(self.report_content)
 
-        # Ajouter un espace extensible pour gérer le contenu dynamique
+        # Add a stretchable space to manage dynamic content
         self.report_content.addStretch()
 
-        # Régler la taille minimum pour activer le scroll
+        # Set a minimum size to enable scrolling
         self.report_widget.setMinimumWidth(1)
 
-        # Ajout d'une zone défilable pour le rapport
+        # Add a scrollable area for the report
         self.report_scroll = QScrollArea()
         self.report_scroll.setWidgetResizable(True)
         self.report_scroll.setWidget(self.report_widget)
@@ -204,19 +202,19 @@ class ProgressWindow(QMainWindow):
 
         splitter.addWidget(self.top_tab_widget)
 
-        # Onglet "Progress" (en bas)
+        # "Progress" tab (at the bottom)
         self.bottom_tab_widget = QTabWidget()
         self.progress_tab = QWidget()
         self.progress_layout = QVBoxLayout()
 
-        # Widget de barre de progression
+        # Progress bar widget
         self.progress_bar_widget = ProgressBarWidget(
             self.update_progress_signal,
             self.update_total_signal,
             self.update_prefix_signal,
             self.update_item_type_signal
         )
-        self.progress_bar_widget.progress_completed_signal.connect(self.add_to_report)  # Connexion au rapport
+        self.progress_bar_widget.progress_completed_signal.connect(self.add_to_report)  # Connect to report
         self.progress_layout.addWidget(self.progress_bar_widget)
 
         self.progress_tab.setLayout(self.progress_layout)
@@ -224,163 +222,161 @@ class ProgressWindow(QMainWindow):
 
         splitter.addWidget(self.bottom_tab_widget)
 
-        # Configurer les tailles du splitter
+        # Configure the splitter's sizes
         self.bottom_tab_widget.setMinimumHeight(60)
         splitter.setStretchFactor(0, 3)
         splitter.setStretchFactor(1, 0)
 
-        # Layout principal
+        # Main layout
         main_layout = QVBoxLayout()
         main_layout.addWidget(banner)
         main_layout.addWidget(splitter)
 
-        # Bouton STOP
+        # STOP button
         self.stop_button = QPushButton("STOP")
         self.stop_button.setFixedSize(120, 40)
         self.stop_button.setStyleSheet("background-color: red; color: white; font-weight: bold; font-size: 12px;")
-        self.stop_button.clicked.connect(self.finish_button_clicked)  # Connecter à une gestion spécifique
+        self.stop_button.clicked.connect(self.finish_button_clicked)  # Connect to specific handling
 
-        # Centrer le bouton
+        # Center the button
         button_layout = QHBoxLayout()
         button_layout.addStretch()
         button_layout.addWidget(self.stop_button)
         button_layout.addStretch()
         main_layout.addLayout(button_layout)
 
-        # Appliquer le layout principal
+        # Apply the main layout
         container = QWidget()
         container.setLayout(main_layout)
         self.setCentralWidget(container)
 
-        # Connexion du signal de mise à jour des étapes
+        # Connect signals to actions
         self.update_step_signal.connect(self.add_step_to_report)
-
         self.completion_callback.connect(self.handle_completion)
-
         self.deletion_callback.connect(self.add_deletion_to_report)
 
     def finish_button_clicked(self):
-        """Gestion du bouton FINISH dans la fenêtre de progression."""
+        """Handle the FINISH button in the progress window."""
         if self.stop_button.text() == "FINISH":
-            # Réinitialiser dans la main_window pour permettre un nouveau démarrage
+            # Reset in the main_window to allow a new start
             if self.main_window_ref:
                 self.main_window_ref.running = False
-                self.main_window_ref.stop_thread_flag = False  # Permet une réinitialisation à Start
-                self.main_window_ref.thread = None  # Réinitialiser le thread précédent
+                self.main_window_ref.stop_thread_flag = False  # Reset to enable Start
+                self.main_window_ref.thread = None  # Reset the previous thread
 
-            # Fermez la fenêtre de progression (retour à la fenêtre principale)
+            # Close the progress window (return to the main window)
             self.close()
             if self.main_window_ref:
                 self.main_window_ref.show()
 
     def add_to_report(self, prefix_text, suffix_text):
         """
-            Ajoute une nouvelle ligne dans le rapport (prefix + barre de progression statique + suffix).
-            """
-        # Créer un conteneur horizontal pour le préfixe, la barre et le suffixe
+        Add a new line to the report (prefix + static progress bar + suffix).
+        """
+        # Create a horizontal container for prefix, progress bar, and suffix
         report_layout = QHBoxLayout()
         report_layout.setContentsMargins(10, 5, 10, 5)
         report_layout.setSpacing(10)
 
-        # Préfixe
+        # Prefix
         prefix_label = QLabel(prefix_text)
         prefix_label.setFont(QFont("Arial", 10, QFont.Weight.Bold))
         prefix_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
         report_layout.addWidget(prefix_label)
 
-        # Fausse barre de progression
+        # Fake progress bar
         fake_progress_bar = QProgressBar()
         fake_progress_bar.setMinimum(0)
         fake_progress_bar.setMaximum(100)
-        fake_progress_bar.setValue(100)  # Définir une valeur fixe (par exemple, 50%)
-        fake_progress_bar.setTextVisible(False)  # Désactiver l'affichage du texte
+        fake_progress_bar.setValue(100)  # Set a fixed value (e.g., 50%)
+        fake_progress_bar.setTextVisible(False)  # Disable displaying text
 
-        # Appliquer le même style que votre barre de progression principale
+        # Apply the same style as your main progress bar
         fake_progress_bar.setStyleSheet("""
-                QProgressBar {
-                    height: 18px;
-                    border: 1px solid #000;
-                    border-radius: 4px;
-                    background: #e0e0e0;
-                }
-                QProgressBar::chunk {
-                    background-color: #3b8dff;
-                    border-radius: 4px;
-                }
-            """)
+            QProgressBar {
+                height: 18px;
+                border: 1px solid #000;
+                border-radius: 4px;
+                background: #e0e0e0;
+            }
+            QProgressBar::chunk {
+                background-color: #3b8dff;
+                border-radius: 4px;
+            }
+        """)
         report_layout.addWidget(fake_progress_bar)
 
-        # Suffixe
+        # Suffix
         suffix_label = QLabel(suffix_text)
         suffix_label.setFont(QFont("Arial", 10))
         suffix_label.setAlignment(Qt.AlignmentFlag.AlignRight)
         report_layout.addWidget(suffix_label)
 
-        # Créer un widget conteneur pour encapsuler le layout
+        # Create a container widget to encapsulate the layout
         report_widget = QWidget()
         report_widget.setLayout(report_layout)
 
-        # Ajouter le widget à la mise en page du contenu du rapport
+        # Add the widget to the report content layout
         self.report_content.insertWidget(self.report_content.count() - 1, report_widget)
 
-        # Forcer le scroll vers le bas pour afficher la dernière entrée
+        # Force scrolling to the bottom to display the last entry
         self.report_scroll.verticalScrollBar().setValue(
             self.report_scroll.verticalScrollBar().maximum()
         )
 
     def add_step_to_report(self, step_message):
         """
-            Ajoute une nouvelle étape dans l'onglet "Report".
-            """
+        Add a new step to the "Report" tab.
+        """
         new_step = QLabel(step_message)
         new_step.setFont(QFont("Arial", 12, QFont.Weight.Bold))
-        new_step.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Centre horizontalement et verticalement
+        new_step.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Center both horizontally and vertically
 
-        # Ajouter l'étape avant les éléments extensibles
+        # Add the step before the stretchable elements
         self.report_content.insertWidget(self.report_content.count() - 1, new_step)
 
-        # Forcer le scroll vers le bas
+        # Force scrolling to the bottom
         self.report_scroll.verticalScrollBar().setValue(
             self.report_scroll.verticalScrollBar().maximum()
         )
 
     def handle_completion(self, completion_message):
         """
-        Affiche un message final dans l'onglet Progress
-        en remplaçant la barre de progression, et change le bouton STOP en FINISH tout en conservant son comportement.
+        Display a final message in the Progress tab, replace the progress bar,
+        and change the STOP button to FINISH while keeping its behavior.
         """
-        # Supprimer tous les widgets existants dans progress_layout
+        # Remove all existing widgets in the progress_layout
         while self.progress_layout.count() > 0:
             item = self.progress_layout.takeAt(0)
             widget = item.widget()
             if widget is not None:
-                widget.deleteLater()  # Supprime proprement chaque widget
+                widget.deleteLater()  # Properly delete each widget
 
-        # Créer un QLabel pour afficher le message final
+        # Create a QLabel to display the final message
         message_label = QLabel(completion_message)
         message_label.setFont(QFont("Arial", 16, QFont.Weight.Bold))
         message_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.progress_layout.addWidget(message_label)
 
-        # Changer le texte et le style du bouton "STOP"
-        self.stop_button.setText("FINISH")  # Change le texte du bouton
+        # Change the text and style of the "STOP" button
+        self.stop_button.setText("FINISH")  # Change the button text
         self.stop_button.setStyleSheet(
             "background-color: green; color: white; font-weight: bold; font-size: 14px; padding: 10px; border-radius: 5px;"
-        )  # Rend le bouton vert avec du texte blanc
+        )  # Make the button green with white text
 
     def add_deletion_to_report(self, deletion_message):
         """
-                Ajoute un message de suppression dans l'onglet "Report".
-                """
+        Add a deletion message to the "Report" tab.
+        """
         new_deletion = QLabel(deletion_message)
-        new_deletion.setFont(QFont("Arial", 12, QFont.Weight.Normal))  # Texte normal pour les suppressions
-        new_deletion.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Centre horizontalement et verticalement
-        new_deletion.setStyleSheet("color: red;")  # Par exemple : texte rouge pour indiquer une action de suppression
+        new_deletion.setFont(QFont("Arial", 12, QFont.Weight.Normal))  # Normal text for deletions
+        new_deletion.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Center both horizontally and vertically
+        new_deletion.setStyleSheet("color: red;")  # For example: red text to indicate a deletion action
 
-        # Ajouter le message avant les éléments extensibles
+        # Add the message before the stretchable elements
         self.report_content.insertWidget(self.report_content.count() - 1, new_deletion)
 
-        # Forcer le scroll vers le bas
+        # Force scrolling to the bottom
         self.report_scroll.verticalScrollBar().setValue(
             self.report_scroll.verticalScrollBar().maximum()
         )
