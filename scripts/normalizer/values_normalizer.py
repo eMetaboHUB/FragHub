@@ -11,6 +11,7 @@ from scripts.normalizer.normalize_empties import *
 from scripts.normalizer.normalize_ionmode import *
 from scripts.normalizer.normalize_adduct import *
 
+
 def normalize_values(metadata_dict):
     """
     This function takes in a metadata dictionary and applies numerous normalization functions on it to standardize its values.
@@ -59,6 +60,5 @@ def normalize_values(metadata_dict):
 
             # Normalize Retention Time in the metadata which can be represented in different units
             metadata_dict = normalize_retentiontime(metadata_dict)
-
 
     return metadata_dict
