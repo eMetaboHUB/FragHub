@@ -26,6 +26,7 @@ def init_json_update_file(json_update_file):
         # If json_update_file is already provided, simply return it as is along with the first_run flag
         return json_update_file, first_run
 
+
 def check_for_update(spectrum):
     """
     :param spectrum: The spectrum to check for updates.
