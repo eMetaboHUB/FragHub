@@ -6,53 +6,51 @@ import time
 import os
 import re
 
-def write_msp(spectrum_list, filename, mode, update, output_directory, progress_callback=None, total_items_callback=None,
-              prefix_callback=None, item_type_callback=None):
+def write_msp(spectrum_list, filename, mode, update, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
-    Write MSP file.
+    Write an MSP file.
     :param spectrum_list: A list of spectra to be written to the MSP file.
     :param filename: The name of the output file.
-    :param mode: The mode of writing (either 'w' for write or 'a' for append).
+    :param mode: The mode of writing (either 'w' for writing or 'a' for appending).
     :param update: Boolean value indicating whether to update the existing file or create a new one.
-    :param profile_name: The name of the profile being used.
-    :param progress_callback: Callback for reporting progress.
-    :param total_items_callback: Callback for setting the total number of items.
-    :param prefix_callback: Callback to set the prefix for context/task.
-    :param item_type_callback: Callback for specifying the type of items (e.g., "row").
+    :param progress_callback: Callback function to report progress.
+    :param total_items_callback: Callback function to set the total number of items.
+    :param prefix_callback: Callback function to provide the context/task prefix.
+    :param item_type_callback: Callback function to specify the type of items (e.g., "spectra").
     :return: None
     """
 
-    # Gérer le chemin de sortie
+    # Handle the output path
     output_file_path = f"{output_directory}/MSP/{mode}/{filename}"
 
-    # Donne le contexte du traitement avec le prefix_callback
+    # Set the context of the operation using the prefix_callback
     if prefix_callback:
         prefix_callback(f"Writing {filename} to MSP:")
 
-    # Indiquer le type d'éléments avec le item_type_callback
+    # Specify the type of items with the item_type_callback
     if item_type_callback:
         item_type_callback("spectra")
 
-    # Initialiser le total d'éléments avec le total_items_callback
+    # Initialize the total items using total_items_callback
     total_spectra = len(spectrum_list)
     if total_items_callback:
-        total_items_callback(total_spectra, 0)  # Initialisation à 0 progressé
+        total_items_callback(total_spectra, 0)  # Initialize with 0 progress
 
-    # Ouvrir le fichier pour écrire les spectres
+    # Open the file for writing spectra
     file_mode = 'a' if update else 'w'
     with open(output_file_path, file_mode, encoding="UTF-8") as f:
-        # Parcourir chaque spectre dans la liste
+        # Iterate through each spectrum in the list
         for index, spectrum in enumerate(spectrum_list):
             try:
-                # Écrire le spectre dans le fichier
+                # Write the spectrum to the file
                 f.write(spectrum)
                 f.write("\n\n")
 
-                # Mettre à jour les callbacks après chaque écriture
+                # Update progress using the callback after each write
                 if progress_callback:
-                    progress_callback(index + 1)  # Signal progress (ligne actuelle)
+                    progress_callback(index + 1)  # Signal progress (current line)
             except Exception as e:
-                # En cas d'erreur, ignorer le spectre, mais signaler les problèmes si nécessaire
+                # If an error occurs, skip the spectrum but log the issue if necessary
                 print(f"Error writing spectrum {index}: {e}")
                 continue
 
@@ -106,8 +104,7 @@ def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_L
     del NEG_GC_insilico
 
 
-def write_csv(df, filename, mode, update, first_run, output_directory, progress_callback=None, total_items_callback=None,
-              prefix_callback=None, item_type_callback=None):
+def write_csv(df, filename, mode, update, first_run, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     This function writes a pandas DataFrame to a CSV file in chunks.
     :param df: DataFrame - the data to be written to the CSV file.
@@ -220,66 +217,63 @@ def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico,
     del NEG_GC_df_insilico
 
 
-def write_json(df, filename, mode, output_directory, progress_callback=None, total_items_callback=None,
-               prefix_callback=None, item_type_callback=None):
+def write_json(df, filename, mode, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
-    Write DataFrame to a JSON file.
+    Write a DataFrame to a JSON file.
     :param df: The DataFrame to be written.
     :type df: pandas.DataFrame
     :param filename: The name of the output file.
     :type filename: str
-    :param mode: The mode for opening the output file. e.g., 'w', 'a'.
+    :param mode: The mode for opening the output file, e.g., 'w', 'a'.
     :type mode: str
-    :param profile_name: The name of the profile.
-    :type profile_name: str
     :param progress_callback: Callback to report progress.
-    :param total_items_callback: Callback to set total items count.
+    :param total_items_callback: Callback to set the total number of items.
     :param prefix_callback: Callback to define a prefix or task description.
     :param item_type_callback: Callback to specify the type of items being processed.
     :return: None
     """
 
-    # Définir le chemin du fichier de sortie
+    # Define the output file path
     output_file_path = f"{output_directory}/JSON/{mode}/{filename}"
 
-    # Convertir le DataFrame en une liste de dictionnaires
+    # Convert the DataFrame to a list of dictionaries
     json_records = df.to_dict('records')
 
-    # Si un prefix_callback est défini, indiquer la tâche actuelle
+    # If a prefix_callback is defined, set the current task context
     if prefix_callback:
         prefix_callback(f"Writing {filename} to JSON:")
 
-    # Définir le type d'éléments avec le callback item_type_callback
+    # Set the type of items using the item_type_callback
     if item_type_callback:
         item_type_callback("rows")
 
-    # Déclarer le nombre total d'enregistrements à traiter
+    # Declare the total number of records to process
     total_records = len(json_records)
     if total_items_callback:
-        total_items_callback(total_records, 0)  # Initialiser les éléments traités à 0
+        total_items_callback(total_records, 0)  # Initialize with 0 processed items
 
-    # Ouvrir le fichier pour écrire
+    # Open the file to write
     with open(output_file_path, 'w') as f:
-        # Écrire le crochet ouvrant pour démarrer le tableau JSON
+        # Write the opening bracket to start the JSON array
         f.write('[\n')
 
-        # Parcourir les enregistrements convertis
+        # Iterate through the converted records
         for i, record in enumerate(json_records):
-            # Écrire une tabulation pour l'indentation
+            # Write a tab for indentation
             f.write('\t')
 
-            # Écrire le dictionnaire sous forme de chaîne JSON
+            # Write the dictionary as a JSON string
             json.dump(record, f)
 
-            # Ajouter une virgule à la fin, sauf pour le dernier élément
+            # Add a comma at the end, except for the last element
             if i < total_records - 1:
                 f.write(',\n')
 
-            # S'il y a un callback de progression, l'appeler pour mettre à jour la progression
+            # If a progress_callback is defined, call it to update the progress
             if progress_callback:
-                progress_callback(i + 1)  # Mise à jour avec l'index actuel (commençant à 1)
+                progress_callback(i + 1)  # Update with the current index (starting from 1)
 
-        # Écrire le crochet fermant pour terminer le tableau JSON
+        # Write the closing bracket to end the JSON array
         f.write('\n]')
 
 
