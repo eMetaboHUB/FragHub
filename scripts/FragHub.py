@@ -6,13 +6,13 @@ import time
 import platform
 from threading import Thread
 
-# Configuration de BASE_DIR
+# Configuration of BASE_DIR
 if getattr(sys, 'frozen', False):
     BASE_DIR = sys._MEIPASS
 else:
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 
-# Imports PyQt6
+# PyQt6 Imports
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QHBoxLayout,
     QWidget, QPushButton, QLabel, QProgressBar, QTabWidget, QMessageBox, QSplashScreen,
@@ -23,7 +23,7 @@ from PyQt6.QtCore import (
     Qt, pyqtSignal, QSize, QTimer, QRectF, QObject, QThread
 )
 
-# Imports des composants UI (inchangés)
+# Imports of UI components (unchanged)
 try:
     from scripts.GUI.tabs.tab_input import InputTab
     from scripts.GUI.tabs.tab_output import OutputTab
@@ -32,79 +32,80 @@ try:
     from scripts.GUI.tabs.tab_projects import ProjectsTab
     from scripts.progress_window import ProgressWindow
 except ImportError as e:
-    print(f"Erreur critique d'importation des composants UI: {e}")
-    # Dans une vraie application, afficher une QMessageBox ici avant de quitter
-    sys.exit(f"Erreur critique d'importation: {e}")
+    print(f"Critical error importing UI components: {e}")
+    # In a real application, show a QMessageBox here before exiting
+    sys.exit(f"Critical import error: {e}")
 
-def show_error_message(parent, title, message, on_close=None): # Ajouter le paramètre on_close=None
-    """Affiche une erreur dans une QMessageBox élargie avec un QTextEdit."""
+
+def show_error_message(parent, title, message, on_close=None):  # Add the parameter on_close=None
+    """Displays an error in an expanded QMessageBox with a QTextEdit."""
     msg_box = QMessageBox(parent)
     msg_box.setIcon(QMessageBox.Icon.Critical)
     msg_box.setWindowTitle(title)
     msg_box.setText("An error occurred during execution.")
     msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
 
-    # Option 2: Ajouter un QTextEdit (plus de contrôle sur la taille/apparence)
+    # Option 2: Add a QTextEdit (more control over size/appearance)
     text_area = QTextEdit()
     text_area.setText(message)
     text_area.setReadOnly(True)
     text_area.setStyleSheet("font-family: Consolas, monospace; font-size: 10pt;")
-    text_area.setMinimumSize(700, 350) # Ajuster la taille minimale
+    text_area.setMinimumSize(700, 350)  # Adjust the minimum size
 
     try:
         grid_layout = msg_box.layout()
         grid_layout.addWidget(text_area, grid_layout.rowCount(), 0, 1, grid_layout.columnCount())
-        msg_box.setMinimumSize(750, 450) # Ajuster la taille de la boîte de dialogue
+        msg_box.setMinimumSize(750, 450)  # Adjust the dialog size
     except Exception as layout_e:
         print(f"Warning: Could not add QTextEdit to QMessageBox layout ({layout_e}). Using setDetailedText as fallback.")
-        msg_box.setDetailedText(message) # Solution de repli
+        msg_box.setDetailedText(message)  # Fallback solution
 
-    # Afficher la boîte de dialogue et attendre que l'utilisateur clique sur un bouton
+    # Show the dialog and wait for the user to click a button
     clicked_button = msg_box.exec()
 
-    # --- NOUVEAU : Exécuter le callback APRÈS la fermeture de la boîte, si OK a été cliqué ---
+    # --- NEW: Execute the callback AFTER the dialog is closed, if OK was clicked ---
     if clicked_button == QMessageBox.StandardButton.Ok and on_close:
         try:
-            on_close() # Appeler la fonction passée en argument
+            on_close()  # Call the function passed as an argument
         except Exception as callback_e:
-            # Loguer une erreur si le callback lui-même échoue
-            print(f"ERREUR: Exception dans le callback on_close de show_error_message: {callback_e}")
+            # Log an error if the callback itself fails
+            print(f"ERROR: Exception in on_close callback of show_error_message: {callback_e}")
             traceback.print_exc()
 
 
 class StreamCapturer:
     """
-    Capture le flux de sortie (stdout / stderr) et le stocke dans un buffer.
+    Captures the output stream (stdout / stderr) and stores it in a buffer.
     """
 
     def __init__(self, original_stream, signal=None):
-        self.original_stream = original_stream  # stdout ou stderr d'origine
-        self.signal = signal  # Signal optionnel pour transmettre les messages capturés
-        self.buffer = []  # Stockage des messages capturés
+        self.original_stream = original_stream  # Original stdout or stderr
+        self.signal = signal  # Optional signal to transmit captured messages
+        self.buffer = []  # Storage for captured messages
 
     def write(self, message):
-        # Stocker le message dans le buffer
+        # Store the message in the buffer
         self.buffer.append(message)
-        # Si un signal est défini, l'émettre
+        # If a signal is defined, emit it
         if self.signal:
             self.signal.emit(message)
-        # Envoyer également le message dans le flux d'origine pour debugger via terminal
+        # Also send the message to the original stream for debugging via terminal
         self.original_stream.write(message)
 
     def flush(self):
-        # Nécessaire pour éviter les erreurs lors d'appels système via sys.stdout/sys.stderr
+        # Necessary to prevent errors during system calls via sys.stdout/sys.stderr
         self.original_stream.flush()
 
     def get_captured_text(self):
-        # Retourne tout le contenu capturé
+        # Returns all captured content
         return ''.join(self.buffer)
 
     def clear(self):
-        # Réinitialise le buffer
+        # Resets the buffer
         self.buffer = []
 
 
-# --- Widget Spinner Personnalisé (Inchangé par rapport à votre version corrigée) ---
+# --- Custom Spinner Widget (Unchanged from your corrected version) ---
 class InfiniteSpinnerWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -119,8 +120,8 @@ class InfiniteSpinnerWidget(QWidget):
         self.setFixedSize(40, 40)
 
     def _update_angle(self):
-        """Met à jour l'angle pour faire tourner l'animation dans le sens horaire."""
-        self._angle = (self._angle - 10) % 360  # Sens horaire
+        """Updates the angle to rotate the animation clockwise."""
+        self._angle = (self._angle - 10) % 360  # Clockwise
         self.update()
 
     def paintEvent(self, event):
@@ -164,13 +165,12 @@ class InfiniteSpinnerWidget(QWidget):
     def showEvent(self, event):
         self.start_animation()
         super().showEvent(event)
+# --- End of Custom Spinner Widget ---
 
-# --- Fin du Widget Spinner Personnalisé ---
 
-
-# --- Classe LoadingSplashScreen (Inchangée) ---
+# --- LoadingSplashScreen Class (Unchanged) ---
 class LoadingSplashScreen(QWidget):
-    #... (Identique à votre version)...
+    #... (Identical to your version)...
     def __init__(self, icon_pixmap: QPixmap, parent=None):
         super().__init__(parent)
         self.setWindowFlags(Qt.WindowType.SplashScreen | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint)
@@ -211,36 +211,36 @@ class LoadingSplashScreen(QWidget):
             self.move(center_point.x() - self.width() // 2, center_point.y() - self.height() // 2)
 
     def showMessage(self, message, font_size=28, alignment=Qt.AlignmentFlag.AlignCenter, color=Qt.GlobalColor.white):
-        """Affiche un message dans le splash screen avec une taille de police configurable."""
+        """Displays a message in the splash screen with a configurable font size."""
         self.message_label.setText(message)
         self.message_label.setAlignment(alignment)
         self.message_label.setStyleSheet(f"""
             QLabel {{
                 color: white;
                 font-weight: bold;
-                font-size: {font_size}px;  /* Appliquer la taille spécifiée */
+                font-size: {font_size}px;  /* Apply the specified size */
             }}
         """)
 
     def closeEvent(self, event):
         self.spinner.stop_animation()
         super().closeEvent(event)
-# --- Fin de LoadingSplashScreen ---
+# --- End of LoadingSplashScreen ---
 
 
-# --- Définition de AppUserModelID (Inchangé) ---
+# --- Definition of AppUserModelID (Unchanged) ---
 if platform.system() == "Windows":
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub")
 
 
-# --- Classe MainWindow (Inchangée) ---
+# --- MainWindow Class (Unchanged) ---
 class MainWindow(QMainWindow):
-    #... (Identique à votre version)...
+    #... (Identical to your version)...
     update_progress_signal = pyqtSignal(int)
 
-    # Signal émis lorsqu'une erreur se produit dans le thread worker
+    # Signal emitted when an error occurs in the worker thread
     error_occurred_signal = pyqtSignal(str)
-    # Signal émis lorsque la tâche (MAIN) est terminée (succès ou erreur)
+    # Signal emitted when the task (MAIN) is finished (success or error)
     task_finished_signal = pyqtSignal()
 
     def __init__(self, main_function_ref):
@@ -251,25 +251,25 @@ class MainWindow(QMainWindow):
 
         main_layout = QVBoxLayout()
         banner = QLabel()
-        # Utilisation de os.path.join pour la compatibilité
+        # Using os.path.join for compatibility
         icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_icon.png")
         pixmap = QPixmap(icon_path)
         if not pixmap.isNull():
-             pixmap_scaled = pixmap.scaled(
-                 200, 200, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation
-             )
-             banner.setPixmap(pixmap_scaled)
+            pixmap_scaled = pixmap.scaled(
+                200, 200, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation
+            )
+            banner.setPixmap(pixmap_scaled)
         else:
-             print(f"Warning: Could not load banner image at {icon_path}")
-             banner.setText("FragHub Logo") # Fallback text
+            print(f"Warning: Could not load banner image at {icon_path}")
+            banner.setText("FragHub Logo") # Fallback text
         banner.setAlignment(Qt.AlignmentFlag.AlignCenter)
         main_layout.addWidget(banner)
 
         self.tabs = QTabWidget()
-        self.input_tab = InputTab() # Garder une référence si nécessaire
+        self.input_tab = InputTab() # Keep a reference if needed
         self.output_tab = OutputTab()
-        self.filters_tab = FiltersTab() # Garder une référence si nécessaire
-        self.output_settings_tab = OutputSettingTab() # Garder une référence si nécessaire
+        self.filters_tab = FiltersTab() # Keep a reference if needed
+        self.output_settings_tab = OutputSettingTab() # Keep a reference if needed
         self.projects_tab = ProjectsTab()
 
         self.tabs.addTab(self.input_tab, "INPUT")
@@ -279,7 +279,7 @@ class MainWindow(QMainWindow):
         self.tabs.addTab(self.projects_tab, "Projects settings")
         main_layout.addWidget(self.tabs)
 
-        # Connexion du signal pour le répertoire de sortie
+        # Connecting the signal for the output directory
         self.output_tab.output_directory_changed.connect(self.projects_tab.output_directory_changed_signal)
 
         self.start_button = QPushButton("START")
@@ -292,86 +292,86 @@ class MainWindow(QMainWindow):
         central_widget.setLayout(main_layout)
         self.setCentralWidget(central_widget)
 
-        # --- Variables d'état ---
+        # --- State variables ---
         self.running = False
         self.progress_window = None
-        self.thread = None  # Référence au thread worker (type: threading.Thread)
-        self.stop_thread_flag = False  # Flag pour demander l'arrêt du thread
+        self.thread = None  # Reference to the worker thread (type: threading.Thread)
+        self.stop_thread_flag = False  # Flag to request the thread to stop
 
-        # --- Connexion des signaux aux slots ---
+        # --- Connecting signals to slots ---
         self.error_occurred_signal.connect(self.handle_execution_error)
 
 
     def open_progress_window(self):
         if not self.running:
-            # Cacher la fenêtre principale pendant l'exécution
+            # Hide the main window during execution
             self.hide()
-            # Créer et montrer la fenêtre de progression
-            # Assurez-vous que ProgressWindow est bien un QWidget ou QDialog
-            self.progress_window = ProgressWindow(parent=self) # parent=None pour la rendre indépendante
+            # Create and show the progress window
+            # Make sure ProgressWindow is either a QWidget or QDialog
+            self.progress_window = ProgressWindow(parent=self) # parent=None to make it independent
             self.progress_window.show()
-            # Démarrer l'exécution dans un thread séparé
+            # Start execution in a separate thread
             self.start_execution()
 
     def start_execution(self):
-        """Démarre le traitement lorsque l'utilisateur appuie sur START."""
+        """Starts processing when the user presses START."""
         if self.running:
-            print("Un traitement est déjà en cours.")
+            print("A process is already running.")
             return
 
-        # Réinitialisation d'état pour un nouveau traitement
+        # State reset for a new process
         self.running = True
-        self.stop_thread_flag = False  # Réinitialiser le flag d'arrêt au cas où
+        self.stop_thread_flag = False  # Reset the stop flag just in case
         if self.progress_window:
             self.progress_window.progress_bar_widget.update_total_items(total=100, completed=0)
             self.progress_window.progress_bar_widget.update_progress_bar(0)
 
-        # Stopper un thread précédent s'il était encore actif
+        # Stop a previous thread if it was still active
         if self.thread and self.thread.is_alive():
             self.stop_thread_flag = True
-            self.thread.join()  # Attendre que le thread se termine proprement
+            self.thread.join()  # Wait for the thread to cleanly finish
             self.thread = None
 
-        # Lancer un nouveau thread
+        # Launch a new thread
         self.thread = Thread(target=self.run_main_function, daemon=True, name="MainWorkerThread_FragHub")
         self.thread.start()
 
     def _cleanup_after_error_or_finish(self):
         """
-        Nettoie l'état après une erreur (ou pourrait être utilisé pour une fin normale si nécessaire).
-        Ferme la fenêtre de progression, réinitialise l'état et montre la fenêtre principale.
+        Cleans up state after an error (or could be used for a normal end if necessary).
+        Closes the progress window, resets the state, and shows the main window.
         """
-        print("Exécution du nettoyage (_cleanup_after_error_or_finish)...")
-        # Fermer la fenêtre de progression si elle existe
+        print("Running cleanup (_cleanup_after_error_or_finish)...")
+        # Close the progress window if it exists
         if self.progress_window:
             try:
-                print("Fermeture de progress_window depuis le nettoyage.")
+                print("Closing progress window during cleanup.")
                 self.progress_window.close()
                 self.progress_window = None
             except Exception as e:
-                print(f"Erreur lors de la fermeture de progress_window pendant le nettoyage: {e}")
+                print(f"Error while closing progress window during cleanup: {e}")
 
-        # Réinitialiser l'état (comme dans handle_task_finished)
+        # Reset the state (as in handle_task_finished)
         self.running = False
         self.thread = None
         self.stop_thread_flag = False
-        print("Affichage de la fenêtre principale après nettoyage.")
+        print("Showing the main window after cleanup.")
         self.show()
         self.activateWindow()
 
 
     def run_main_function(self):
         """
-        Wrapper exécuté dans le thread worker. Appelle MAIN et gère les signaux.
-        NE PAS interagir directement avec l'UI ici (sauf via signaux émis).
+        Wrapper executed in the worker thread. Calls MAIN and handles signals.
+        DO NOT directly interact with the UI here (except via emitted signals).
         """
         try:
             if not self.progress_window:
-                print("Warning: Progress window non initialisée avant l'appel à MAIN.")
-                # On pourrait lever une exception ou continuer prudemment
+                print("Warning: Progress window not initialized before calling MAIN.")
+                # Could raise an exception or continue cautiously
 
-            # Appel de la fonction principale avec les callbacks et le stop_flag
-            # Assurez-vous que votre fonction MAIN accepte 'stop_flag'
+            # Call the main function with callbacks and the stop flag
+            # Ensure your MAIN function supports 'stop_flag'
             self.MAIN_function(
                 progress_callback=self.progress_window.update_progress_signal.emit,
                 total_items_callback=self.progress_window.update_total_signal.emit,
@@ -380,110 +380,110 @@ class MainWindow(QMainWindow):
                 step_callback=self.progress_window.update_step_signal.emit,
                 completion_callback=self.progress_window.completion_callback.emit,
                 deletion_callback=self.progress_window.deletion_callback.emit,
-                # Passer une fonction lambda qui vérifie le flag
+                # Pass a lambda function checking the stop flag
                 stop_flag=lambda: self.stop_thread_flag
             )
         except InterruptedError as ie:
-            print(f"Execution interrompue par l'utilisateur: {ie}")
-            # Émettre un signal d'erreur spécifique ou juste terminer proprement
-            # Dans ce cas, on ne considère pas ça comme une "erreur" à afficher à l'utilisateur
-            # Le finally s'exécutera pour nettoyer.
-        except Exception:  # Capturer TOUTES les autres exceptions
+            print(f"Execution interrupted by user: {ie}")
+            # Emit a specific error signal or just end cleanly
+            # In this case, we don’t consider it an "error" to display to the user
+            # The finally block will execute to clean up.
+        except Exception:  # Capture ALL other exceptions
             full_traceback = traceback.format_exc()
-            print(f"Erreur pendant l'exécution de MAIN dans le thread:\n{full_traceback}")
-            # Émettre le signal d'erreur vers le thread GUI
+            print(f"Error during MAIN execution in thread:\n{full_traceback}")
+            # Emit the error signal to the GUI thread
             self.error_occurred_signal.emit(full_traceback)
         finally:
-            # Ce bloc s'exécute toujours (succès, erreur, interruption)
-            # Émettre le signal de fin pour que le thread GUI nettoie
+            # This block always executes (success, error, interruption)
+            # Emit the finish signal so the GUI thread can clean up
             self.task_finished_signal.emit()
 
     def handle_execution_error(self, traceback_str):
         """
-        Slot exécuté dans le thread GUI pour afficher les erreurs venant du worker.
-        Après clic sur OK dans le message d'erreur, l'application sera fermée proprement.
+        Slot executed in the GUI thread to display errors from the worker.
+        After clicking OK in the error message, the application will close cleanly.
         """
-        print("handle_execution_error appelé.")
-        # NE PAS fermer la fenêtre de progression ici immédiatement.
+        print("handle_execution_error called.")
+        # DO NOT close the progress window here immediately.
 
-        # Afficher la boîte de dialogue d'erreur.
-        # Passer self.clean_exit comme callback à exécuter après le clic sur OK.
+        # Show an error dialog.
+        # Pass self.clean_exit as a callback to execute after clicking OK.
         show_error_message(
-            parent=self,  # Le parent peut être self (MainWindow), même si elle est cachée
+            parent=self,  # The parent can be self (MainWindow), even if it is hidden
             title="Execution Error",
             message=traceback_str,
-            on_close=self.clean_exit  # Passer la référence à la méthode clean_exit
-            # Par défaut, clean_exit(force_quit_app=True) quittera l'application.
+            on_close=self.clean_exit  # Pass the reference to the clean_exit method
+            # By default, clean_exit(force_quit_app=True) will quit the application.
         )
 
-    # --- Méthodes pour l'arrêt propre ---
+    # --- Methods for clean shutdown ---
 
     def clean_exit(self, force_quit_app=True):
         """
-        Tente d'arrêter le thread worker proprement et quitte l'application.
-        :param force_quit_app: Si True, quitte QApplication à la fin.
+        Attempts to cleanly stop the worker thread and exit the application.
+        :param force_quit_app: If True, quits QApplication at the end.
         """
         if self.running and self.thread and self.thread.is_alive():
-            print("Demande d'arrêt au thread worker...")
-            self.stop_thread_flag = True  # Signaler au thread de s'arrêter
+            print("Requesting stop from the worker thread...")
+            self.stop_thread_flag = True  # Notify the thread to stop
 
-            # Attendre un peu que le thread se termine via le stop_flag
+            # Wait a little for the thread to finish via the stop_flag
             wait_start_time = time.time()
-            timeout_seconds = 3.0  # Attendre max 3 secondes
+            timeout_seconds = 3.0  # Wait max 3 seconds
             while self.thread.is_alive() and (time.time() - wait_start_time) < timeout_seconds:
-                QApplication.processEvents()  # Permettre à la boucle d'événements de tourner
-                time.sleep(0.05)  # Petite pause
+                QApplication.processEvents()  # Allow the event loop to run
+                time.sleep(0.05)  # Small pause
 
             if self.thread.is_alive():
-                print(f"WARNING: Thread worker '{self.thread.name}' n'a pas terminé après {timeout_seconds}s.")
-                # Ici, on pourrait décider de forcer ou juste continuer la fermeture de l'UI
+                print(f"WARNING: Worker thread '{self.thread.name}' did not finish after {timeout_seconds}s.")
+                # Here, we could decide to force stop or just proceed with UI cleanup
 
-        # Fermer la fenêtre de progression si elle existe encore
+        # Close the progress window if it still exists
         if self.progress_window:
             try:
                 self.progress_window.close()
                 self.progress_window = None
             except Exception as e:
-                print(f"Erreur lors de la fermeture de progress_window dans clean_exit: {e}")
+                print(f"Error while closing progress_window in clean_exit: {e}")
 
-        self.running = False  # S'assurer que l'état est correct
+        self.running = False  # Ensure the state is correct
 
         if force_quit_app:
             QApplication.instance().quit()
         else:
-            # Si on ne quitte pas l'app (ex: juste annuler la tâche),
-            # s'assurer que la fenêtre principale est visible
+            # If we don’t quit the app (e.g., just cancel the task),
+            # ensure the main window is visible
             self.show()
             self.activateWindow()
 
     def closeEvent(self, event):
-        """Gère la fermeture de la fenêtre principale par l'utilisateur (clic sur X)."""
+        """Handles the main window close event triggered by the user (clicking X)."""
         if self.running:
             reply = QMessageBox.question(self, 'Quit FragHub ?',
                                          "Are you sure you want to quit?",
                                          QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
                                          QMessageBox.StandardButton.No)
             if reply == QMessageBox.StandardButton.Yes:
-                self.clean_exit(force_quit_app=True)  # Tenter l'arrêt propre et quitter
-                event.accept()  # Accepter la fermeture de la fenêtre
+                self.clean_exit(force_quit_app=True)  # Attempt clean shutdown and exit
+                event.accept()  # Accept the window close event
 
         else:
-            # Pas besoin d'appeler clean_exit ici si on quitte juste l'appli
-            # QApplication.quit() sera appelé par la fermeture normale
-            event.accept()  # Accepter la fermeture
+            # No need to call clean_exit here if we are just quitting the app
+            # QApplication.quit() will be triggered by normal window close
+            event.accept()  # Accept the close event
 
 
-# --- Fin de MainWindow ---
+# --- End of MainWindow ---
 
 
-# --- Worker pour les tâches de démarrage (NOUVEAU) ---
+# --- Worker for Startup Tasks (NEW) ---
 class StartupWorker(QObject):
-    """Effectue les tâches de démarrage longues dans un thread séparé."""
-    # Signal émis quand les tâches sont finies, passe la fonction MAIN importée
+    """Performs long startup tasks in a separate thread."""
+    # Signal emitted when tasks are finished, passes the imported MAIN function
     finished = pyqtSignal(object)
-    # Signal émis en cas d'erreur
+    # Signal emitted in case of an error
     error = pyqtSignal(str)
-    # Signal pour mettre à jour le message du splash screen
+    # Signal to update the splash screen message
     update_splash_message = pyqtSignal(str, int)
 
     def __init__(self, base_dir):
@@ -491,85 +491,85 @@ class StartupWorker(QObject):
         self._base_dir = base_dir
 
     def showMessage(self, message, font_size=28, alignment=Qt.AlignmentFlag.AlignCenter, color=Qt.GlobalColor.white):
-        """Affiche un message dans le splash screen avec taille de police configurable."""
+        """Displays a message in the splash screen with a configurable font size."""
         self.message_label.setText(message)
         self.message_label.setAlignment(alignment)
         self.message_label.setStyleSheet(f"""
             QLabel {{
                 color: white;
                 font-weight: bold;
-                font-size: {font_size}px;  /* Ajustement dynamique de la taille de la police */
+                font-size: {font_size}px;  /* Dynamic font size adjustment */
             }}
         """)
 
     def run_startup_tasks(self):
-        """Exécute l'importation et autres tâches longues."""
+        """Executes import and other long tasks."""
         try:
-            # --- Tâche potentiellement longue 1 : Importation ---
+            # --- Potentially Long Task 1: Import ---
             self.update_splash_message.emit("Loading FragHub, please wait...", 20)  # Message 1
-            time.sleep(1)  # Simule un léger retard pour montrer le spinner
+            time.sleep(1)  # Simulates a slight delay to show the spinner
 
-            # Importer le composant principal
+            # Import the main component
             from scripts.MAIN import MAIN as imported_main
 
-            # --- Tâche potentiellement longue 2 : Préparation ---
+            # --- Potentially Long Task 2: Preparation ---
             self.update_splash_message.emit("Initializing main window", 20)  # Message 2
             time.sleep(1)
 
-            # Émettre le signal de fin en cas de succès
+            # Emit the finished signal on success
             self.finished.emit(imported_main)
 
         except ImportError as e:
             error_msg = f"Failed to import 'scripts.MAIN': {e}\n{traceback.format_exc()}"
             print(f"ERROR in worker thread: {error_msg}")
-            self.error.emit(error_msg)  # Émettre le signal d'erreur
+            self.error.emit(error_msg)  # Emit the error signal
         except Exception as e:
             error_msg = f"Unexpected error during startup tasks: {e}\n{traceback.format_exc()}"
             print(f"ERROR in worker thread: {error_msg}")
-            self.error.emit(error_msg)  # Émettre le signal d'erreur
-
+            self.error.emit(error_msg)  # Emit the error signal
 
 # --- Fin de StartupWorker ---
-# --- Exception Hook Global ---
+
+
+# --- Global Exception Hook ---
 def exception_hook(exctype, value, tb):
     error_message = ''.join(traceback.format_exception(exctype, value, tb))
     sys.stderr.write(f"Uncaught exception:\n{error_message}")
-    # Tenter d'afficher une QMessageBox même pour les erreurs non gérées
+    # Attempt to display a QMessageBox even for unhandled errors
     try:
-        # Vérifier si QApplication existe avant d'essayer de créer un widget
+        # Check if QApplication exists before attempting to create a widget
         if QApplication.instance():
-             message_box = QMessageBox()
-             message_box.setIcon(QMessageBox.Icon.Critical)
-             message_box.setWindowTitle("Unhandled Exception")
-             message_box.setText("An critical unexpected error occurred!")
-             message_box.setDetailedText(error_message)
-             # Définir une taille minimale pour la boîte de dialogue
-             message_box.setMinimumSize(600, 300)
-             # Tenter d'ajouter le texte détaillé dans une zone scrollable (si setDetailedText ne suffit pas)
-             try:
-                  text_edit = message_box.findChild(QTextEdit)
-                  if text_edit:
-                      text_edit.setMinimumSize(550, 200)
-             except Exception:
-                  pass # Ignorer si on ne peut pas trouver/modifier le QTextEdit
-             message_box.exec()
+            message_box = QMessageBox()
+            message_box.setIcon(QMessageBox.Icon.Critical)
+            message_box.setWindowTitle("Unhandled Exception")
+            message_box.setText("A critical unexpected error occurred!")
+            message_box.setDetailedText(error_message)
+            # Set a minimum size for the dialog box
+            message_box.setMinimumSize(600, 300)
+            # Attempt to add detailed text into a scrollable area (if setDetailedText is not enough)
+            try:
+                text_edit = message_box.findChild(QTextEdit)
+                if text_edit:
+                    text_edit.setMinimumSize(550, 200)
+            except Exception:
+                pass  # Ignore if we cannot find/modify the QTextEdit
+            message_box.exec()
         else:
-             print("QApplication non disponible, impossible d'afficher QMessageBox pour l'erreur non gérée.")
+            print("QApplication not available, unable to display QMessageBox for the unhandled error.")
     except Exception as e:
-        print(f"Impossible d'afficher QMessageBox pour l'erreur non gérée: {e}")
+        print(f"Unable to display QMessageBox for the unhandled error: {e}")
     sys.exit(1)
 
 
-
-# --- Fonction run_GUI (MODIFIÉE pour utiliser le threading) ---
+# --- run_GUI Function (MODIFIED to use threading) ---
 def run_GUI():
-    # Définir l'exception hook global *avant* de créer QApplication
+    # Set the global exception hook *before* creating QApplication
     sys.excepthook = exception_hook
 
     app_args = sys.argv if hasattr(sys, 'argv') else ['']
     app = QApplication(app_args)
 
-    # Configuration de l'icône de l'application (inchangé)
+    # Application icon configuration (unchanged)
     if platform.system() == "Darwin":
         app_icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_Python_icon.icns")
     else:
@@ -586,28 +586,28 @@ def run_GUI():
     splash_pixmap = QPixmap(splash_pix_path)
     if splash_pixmap.isNull(): splash_pixmap = QPixmap(1, 1); splash_pixmap.fill(Qt.GlobalColor.transparent)
 
-    splash = LoadingSplashScreen(splash_pixmap) # Utiliser la classe placeholder si besoin
-    splash.showMessage("Loading FragHub...") # Message initial
+    splash = LoadingSplashScreen(splash_pixmap)  # Use a placeholder class if needed
+    splash.showMessage("Loading FragHub...")  # Initial message
     splash.show()
 
     # --- Threading Setup for Startup Tasks ---
     startup_thread = QThread()
-    startup_worker = StartupWorker(BASE_DIR) # Utiliser la classe placeholder si besoin
+    startup_worker = StartupWorker(BASE_DIR)  # Use a placeholder class if needed
     startup_worker.moveToThread(startup_thread)
     shared_state = {'main_window': None, 'main_function': None, 'splash_screen': splash}
 
-    # --- Slots Locaux ---
+    # --- Local Slots ---
     def on_startup_complete(imported_main_function):
-        if not QApplication.instance(): return # Sécurité si l'app a été quittée entre temps
+        if not QApplication.instance(): return  # Safeguard if the app was quit in the meantime
         shared_state['main_function'] = imported_main_function
         try:
-            # Création de la MainWindow après succès du worker
+            # Create the MainWindow after worker success
             shared_state['main_window'] = MainWindow(main_function_ref=shared_state['main_function'])
             shared_state['main_window'].show()
         except Exception as e:
-             print(f"FATAL ERROR during MainWindow creation: {e}")
-             on_startup_error(f"Failed to create main window: {e}\n{traceback.format_exc()}")
-             return # Important: Ne pas fermer le splash si l'erreur vient ici
+            print(f"FATAL ERROR during MainWindow creation: {e}")
+            on_startup_error(f"Failed to create main window: {e}\n{traceback.format_exc()}")
+            return  # Important: Do not close the splash if the error occurs here
 
         if shared_state['splash_screen']:
             shared_state['splash_screen'].close()
@@ -621,37 +621,38 @@ def run_GUI():
         QMessageBox.critical(None, "Fatal Startup Error", f"Could not start FragHub:\n{error_message}")
         app.quit()
 
-    def update_splash(message, font_size=12): # Taille par défaut ajustée
+    def update_splash(message, font_size=12):  # Default size adjusted
         if shared_state['splash_screen']:
-            # Appeler la méthode showMessage de l'objet splash réel
+            # Call the showMessage method of the actual splash object
             try:
-                 # On suppose que LoadingSplashScreen a une méthode showMessage(msg)
-                 shared_state['splash_screen'].showMessage(message) # Ajuster si la méthode a des params différents
+                # Assume that LoadingSplashScreen has a showMessage(msg) method
+                shared_state['splash_screen'].showMessage(message)  # Adjust if the method takes different params
             except Exception as e:
-                 print(f"Could not update splash message: {e}")
+                print(f"Could not update splash message: {e}")
 
 
     # --- Connect Signals and Slots ---
     startup_thread.started.connect(startup_worker.run_startup_tasks)
     startup_worker.finished.connect(on_startup_complete)
     startup_worker.error.connect(on_startup_error)
-    startup_worker.update_splash_message.connect(update_splash) # Assurez-vous que StartupWorker émet bien ce signal
+    startup_worker.update_splash_message.connect(update_splash)  # Ensure StartupWorker emits this signal
 
-    # Nettoyage (inchangé)
+    # Cleanup (unchanged)
     startup_worker.finished.connect(startup_thread.quit)
-    startup_worker.error.connect(startup_thread.quit) # Quitter aussi en cas d'erreur
+    startup_worker.error.connect(startup_thread.quit)  # Quit on error too
     startup_worker.finished.connect(startup_worker.deleteLater)
     startup_worker.error.connect(startup_worker.deleteLater)
     startup_thread.finished.connect(startup_thread.deleteLater)
 
-    # --- Démarrer le thread ---
+    # --- Start the thread ---
     startup_thread.start()
 
-    # --- Boucle principale ---
+    # --- Main Loop ---
     exit_code = app.exec()
     sys.exit(exit_code)
 
-# --- Bloc d'exécution principal (Inchangé) ---
+
+# --- Main Execution Block (Unchanged) ---
 if __name__ == "__main__":
-    # Vous pouvez ajouter des logs ou initialisations ici si nécessaire
+    # You can add logs or initializations here if necessary
     run_GUI()
