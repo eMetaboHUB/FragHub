@@ -27,6 +27,7 @@ def in_filename_or_name(filename, name):
     # If either of the conditions is not met, return False
     return False
 
+
 def normalize_predicted(metadata_dict):
     """
     Update the 'PREDICTED' field in the metadata dictionary based on specific conditions.
