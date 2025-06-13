@@ -37,6 +37,7 @@ def clean_instrument(instrument):
     # Return the cleaned instrument name
     return instrument
 
+
 def clean_instrument_type(instrument_type):
     """
     Cleans the given instrument string by removing specific substrings and replacing hyphens with spaces.
@@ -81,6 +82,7 @@ def clean_instrument_type(instrument_type):
 
     return instrument_type
 
+
 def clean_comment(comment):
     """
     Cleans the given comment by removing specific strings and replacing certain characters.
@@ -121,6 +123,7 @@ def clean_comment(comment):
     # Returns the cleaned comment string
     return comment
 
+
 def clean_spectrum_instrument_info(metadata_dict):
     """
     Cleans the spectrum instrument information from the given metadata dictionary.
@@ -145,6 +148,7 @@ def clean_spectrum_instrument_info(metadata_dict):
     instrument_infos = ' '.join(instrument_infos.split()).strip()
 
     return instrument_infos
+
 
 def search_for_brand(tree_path, instrument_infos):
     """
@@ -171,6 +175,7 @@ def search_for_brand(tree_path, instrument_infos):
     # If the try block throws an exception, return None
     except:
         return None
+
 
 def search_for_model(tree_path, instrument_infos):
     """
@@ -201,6 +206,7 @@ def search_for_model(tree_path, instrument_infos):
     except:
         return None
 
+
 def search_for_spectrum_type(tree_path, instrument_infos):
     """
     Method to search for spectrum type in a given tree path and instrument infos.
@@ -225,6 +231,7 @@ def search_for_spectrum_type(tree_path, instrument_infos):
         return tree_path  # Return the updated tree path
     except:  # If any error occur while executing the above block of code
         return None  # Return None
+
 
 def search_for_instrument_type(tree_path, instrument_infos):
     """
@@ -258,6 +265,7 @@ def search_for_instrument_type(tree_path, instrument_infos):
         # If any exception occurs, return None
         return None
 
+
 def search_for_ionisation(tree_path, instrument_infos):
     """
     :param tree_path: List of indices representing the path in the instrument tree.
@@ -280,6 +288,7 @@ def search_for_ionisation(tree_path, instrument_infos):
     except:
         # If anything goes wrong, return None
         return None
+
 
 def make_tree_path(instrument_infos):
     """
@@ -350,6 +359,7 @@ def make_tree_path(instrument_infos):
 
     # Return the constructed tree path
     return tree_path
+
 
 def normalize_instruments_and_resolution(metadata_dict):
     """
