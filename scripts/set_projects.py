@@ -15,6 +15,7 @@ def remove_files(directory):
         elif os.path.isdir(file_path):  # if the path is a directory
             remove_files(file_path)  # call this function recursively to remove files in subdirectory
 
+
 def reset_updates(output_directory):
     """
     Resets the updates by deleting the contents of the updates.json file and removing any existing output files.
@@ -30,6 +31,7 @@ def reset_updates(output_directory):
     # Remove output files
     if os.path.exists(output_path):  # if the output directory exists
         remove_files(output_path)  # call the remove_files function to remove all files in the directory
+
 
 def init_project(output_directory):
     """
