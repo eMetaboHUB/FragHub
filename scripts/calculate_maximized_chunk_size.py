@@ -5,29 +5,29 @@ import sys
 
 def calculate_maximized_chunk_size(data_list: list) -> int:
     """
-    Calcule la taille optimale des chunks en fonction des ressources système pour utiliser pleinement le CPU et la mémoire.
+    Calculates the optimal chunk size based on system resources to fully utilize the CPU and memory.
 
-    :param data_list: Liste d'éléments à traiter (ex: spectrum_list).
-                      La taille du premier élément sera utilisée pour estimer la taille moyenne des items.
-    :return: Taille optimale d'un chunk pour maximiser l'utilisation des ressources.
+    :param data_list: List of elements to process (e.g., spectrum_list).
+                      The size of the first element will be used to estimate the average size of the items.
+    :return: Optimal chunk size to maximize resource utilization.
     """
-    # Obtenez le nombre maximal de threads logiques (CPU disponibles)
+    # Get the maximum number of logical threads (available CPUs)
     cpu_count = scripts.globals_vars.cpu_count
-    # Mémoire disponible (en octets)
+    # Available memory (in bytes)
     available_memory = scripts.globals_vars.available_memory
 
-    # Estimer la taille moyenne d'un élément en mémoire (en octets) d'après le premier élément
+    # Estimate the average size of an element in memory (in bytes) based on the first element
 
-    estimate_item_size = sys.getsizeof(data_list[0])  # Taille mémoire du premier élément (en octets)
+    estimate_item_size = sys.getsizeof(data_list[0])  # Memory size of the first element (in bytes)
 
-    # Calcul maximal : combien d'éléments peuvent tenir dans la mémoire par cœur
-    max_chunk_memory_per_cpu = available_memory // cpu_count  # Mémoire disponible pour chaque cœur
-    chunk_items_by_memory = max_chunk_memory_per_cpu // estimate_item_size  # Nombre possible d'items par chunk (mémoire max)
+    # Maximum calculation: how many elements can fit in memory per core
+    max_chunk_memory_per_cpu = available_memory // cpu_count  # Memory available per core
+    chunk_items_by_memory = max_chunk_memory_per_cpu // estimate_item_size  # Possible number of items per chunk (maximum memory)
 
-    # Nombre d'items par répartition équilibrée (nombre total d'éléments divisé par le nombre de CPU)
-    chunk_items_by_cpu = math.ceil(len(data_list) / cpu_count)  # Diviser équitablement entre les cœurs
+    # Number of items based on balanced distribution (total number of elements divided by the number of CPUs)
+    chunk_items_by_cpu = math.ceil(len(data_list) / cpu_count)  # Distribute items evenly across cores
 
-    # Taille optimale est le minimum entre la mémoire disponible (pour chaque CPU) et la répartition équilibrée
+    # Optimal size is the minimum between available memory (per CPU) and balanced distribution
     chunk_size = min(chunk_items_by_memory, chunk_items_by_cpu)
 
-    return max(1, chunk_size)  # Toujours retourner au moins 1 élément par chunk
+    return max(1, chunk_size)  # Always return at least 1 item per chunk
