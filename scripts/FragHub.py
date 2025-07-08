@@ -245,6 +245,9 @@ class MainWindow(QMainWindow):
 
     def __init__(self, main_function_ref):
         super().__init__()
+        self.setWindowFlags(
+            Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint
+        )
         self.MAIN_function = main_function_ref
         self.setWindowTitle("FragHub 1.3.2")
         self.setGeometry(100, 100, 1280, 720)
@@ -305,10 +308,14 @@ class MainWindow(QMainWindow):
     def open_progress_window(self):
         if not self.running:
             # Cacher la fenêtre principale pendant l'exécution
-            self.hide()
+            self.showMinimized()
+            self.setEnabled(False)
             # Créer et montrer la fenêtre de progression
             # Assurez-vous que ProgressWindow est bien un QWidget ou QDialog
             self.progress_window = ProgressWindow(parent=self) # parent=None pour la rendre indépendante
+            self.progress_window.setWindowFlags(
+                Qt.WindowType.Window | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool
+            )
             self.progress_window.show()
             # Démarrer l'exécution dans un thread séparé
             self.start_execution()

@@ -162,7 +162,7 @@ class ProgressWindow(QMainWindow):
         self.setGeometry(100, 100, 1280, 720)
 
         # Configure la fenêtre pour apparaître de manière indépendante dans la barre des tâches
-        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint)
+        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
         self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating,
                           False)  # S'affiche correctement sans voler le focus
 
