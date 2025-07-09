@@ -10,11 +10,9 @@ import ctypes
 import os
 import platform
 
-# Si le fichier est exécuté comme un exécutable PyInstaller
 if getattr(sys, 'frozen', False):
     BASE_DIR = sys._MEIPASS
 else:
-    # Si le fichier est exécuté comme un script Python
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 
 if platform.system() == "Windows":
@@ -22,16 +20,12 @@ if platform.system() == "Windows":
 
 
 def format_time(time_in_seconds):
-    """Format the time in seconds to HH:mm:ss"""
-    hours, remainder = divmod(time_in_seconds, 3600)  # Convert to hours
-    minutes, seconds = divmod(remainder, 60)  # Convert to minutes and seconds
+    hours, remainder = divmod(time_in_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
     return f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}"
 
 
 class ProgressBarWidget(QWidget):
-    """
-    Widget personnalisé pour une barre de progression mise à jour dynamiquement par des signaux.
-    """
     progress_completed_signal = pyqtSignal(str, str)
 
     def __init__(self, update_progress_signal, update_total_signal, update_prefix_signal, update_item_type_signal,
@@ -69,11 +63,9 @@ class ProgressBarWidget(QWidget):
         update_prefix_signal.connect(self.update_progress_prefix)
         update_item_type_signal.connect(self.update_item_type)
 
-    def update_item_type(self, item_type):
-        self.item_type = item_type
+    def update_item_type(self, item_type): self.item_type = item_type
 
-    def update_progress_prefix(self, prefix_text):
-        self.progress_prefix.setText(prefix_text)
+    def update_progress_prefix(self, prefix_text): self.progress_prefix.setText(prefix_text)
 
     def update_progress_bar(self, progress):
         self.progress_bar.setValue(progress)
@@ -86,13 +78,13 @@ class ProgressBarWidget(QWidget):
             f"{progress_percent:.2f}% | {progress}/{self.total_items} {self.item_type} "
             f"[{format_time(elapsed_time)} < {format_time(estimated_time_left)}, {items_per_second:.2f} {self.item_type}/s]"
         )
-        if progress >= self.total_items:
-            self.progress_completed_signal.emit(self.progress_prefix.text(), self.progress_suffix.text())
+        if progress >= self.total_items: self.progress_completed_signal.emit(self.progress_prefix.text(),
+                                                                             self.progress_suffix.text())
 
     def update_total_items(self, total, completed=0):
-        self.total_items = total
-        self.progress_bar.setMaximum(total)
-        self.start_time = time.time()
+        self.total_items = total;
+        self.progress_bar.setMaximum(total);
+        self.start_time = time.time();
         self.update_progress_bar(completed)
 
 
@@ -111,70 +103,65 @@ class ProgressWindow(QMainWindow):
         self.setWindowTitle("FragHub 1.3.2")
         self.setWindowIcon(QIcon(os.path.join(BASE_DIR, "GUI/assets/FragHub_icon.png")))
         self.setGeometry(100, 100, 1280, 720)
-        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
+        self.setWindowFlags(
+            Qt.WindowType.Window | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool | Qt.WindowType.WindowMinimizeButtonHint)
         self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating, False)
 
-        banner = QLabel()
-        pixmap = QPixmap(os.path.join(BASE_DIR, "GUI/assets/FragHub_icon.png")).scaled(
-            200, 200, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation
-        )
-        banner.setPixmap(pixmap)
+        banner = QLabel();
+        pixmap = QPixmap(os.path.join(BASE_DIR, "GUI/assets/FragHub_icon.png")).scaled(200, 200,
+                                                                                       Qt.AspectRatioMode.KeepAspectRatio,
+                                                                                       Qt.TransformationMode.SmoothTransformation);
+        banner.setPixmap(pixmap);
         banner.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
         splitter = QSplitter(Qt.Orientation.Vertical)
-        self.top_tab_widget = QTabWidget()
-        self.report_tab = QWidget()
-        self.report_layout = QVBoxLayout()
-        self.report_widget = QWidget()
-        self.report_content = QVBoxLayout()
-        self.report_widget.setLayout(self.report_content)
-        self.report_content.addStretch()
-        self.report_widget.setMinimumWidth(1)
-        self.report_scroll = QScrollArea()
-        self.report_scroll.setWidgetResizable(True)
-        self.report_scroll.setWidget(self.report_widget)
-        self.report_layout.addWidget(self.report_scroll)
-        self.report_tab.setLayout(self.report_layout)
-        self.top_tab_widget.addTab(self.report_tab, "Report")
+        self.top_tab_widget = QTabWidget();
+        self.report_tab = QWidget();
+        self.report_layout = QVBoxLayout();
+        self.report_widget = QWidget();
+        self.report_content = QVBoxLayout();
+        self.report_widget.setLayout(self.report_content);
+        self.report_content.addStretch();
+        self.report_widget.setMinimumWidth(1);
+        self.report_scroll = QScrollArea();
+        self.report_scroll.setWidgetResizable(True);
+        self.report_scroll.setWidget(self.report_widget);
+        self.report_layout.addWidget(self.report_scroll);
+        self.report_tab.setLayout(self.report_layout);
+        self.top_tab_widget.addTab(self.report_tab, "Report");
         splitter.addWidget(self.top_tab_widget)
-
-        self.bottom_tab_widget = QTabWidget()
-        self.progress_tab = QWidget()
-        self.progress_layout = QVBoxLayout()
-        self.progress_bar_widget = ProgressBarWidget(
-            self.update_progress_signal, self.update_total_signal,
-            self.update_prefix_signal, self.update_item_type_signal
-        )
-        self.progress_bar_widget.progress_completed_signal.connect(self.add_to_report)
-        self.progress_layout.addWidget(self.progress_bar_widget)
-        self.progress_tab.setLayout(self.progress_layout)
-        self.bottom_tab_widget.addTab(self.progress_tab, "Progress")
+        self.bottom_tab_widget = QTabWidget();
+        self.progress_tab = QWidget();
+        self.progress_layout = QVBoxLayout();
+        self.progress_bar_widget = ProgressBarWidget(self.update_progress_signal, self.update_total_signal,
+                                                     self.update_prefix_signal, self.update_item_type_signal);
+        self.progress_bar_widget.progress_completed_signal.connect(self.add_to_report);
+        self.progress_layout.addWidget(self.progress_bar_widget);
+        self.progress_tab.setLayout(self.progress_layout);
+        self.bottom_tab_widget.addTab(self.progress_tab, "Progress");
         splitter.addWidget(self.bottom_tab_widget)
-
-        self.bottom_tab_widget.setMinimumHeight(60)
-        splitter.setStretchFactor(0, 3)
+        self.bottom_tab_widget.setMinimumHeight(60);
+        splitter.setStretchFactor(0, 3);
         splitter.setStretchFactor(1, 0)
 
-        main_layout = QVBoxLayout()
-        main_layout.addWidget(banner)
+        main_layout = QVBoxLayout();
+        main_layout.addWidget(banner);
         main_layout.addWidget(splitter)
 
+        # Le bouton s'appelle maintenant finish_button et est caché au début
         self.finish_button = QPushButton("FINISH")
         self.finish_button.setFixedSize(120, 40)
         self.finish_button.setStyleSheet(
-            "background-color: green; color: white; font-weight: bold; font-size: 14px; padding: 10px; border-radius: 5px;"
-        )
+            "background-color: green; color: white; font-weight: bold; font-size: 14px; padding: 10px; border-radius: 5px;")
         self.finish_button.clicked.connect(self.finish_button_clicked)
         self.finish_button.hide()
 
-        button_layout = QHBoxLayout()
-        button_layout.addStretch()
-        button_layout.addWidget(self.finish_button)
-        button_layout.addStretch()
+        button_layout = QHBoxLayout();
+        button_layout.addStretch();
+        button_layout.addWidget(self.finish_button);
+        button_layout.addStretch();
         main_layout.addLayout(button_layout)
-
-        container = QWidget()
-        container.setLayout(main_layout)
+        container = QWidget();
+        container.setLayout(main_layout);
         self.setCentralWidget(container)
 
         self.update_step_signal.connect(self.add_step_to_report)
@@ -186,7 +173,7 @@ class ProgressWindow(QMainWindow):
         self.close()
 
     def closeEvent(self, event):
-        """Assure que la fenêtre principale est restaurée à chaque fermeture."""
+        """Méthode cruciale : restaure la fenêtre principale à chaque fermeture."""
         print("Fermeture de la fenêtre de progression et restauration de la fenêtre principale.")
         if self.main_window_ref:
             self.main_window_ref.setEnabled(True)
@@ -195,62 +182,53 @@ class ProgressWindow(QMainWindow):
             self.main_window_ref.progress_window = None
         super().closeEvent(event)
 
-    def add_to_report(self, prefix_text, suffix_text):
-        report_layout = QHBoxLayout()
-        report_layout.setContentsMargins(10, 5, 10, 5)
-        report_layout.setSpacing(10)
-        prefix_label = QLabel(prefix_text)
-        prefix_label.setFont(QFont("Arial", 10, QFont.Weight.Bold))
-        prefix_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        report_layout.addWidget(prefix_label)
-        fake_progress_bar = QProgressBar()
-        fake_progress_bar.setMinimum(0)
-        fake_progress_bar.setMaximum(100)
-        fake_progress_bar.setValue(100)
-        fake_progress_bar.setTextVisible(False)
-        fake_progress_bar.setStyleSheet("""
-                QProgressBar { height: 18px; border: 1px solid #000; border-radius: 4px; background: #e0e0e0; }
-                QProgressBar::chunk { background-color: #3b8dff; border-radius: 4px; }
-            """)
-        report_layout.addWidget(fake_progress_bar)
-        suffix_label = QLabel(suffix_text)
-        suffix_label.setFont(QFont("Arial", 10))
-        suffix_label.setAlignment(Qt.AlignmentFlag.AlignRight)
-        report_layout.addWidget(suffix_label)
-        report_widget = QWidget()
-        report_widget.setLayout(report_layout)
-        self.report_content.insertWidget(self.report_content.count() - 1, report_widget)
-        self.report_scroll.verticalScrollBar().setValue(
-            self.report_scroll.verticalScrollBar().maximum()
-        )
-
-    def add_step_to_report(self, step_message):
-        new_step = QLabel(step_message)
-        new_step.setFont(QFont("Arial", 12, QFont.Weight.Bold))
-        new_step.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.report_content.insertWidget(self.report_content.count() - 1, new_step)
-        self.report_scroll.verticalScrollBar().setValue(
-            self.report_scroll.verticalScrollBar().maximum()
-        )
-
     def handle_completion(self, completion_message):
+        """Affiche le message final et montre le bouton FINISH."""
         while self.progress_layout.count() > 0:
             item = self.progress_layout.takeAt(0)
-            widget = item.widget()
-            if widget is not None:
-                widget.deleteLater()
+            if widget := item.widget(): widget.deleteLater()
         message_label = QLabel(completion_message)
         message_label.setFont(QFont("Arial", 16, QFont.Weight.Bold))
         message_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.progress_layout.addWidget(message_label)
-        self.finish_button.show()
+        self.finish_button.show()  # Affiche le bouton FINISH
+
+    def add_to_report(self, prefix_text, suffix_text):
+        report_layout = QHBoxLayout();
+        report_layout.setContentsMargins(10, 5, 10, 5);
+        report_layout.setSpacing(10);
+        prefix_label = QLabel(prefix_text);
+        prefix_label.setFont(QFont("Arial", 10, QFont.Weight.Bold));
+        prefix_label.setAlignment(Qt.AlignmentFlag.AlignLeft);
+        report_layout.addWidget(prefix_label);
+        fake_progress_bar = QProgressBar();
+        fake_progress_bar.setMinimum(0);
+        fake_progress_bar.setMaximum(100);
+        fake_progress_bar.setValue(100);
+        fake_progress_bar.setTextVisible(False);
+        fake_progress_bar.setStyleSheet(
+            """QProgressBar { height: 18px; border: 1px solid #000; border-radius: 4px; background: #e0e0e0; } QProgressBar::chunk { background-color: #3b8dff; border-radius: 4px; }""");
+        report_layout.addWidget(fake_progress_bar);
+        suffix_label = QLabel(suffix_text);
+        suffix_label.setFont(QFont("Arial", 10));
+        suffix_label.setAlignment(Qt.AlignmentFlag.AlignRight);
+        report_layout.addWidget(suffix_label);
+        report_widget = QWidget();
+        report_widget.setLayout(report_layout);
+        self.report_content.insertWidget(self.report_content.count() - 1, report_widget);
+        self.report_scroll.verticalScrollBar().setValue(self.report_scroll.verticalScrollBar().maximum())
+
+    def add_step_to_report(self, step_message):
+        new_step = QLabel(step_message);
+        new_step.setFont(QFont("Arial", 12, QFont.Weight.Bold));
+        new_step.setAlignment(Qt.AlignmentFlag.AlignCenter);
+        self.report_content.insertWidget(self.report_content.count() - 1, new_step);
+        self.report_scroll.verticalScrollBar().setValue(self.report_scroll.verticalScrollBar().maximum())
 
     def add_deletion_to_report(self, deletion_message):
-        new_deletion = QLabel(deletion_message)
-        new_deletion.setFont(QFont("Arial", 12, QFont.Weight.Normal))
-        new_deletion.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        new_deletion.setStyleSheet("color: red;")
-        self.report_content.insertWidget(self.report_content.count() - 1, new_deletion)
-        self.report_scroll.verticalScrollBar().setValue(
-            self.report_scroll.verticalScrollBar().maximum()
-        )
+        new_deletion = QLabel(deletion_message);
+        new_deletion.setFont(QFont("Arial", 12, QFont.Weight.Normal));
+        new_deletion.setAlignment(Qt.AlignmentFlag.AlignCenter);
+        new_deletion.setStyleSheet("color: red;");
+        self.report_content.insertWidget(self.report_content.count() - 1, new_deletion);
+        self.report_scroll.verticalScrollBar().setValue(self.report_scroll.verticalScrollBar().maximum())
