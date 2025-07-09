@@ -19,7 +19,6 @@ import sys
 import os
 
 
-# AJOUT: Exception personnalisée pour un arrêt propre
 class InterruptedError(Exception):
     pass
 
@@ -61,7 +60,6 @@ ordered_columns = ["FILENAME",
 
 def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None,
          step_callback=None, completion_callback=None, deletion_callback=None, stop_flag=None):
-    # AJOUT: Fonction de vérification pour simplifier le code
     def check_stop_flag():
         if stop_flag and stop_flag():
             raise InterruptedError("Process stopped by user.")
@@ -78,7 +76,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
 
         input_path = parameters_dict["input_directory"]
 
-        check_stop_flag()  # AJOUT
+        check_stop_flag()
 
         # STEP 1: convert files to json if needed (Multithreaded)
         FINAL_MSP, FINAL_CSV, FINAL_JSON, FINAL_MGF = parsing_to_dict(input_path, progress_callback=progress_callback,
@@ -86,15 +84,13 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                                                                       prefix_callback=prefix_callback,
                                                                       item_type_callback=item_type_callback,
                                                                       step_callback=step_callback)
-        check_stop_flag()  # AJOUT
+        check_stop_flag()
 
         files_to_process = False
 
-        # Check if there is file to process
         if FINAL_MSP or FINAL_CSV or FINAL_JSON or FINAL_MGF:
             files_to_process = True
 
-        # If there is no msp to process: stop python execution
         if not files_to_process:
             deletion_callback("-- THERE IS NO FILES TO PROCESS, EXITING PROCESS --")
             time.sleep(0.01)
@@ -103,7 +99,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                     "--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
             return 0
 
-        check_stop_flag()  # AJOUT
+        check_stop_flag()
 
         # STEP 2: generating SPLASH KEY
         time.sleep(0.01)
@@ -115,7 +111,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                                                                          total_items_callback=total_items_callback,
                                                                          prefix_callback=prefix_callback,
                                                                          item_type_callback=item_type_callback)
-        check_stop_flag()  # AJOUT
+        check_stop_flag()
 
         spectrum_list = []
         spectrum_list.extend(FINAL_MSP)
@@ -129,7 +125,6 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
 
         # STEP 3: removing duplicatas
         spectrum_list = pd.DataFrame(spectrum_list)[ordered_columns]
-        # Convertir toutes les colonnes en str sauf 'PEAKS_LIST'
         spectrum_list = spectrum_list.astype({col: str for col in ordered_columns if col != 'PEAKS_LIST'})
         time.sleep(0.01)
         if step_callback:
@@ -140,7 +135,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                                           item_type_callback=item_type_callback)
         deletion_callback(f"duplicatas removed: {scripts.deletion_report.duplicatas_removed}")
 
-        check_stop_flag()  # AJOUT
+        check_stop_flag()
 
         first_run = False
         update = False
@@ -157,7 +152,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                                                                                  item_type_callback=item_type_callback)
         deletion_callback(f"previously cleaned: {scripts.deletion_report.previously_cleaned}")
 
-        check_stop_flag()  # AJOUT
+        check_stop_flag()
 
         if spectrum_list:
 
@@ -188,7 +183,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                 """
             )
 
-            check_stop_flag()  # AJOUT
+            check_stop_flag()
 
             if not spectrum_list:
                 deletion_callback("-- THERE IS NO SPECTRUMS TO PROCESS AFTER CLEANING, EXITING PROCESS --")
@@ -213,7 +208,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             deletion_callback(
                 f"No smiles, no inchi, no inchikey (updated): {scripts.deletion_report.no_smiles_no_inchi_no_inchikey}")
 
-            check_stop_flag()  # AJOUT
+            check_stop_flag()
 
             # STEP 6: completing missing metadata from pubchem datas
             time.sleep(0.01)
@@ -224,7 +219,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                                                         total_items_callback=total_items_callback,
                                                         prefix_callback=prefix_callback,
                                                         item_type_callback=item_type_callback)
-            check_stop_flag()  # AJOUT
+            check_stop_flag()
 
             # STEP 7: completing missing names
             time.sleep(0.01)
@@ -235,7 +230,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                                                   total_items_callback=total_items_callback,
                                                   prefix_callback=prefix_callback,
                                                   item_type_callback=item_type_callback)
-            check_stop_flag()  # AJOUT
+            check_stop_flag()
 
             # STEP 8: SPLITTING
             # -- SPLITTING [POS / NEG] --
@@ -246,7 +241,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             POS_df, NEG_df = split_pos_neg(spectrum_list, progress_callback=progress_callback,
                                            total_items_callback=total_items_callback, prefix_callback=prefix_callback,
                                            item_type_callback=item_type_callback)
-            check_stop_flag()  # AJOUT
+            check_stop_flag()
 
             # -- SPLITTING [LC / GC] --
             time.sleep(0.01)
@@ -261,7 +256,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
 
             del POS_df
             del NEG_df
-            check_stop_flag()  # AJOUT
+            check_stop_flag()
 
             # -- SPLITTING [EXP / In-Silico] --
             time.sleep(0.01)
@@ -273,7 +268,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                 total_items_callback=total_items_callback, prefix_callback=prefix_callback,
                 item_type_callback=item_type_callback)
 
-            check_stop_flag()  # AJOUT
+            check_stop_flag()
 
             if parameters_dict["msp"] == 1.0:
                 time.sleep(0.01)
@@ -286,7 +281,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                     total_items_callback=total_items_callback, prefix_callback=prefix_callback,
                     item_type_callback=item_type_callback)
 
-            check_stop_flag()  # AJOUT
+            check_stop_flag()
 
             # STEP 9: writting output files
             if parameters_dict["csv"] == 1.0:
@@ -299,7 +294,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                              progress_callback=progress_callback, total_items_callback=total_items_callback,
                              prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-            check_stop_flag()  # AJOUT
+            check_stop_flag()
 
             if parameters_dict["msp"] == 1.0:
                 time.sleep(0.01)
@@ -311,7 +306,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                              total_items_callback=total_items_callback, prefix_callback=prefix_callback,
                              item_type_callback=item_type_callback)
 
-            check_stop_flag()  # AJOUT
+            check_stop_flag()
 
             if parameters_dict["json"] == 1.0:
                 time.sleep(0.01)
@@ -329,7 +324,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         else:
             deletion_callback("There is no new spectrums to process. Exiting code !")
 
-        check_stop_flag()  # AJOUT
+        check_stop_flag()
 
         report(output_directory, POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df,
                NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
@@ -340,14 +335,8 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                 "--- TOTAL TIME: %s ---" % time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time)))
 
     except InterruptedError:
-        # AJOUT: Gère l'arrêt demandé par l'utilisateur.
-        print("MAIN function interrupted by user.")
         if deletion_callback:
             deletion_callback("\n-- PROCESS INTERRUPTED BY USER --")
-        # Le finally du worker s'occupera du reste.
 
-    except Exception as e:
-        # En cas d'erreur imprévue DANS MAIN, la transmettre à run_main_function
-        print(f"!!! Unhandled exception occurred in MAIN: {e}")
-        traceback.print_exc()  # Afficher dans la console du thread worker
-        raise  # Laisser run_main_function attraper cette exception et émettre le signal d'erreur
+    except Exception:
+        raise
