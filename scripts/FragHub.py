@@ -80,8 +80,15 @@ class MainWindow(QMainWindow):
             self.showMinimized()
             self.setEnabled(False)
             self.progress_window = ProgressWindow(parent=self)
+            # AJOUT: Connexion du signal d'arrêt
+            self.progress_window.stop_requested_signal.connect(self.handle_stop_request)
             self.progress_window.show()
             self.start_execution()
+
+    # AJOUT: Méthode pour gérer la demande d'arrêt
+    def handle_stop_request(self):
+        if self.running:
+            self.stop_thread_flag = True
 
     def start_execution(self):
         if self.running: print("Un traitement est déjà en cours."); return
@@ -95,10 +102,18 @@ class MainWindow(QMainWindow):
         self.thread.start()
 
     def handle_task_finished(self):
-        print("Le thread de traitement est terminé.")
         self.running = False
+        # Ne pas réinitialiser le drapeau ici, laissez clean_exit le faire
+        # self.stop_thread_flag = False
         self.thread = None
+        if self.progress_window and not self.stop_thread_flag:
+            # La tâche s'est terminée normalement
+            pass
+        elif self.progress_window and self.stop_thread_flag:
+            # La tâche a été arrêtée par l'utilisateur
+            self.progress_window.close()
         self.stop_thread_flag = False
+
 
     def handle_execution_error(self, traceback_str):
         print("handle_execution_error appelé.")

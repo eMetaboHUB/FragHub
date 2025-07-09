@@ -96,6 +96,7 @@ class ProgressWindow(QMainWindow):
     update_step_signal = pyqtSignal(str)
     completion_callback = pyqtSignal(str)
     deletion_callback = pyqtSignal(str)
+    stop_requested_signal = pyqtSignal() # AJOUT: Signal pour notifier la demande d'arrêt
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -147,7 +148,7 @@ class ProgressWindow(QMainWindow):
         main_layout.addWidget(banner);
         main_layout.addWidget(splitter)
 
-        # Le bouton s'appelle maintenant finish_button et est caché au début
+        # MODIFIÉ: Ajout du bouton STOP
         self.finish_button = QPushButton("FINISH")
         self.finish_button.setFixedSize(120, 40)
         self.finish_button.setStyleSheet(
@@ -155,8 +156,16 @@ class ProgressWindow(QMainWindow):
         self.finish_button.clicked.connect(self.finish_button_clicked)
         self.finish_button.hide()
 
+        # AJOUT: Création et style du bouton STOP
+        self.stop_button = QPushButton("STOP")
+        self.stop_button.setFixedSize(120, 40)
+        self.stop_button.setStyleSheet(
+            "background-color: red; color: white; font-weight: bold; font-size: 14px; padding: 10px; border-radius: 5px;")
+        self.stop_button.clicked.connect(self.stop_button_clicked)
+
         button_layout = QHBoxLayout();
         button_layout.addStretch();
+        button_layout.addWidget(self.stop_button) # AJOUT
         button_layout.addWidget(self.finish_button);
         button_layout.addStretch();
         main_layout.addLayout(button_layout)
@@ -168,12 +177,21 @@ class ProgressWindow(QMainWindow):
         self.completion_callback.connect(self.handle_completion)
         self.deletion_callback.connect(self.add_deletion_to_report)
 
+    # AJOUT: Méthode appelée lors du clic sur STOP
+    def stop_button_clicked(self):
+        self.stop_requested_signal.emit()
+        self.stop_button.setEnabled(False) # Désactive le bouton pour éviter les clics multiples
+        self.stop_button.setText("STOPPING...")
+
     def finish_button_clicked(self):
         """Gère le clic sur le bouton FINISH en fermant simplement la fenêtre."""
         self.close()
 
     def closeEvent(self, event):
         """Méthode cruciale : restaure la fenêtre principale à chaque fermeture."""
+        if self.main_window_ref and self.main_window_ref.running:
+            # Si le traitement est toujours en cours, le clic sur la croix demande l'arrêt
+            self.stop_requested_signal.emit()
         if self.main_window_ref:
             self.main_window_ref.setEnabled(True)
             self.main_window_ref.showNormal()
@@ -190,7 +208,8 @@ class ProgressWindow(QMainWindow):
         message_label.setFont(QFont("Arial", 16, QFont.Weight.Bold))
         message_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.progress_layout.addWidget(message_label)
-        self.finish_button.show()  # Affiche le bouton FINISH
+        self.stop_button.hide() # MODIFIÉ: Cache le bouton STOP à la fin
+        self.finish_button.show()
 
     def add_to_report(self, prefix_text, suffix_text):
         report_layout = QHBoxLayout();
