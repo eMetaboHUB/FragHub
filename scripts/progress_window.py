@@ -174,7 +174,6 @@ class ProgressWindow(QMainWindow):
 
     def closeEvent(self, event):
         """Méthode cruciale : restaure la fenêtre principale à chaque fermeture."""
-        print("Fermeture de la fenêtre de progression et restauration de la fenêtre principale.")
         if self.main_window_ref:
             self.main_window_ref.setEnabled(True)
             self.main_window_ref.showNormal()
