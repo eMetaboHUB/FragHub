@@ -314,32 +314,25 @@ class MainWindow(QMainWindow):
         self.thread.start()
 
     def handle_task_finished(self):
-        """Slot pour nettoyer l'état après la fin (normale ou non) de la tâche."""
-        print("Signal de fin de tâche reçu. Nettoyage en cours...")
-
-        if self.progress_window and self.progress_window.stop_button.text() != 'FINISH':
-            try:
-                self.progress_window.close()
-            except Exception as e:
-                print(f"Erreur à la fermeture de progress_window : {e}")
-
-        self.progress_window = None
+        """Slot appelé à la fin du thread. Réinitialise l'état du backend."""
+        print("Le thread de traitement est terminé.")
         self.running = False
         self.thread = None
         self.stop_thread_flag = False
 
-        self.setEnabled(True)
-        self.showNormal()
-        self.activateWindow()
-
     def handle_execution_error(self, traceback_str):
         """Slot pour afficher les erreurs venant du thread worker."""
         print("handle_execution_error appelé.")
+        # Ferme la fenêtre de progression si elle est ouverte, avant de montrer l'erreur
+        if self.progress_window:
+            self.progress_window.close()
+
         show_error_message(
             parent=self,
             title="Execution Error",
             message=traceback_str,
-            on_close=self.clean_exit
+            # Le callback `on_close` restaure la fenêtre principale sans quitter
+            on_close=lambda: self.clean_exit(force_quit_app=False)
         )
 
     def clean_exit(self, force_quit_app=True):
@@ -357,7 +350,9 @@ class MainWindow(QMainWindow):
         if force_quit_app:
             QApplication.instance().quit()
         else:
-            self.show()
+            # Assure que la fenêtre principale est réactivée si on ne quitte pas
+            self.setEnabled(True)
+            self.showNormal()
             self.activateWindow()
 
     def closeEvent(self, event):
