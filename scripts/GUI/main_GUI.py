@@ -8,21 +8,21 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QFont, QPixmap, QIcon
 from PyQt6.QtCore import Qt, pyqtSignal
 
-# Import des composants nécessaires
-from main_worker import run_main_in_worker
-from error_handler import show_error_message
-from scripts.GUI.tabs.tab_input import InputTab
-from scripts.GUI.tabs.tab_output import OutputTab
-from scripts.GUI.tabs.tab_filters import FiltersTab
-from scripts.GUI.tabs.tab_output_settings import OutputSettingTab
-from scripts.GUI.tabs.tab_projects import ProjectsTab
-from scripts.progress_window import ProgressWindow
+# CORRECTION: Imports relatifs et absolus mis à jour
+from ..main_worker import run_main_in_worker
+from .error_handler import show_error_message
+from .tabs.tab_input import InputTab
+from .tabs.tab_output import OutputTab
+from .tabs.tab_filters import FiltersTab
+from .tabs.tab_output_settings import OutputSettingTab
+from .tabs.tab_projects import ProjectsTab
+from .progress_window import ProgressWindow
 
 if getattr(sys, 'frozen', False):
     BASE_DIR = sys._MEIPASS
 else:
-    # CORRECTION : Le '..' a été retiré pour pointer vers le bon dossier racine du projet
-    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    # CORRECTION: Remonte de 2 niveaux (GUI -> scripts -> racine)
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 
 class MainWindow(QMainWindow):
@@ -41,7 +41,7 @@ class MainWindow(QMainWindow):
         main_layout = QVBoxLayout()
         banner = QLabel()
 
-        # Le chemin d'accès devrait maintenant être correct grâce à la correction de BASE_DIR
+        # CORRECTION: Le chemin de l'icône est maintenant construit à partir de la racine
         icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_icon.png")
         pixmap = QPixmap(icon_path)
 
@@ -49,7 +49,6 @@ class MainWindow(QMainWindow):
             pixmap_scaled = pixmap.scaled(200, 200, Qt.AspectRatioMode.KeepAspectRatio,
                                           Qt.TransformationMode.SmoothTransformation)
             banner.setPixmap(pixmap_scaled)
-        # CORRECTION : Le bloc "else" avec le texte a été retiré comme demandé.
 
         banner.setAlignment(Qt.AlignmentFlag.AlignCenter)
         main_layout.addWidget(banner)

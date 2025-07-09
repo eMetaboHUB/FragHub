@@ -13,7 +13,8 @@ import platform
 if getattr(sys, 'frozen', False):
     BASE_DIR = sys._MEIPASS
 else:
-    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
+    # CORRECTION: Remonte de 2 niveaux (GUI -> scripts -> racine)
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 if platform.system() == "Windows":
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub")
@@ -104,16 +105,19 @@ class ProgressWindow(QMainWindow):
         super().__init__(parent)
         self.main_window_ref = parent
         self.setWindowTitle("FragHub 1.3.2")
-        self.setWindowIcon(QIcon(os.path.join(BASE_DIR, "GUI/assets/FragHub_icon.png")))
+        # CORRECTION: Chemin de l'icône
+        icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_icon.png")
+        self.setWindowIcon(QIcon(icon_path))
         self.setGeometry(100, 100, 1280, 720)
         self.setWindowFlags(
             Qt.WindowType.Window | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool | Qt.WindowType.WindowMinimizeButtonHint)
         self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating, False)
 
         banner = QLabel()
-        pixmap = QPixmap(os.path.join(BASE_DIR, "GUI/assets/FragHub_icon.png")).scaled(200, 200,
-                                                                                       Qt.AspectRatioMode.KeepAspectRatio,
-                                                                                       Qt.TransformationMode.SmoothTransformation)
+        # CORRECTION: Chemin du pixmap
+        pixmap = QPixmap(icon_path).scaled(200, 200,
+                                           Qt.AspectRatioMode.KeepAspectRatio,
+                                           Qt.TransformationMode.SmoothTransformation)
         banner.setPixmap(pixmap)
         banner.setAlignment(Qt.AlignmentFlag.AlignCenter)
         splitter = QSplitter(Qt.Orientation.Vertical)
@@ -183,11 +187,9 @@ class ProgressWindow(QMainWindow):
         self.stop_button.setText("STOPPING...")
 
     def finish_button_clicked(self):
-        """Gère le clic sur le bouton FINISH en fermant simplement la fenêtre."""
         self.close()
 
     def closeEvent(self, event):
-        """Méthode cruciale : restaure la fenêtre principale à chaque fermeture."""
         if self.main_window_ref and self.main_window_ref.running:
             self.stop_requested_signal.emit()
         if self.main_window_ref:
@@ -198,7 +200,6 @@ class ProgressWindow(QMainWindow):
         super().closeEvent(event)
 
     def handle_completion(self, completion_message):
-        """Affiche le message final et montre le bouton FINISH."""
         while self.progress_layout.count() > 0:
             item = self.progress_layout.takeAt(0)
             if widget := item.widget():

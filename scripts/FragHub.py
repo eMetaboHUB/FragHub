@@ -9,16 +9,16 @@ from PyQt6.QtWidgets import QApplication, QMessageBox
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import pyqtSignal, QObject, QThread
 
-# Logique de démarrage et gestion des erreurs
-from error_handler import exception_hook
-from splash_screen import LoadingSplashScreen
-# Import de la fenêtre principale depuis le nouveau fichier
-from main_GUI import MainWindow
+# Logique de démarrage et gestion des erreurs depuis leur nouvel emplacement
+from scripts.GUI.error_handler import exception_hook
+from scripts.GUI.splash_screen import LoadingSplashScreen
+# Import de la fenêtre principale depuis son nouvel emplacement
+from scripts.GUI.main_GUI import MainWindow
 
 if getattr(sys, 'frozen', False):
     BASE_DIR = sys._MEIPASS
 else:
-    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 if platform.system() == "Windows":
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub")
@@ -37,7 +37,7 @@ class StartupWorker(QObject):
         try:
             self.update_splash_message.emit("Loading FragHub, please wait...", 20)
             time.sleep(1)
-            # Importe la fonction lourde ici, en arrière-plan
+            # L'import de MAIN reste correct car on part de la racine
             from scripts.MAIN import MAIN as imported_main
             self.update_splash_message.emit("Initializing main window", 20)
             time.sleep(1)
@@ -49,19 +49,27 @@ class StartupWorker(QObject):
 
 
 def run_GUI():
+    # Ajoute le dossier 'scripts' au path pour assurer que les imports relatifs fonctionnent
+    scripts_path = os.path.join(BASE_DIR, 'scripts')
+    if scripts_path not in sys.path:
+        sys.path.insert(0, scripts_path)
+
     sys.excepthook = exception_hook
     app = QApplication(sys.argv if hasattr(sys, 'argv') else [''])
 
+    # CORRECTION: Chemin des icônes mis à jour
+    scripts_gui_assets = os.path.join(BASE_DIR, "GUI", "assets")
     if platform.system() == "Darwin":
-        app_icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_Python_icon.icns")
+        app_icon_path = os.path.join(BASE_DIR, scripts_gui_assets, "FragHub_Python_icon.icns")
     else:
-        app_icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_Python_icon.ico")
+        app_icon_path = os.path.join(BASE_DIR, scripts_gui_assets, "FragHub_Python_icon.ico")
     if not os.path.exists(app_icon_path):
-        app_icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_icon.png")
+        app_icon_path = os.path.join(BASE_DIR, scripts_gui_assets, "FragHub_icon.png")
     if os.path.exists(app_icon_path):
         app.setWindowIcon(QIcon(app_icon_path))
 
-    splash_pix_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_icon.png")
+    # CORRECTION: Chemin du splash screen mis à jour
+    splash_pix_path = os.path.join(BASE_DIR, scripts_gui_assets, "FragHub_icon.png")
     splash_pixmap = QPixmap(splash_pix_path)
     splash = LoadingSplashScreen(splash_pixmap)
     splash.showMessage("Loading FragHub...")
@@ -78,7 +86,6 @@ def run_GUI():
             return
         shared_state['main_function'] = imported_main_function
         try:
-            # Crée l'instance de la fenêtre principale importée
             shared_state['main_window'] = MainWindow(main_function_ref=shared_state['main_function'])
             shared_state['main_window'].show()
         except Exception as e:
@@ -106,7 +113,6 @@ def run_GUI():
     startup_worker.error.connect(on_startup_error)
     startup_worker.update_splash_message.connect(update_splash)
 
-    # Nettoyage du thread et du worker
     startup_worker.finished.connect(startup_thread.quit)
     startup_worker.error.connect(startup_thread.quit)
     startup_worker.finished.connect(startup_worker.deleteLater)
