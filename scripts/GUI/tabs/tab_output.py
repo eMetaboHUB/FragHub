@@ -57,7 +57,14 @@ class OutputTab(QWidget):
 
     def browse_output_files(self):
         """Gestionnaire de sélection de répertoire pour l'onglet OUTPUT."""
-        directory = QFileDialog.getExistingDirectory(self, "Choisir un répertoire pour OUTPUT")
+        # Définir le répertoire racine de la machine comme point de départ
+        start_directory = os.path.abspath(os.sep)
+
+        directory = QFileDialog.getExistingDirectory(
+            self,
+            "Choisir un répertoire pour OUTPUT",
+            start_directory  # Ajout du répertoire de départ
+        )
         if directory:
             parameters_dict["output_directory"] = directory
             self.output_directory_changed.emit(directory)  # Émettre le signal

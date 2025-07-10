@@ -63,7 +63,14 @@ class InputTab(QWidget):
 
     def browse_files(self):
         """Gestionnaire de sélection de fichiers pour l'onglet INPUT."""
-        files, _ = QFileDialog.getOpenFileNames(self, "Choisir des fichiers")
+        # Définir le répertoire racine de la machine comme point de départ
+        start_directory = os.path.abspath(os.sep)
+
+        files, _ = QFileDialog.getOpenFileNames(
+            self,
+            "Choisir des fichiers",
+            start_directory  # Ajout du répertoire de départ
+        )
         if files:
             # Mise à jour du dictionnaire global
             parameters_dict["input_directory"] = files
