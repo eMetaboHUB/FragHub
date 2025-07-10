@@ -41,6 +41,15 @@ class OutputTab(QWidget):
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.layout.addWidget(label)
 
+        # --- AJOUT ---
+        # Label pour afficher le chemin du dossier sélectionné
+        self.path_label = QLabel("Aucun répertoire sélectionné")
+        self.path_label.setFont(QFont("Arial", 10))
+        self.path_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.path_label.setWordWrap(True)  # Permet au chemin de s'afficher sur plusieurs lignes si besoin
+        self.layout.addWidget(self.path_label)
+        # --- FIN DE L'AJOUT ---
+
         # Espacement et bouton d'infos
         self.layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
@@ -57,14 +66,17 @@ class OutputTab(QWidget):
 
     def browse_output_files(self):
         """Gestionnaire de sélection de répertoire pour l'onglet OUTPUT."""
-        # Définir le répertoire racine de la machine comme point de départ
         start_directory = os.path.abspath(os.sep)
-
         directory = QFileDialog.getExistingDirectory(
             self,
             "Choisir un répertoire pour OUTPUT",
-            start_directory  # Ajout du répertoire de départ
+            start_directory
         )
         if directory:
             parameters_dict["output_directory"] = directory
-            self.output_directory_changed.emit(directory)  # Émettre le signal
+            self.output_directory_changed.emit(directory)
+
+            # --- AJOUT ---
+            # Mettre à jour le label avec le chemin sélectionné
+            self.path_label.setText(directory)
+            # --- FIN DE L'AJOUT ---
