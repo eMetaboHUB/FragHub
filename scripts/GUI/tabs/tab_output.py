@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QSpacerItem, QSiz
 from PyQt6.QtGui import QFont, QIcon
 from PyQt6.QtCore import QSize, Qt, pyqtSignal
 from PyQt6.QtWidgets import QFileDialog
-from scripts.GUI.utils.global_vars import parameters_dict  # Importer le dictionnaire global
+from scripts.GUI.utils.global_vars import parameters_dict  # Import the global dictionary
 import sys
 import os
 
@@ -13,7 +13,6 @@ else:
     # If the file is executed as a Python script
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
-
 class OutputTab(QWidget):
     output_directory_changed = pyqtSignal(str)
 
@@ -21,12 +20,12 @@ class OutputTab(QWidget):
         super().__init__()
         self.layout = QVBoxLayout()
 
-        # Add spaces to vertically center elements
+        # Add spacers for vertical centering
         self.layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
         # Create the directory selection button
         button = QPushButton()
-        button.setIcon(QIcon(os.path.join(BASE_DIR, './GUI/assets/directory.png')))
+        button.setIcon(QIcon(os.path.join(BASE_DIR,'./GUI/assets/directory.png')))
         button.setIconSize(QSize(128, 128))
         button.setFixedSize(140, 140)
         button.clicked.connect(self.browse_output_files)  # Connect the button to the function
@@ -36,13 +35,22 @@ class OutputTab(QWidget):
         button_layout.addWidget(button, alignment=Qt.AlignmentFlag.AlignCenter)
         self.layout.addLayout(button_layout)
 
-        # Add a label below the button
+        # Add the label below the button
         label = QLabel("Select output directory")
         label.setFont(QFont("Arial", 14, QFont.Weight.Bold))
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.layout.addWidget(label)
 
-        # Add spacing and info button
+        # --- ADDITION ---
+        # Label to display the selected folder path
+        self.path_label = QLabel("No directory selected")
+        self.path_label.setFont(QFont("Arial", 10))
+        self.path_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.path_label.setWordWrap(True)  # Allows the path to wrap to multiple lines if needed
+        self.layout.addWidget(self.path_label)
+        # --- END OF ADDITION ---
+
+        # Spacing and info button
         self.layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
         info_button_layout = QHBoxLayout()
@@ -58,7 +66,17 @@ class OutputTab(QWidget):
 
     def browse_output_files(self):
         """Directory selection handler for the OUTPUT tab."""
-        directory = QFileDialog.getExistingDirectory(self, "Choose a directory for OUTPUT")
+        start_directory = os.path.abspath(os.sep)
+        directory = QFileDialog.getExistingDirectory(
+            self,
+            "Choose a directory for OUTPUT",
+            start_directory
+        )
         if directory:
             parameters_dict["output_directory"] = directory
-            self.output_directory_changed.emit(directory)  # Emit the signal
+            self.output_directory_changed.emit(directory)
+
+            # --- ADDITION ---
+            # Update the label with the selected path
+            self.path_label.setText(directory)
+            # --- END OF ADDITION ---
