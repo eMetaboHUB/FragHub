@@ -189,6 +189,7 @@ del Key_dataframe
 # =====================================================LIST=============================================================
 global keys_list
 keys_list = ['FILENAME',
+             'FILEHASH',
              'PREDICTED',
              'SPLASH',
              'SPECTRUMID',

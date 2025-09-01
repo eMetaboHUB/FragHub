@@ -24,6 +24,7 @@ class InterruptedError(Exception):
 
 
 ordered_columns = ["FILENAME",
+                   "FILEHASH",
                    "PREDICTED",
                    "SPLASH",
                    "SPECTRUMID",
