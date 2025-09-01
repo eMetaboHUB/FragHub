@@ -4,34 +4,26 @@ import json
 import os
 import re
 
+
 def generate_file_hash(file_path):
     """
-    Reads the first character of each line in a file, concatenates them,
-    and returns the SHA-256 hash of the resulting string.
-
-    Args:
-        file_path (str): The path to the file to be analyzed.
-
-    Returns:
-        str: The SHA-256 hash as a hexadecimal string.
+    Gets the size of a file in bytes, converts it to a string,
+    and returns the SHA-256 hash of that string.
     """
-    first_chars = []
     try:
-        with open(file_path, 'r', encoding="UTF-8") as file:
-            for line in file:
-                if line:  # Make sure the line is not empty
-                    first_chars.append(line[0])
+        # Get the size of the file in bytes
+        file_size = os.path.getsize(file_path)
+
+        # Convert the file size (an integer) to a string to be hashed
+        data_to_hash = str(file_size)
+
+        # Calculate the SHA-256 hash of the size string
+        sha256_hash = hashlib.sha256(data_to_hash.encode('utf-8')).hexdigest()
+
+        return sha256_hash
+
     except FileNotFoundError:
-        return "Error: File not found."
-
-    # Concatenate all the first characters into a single string
-    data_to_hash = "".join(first_chars)
-
-    # Calculate the SHA-256 hash
-    # The hashing function expects bytes, so we encode the string
-    sha256_hash = hashlib.sha256(data_to_hash.encode('utf-8')).hexdigest()
-
-    return sha256_hash
+        return f"Error: File not found at {file_path}"
 
 
 def load_spectrum_list_from_msp(msp_file_path, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):

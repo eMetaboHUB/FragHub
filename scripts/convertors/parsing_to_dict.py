@@ -10,23 +10,26 @@ import json
 import os
 import re
 
+
 def generate_file_hash(file_path):
     """
-    Reads the first character of each line in a file, concatenates them,
-    and returns the SHA-256 hash of the resulting string.
+    Gets the size of a file in bytes, converts it to a string,
+    and returns the SHA-256 hash of that string.
     """
-    first_chars = []
     try:
-        with open(file_path, 'r', encoding="UTF-8") as file:
-            for line in file:
-                if line:  # Make sure the line is not empty
-                    first_chars.append(line[0])
+        # Get the size of the file in bytes
+        file_size = os.path.getsize(file_path)
+
+        # Convert the file size (an integer) to a string to be hashed
+        data_to_hash = str(file_size)
+
+        # Calculate the SHA-256 hash of the size string
+        sha256_hash = hashlib.sha256(data_to_hash.encode('utf-8')).hexdigest()
+
+        return sha256_hash
+
     except FileNotFoundError:
         return f"Error: File not found at {file_path}"
-
-    data_to_hash = "".join(first_chars)
-    sha256_hash = hashlib.sha256(data_to_hash.encode('utf-8')).hexdigest()
-    return sha256_hash
 
 
 def concatenate_MSP(msp_list, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
