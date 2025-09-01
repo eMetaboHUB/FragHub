@@ -42,16 +42,16 @@ def format_solution(row, non_unknown_marques):
     # complete 'marque instrument' si on a pas de nom de model
     MODELS = 'instrument' if row['MODELS'] == 'NOT FOUND' and row['MARQUES'] != 'NOT FOUND' else row['MODELS']
 
-    # complete LC ou GC si on à la type d'ionisation
-    if row['SPECTRUM_TYPE'] == 'NOT FOUND' and row['IONISATION'] != 'NOT FOUND':
-        if row['IONISATION'] in ['ESI', 'APPI', 'APCI', 'MALDI', 'FAB', 'FD']:
-            SPECTRUM_TYPE = 'LC'
-        elif row['IONISATION'] in ['CI', 'PTR', 'EI']:
-            SPECTRUM_TYPE = 'GC'
-        else:
-            SPECTRUM_TYPE = row['SPECTRUM_TYPE']
-    else:
-        SPECTRUM_TYPE = row['SPECTRUM_TYPE']
+    # # complete LC ou GC si on à la type d'ionisation
+    # if row['SPECTRUM_TYPE'] == 'NOT FOUND' and row['IONISATION'] != 'NOT FOUND':
+    #     if row['IONISATION'] in ['ESI', 'APPI', 'APCI', 'MALDI', 'FAB', 'FD']:
+    #         SPECTRUM_TYPE = 'LC'
+    #     elif row['IONISATION'] in ['CI', 'PTR', 'EI']:
+    #         SPECTRUM_TYPE = 'GC'
+    #     else:
+    #         SPECTRUM_TYPE = row['SPECTRUM_TYPE']
+    # else:
+    #     SPECTRUM_TYPE = row['SPECTRUM_TYPE']
 
     if row["MARQUES"] != 'NOT FOUND' and row["MODELS"] != 'NOT FOUND' and row["SPECTRUM_TYPE"] != 'NOT FOUND' and row["IONISATION"] != 'NOT FOUND' and row["INSTRUMENT_TYPE"] != 'NOT FOUND':
         return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
@@ -62,11 +62,11 @@ def format_solution(row, non_unknown_marques):
     elif row["MARQUES"] != 'NOT FOUND' and row["MODELS"] != 'NOT FOUND' and row["SPECTRUM_TYPE"] != 'NOT FOUND' and row["IONISATION"] == 'NOT FOUND' and row["INSTRUMENT_TYPE"] == 'NOT FOUND':
         return f"{row["MARQUES"]} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['INSTRUMENT_TYPE_2']}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'NOT FOUND' and row["MODELS"] != 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] != 'NOT FOUND' and row["INSTRUMENT_TYPE"] != 'NOT FOUND':
-        return f"{row["MARQUES"]} {row['MODELS']}, {SPECTRUM_TYPE}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+        return f"{row["MARQUES"]} {row['MODELS']}, {row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'NOT FOUND' and row["MODELS"] != 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] == 'NOT FOUND' and row["INSTRUMENT_TYPE"] != 'NOT FOUND':
         return f"{row["MARQUES"]} {row['MODELS']}, {row["SPECTRUM_TYPE_2"]}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'NOT FOUND' and row["MODELS"] != 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] != 'NOT FOUND' and row["INSTRUMENT_TYPE"] == 'NOT FOUND':
-        return f"{row["MARQUES"]} {row['MODELS']}, {SPECTRUM_TYPE}-{row["IONISATION"]}-{row['INSTRUMENT_TYPE_2']}, {row['RESOLUTION']}"
+        return f"{row["MARQUES"]} {row['MODELS']}, {row["IONISATION"]}-{row['INSTRUMENT_TYPE_2']}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'NOT FOUND' and row["MODELS"] != 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] == 'NOT FOUND' and row["INSTRUMENT_TYPE"] == 'NOT FOUND':
         return f"{row["MARQUES"]} {row['MODELS']}, {row["SPECTRUM_TYPE_2"]}-{row['INSTRUMENT_TYPE_2']}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'NOT FOUND' and row["MODELS"] == 'NOT FOUND' and row["SPECTRUM_TYPE"] != 'NOT FOUND' and row["IONISATION"] != 'NOT FOUND' and row["INSTRUMENT_TYPE"] != 'NOT FOUND':
@@ -78,11 +78,11 @@ def format_solution(row, non_unknown_marques):
     elif row["MARQUES"] != 'NOT FOUND' and row["MODELS"] == 'NOT FOUND' and row["SPECTRUM_TYPE"] != 'NOT FOUND' and row["IONISATION"] == 'NOT FOUND' and row["INSTRUMENT_TYPE"] == 'NOT FOUND':
         return f"{row["MARQUES"]} {MODELS}, {row['SPECTRUM_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'NOT FOUND' and row["MODELS"] == 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] != 'NOT FOUND' and row["INSTRUMENT_TYPE"] != 'NOT FOUND':
-        return f"{row["MARQUES"]} {MODELS}, {SPECTRUM_TYPE}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+        return f"{row["MARQUES"]} {MODELS}, {row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'NOT FOUND' and row["MODELS"] == 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] == 'NOT FOUND' and row["INSTRUMENT_TYPE"] != 'NOT FOUND':
         return f"{row["MARQUES"]} {MODELS}, {row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'NOT FOUND' and row["MODELS"] == 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] != 'NOT FOUND' and row["INSTRUMENT_TYPE"] == 'NOT FOUND':
-        return f"{row["MARQUES"]} {MODELS}, {SPECTRUM_TYPE}-{row["IONISATION"]}, {row['RESOLUTION']}"
+        return f"{row["MARQUES"]} {MODELS}, {row["IONISATION"]}, {row['RESOLUTION']}"
     elif row["MARQUES"] != 'NOT FOUND' and row["MODELS"] == 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] == 'NOT FOUND' and row["INSTRUMENT_TYPE"] == 'NOT FOUND':
         return f"{row["MARQUES"]} {MODELS}, NOT FOUND, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'NOT FOUND' and row["MODELS"] != 'NOT FOUND' and row["SPECTRUM_TYPE"] != 'NOT FOUND' and row["IONISATION"] != 'NOT FOUND' and row["INSTRUMENT_TYPE"] != 'NOT FOUND':
@@ -94,11 +94,11 @@ def format_solution(row, non_unknown_marques):
     elif row["MARQUES"] == 'NOT FOUND' and row["MODELS"] != 'NOT FOUND' and row["SPECTRUM_TYPE"] != 'NOT FOUND' and row["IONISATION"] == 'NOT FOUND' and row["INSTRUMENT_TYPE"] == 'NOT FOUND':
         return f"{MARQUES} {row['MODELS']}, {row['SPECTRUM_TYPE']}-{row['INSTRUMENT_TYPE_2']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'NOT FOUND' and row["MODELS"] != 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] != 'NOT FOUND' and row["INSTRUMENT_TYPE"] != 'NOT FOUND':
-        return f"{MARQUES} {row['MODELS']}, {SPECTRUM_TYPE}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+        return f"{MARQUES} {row['MODELS']}, {row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'NOT FOUND' and row["MODELS"] != 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] == 'NOT FOUND' and row["INSTRUMENT_TYPE"] != 'NOT FOUND':
         return f"{MARQUES} {row['MODELS']}, {row["SPECTRUM_TYPE_2"]}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'NOT FOUND' and row["MODELS"] != 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] != 'NOT FOUND' and row["INSTRUMENT_TYPE"] == 'NOT FOUND':
-        return f"{MARQUES} {row['MODELS']}, {SPECTRUM_TYPE}-{row["IONISATION"]}-{row['INSTRUMENT_TYPE_2']}, {row['RESOLUTION']}"
+        return f"{MARQUES} {row['MODELS']}, {row["IONISATION"]}-{row['INSTRUMENT_TYPE_2']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'NOT FOUND' and row["MODELS"] != 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] == 'NOT FOUND' and row["INSTRUMENT_TYPE"] == 'NOT FOUND':
         return f"{MARQUES} {row['MODELS']}, {row["SPECTRUM_TYPE_2"]}-{row['INSTRUMENT_TYPE_2']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'NOT FOUND' and row["MODELS"] == 'NOT FOUND' and row["SPECTRUM_TYPE"] != 'NOT FOUND' and row["IONISATION"] != 'NOT FOUND' and row["INSTRUMENT_TYPE"] != 'NOT FOUND':
@@ -110,11 +110,11 @@ def format_solution(row, non_unknown_marques):
     elif row["MARQUES"] == 'NOT FOUND' and row["MODELS"] == 'NOT FOUND' and row["SPECTRUM_TYPE"] != 'NOT FOUND' and row["IONISATION"] == 'NOT FOUND' and row["INSTRUMENT_TYPE"] == 'NOT FOUND':
         return f"NOT FOUND, {row['SPECTRUM_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'NOT FOUND' and row["MODELS"] == 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] != 'NOT FOUND' and row["INSTRUMENT_TYPE"] != 'NOT FOUND':
-        return f"NOT FOUND, {SPECTRUM_TYPE}-{row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
+        return f"NOT FOUND, {row['IONISATION']}-{row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'NOT FOUND' and row["MODELS"] == 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] == 'NOT FOUND' and row["INSTRUMENT_TYPE"] != 'NOT FOUND':
         return f"NOT FOUND, {row['INSTRUMENT_TYPE']}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'NOT FOUND' and row["MODELS"] == 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] != 'NOT FOUND' and row["INSTRUMENT_TYPE"] == 'NOT FOUND':
-        return f"NOT FOUND, {SPECTRUM_TYPE}-{row["IONISATION"]}, {row['RESOLUTION']}"
+        return f"NOT FOUND, {row["IONISATION"]}, {row['RESOLUTION']}"
     elif row["MARQUES"] == 'NOT FOUND' and row["MODELS"] == 'NOT FOUND' and row["SPECTRUM_TYPE"] == 'NOT FOUND' and row["IONISATION"] == 'NOT FOUND' and row["INSTRUMENT_TYPE"] == 'NOT FOUND':
         return f"NOT FOUND, NOT FOUND, NOT FOUND"
 
