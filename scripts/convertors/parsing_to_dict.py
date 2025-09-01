@@ -12,14 +12,14 @@ import re
 
 def generate_file_hash(file_path):
     """
-    Lit le premier caractère de chaque ligne d'un fichier, les concatène,
-    et retourne le hash SHA-256 de la chaîne résultante.
+    Reads the first character of each line in a file, concatenates them,
+    and returns the SHA-256 hash of the resulting string.
     """
     first_chars = []
     try:
         with open(file_path, 'r', encoding="UTF-8") as file:
             for line in file:
-                if line:  # S'assurer que la ligne n'est pas vide
+                if line:  # Make sure the line is not empty
                     first_chars.append(line[0])
     except FileNotFoundError:
         return f"Error: File not found at {file_path}"
@@ -27,6 +27,7 @@ def generate_file_hash(file_path):
     data_to_hash = "".join(first_chars)
     sha256_hash = hashlib.sha256(data_to_hash.encode('utf-8')).hexdigest()
     return sha256_hash
+
 
 def concatenate_MSP(msp_list, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
