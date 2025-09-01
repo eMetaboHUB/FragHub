@@ -165,7 +165,7 @@ def search_for_brand(tree_path, instrument_infos):
                 # Return the updated tree_path list
                 return tree_path
         # If no brand key is found, append 'unknown' to the tree_path list
-        tree_path.append('unknown')
+        tree_path.append('not found')
         # Return the updated tree_path list with 'unknown' appended
         return tree_path
     # If the try block throws an exception, return None
@@ -193,7 +193,7 @@ def search_for_model(tree_path, instrument_infos):
                 return tree_path
 
         # If no match is found after the loop, append 'unknown' to the tree_path list
-        tree_path.append('unknown')
+        tree_path.append('not found')
 
         # Return the updated tree_path
         return tree_path
@@ -221,7 +221,7 @@ def search_for_spectrum_type(tree_path, instrument_infos):
             if re.search(rf"(\b|^|$){key}(\b|^|$)", instrument_infos):  # If the key is found in the instrument data string
                 tree_path.append(key)  # Then append the found key value to the tree path
                 return tree_path  # Return the updated tree path
-        tree_path.append('unknown')  # If the key is not found in the instrument data string, append 'unknown' to the tree path
+        tree_path.append('not found')  # If the key is not found in the instrument data string, append 'unknown' to the tree path
         return tree_path  # Return the updated tree path
     except:  # If any error occur while executing the above block of code
         return None  # Return None
@@ -251,7 +251,7 @@ def search_for_instrument_type(tree_path, instrument_infos):
 
         # If we've looped through every key and haven't returned,
         # append 'unknown' to the tree_path and return the updated tree_path
-        tree_path.append('unknown')
+        tree_path.append('not found')
         return tree_path
 
     except:
@@ -275,7 +275,7 @@ def search_for_ionisation(tree_path, instrument_infos):
                 tree_path.append(key)
                 return tree_path
         # If no match found, append 'unknown' to the path and return
-        tree_path.append('unknown')
+        tree_path.append('not found')
         return tree_path
     except:
         # If anything goes wrong, return None
