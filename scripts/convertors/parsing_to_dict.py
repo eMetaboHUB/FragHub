@@ -4,10 +4,29 @@ from scripts.convertors.csv_to_dict import *
 from scripts.convertors.mgf_to_dict import *
 from scripts.convertors.loaders import *
 import pandas as pd
+import hashlib
 import time
 import json
 import os
 import re
+
+def generate_file_hash(file_path):
+    """
+    Lit le premier caractère de chaque ligne d'un fichier, les concatène,
+    et retourne le hash SHA-256 de la chaîne résultante.
+    """
+    first_chars = []
+    try:
+        with open(file_path, 'r', encoding="UTF-8") as file:
+            for line in file:
+                if line:  # S'assurer que la ligne n'est pas vide
+                    first_chars.append(line[0])
+    except FileNotFoundError:
+        return f"Error: File not found at {file_path}"
+
+    data_to_hash = "".join(first_chars)
+    sha256_hash = hashlib.sha256(data_to_hash.encode('utf-8')).hexdigest()
+    return sha256_hash
 
 def concatenate_MSP(msp_list, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
@@ -64,11 +83,14 @@ def concatenate_csv(csv_list, progress_callback=None, total_items_callback=None,
     processed_files = 0  # Counter to track progress
 
     for file in csv_list:  # Iterate over all the CSV files
+
+        file_hash = generate_file_hash(file)
         # Read each CSV file as a DataFrame
         df = pd.read_csv(file, sep=";", quotechar='"', encoding="UTF-8", dtype=str)
-        df['filename'] = os.path.basename(file)  # Add a 'filename' column to store the filename of each record
-        df.columns = df.columns.str.lower()  # Convert all column names to lowercase
-        df = df.astype(str)  # Convert all frame data to string type
+        df['filename'] = os.path.basename(file)  # Add a 'filename' column
+        df['filehash'] = file_hash  # Add a 'filehash' column
+        df.columns = df.columns.str.lower()  # Convert column names to lowercase
+        df = df.astype(str)  # Convert all data to string type
         df_list.append(df)  # Append the DataFrame to the list
 
         # Update progress via callback if provided
