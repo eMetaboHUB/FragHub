@@ -206,6 +206,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                                                             total_items_callback=total_items_callback,
                                                             prefix_callback=prefix_callback,
                                                             item_type_callback=item_type_callback)
+
             deletion_callback(
                 f"No smiles, no inchi, no inchikey (updated): {scripts.deletion_report.no_smiles_no_inchi_no_inchikey}")
 
@@ -220,6 +221,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                                                         total_items_callback=total_items_callback,
                                                         prefix_callback=prefix_callback,
                                                         item_type_callback=item_type_callback)
+
             check_stop_flag()
 
             # STEP 7: completing missing names
@@ -231,6 +233,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                                                   total_items_callback=total_items_callback,
                                                   prefix_callback=prefix_callback,
                                                   item_type_callback=item_type_callback)
+
             check_stop_flag()
 
             # STEP 8: SPLITTING
