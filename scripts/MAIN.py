@@ -238,18 +238,19 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             check_stop_flag()
 
             # STEP 8: DE NOVO CALCULATIONS
-            time.sleep(0.01)
-            if step_callback:
-                step_callback("-- DE NOVO CALCULATIONS --")
-            time.sleep(0.01)
-            spectrum_list = de_novo_calculation(spectrum_list, progress_callback=progress_callback,
-                                                  total_items_callback=total_items_callback,
-                                                  prefix_callback=prefix_callback,
-                                                  item_type_callback=item_type_callback)
+            if parameters_dict["calculate_de_novo"] == 1.0:
+                time.sleep(0.01)
+                if step_callback:
+                    step_callback("-- DE NOVO CALCULATIONS --")
+                time.sleep(0.01)
+                spectrum_list = de_novo_calculation(spectrum_list, progress_callback=progress_callback,
+                                                      total_items_callback=total_items_callback,
+                                                      prefix_callback=prefix_callback,
+                                                      item_type_callback=item_type_callback)
 
-            check_stop_flag()
+                check_stop_flag()
 
-            # STEP 8: SPLITTING
+            # STEP 9: SPLITTING
             # -- SPLITTING [POS / NEG] --
             time.sleep(0.01)
             if step_callback:
@@ -300,7 +301,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
 
             check_stop_flag()
 
-            # STEP 9: writting output files
+            # STEP 10: writting output files
             if parameters_dict["csv"] == 1.0:
                 time.sleep(0.01)
                 if step_callback:

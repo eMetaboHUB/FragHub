@@ -14,6 +14,7 @@ from .error_handler import show_error_message
 from .tabs.tab_input import InputTab
 from .tabs.tab_output import OutputTab
 from .tabs.tab_filters import FiltersTab
+from .tabs.tab_de_novo import DeNovoTab
 from .tabs.tab_output_settings import OutputSettingTab
 from .tabs.tab_projects import ProjectsTab
 from .progress_window import ProgressWindow
@@ -61,12 +62,14 @@ class MainWindow(QMainWindow):
         self.input_tab = InputTab()
         self.output_tab = OutputTab()
         self.filters_tab = FiltersTab()
+        self.denovo_tab = DeNovoTab()
         self.output_settings_tab = OutputSettingTab()
         self.projects_tab = ProjectsTab()
 
         self.tabs.addTab(self.input_tab, "INPUT")
         self.tabs.addTab(self.output_tab, "OUTPUT")
         self.tabs.addTab(self.filters_tab, "Filters settings")
+        self.tabs.addTab(self.denovo_tab, "De Novo settings")
         self.tabs.addTab(self.output_settings_tab, "Output settings")
         self.tabs.addTab(self.projects_tab, "Projects settings")
         main_layout.addWidget(self.tabs)
