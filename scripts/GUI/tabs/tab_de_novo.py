@@ -105,7 +105,7 @@ class DeNovoTab(QWidget):
         self.toggle_de_novo.stateChanged.connect(self.on_toggle_changed)
         de_novo_layout.addWidget(self.toggle_de_novo)
 
-        label = QLabel("Calculate de novo formulas")
+        label = QLabel("Calculate fragment formula")
         label.setFont(QFont("Arial", 12))
         de_novo_layout.addWidget(label)
 
