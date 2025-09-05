@@ -240,7 +240,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             # STEP 8: DE NOVO CALCULATIONS
             time.sleep(0.01)
             if step_callback:
-                step_callback("--  DE NOVO CALCULATIONS --")
+                step_callback("-- DE NOVO CALCULATIONS --")
             time.sleep(0.01)
             spectrum_list = de_novo_calculation(spectrum_list, progress_callback=progress_callback,
                                                   total_items_callback=total_items_callback,
