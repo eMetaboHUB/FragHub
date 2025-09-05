@@ -1,3 +1,4 @@
+from scripts.GUI.utils.global_vars import parameters_dict
 from scripts.calculate_maximized_chunk_size import *
 from scripts.globals_vars import atoms_of_life
 import concurrent.futures
@@ -6,6 +7,8 @@ from numba import jit
 import pandas as pd
 import numpy as np
 import re
+
+ppm_tol = parameters_dict.get('de_novo_ppm_tolerance', 5)
 
 
 @jit(nopython=True, nogil=True)
@@ -343,7 +346,7 @@ def process_single_spectrum(spectrum_dict):
     # Étape 1 : Calculer les annotations
     # Remarque : assurez-vous que 'parse_and_annotate_spectrum' et 'atoms_of_life'
     # sont accessibles dans ce scope.
-    annotations = parse_and_annotate_spectrum(spectrum_dict, atoms_of_life, ppm_tolerance=5)
+    annotations = parse_and_annotate_spectrum(spectrum_dict, atoms_of_life, ppm_tolerance=ppm_tol)
 
     # Étape 2 : Générer la nouvelle chaîne PEAKS_LIST
     original_peak_list = spectrum_dict.get('PEAKS_LIST', "")
