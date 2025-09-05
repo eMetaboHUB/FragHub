@@ -4,6 +4,7 @@ from scripts.complete_from_pubchem_datas import *
 from scripts.convertors.parsing_to_dict import *
 from scripts.ontologies_completion import *
 from scripts.convertors.csv_to_msp import *
+from scripts.de_novo_calculation import *
 from scripts.spectrum_normalizer import *
 from scripts.duplicatas_remover import *
 from scripts.splash_generator import *
@@ -230,6 +231,18 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                 step_callback("--  ONTOLOGIES COMPLETION --")
             time.sleep(0.01)
             spectrum_list = ontologies_completion(spectrum_list, progress_callback=progress_callback,
+                                                  total_items_callback=total_items_callback,
+                                                  prefix_callback=prefix_callback,
+                                                  item_type_callback=item_type_callback)
+
+            check_stop_flag()
+
+            # STEP 8: DE NOVO CALCULATIONS
+            time.sleep(0.01)
+            if step_callback:
+                step_callback("--  DE NOVO CALCULATIONS --")
+            time.sleep(0.01)
+            spectrum_list = de_novo_calculation(spectrum_list, progress_callback=progress_callback,
                                                   total_items_callback=total_items_callback,
                                                   prefix_callback=prefix_callback,
                                                   item_type_callback=item_type_callback)
