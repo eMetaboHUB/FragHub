@@ -1,7 +1,30 @@
+import hashlib
 import ijson
 import json
 import os
 import re
+
+
+def generate_file_hash(file_path):
+    """
+    Gets the size of a file in bytes, converts it to a string,
+    and returns the SHA-256 hash of that string.
+    """
+    try:
+        # Get the size of the file in bytes
+        file_size = os.path.getsize(file_path)
+
+        # Convert the file size (an integer) to a string to be hashed
+        data_to_hash = str(file_size)
+
+        # Calculate the SHA-256 hash of the size string
+        sha256_hash = hashlib.sha256(data_to_hash.encode('utf-8')).hexdigest()
+
+        return sha256_hash
+
+    except FileNotFoundError:
+        return f"Error: File not found at {file_path}"
+
 
 def load_spectrum_list_from_msp(msp_file_path, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
@@ -16,6 +39,8 @@ def load_spectrum_list_from_msp(msp_file_path, progress_callback=None, total_ite
     Returns:
     spectrum_list (List[str]): The list of spectra read from the file, where each spectrum is represented as a string.
     """
+    file_hash = generate_file_hash(msp_file_path)
+
     # Étape 1 : Compter le nombre de spectres
     with open(msp_file_path, 'r', encoding="UTF-8") as file:
         # Compter les spectres (lignes vides)
@@ -51,7 +76,7 @@ def load_spectrum_list_from_msp(msp_file_path, progress_callback=None, total_ite
                     spectrum = '\n'.join(buffer)
                     spectrum = re.sub(
                         r"FILENAME: .*\n",
-                        f"FILENAME: {os.path.basename(msp_file_path)}\n",
+                        f"FILENAME: {os.path.basename(msp_file_path)}\nFILEHASH: {file_hash}\n",
                         spectrum,
                         flags=re.IGNORECASE
                     )
@@ -85,6 +110,8 @@ def load_spectrum_list_from_mgf(mgf_file_path, progress_callback=None, total_ite
     :param item_type_callback: A function to specify the type of items processed (optional).
     :return: The list of spectra read from the file. Each spectrum is represented as a string.
     """
+    file_hash = generate_file_hash(mgf_file_path)
+
     # Count the total number of spectra (lines with 'END IONS')
     num_spectra = sum(1 for line in open(mgf_file_path, 'r', encoding="UTF-8") if line.strip() == 'END IONS')
 
@@ -115,7 +142,7 @@ def load_spectrum_list_from_mgf(mgf_file_path, progress_callback=None, total_ite
                 if buffer:
                     # Process the buffer into a single spectrum string
                     spectrum = '\n'.join(buffer)
-                    spectrum = re.sub(r"FILENAME=.*\n", f"FILENAME={filename}\n", spectrum, flags=re.IGNORECASE)
+                    spectrum = re.sub(r"FILENAME=.*\n", f"FILENAME={filename}\nFILEHASH={file_hash}\n", spectrum, flags=re.IGNORECASE)
                     spectrum_list.append(spectrum)
                     buffer = [f"FILENAME={filename}"]  # Reset the buffer for the next spectrum
 
@@ -143,6 +170,8 @@ def load_spectrum_list_json(json_file_path, progress_callback=None, total_items_
     :param item_type_callback: A function to specify the type of items processed (optional).
     :return: A generator yielding each spectrum (a dictionary) from the JSON file, one at a time.
     """
+    file_hash = generate_file_hash(json_file_path)
+
     # Extract the filename from the given path
     filename = os.path.basename(json_file_path)
 
@@ -175,6 +204,7 @@ def load_spectrum_list_json(json_file_path, progress_callback=None, total_items_
         for spectrum in spectra:
             # Add the originating filename to the spectrum dictionary
             spectrum["filename"] = filename
+            spectrum["filehash"] = file_hash
 
             # Update progress if progress_callback is provided
             processed_items += 1
@@ -200,6 +230,7 @@ def load_spectrum_list_json_2(json_file_path, progress_callback=None, total_item
     :param item_type_callback: Une fonction pour spécifier le type d'éléments traités (optionnel).
     :return: Un générateur retournant chaque spectre (dictionnaire) du fichier JSON, un à la fois.
     """
+    file_hash = generate_file_hash(json_file_path)
 
     # Extraire le nom de fichier à partir du chemin donné
     filename = os.path.basename(json_file_path)
@@ -232,6 +263,7 @@ def load_spectrum_list_json_2(json_file_path, progress_callback=None, total_item
 
                 # Ajouter le nom du fichier d'origine au spectre
                 spectrum["filename"] = filename
+                spectrum["filehash"] = file_hash
 
                 # Mettre à jour la progression via `progress_callback` si défini
                 processed_items += 1

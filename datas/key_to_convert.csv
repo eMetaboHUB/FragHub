@@ -116,6 +116,7 @@ dbid;spectrumid
 exact_mass;exactmass
 exactmass;exactmass
 filename;filename
+filehash;filehash
 formula;formula
 fraghubid;fraghubid
 fragmenation_method;fragmentationmode

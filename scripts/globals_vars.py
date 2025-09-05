@@ -189,6 +189,7 @@ del Key_dataframe
 # =====================================================LIST=============================================================
 global keys_list
 keys_list = ['FILENAME',
+             'FILEHASH',
              'PREDICTED',
              'SPLASH',
              'SPECTRUMID',
@@ -233,3 +234,26 @@ global cpu_count
 cpu_count = os.cpu_count()  # Nombre de cœurs logiques
 
 # ======================================================================================================================
+
+atoms_of_life = {
+'H': 1.0078250322,   # Hydrogen
+'C': 12.000000,      # Carbon
+'N': 14.003074004,   # Nitrogen
+'O': 15.994914619,   # Oxygen
+'F': 18.998403162,   # Fluorine
+'Na': 22.98976928,   # Sodium
+'Mg': 23.98504170,   # Magnesium
+'P':  30.973761998,  # Phosphorus
+'S': 31.972071174,   # Sulfur
+'Cl': 34.9688527,    # Chlorine
+'K': 38.96370649,    # Potassium
+'Ca': 39.9625909,    # Calcium
+'Mn': 54.938043,     # Manganese
+'Fe': 55.934936,     # Iron
+'Co': 58.933194,     # Cobalt
+'Cu': 62.929597,     # Copper
+'Zn': 63.929142,     # Zinc
+'Br': 78.918338,     # Bromine
+'Se': 79.916522,     # Selenium
+'I': 126.90447       # Iodine
+}

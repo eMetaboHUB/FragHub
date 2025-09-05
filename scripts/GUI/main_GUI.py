@@ -3,25 +3,30 @@ import sys
 from threading import Thread
 
 from PyQt6.QtWidgets import (
-    QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QLabel, QTabWidget, QMessageBox, QApplication
+    QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel, QTabWidget, QMessageBox, QApplication
 )
-from PyQt6.QtGui import QFont, QPixmap, QIcon
+from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtCore import Qt, pyqtSignal
 
-# CORRECTION: Imports relatifs et absolus mis à jour
+# FIX: Updated relative and absolute imports
 from ..main_worker import run_main_in_worker
 from .error_handler import show_error_message
 from .tabs.tab_input import InputTab
 from .tabs.tab_output import OutputTab
 from .tabs.tab_filters import FiltersTab
+from .tabs.tab_de_novo import DeNovoTab
 from .tabs.tab_output_settings import OutputSettingTab
 from .tabs.tab_projects import ProjectsTab
 from .progress_window import ProgressWindow
+# --- ADDITION ---
+# Import the global dictionary to check selections
+from .utils.global_vars import parameters_dict
+# --- END OF ADDITION ---
 
 if getattr(sys, 'frozen', False):
     BASE_DIR = sys._MEIPASS
 else:
-    # CORRECTION: Remonte de 2 niveaux (GUI -> scripts -> racine)
+    # FIX: Go up 2 levels (GUI -> scripts -> root)
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 
@@ -41,7 +46,7 @@ class MainWindow(QMainWindow):
         main_layout = QVBoxLayout()
         banner = QLabel()
 
-        # CORRECTION: Le chemin de l'icône est maintenant construit à partir de la racine
+        # FIX: The icon path is now built from the root
         icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_icon.png")
         pixmap = QPixmap(icon_path)
 
@@ -57,12 +62,14 @@ class MainWindow(QMainWindow):
         self.input_tab = InputTab()
         self.output_tab = OutputTab()
         self.filters_tab = FiltersTab()
+        self.denovo_tab = DeNovoTab()
         self.output_settings_tab = OutputSettingTab()
         self.projects_tab = ProjectsTab()
 
         self.tabs.addTab(self.input_tab, "INPUT")
         self.tabs.addTab(self.output_tab, "OUTPUT")
         self.tabs.addTab(self.filters_tab, "Filters settings")
+        self.tabs.addTab(self.denovo_tab, "De Novo settings")
         self.tabs.addTab(self.output_settings_tab, "Output settings")
         self.tabs.addTab(self.projects_tab, "Projects settings")
         main_layout.addWidget(self.tabs)
@@ -88,6 +95,23 @@ class MainWindow(QMainWindow):
         self.task_finished_signal.connect(self.handle_task_finished)
 
     def open_progress_window(self):
+        # --- ADDITION: Check selections before starting ---
+        input_files = parameters_dict.get("input_directory")
+        output_dir = parameters_dict.get("output_directory")
+
+        missing_selections = []
+        if not input_files:
+            missing_selections.append("at least one input file")
+        if not output_dir:
+            missing_selections.append("an output directory")
+
+        if missing_selections:
+            # Build the error message and display it
+            message = "Please select " + " and ".join(missing_selections) + " before starting."
+            QMessageBox.warning(self, "Selection Required", message)
+            return  # Stop the function here if selections are missing
+        # --- END OF ADDITION ---
+
         if not self.running:
             self.showMinimized()
             self.setEnabled(False)
@@ -163,8 +187,8 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event):
         if self.running:
-            reply = QMessageBox.question(self, 'Quitter FragHub ?',
-                                         "Un traitement est en cours. Êtes-vous sûr de vouloir quitter ?",
+            reply = QMessageBox.question(self, 'Quit FragHub?',
+                                         "A process is running. Are you sure you want to quit?",
                                          QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
                                          QMessageBox.StandardButton.No)
             if reply == QMessageBox.StandardButton.Yes:

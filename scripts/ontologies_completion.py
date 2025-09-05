@@ -18,13 +18,13 @@ def ontologies_completion(spectrum_list, progress_callback=None, total_items_cal
     Returns:
     - pd.DataFrame: The enriched DataFrame with completed ontology information.
     """
-    # Ajouter les colonnes avec des valeurs par défaut 'UNKNOWN'
-    spectrum_list['CLASSYFIRE_SUPERCLASS'] = "UNKNOWN"
-    spectrum_list['CLASSYFIRE_CLASS'] = "UNKNOWN"
-    spectrum_list['CLASSYFIRE_SUBCLASS'] = "UNKNOWN"
-    spectrum_list['NPCLASS_PATHWAY'] = "UNKNOWN"
-    spectrum_list['NPCLASS_SUPERCLASS'] = "UNKNOWN"
-    spectrum_list['NPCLASS_CLASS'] = "UNKNOWN"
+    # Ajouter les colonnes avec des valeurs par défaut 'NOT FOUND'
+    spectrum_list['CLASSYFIRE_SUPERCLASS'] = "NOT FOUND"
+    spectrum_list['CLASSYFIRE_CLASS'] = "NOT FOUND"
+    spectrum_list['CLASSYFIRE_SUBCLASS'] = "NOT FOUND"
+    spectrum_list['NPCLASS_PATHWAY'] = "NOT FOUND"
+    spectrum_list['NPCLASS_SUPERCLASS'] = "NOT FOUND"
+    spectrum_list['NPCLASS_CLASS'] = "NOT FOUND"
 
     # Compter le nombre de INCHIKEY uniques dans spectrum_list
     num_keys = spectrum_list['INCHIKEY'].nunique()
