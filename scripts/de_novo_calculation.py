@@ -423,5 +423,10 @@ def de_novo_calculation(spectrum_df, progress_callback=None, total_items_callbac
             progress_callback(processed_items)
 
     # 5. Reconversion de la liste de dictionnaires en DataFrame
-    return pd.DataFrame(final_results)
+    final_df = pd.DataFrame(final_results)
+
+    # Supprimer la colonne 'annotation_results' avant de retourner le résultat.
+    # 'errors='ignore'' empêche une erreur si la colonne n'est pas trouvée.
+    return final_df.drop(columns=['annotation_results'], errors='ignore')
+
 
