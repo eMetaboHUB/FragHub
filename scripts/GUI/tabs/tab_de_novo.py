@@ -109,11 +109,11 @@ class DeNovoTab(QWidget):
         label.setFont(QFont("Arial", 12))
         de_novo_layout.addWidget(label)
 
-        warning_label = QLabel("(warning not compatible with mzMine)")
+        warning_label = QLabel("(warning not compatible with most reprocessing software)")
         warning_font = QFont("Arial", 9)
         warning_font.setItalic(True)
         warning_label.setFont(warning_font)
-        warning_label.setStyleSheet("color: #888;")
+        warning_label.setStyleSheet("color: red;")
         de_novo_layout.addWidget(warning_label)
 
         de_novo_layout.addStretch()
