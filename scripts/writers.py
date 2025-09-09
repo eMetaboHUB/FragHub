@@ -220,67 +220,86 @@ def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico,
     del NEG_GC_df_insilico
 
 
-def write_json(df, filename, mode, output_directory, progress_callback=None, total_items_callback=None,
+def write_json(df: pd.DataFrame, filename, mode, output_directory,
+               progress_callback=None, total_items_callback=None,
                prefix_callback=None, item_type_callback=None):
     """
-    Write DataFrame to a JSON file.
-    :param df: The DataFrame to be written.
-    :type df: pandas.DataFrame
-    :param filename: The name of the output file.
-    :type filename: str
-    :param mode: The mode for opening the output file. e.g., 'w', 'a'.
-    :type mode: str
-    :param profile_name: The name of the profile.
-    :type profile_name: str
-    :param progress_callback: Callback to report progress.
-    :param total_items_callback: Callback to set total items count.
-    :param prefix_callback: Callback to define a prefix or task description.
-    :param item_type_callback: Callback to specify the type of items being processed.
-    :return: None
+    Writes a DataFrame to a "pretty" JSON file by processing and writing
+    each record one by one (streaming). Peak lists are compacted
+    onto a single line.
     """
+    output_path = os.path.join(output_directory, "JSON", mode)
+    os.makedirs(output_path, exist_ok=True)
+    output_file_path = os.path.join(output_path, filename)
 
-    # Définir le chemin du fichier de sortie
-    output_file_path = f"{output_directory}/JSON/{mode}/{filename}"
-
-    # Convertir le DataFrame en une liste de dictionnaires
-    json_records = df.to_dict('records')
-
-    # Si un prefix_callback est défini, indiquer la tâche actuelle
     if prefix_callback:
         prefix_callback(f"Writing {filename} to JSON:")
-
-    # Définir le type d'éléments avec le callback item_type_callback
     if item_type_callback:
         item_type_callback("rows")
 
-    # Déclarer le nombre total d'enregistrements à traiter
-    total_records = len(json_records)
+    records = df.to_dict('records')
+    total_records = len(records)
     if total_items_callback:
-        total_items_callback(total_records, 0)  # Initialiser les éléments traités à 0
+        total_items_callback(total_records, 0)
 
-    # Ouvrir le fichier pour écrire
-    with open(output_file_path, 'w') as f:
-        # Écrire le crochet ouvrant pour démarrer le tableau JSON
-        f.write('[\n')
+    try:
+        with open(output_file_path, 'w', encoding='utf-8') as f:
+            f.write('[\n')
 
-        # Parcourir les enregistrements convertis
-        for i, record in enumerate(json_records):
-            # Écrire une tabulation pour l'indentation
-            f.write('\t')
+            for i, item in enumerate(records):
+                # --- STEP 1: Process data for a single record ---
+                try:
+                    # MODIFICATION: Check if the key exists AND the value is not empty before converting.
+                    # The .get() method returns a value that evaluates to False if it is None or an empty string ''.
+                    if item.get('MSLEVEL'): item['MSLEVEL'] = int(item['MSLEVEL'])
+                    if item.get('PRECURSORMZ'): item['PRECURSORMZ'] = float(item['PRECURSORMZ'])
+                    if item.get('RT'): item['RT'] = float(item['RT'])
+                    if item.get('ENTROPY'): item['ENTROPY'] = float(item['ENTROPY'])
+                except (ValueError, TypeError):
+                    pass
 
-            # Écrire le dictionnaire sous forme de chaîne JSON
-            json.dump(record, f)
+                num_peaks_str = item.pop('NUM PEAKS', '0')
+                peaks_list_str = item.pop('PEAKS_LIST', '')
+                try:
+                    num_peaks_int = int(num_peaks_str)
+                except (ValueError, TypeError):
+                    num_peaks_int = 0
 
-            # Ajouter une virgule à la fin, sauf pour le dernier élément
-            if i < total_records - 1:
-                f.write(',\n')
+                peaks_array = []
+                if isinstance(peaks_list_str, str) and peaks_list_str:
+                    for pair in peaks_list_str.strip().split(';'):
+                        values = pair.split()
+                        if len(values) == 2:
+                            try:
+                                peaks_array.append([float(values[0]), float(values[1])])
+                            except ValueError:
+                                continue
+                item['NUM PEAKS'] = num_peaks_int
+                item['PEAKS_LIST'] = peaks_array
 
-            # S'il y a un callback de progression, l'appeler pour mettre à jour la progression
-            if progress_callback:
-                progress_callback(i + 1)  # Mise à jour avec l'index actuel (commençant à 1)
+                # --- STEP 2: Generate the string for this record ---
+                item_str_pretty = json.dumps(item, indent=4, ensure_ascii=False)
+                item_str_compacted = re.sub(
+                    r'\[\n\s*(-?[\d\.eE\+\-]+),\n\s*(-?[\d\.eE\+\-]+)\n\s*\]',
+                    r'[\1, \2]',
+                    item_str_pretty
+                )
 
-        # Écrire le crochet fermant pour terminer le tableau JSON
-        f.write('\n]')
+                # --- STEP 3: Indent the block and write ---
+                indented_str = '  ' + item_str_compacted.replace('\n', '\n  ')
+                f.write(indented_str)
+
+                if i < total_records - 1:
+                    f.write(',\n')
+                else:
+                    f.write('\n')
+
+                if progress_callback:
+                    progress_callback(i + 1)
+
+            f.write(']')
+    except IOError as e:
+        print(f"Error writing to file {output_file_path}: {e}")
 
 
 def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
