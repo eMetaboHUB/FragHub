@@ -247,10 +247,8 @@ def write_json(df: pd.DataFrame, filename, mode, output_directory,
             f.write('[\n')
 
             for i, item in enumerate(records):
-                # --- STEP 1: Process data for a single record ---
+                # --- Process data for a single record ---
                 try:
-                    # MODIFICATION: Check if the key exists AND the value is not empty before converting.
-                    # The .get() method returns a value that evaluates to False if it is None or an empty string ''.
                     if item.get('MSLEVEL'): item['MSLEVEL'] = int(item['MSLEVEL'])
                     if item.get('PRECURSORMZ'): item['PRECURSORMZ'] = float(item['PRECURSORMZ'])
                     if item.get('RT'): item['RT'] = float(item['RT'])
@@ -268,24 +266,41 @@ def write_json(df: pd.DataFrame, filename, mode, output_directory,
                 peaks_array = []
                 if isinstance(peaks_list_str, str) and peaks_list_str:
                     for pair in peaks_list_str.strip().split(';'):
-                        values = pair.split()
-                        if len(values) == 2:
+                        # Split into a maximum of 3 parts (m/z, intensity, formula)
+                        values = pair.split(maxsplit=2)
+
+                        if len(values) >= 2:
                             try:
-                                peaks_array.append([float(values[0]), float(values[1])])
+                                mz = float(values[0])
+                                intensity = float(values[1])
+
+                                if len(values) == 3:
+                                    peaks_array.append([mz, intensity, values[2]])
+                                else:
+                                    peaks_array.append([mz, intensity])
                             except ValueError:
+                                # Skip this malformed pair if number conversion fails
                                 continue
+
                 item['NUM PEAKS'] = num_peaks_int
                 item['PEAKS_LIST'] = peaks_array
 
-                # --- STEP 2: Generate the string for this record ---
+                # --- Generate and format the JSON string for this record ---
                 item_str_pretty = json.dumps(item, indent=4, ensure_ascii=False)
+
+                # Compact multi-line peak lists (3-element then 2-element) onto single lines
+                item_str_compacted = re.sub(
+                    r'\[\n\s*(-?[\d\.eE\+\-]+),\n\s*(-?[\d\.eE\+\-]+),\n\s*"(.*?)"\n\s*\]',
+                    r'[\1, \2, "\3"]',
+                    item_str_pretty
+                )
                 item_str_compacted = re.sub(
                     r'\[\n\s*(-?[\d\.eE\+\-]+),\n\s*(-?[\d\.eE\+\-]+)\n\s*\]',
                     r'[\1, \2]',
-                    item_str_pretty
+                    item_str_compacted
                 )
 
-                # --- STEP 3: Indent the block and write ---
+                # --- Indent the entire record block and write to file ---
                 indented_str = '  ' + item_str_compacted.replace('\n', '\n  ')
                 f.write(indented_str)
 
