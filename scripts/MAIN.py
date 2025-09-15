@@ -4,6 +4,7 @@ from scripts.complete_from_pubchem_datas import *
 from scripts.convertors.parsing_to_dict import *
 from scripts.ontologies_completion import *
 from scripts.convertors.csv_to_msp import *
+from scripts.de_novo_calculation import *
 from scripts.spectrum_normalizer import *
 from scripts.duplicatas_remover import *
 from scripts.splash_generator import *
@@ -24,6 +25,7 @@ class InterruptedError(Exception):
 
 
 ordered_columns = ["FILENAME",
+                   "FILEHASH",
                    "PREDICTED",
                    "SPLASH",
                    "SPECTRUMID",
@@ -205,6 +207,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                                                             total_items_callback=total_items_callback,
                                                             prefix_callback=prefix_callback,
                                                             item_type_callback=item_type_callback)
+
             deletion_callback(
                 f"No smiles, no inchi, no inchikey (updated): {scripts.deletion_report.no_smiles_no_inchi_no_inchikey}")
 
@@ -219,6 +222,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                                                         total_items_callback=total_items_callback,
                                                         prefix_callback=prefix_callback,
                                                         item_type_callback=item_type_callback)
+
             check_stop_flag()
 
             # STEP 7: completing missing names
@@ -230,9 +234,23 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                                                   total_items_callback=total_items_callback,
                                                   prefix_callback=prefix_callback,
                                                   item_type_callback=item_type_callback)
+
             check_stop_flag()
 
-            # STEP 8: SPLITTING
+            # STEP 8: DE NOVO CALCULATIONS
+            if parameters_dict["calculate_de_novo"] == 1.0:
+                time.sleep(0.01)
+                if step_callback:
+                    step_callback("-- DE NOVO CALCULATIONS --")
+                time.sleep(0.01)
+                spectrum_list = de_novo_calculation(spectrum_list, progress_callback=progress_callback,
+                                                      total_items_callback=total_items_callback,
+                                                      prefix_callback=prefix_callback,
+                                                      item_type_callback=item_type_callback)
+
+                check_stop_flag()
+
+            # STEP 9: SPLITTING
             # -- SPLITTING [POS / NEG] --
             time.sleep(0.01)
             if step_callback:
@@ -283,7 +301,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
 
             check_stop_flag()
 
-            # STEP 9: writting output files
+            # STEP 10: writting output files
             if parameters_dict["csv"] == 1.0:
                 time.sleep(0.01)
                 if step_callback:

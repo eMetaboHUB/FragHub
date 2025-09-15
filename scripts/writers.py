@@ -6,51 +6,53 @@ import time
 import os
 import re
 
-def write_msp(spectrum_list, filename, mode, update, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+def write_msp(spectrum_list, filename, mode, update, output_directory, progress_callback=None, total_items_callback=None,
+              prefix_callback=None, item_type_callback=None):
     """
-    Write an MSP file.
+    Write MSP file.
     :param spectrum_list: A list of spectra to be written to the MSP file.
     :param filename: The name of the output file.
-    :param mode: The mode of writing (either 'w' for writing or 'a' for appending).
+    :param mode: The mode of writing (either 'w' for write or 'a' for append).
     :param update: Boolean value indicating whether to update the existing file or create a new one.
-    :param progress_callback: Callback function to report progress.
-    :param total_items_callback: Callback function to set the total number of items.
-    :param prefix_callback: Callback function to provide the context/task prefix.
-    :param item_type_callback: Callback function to specify the type of items (e.g., "spectra").
+    :param profile_name: The name of the profile being used.
+    :param progress_callback: Callback for reporting progress.
+    :param total_items_callback: Callback for setting the total number of items.
+    :param prefix_callback: Callback to set the prefix for context/task.
+    :param item_type_callback: Callback for specifying the type of items (e.g., "row").
     :return: None
     """
 
-    # Handle the output path
+    # Gérer le chemin de sortie
     output_file_path = f"{output_directory}/MSP/{mode}/{filename}"
 
-    # Set the context of the operation using the prefix_callback
+    # Donne le contexte du traitement avec le prefix_callback
     if prefix_callback:
         prefix_callback(f"Writing {filename} to MSP:")
 
-    # Specify the type of items with the item_type_callback
+    # Indiquer le type d'éléments avec le item_type_callback
     if item_type_callback:
         item_type_callback("spectra")
 
-    # Initialize the total items using total_items_callback
+    # Initialiser le total d'éléments avec le total_items_callback
     total_spectra = len(spectrum_list)
     if total_items_callback:
-        total_items_callback(total_spectra, 0)  # Initialize with 0 progress
+        total_items_callback(total_spectra, 0)  # Initialisation à 0 progressé
 
-    # Open the file for writing spectra
+    # Ouvrir le fichier pour écrire les spectres
     file_mode = 'a' if update else 'w'
     with open(output_file_path, file_mode, encoding="UTF-8") as f:
-        # Iterate through each spectrum in the list
+        # Parcourir chaque spectre dans la liste
         for index, spectrum in enumerate(spectrum_list):
             try:
-                # Write the spectrum to the file
+                # Écrire le spectre dans le fichier
                 f.write(spectrum)
                 f.write("\n\n")
 
-                # Update progress using the callback after each write
+                # Mettre à jour les callbacks après chaque écriture
                 if progress_callback:
-                    progress_callback(index + 1)  # Signal progress (current line)
+                    progress_callback(index + 1)  # Signal progress (ligne actuelle)
             except Exception as e:
-                # If an error occurs, skip the spectrum but log the issue if necessary
+                # En cas d'erreur, ignorer le spectre, mais signaler les problèmes si nécessaire
                 print(f"Error writing spectrum {index}: {e}")
                 continue
 
@@ -104,7 +106,8 @@ def writting_msp(POS_LC, POS_LC_insilico, POS_GC, POS_GC_insilico, NEG_LC, NEG_L
     del NEG_GC_insilico
 
 
-def write_csv(df, filename, mode, update, first_run, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+def write_csv(df, filename, mode, update, first_run, output_directory, progress_callback=None, total_items_callback=None,
+              prefix_callback=None, item_type_callback=None):
     """
     This function writes a pandas DataFrame to a CSV file in chunks.
     :param df: DataFrame - the data to be written to the CSV file.
@@ -217,64 +220,101 @@ def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico,
     del NEG_GC_df_insilico
 
 
-def write_json(df, filename, mode, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+def write_json(df: pd.DataFrame, filename, mode, output_directory,
+               progress_callback=None, total_items_callback=None,
+               prefix_callback=None, item_type_callback=None):
     """
-    Write a DataFrame to a JSON file.
-    :param df: The DataFrame to be written.
-    :type df: pandas.DataFrame
-    :param filename: The name of the output file.
-    :type filename: str
-    :param mode: The mode for opening the output file, e.g., 'w', 'a'.
-    :type mode: str
-    :param progress_callback: Callback to report progress.
-    :param total_items_callback: Callback to set the total number of items.
-    :param prefix_callback: Callback to define a prefix or task description.
-    :param item_type_callback: Callback to specify the type of items being processed.
-    :return: None
+    Writes a DataFrame to a "pretty" JSON file by processing and writing
+    each record one by one (streaming). Peak lists are compacted
+    onto a single line.
     """
+    output_path = os.path.join(output_directory, "JSON", mode)
+    os.makedirs(output_path, exist_ok=True)
+    output_file_path = os.path.join(output_path, filename)
 
-    # Define the output file path
-    output_file_path = f"{output_directory}/JSON/{mode}/{filename}"
-
-    # Convert the DataFrame to a list of dictionaries
-    json_records = df.to_dict('records')
-
-    # If a prefix_callback is defined, set the current task context
     if prefix_callback:
         prefix_callback(f"Writing {filename} to JSON:")
-
-    # Set the type of items using the item_type_callback
     if item_type_callback:
         item_type_callback("rows")
 
-    # Declare the total number of records to process
-    total_records = len(json_records)
+    records = df.to_dict('records')
+    total_records = len(records)
     if total_items_callback:
-        total_items_callback(total_records, 0)  # Initialize with 0 processed items
+        total_items_callback(total_records, 0)
 
-    # Open the file to write
-    with open(output_file_path, 'w') as f:
-        # Write the opening bracket to start the JSON array
-        f.write('[\n')
+    try:
+        with open(output_file_path, 'w', encoding='utf-8') as f:
+            f.write('[\n')
 
-        # Iterate through the converted records
-        for i, record in enumerate(json_records):
-            # Write a tab for indentation
-            f.write('\t')
+            for i, item in enumerate(records):
+                # --- Process data for a single record ---
+                try:
+                    if item.get('MSLEVEL'): item['MSLEVEL'] = int(item['MSLEVEL'])
+                    if item.get('PRECURSORMZ'): item['PRECURSORMZ'] = float(item['PRECURSORMZ'])
+                    if item.get('RT'): item['RT'] = float(item['RT'])
+                    if item.get('ENTROPY'): item['ENTROPY'] = float(item['ENTROPY'])
+                except (ValueError, TypeError):
+                    pass
 
-            # Write the dictionary as a JSON string
-            json.dump(record, f)
+                num_peaks_str = item.pop('NUM PEAKS', '0')
+                peaks_list_str = item.pop('PEAKS_LIST', '')
+                try:
+                    num_peaks_int = int(num_peaks_str)
+                except (ValueError, TypeError):
+                    num_peaks_int = 0
 
-            # Add a comma at the end, except for the last element
-            if i < total_records - 1:
-                f.write(',\n')
+                peaks_array = []
+                if isinstance(peaks_list_str, str) and peaks_list_str:
+                    for pair in peaks_list_str.strip().split(';'):
+                        # Split into a maximum of 3 parts (m/z, intensity, formula)
+                        values = pair.split(maxsplit=2)
 
-            # If a progress_callback is defined, call it to update the progress
-            if progress_callback:
-                progress_callback(i + 1)  # Update with the current index (starting from 1)
+                        if len(values) >= 2:
+                            try:
+                                mz = float(values[0])
+                                intensity = float(values[1])
 
-        # Write the closing bracket to end the JSON array
-        f.write('\n]')
+                                if len(values) == 3:
+                                    peaks_array.append([mz, intensity, values[2]])
+                                else:
+                                    peaks_array.append([mz, intensity])
+                            except ValueError:
+                                # Skip this malformed pair if number conversion fails
+                                continue
+
+                item['NUM PEAKS'] = num_peaks_int
+                item['PEAKS_LIST'] = peaks_array
+
+                # --- Generate and format the JSON string for this record ---
+                item_str_pretty = json.dumps(item, indent=4, ensure_ascii=False)
+
+                # Compact multi-line peak lists (3-element then 2-element) onto single lines
+                item_str_compacted = re.sub(
+                    r'\[\n\s*(-?[\d\.eE\+\-]+),\n\s*(-?[\d\.eE\+\-]+),\n\s*"(.*?)"\n\s*\]',
+                    r'[\1, \2, "\3"]',
+                    item_str_pretty
+                )
+                item_str_compacted = re.sub(
+                    r'\[\n\s*(-?[\d\.eE\+\-]+),\n\s*(-?[\d\.eE\+\-]+)\n\s*\]',
+                    r'[\1, \2]',
+                    item_str_compacted
+                )
+
+                # --- Indent the entire record block and write to file ---
+                indented_str = '  ' + item_str_compacted.replace('\n', '\n  ')
+                f.write(indented_str)
+
+                if i < total_records - 1:
+                    f.write(',\n')
+                else:
+                    f.write('\n')
+
+                if progress_callback:
+                    progress_callback(i + 1)
+
+            f.write(']')
+    except IOError as e:
+        print(f"Error writing to file {output_file_path}: {e}")
 
 
 def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
