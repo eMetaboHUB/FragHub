@@ -40,7 +40,7 @@ class MainWindow(QMainWindow):
             Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint
         )
         self.MAIN_function = main_function_ref
-        self.setWindowTitle("FragHub 1.3.2")
+        self.setWindowTitle("FragHub 1.4.0")
         self.setGeometry(100, 100, 1280, 720)
 
         main_layout = QVBoxLayout()
