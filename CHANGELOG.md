@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 
 
+- **15_09_2025**:
+  - replace UNKNOWN by NOT FOUND for missing value
+  - improve JSON output with pretty humane-readable JSON.
+  - adding De Novo fragments formula calculations.
+  - adding safety checks to the GUI start button.
+  - adding file hash to spectrums (SHA-256 of the file size).
+  - disabling automatic instrument deduction (e.g., inferring LC if ESI is found).
+
 - **05_06_2025**:
   - replace RETENTIONTIME default field by RT.
   - Return to the main window when FINISH is pressed.
