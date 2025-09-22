@@ -6,7 +6,7 @@
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![Required_Python](https://img.shields.io/badge/Python-3.12-blue)
 ![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC--BY--NC%204.0-lightgrey)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15421997.svg)](https://doi.org/10.5281/zenodo.15421997)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17167225.svg)](https://doi.org/10.5281/zenodo.17167225)
 
 ## INSTALL INSTRUCTIONS BELLOW
 [See install instructions](#installation)
@@ -27,9 +27,9 @@ Key features:<br>
 
 ## INSTALLATION
 1) Download FragHub executable corresponding to your OS HERE:<br>
-   **Windows** x64: [Download Windows x64 Installer](https://zenodo.org/records/15607334/files/FragHub_1.4.0_setup_windows_x64.exe?download=1)<br>
-   **Linux** x64: [Download Linux x64 Installer](https://zenodo.org/records/15607334/files/FragHub_1.4.0_setup_Linux_x64?download=1)<br>
-   **macOS** arm64: [Download macOS arm64 Installer](https://zenodo.org/records/15607334/files/FragHub1.4.0.dmg?download=1) (Execute commande 'xattr -cr FragHub_macOS_1.4.0.app' in terminal after download)<br>
+   **Windows** x64: [Download Windows x64 Installer](https://zenodo.org/api/records/17176165/draft/files/FragHub_1.4.0_setup_windows_x64.exe/content)<br>
+   **Linux** x64: [Download Linux x64 Installer](https://zenodo.org/api/records/17176165/draft/files/FragHub_1.4.0_setup_Linux_x64/content)<br>
+   **macOS** arm64: **_Coming soon_** (Execute commande 'xattr -cr FragHub_macOS_1.4.0.app' in terminal after download)<br>
 2) Execute setup installer (macOS: drag to App)
 3) select installation folder
 4) click install

@@ -123,6 +123,8 @@ def concatenate_csv(csv_list, progress_callback=None, total_items_callback=None,
         # 2. Use the detected separator in pd.read_csv
         df = pd.read_csv(file, sep=separator, quotechar='"', encoding="UTF-8", dtype=str)
 
+        df.columns = df.columns.str.lower()
+
         if 'filename' not in df.columns:
             df['filename'] = os.path.basename(file)
 
