@@ -57,26 +57,48 @@ def concatenate_MSP(msp_list, progress_callback=None, total_items_callback=None,
 
 def detect_separator(file_path):
     """
-    Détecte si le séparateur d'un fichier est un point-virgule (;) ou une tabulation (\t)
-    en lisant la première ligne.
-    :param file_path: Chemin vers le fichier.
-    :return: Le séparateur détecté ('\t' ou ';'). Par défaut, renvoie ';'.
+    Detects if the separator is a semicolon (;) or a tab (\t) by counting
+    occurrences on the first line and returns the most frequent one.
+
+    :param file_path: Path to the file.
+    :return: The detected separator ('\t' or ';'). Defaults to ';'.
     """
     try:
         with open(file_path, 'r', encoding='UTF-8') as f:
             first_line = f.readline()
-            if '\t' in first_line:
+
+            # If the file or the line is empty, return the default.
+            if not first_line:
+                return ';'
+
+            # Directly count the occurrences of the two delimiters.
+            tab_count = first_line.count('\t')
+            semicolon_count = first_line.count(';')
+
+            # Return the tab if it is strictly more frequent.
+            if tab_count > semicolon_count:
                 return '\t'
+
+            # In all other cases (more ';', a tie, or neither is found),
+            # the semicolon is the returned separator (default behavior).
+            return ';'
+
     except Exception:
-        # En cas d'erreur (fichier vide, etc.), on retourne le séparateur par défaut.
-        pass
-    return ';'
+        # In case of a file reading error, also return the default separator.
+        return ';'
 
 
 def concatenate_csv(csv_list, progress_callback=None, total_items_callback=None, prefix_callback=None,
                     item_type_callback=None):
     """
-    Concatène plusieurs fichiers CSV en un seul DataFrame, avec support pour le rapport de progression via des callbacks.
+    Concatenates multiple CSV files into a single DataFrame, with support for progress reporting via callbacks.
+
+    :param csv_list: List of paths to CSV files to be concatenated.
+    :param progress_callback: A function to update the progress (optional).
+    :param total_items_callback: A function to set the total number of items (optional).
+    :param prefix_callback: A function to dynamically set the prefix for the operation (optional).
+    :param item_type_callback: A function to specify the type of items processed (optional).
+    :return: Concatenated DataFrame.
     """
     total_files = len(csv_list)
 
@@ -95,10 +117,10 @@ def concatenate_csv(csv_list, progress_callback=None, total_items_callback=None,
     for file in csv_list:
         file_hash = generate_file_hash(file)
 
-        # 1. Détecter le séparateur avant de lire le fichier
+        # 1. Detect the separator before reading the file
         separator = detect_separator(file)
 
-        # 2. Utiliser le séparateur détecté dans pd.read_csv
+        # 2. Use the detected separator in pd.read_csv
         df = pd.read_csv(file, sep=separator, quotechar='"', encoding="UTF-8", dtype=str)
 
         df['filename'] = os.path.basename(file)
