@@ -334,7 +334,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                 if step_callback:
                     step_callback("--  WRITING JSON --")
                 time.sleep(0.01)
-                writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df,
+                writting_json(update, POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df,
                               NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, output_directory,
                               progress_callback=progress_callback, total_items_callback=total_items_callback,
                               prefix_callback=prefix_callback, item_type_callback=item_type_callback)

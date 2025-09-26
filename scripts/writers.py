@@ -220,13 +220,16 @@ def writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico,
     del NEG_GC_df_insilico
 
 
-def write_json(df: pd.DataFrame, filename, mode, output_directory,
+def write_json(update: bool, df: pd.DataFrame, filename: str, mode: str, output_directory: str,
                progress_callback=None, total_items_callback=None,
                prefix_callback=None, item_type_callback=None):
     """
     Writes a DataFrame to a "pretty" JSON file by processing and writing
     each record one by one (streaming). Peak lists are compacted
     onto a single line.
+
+    :param update: If True, appends data to an existing file.
+                   Otherwise, overwrites or creates the file.
     """
     output_path = os.path.join(output_directory, "JSON", mode)
     os.makedirs(output_path, exist_ok=True)
@@ -242,10 +245,24 @@ def write_json(df: pd.DataFrame, filename, mode, output_directory,
     if total_items_callback:
         total_items_callback(total_records, 0)
 
-    try:
-        with open(output_file_path, 'w', encoding='utf-8') as f:
-            f.write('[\n')
+    # Determine if we are in "append" mode on an existing, non-empty file.
+    # An empty JSON file like '[]' has a size of 2 bytes.
+    is_append_mode = update and os.path.exists(output_file_path) and os.path.getsize(output_file_path) > 2
+    open_mode = 'r+' if is_append_mode else 'w'
 
+    try:
+        with open(output_file_path, open_mode, encoding='utf-8') as f:
+            if is_append_mode:
+                # If appending, move before the last ']' to add a comma.
+                # We assume the file ends with '\n]'.
+                f.seek(0, os.SEEK_END)  # Go to the end of the file.
+                f.seek(f.tell() - 2)  # Move back 2 characters.
+                f.write(',\n')  # Overwrite '\n]' with ',\n' to prepare for appending.
+            else:
+                # If it's a new file, write the start of the JSON array.
+                f.write('[\n')
+
+            # --- Main loop to write each record ---
             for i, item in enumerate(records):
                 # --- Process data for a single record ---
                 try:
@@ -266,41 +283,31 @@ def write_json(df: pd.DataFrame, filename, mode, output_directory,
                 peaks_array = []
                 if isinstance(peaks_list_str, str) and peaks_list_str:
                     for pair in peaks_list_str.strip().split(';'):
-                        # Split into a maximum of 3 parts (m/z, intensity, formula)
                         values = pair.split(maxsplit=2)
-
                         if len(values) >= 2:
                             try:
                                 mz = float(values[0])
                                 intensity = float(values[1])
-
                                 if len(values) == 3:
                                     peaks_array.append([mz, intensity, values[2]])
                                 else:
                                     peaks_array.append([mz, intensity])
                             except ValueError:
-                                # Skip this malformed pair if number conversion fails
                                 continue
 
                 item['NUM PEAKS'] = num_peaks_int
                 item['PEAKS_LIST'] = peaks_array
 
-                # --- Generate and format the JSON string for this record ---
+                # --- Generate and format the JSON string ---
                 item_str_pretty = json.dumps(item, indent=4, ensure_ascii=False)
-
-                # Compact multi-line peak lists (3-element then 2-element) onto single lines
                 item_str_compacted = re.sub(
                     r'\[\n\s*(-?[\d\.eE\+\-]+),\n\s*(-?[\d\.eE\+\-]+),\n\s*"(.*?)"\n\s*\]',
-                    r'[\1, \2, "\3"]',
-                    item_str_pretty
-                )
+                    r'[\1, \2, "\3"]', item_str_pretty)
                 item_str_compacted = re.sub(
                     r'\[\n\s*(-?[\d\.eE\+\-]+),\n\s*(-?[\d\.eE\+\-]+)\n\s*\]',
-                    r'[\1, \2]',
-                    item_str_compacted
-                )
+                    r'[\1, \2]', item_str_compacted)
 
-                # --- Indent the entire record block and write to file ---
+                # --- Indent the block and write to file ---
                 indented_str = '  ' + item_str_compacted.replace('\n', '\n  ')
                 f.write(indented_str)
 
@@ -312,12 +319,14 @@ def write_json(df: pd.DataFrame, filename, mode, output_directory,
                 if progress_callback:
                     progress_callback(i + 1)
 
+            # At the end, close the JSON array.
             f.write(']')
+
     except IOError as e:
         print(f"Error writing to file {output_file_path}: {e}")
 
 
-def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+def writting_json(update, POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico, POS_GC_df_insilico, NEG_LC_df_insilico, NEG_GC_df_insilico, output_directory, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     Write dataframes to JSON files.
     :param POS_LC_df: Positive LC dataframe
@@ -334,50 +343,50 @@ def writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_df_insilico
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Positive LC DataFrame to a JSON file named "POS_LC.json"
-    write_json(POS_LC_df, "POS_LC.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(update, POS_LC_df, "POS_LC.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     # Deleting the DataFrame from memory as it's no longer needed
     del POS_LC_df
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Positive GC DataFrame to a JSON file named "POS_GC.json"
-    write_json(POS_GC_df, "POS_GC.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(update, POS_GC_df, "POS_GC.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_df
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Negative LC DataFrame to a JSON file named "NEG_LC.json"
-    write_json(NEG_LC_df, "NEG_LC.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(update, NEG_LC_df, "NEG_LC.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_df
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Negative GC DataFrame to a JSON file named "NEG_GC.json"
-    write_json(NEG_GC_df, "NEG_GC.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(update, NEG_GC_df, "NEG_GC.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_GC_df
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Positive In Silico LC DataFrame to a JSON file named "POS_LC_In_Silico.json"
-    write_json(POS_LC_df_insilico, "POS_LC_In_Silico.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(update, POS_LC_df_insilico, "POS_LC_In_Silico.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_LC_df_insilico
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Positive In Silico GC DataFrame to a JSON file named "POS_GC_In_Silico.json"
-    write_json(POS_GC_df_insilico, "POS_GC_In_Silico.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(update, POS_GC_df_insilico, "POS_GC_In_Silico.json", "POS", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del POS_GC_df_insilico
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Negative In Silico LC DataFrame to a JSON file named "NEG_LC_In_Silico.json"
-    write_json(NEG_LC_df_insilico, "NEG_LC_In_Silico.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(update, NEG_LC_df_insilico, "NEG_LC_In_Silico.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
     del NEG_LC_df_insilico
 
     time.sleep(0.1)  # Providing a short delay to ensure smooth execution of next command
 
     # Write the Negative In Silico GC DataFrame to a JSON file named "NEG_GC_In_Silico.json"
-    write_json(NEG_GC_df_insilico, "NEG_GC_In_Silico.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    write_json(update, NEG_GC_df_insilico, "NEG_GC_In_Silico.json", "NEG", output_directory, progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
     # Deleting the DataFrame from memory as it's no longer needed
     del NEG_GC_df_insilico
