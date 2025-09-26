@@ -7,6 +7,19 @@ from scripts.peaks_filters.reduce_peak_list import *
 import scripts.deletion_report
 import numpy as np
 
+def remove_non_positive_peaks(peak_array: np.ndarray) -> np.ndarray:
+    """
+    Supprime les pics dont l'intensité est inférieure ou égale à zéro.
+
+    :param peak_array: Un tableau NumPy contenant les données des pics. La première colonne
+                       doit contenir les valeurs m/z et la deuxième colonne les intensités.
+
+    :return: Le tableau NumPy filtré qui inclut uniquement les pics avec une intensité
+             strictement positive.
+    """
+    # Conserve uniquement les lignes où la valeur de la deuxième colonne (intensité) est > 0
+    return peak_array[peak_array[:, 1] > 0]
+
 def apply_filters(spectrum, peak_array, precursormz, parameters_dict):
     """
     Function to apply various filters on a given peak_array according to the provided parameters.
@@ -23,6 +36,8 @@ def apply_filters(spectrum, peak_array, precursormz, parameters_dict):
     mz_to = parameters_dict['keep_mz_in_range_to_mz']
     intensity_percent = parameters_dict['check_minimum_of_high_peaks_requiered_intensity_percent']
     no_peaks = parameters_dict['check_minimum_of_high_peaks_requiered_no_peaks']
+
+    peak_array = remove_non_positive_peaks(peak_array)
 
     # apply filters in a sequence
     if parameters_dict['check_minimum_peak_requiered'] == 1.0:
