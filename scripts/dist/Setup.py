@@ -214,7 +214,7 @@ class InstallerApp(QWidget):
 
         # Vérifier si le fichier a été trouvé
         if not zip_path or not zip_path.exists():
-            self.selected_dir_label.setText("FragHub_1.4.0.zip not found!")
+            self.selected_dir_label.setText("FragHub_1.4.1.zip not found!")
             return
 
         install_dir = Path(self.selected_directory)
@@ -324,7 +324,7 @@ class InstallerApp(QWidget):
             self.selected_dir_label.setText("Target for shortcut not found!")
             return
 
-        self.create_windows_shortcut(desktop / "FragHub_1.4.0.lnk", target)
+        self.create_windows_shortcut(desktop / "FragHub_1.4.1.lnk", target)
 
     def create_windows_shortcut(self, shortcut_path, target):
         """Creates a Windows shortcut."""
