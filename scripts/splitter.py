@@ -1,4 +1,5 @@
 import scripts.global_report
+import pandas as pd
 import re
 
 def split_pos_neg(CONCATENATE_DF, progress_callback=None, total_items_callback=None, prefix_callback=None,
@@ -68,25 +69,42 @@ def split_LC_GC(POS, NEG, progress_callback=None, total_items_callback=None, pre
     if total_items_callback:
         total_items_callback(total_rows, 0)  # Report total and initialize completed items to 0
 
-    # Splitting positive GC spectrums
-    POS_GC = POS[POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-    if progress_callback:
-        progress_callback(len(POS_GC))  # Update progress after processing positive GC
+    # --- MODIFICATION START ---
 
-    # Splitting positive LC spectrums
-    POS_LC = POS[~POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-    if progress_callback:
-        progress_callback(len(POS))  # Update progress after processing all positive spectrums
+    # Initialize empty DataFrames with the same columns as the inputs.
+    # This ensures they have the correct structure from the start.
+    POS_LC = pd.DataFrame()
+    POS_GC = pd.DataFrame()
+    NEG_LC = pd.DataFrame()
+    NEG_GC = pd.DataFrame()
 
-    # Splitting negative GC spectrums
-    NEG_GC = NEG[NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-    if progress_callback:
-        progress_callback(len(POS) + len(NEG_GC))  # Update progress after processing negative GC
+    # Process POS DataFrame only if it contains data
+    if not POS.empty:
+        # Splitting positive GC spectrums
+        POS_GC = POS[POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False, na=False)]
+        if progress_callback:
+            progress_callback(len(POS_GC))
 
-    # Splitting negative LC spectrums
-    NEG_LC = NEG[~NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
+        # Splitting positive LC spectrums
+        POS_LC = POS[~POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False, na=False)]
+        if progress_callback:
+            progress_callback(len(POS))
+
+    # Process NEG DataFrame only if it contains data
+    if not NEG.empty:
+        # Splitting negative GC spectrums
+        NEG_GC = NEG[NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False, na=False)]
+        if progress_callback:
+            progress_callback(len(POS) + len(NEG_GC))
+
+        # Splitting negative LC spectrums
+        NEG_LC = NEG[~NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False, na=False)]
+
+    # Indicate that all rows have been processed
     if progress_callback:
-        progress_callback(total_rows)  # Indicate that all rows have been processed
+        progress_callback(total_rows)
+
+    # --- MODIFICATION END ---
 
     # Returning separated DataFrames
     return POS_LC, POS_GC, NEG_LC, NEG_GC
@@ -128,7 +146,8 @@ def split_in_silico_exp(dataframe, predicted_value, text, progress_callback=None
     return filtered_dataframe
 
 
-def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
+def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC, progress_callback=None, total_items_callback=None,
+                           prefix_callback=None, item_type_callback=None):
     """
     Function to split the provided datasets into various categories based on 'PREDICTED' column value being "true" or "false"
 
@@ -136,26 +155,70 @@ def exp_in_silico_splitter(POS_LC, POS_GC, NEG_LC, NEG_GC, progress_callback=Non
     :param POS_GC: The data frame containing the positive GC data
     :param NEG_LC: The data frame containing the negative LC data
     :param NEG_GC: The data frame containing the negative GC data
+    :param progress_callback: Callable function to update progress information.
+    :param total_items_callback: Callable function to define the total number of items to process.
+    :param prefix_callback: Callable function to provide the current task context.
+    :param item_type_callback: Callable function to define the processed item type.
     :return: A tuple containing separate data frames for positive LC in silico, positive GC in silico,
         negative LC in silico, negative GC in silico, positive LC experimental, positive GC experimental,
         negative LC experimental, and negative GC experimental.
     """
-    POS_LC_In_Silico_temp = split_in_silico_exp(POS_LC, "true", "POS_LC_In_Silico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
-    POS_GC_In_Silico_temp = split_in_silico_exp(POS_GC, "true", "POS_GC_In_Silico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    # --- MODIFICATION START ---
 
-    NEG_LC_In_Silico_temp = split_in_silico_exp(NEG_LC, "true", "NEG_LC_In_Silico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    # Initialize all output DataFrames as empty with the correct column structure
+    # from their respective source DataFrames.
+    POS_LC_In_Silico_temp = pd.DataFrame()
+    POS_GC_In_Silico_temp = pd.DataFrame()
+    NEG_LC_In_Silico_temp = pd.DataFrame()
+    NEG_GC_In_Silico_temp = pd.DataFrame()
+    POS_LC_temp = pd.DataFrame()
+    POS_GC_temp = pd.DataFrame()
+    NEG_LC_temp = pd.DataFrame()
+    NEG_GC_temp = pd.DataFrame()
 
-    NEG_GC_In_Silico_temp = split_in_silico_exp(NEG_GC, "true", "NEG_GC_In_Silico", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    # Process each DataFrame only if it is not empty
+    if not POS_LC.empty:
+        POS_LC_In_Silico_temp = split_in_silico_exp(POS_LC, "true", "POS_LC_In_Silico",
+                                                    progress_callback=progress_callback,
+                                                    total_items_callback=total_items_callback,
+                                                    prefix_callback=prefix_callback,
+                                                    item_type_callback=item_type_callback)
+        POS_LC_temp = split_in_silico_exp(POS_LC, "false", "POS_LC_Exp", progress_callback=progress_callback,
+                                          total_items_callback=total_items_callback, prefix_callback=prefix_callback,
+                                          item_type_callback=item_type_callback)
 
-    POS_LC_temp = split_in_silico_exp(POS_LC, "false", "POS_LC_Exp", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    if not POS_GC.empty:
+        POS_GC_In_Silico_temp = split_in_silico_exp(POS_GC, "true", "POS_GC_In_Silico",
+                                                    progress_callback=progress_callback,
+                                                    total_items_callback=total_items_callback,
+                                                    prefix_callback=prefix_callback,
+                                                    item_type_callback=item_type_callback)
+        POS_GC_temp = split_in_silico_exp(POS_GC, "false", "POS_GC_Exp", progress_callback=progress_callback,
+                                          total_items_callback=total_items_callback, prefix_callback=prefix_callback,
+                                          item_type_callback=item_type_callback)
 
-    POS_GC_temp = split_in_silico_exp(POS_GC, "false", "POS_GC_Exp", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    if not NEG_LC.empty:
+        NEG_LC_In_Silico_temp = split_in_silico_exp(NEG_LC, "true", "NEG_LC_In_Silico",
+                                                    progress_callback=progress_callback,
+                                                    total_items_callback=total_items_callback,
+                                                    prefix_callback=prefix_callback,
+                                                    item_type_callback=item_type_callback)
+        NEG_LC_temp = split_in_silico_exp(NEG_LC, "false", "NEG_LC_Exp", progress_callback=progress_callback,
+                                          total_items_callback=total_items_callback, prefix_callback=prefix_callback,
+                                          item_type_callback=item_type_callback)
 
-    NEG_LC_temp = split_in_silico_exp(NEG_LC, "false", "NEG_LC_Exp", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
+    if not NEG_GC.empty:
+        NEG_GC_In_Silico_temp = split_in_silico_exp(NEG_GC, "true", "NEG_GC_In_Silico",
+                                                    progress_callback=progress_callback,
+                                                    total_items_callback=total_items_callback,
+                                                    prefix_callback=prefix_callback,
+                                                    item_type_callback=item_type_callback)
+        NEG_GC_temp = split_in_silico_exp(NEG_GC, "false", "NEG_GC_Exp", progress_callback=progress_callback,
+                                          total_items_callback=total_items_callback, prefix_callback=prefix_callback,
+                                          item_type_callback=item_type_callback)
 
-    NEG_GC_temp = split_in_silico_exp(NEG_GC, "false", "NEG_GC_Exp", progress_callback=progress_callback, total_items_callback=total_items_callback, prefix_callback=prefix_callback, item_type_callback=item_type_callback)
-
+    # --- MODIFICATION END ---
 
     # Return a tuple of all newly created dataframes.
     return POS_LC_temp, POS_LC_In_Silico_temp, POS_GC_temp, POS_GC_In_Silico_temp, NEG_LC_temp, NEG_LC_In_Silico_temp, NEG_GC_temp, NEG_GC_In_Silico_temp
