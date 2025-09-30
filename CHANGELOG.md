@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 - **26_09_2025**:
   - remove peaks with intensity <= 0.
+  - bugfix with json update
 
 - **15_09_2025**:
   - replace UNKNOWN by NOT FOUND for missing value
