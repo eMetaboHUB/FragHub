@@ -342,13 +342,14 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             deletion_callback(
                 f"Total deletions: {sum([scripts.deletion_report.duplicatas_removed, scripts.deletion_report.previously_cleaned, scripts.deletion_report.no_peaks_list, scripts.deletion_report.no_smiles_no_inchi_no_inchikey, scripts.deletion_report.no_precursor_mz, scripts.deletion_report.low_entropy_score, scripts.deletion_report.minimum_peaks_not_requiered, scripts.deletion_report.all_peaks_above_precursor_mz, scripts.deletion_report.no_peaks_in_mz_range, scripts.deletion_report.minimum_high_peaks_not_requiered])}"
             )
+
+            report(output_directory, POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df,
+                   NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
+
         else:
             deletion_callback("There is no new spectrums to process. Exiting code !")
 
         check_stop_flag()
-
-        report(output_directory, POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df,
-               NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
 
         time.sleep(0.01)
         if completion_callback:
