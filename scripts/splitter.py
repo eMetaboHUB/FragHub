@@ -1,4 +1,5 @@
 import scripts.global_report
+import pandas as pd
 import re
 
 def split_pos_neg(CONCATENATE_DF, progress_callback=None, total_items_callback=None, prefix_callback=None,
@@ -68,25 +69,42 @@ def split_LC_GC(POS, NEG, progress_callback=None, total_items_callback=None, pre
     if total_items_callback:
         total_items_callback(total_rows, 0)  # Report total and initialize completed items to 0
 
-    # Splitting positive GC spectrums
-    POS_GC = POS[POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-    if progress_callback:
-        progress_callback(len(POS_GC))  # Update progress after processing positive GC
+    # --- MODIFICATION START ---
 
-    # Splitting positive LC spectrums
-    POS_LC = POS[~POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-    if progress_callback:
-        progress_callback(len(POS))  # Update progress after processing all positive spectrums
+    # Initialize empty DataFrames with the same columns as the inputs.
+    # This ensures they have the correct structure from the start.
+    POS_LC = pd.DataFrame()
+    POS_GC = pd.DataFrame()
+    NEG_LC = pd.DataFrame()
+    NEG_GC = pd.DataFrame()
 
-    # Splitting negative GC spectrums
-    NEG_GC = NEG[NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
-    if progress_callback:
-        progress_callback(len(POS) + len(NEG_GC))  # Update progress after processing negative GC
+    # Process POS DataFrame only if it contains data
+    if not POS.empty:
+        # Splitting positive GC spectrums
+        POS_GC = POS[POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False, na=False)]
+        if progress_callback:
+            progress_callback(len(POS_GC))
 
-    # Splitting negative LC spectrums
-    NEG_LC = NEG[~NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False)]
+        # Splitting positive LC spectrums
+        POS_LC = POS[~POS['INSTRUMENTTYPE'].str.contains('GC|EI', case=False, na=False)]
+        if progress_callback:
+            progress_callback(len(POS))
+
+    # Process NEG DataFrame only if it contains data
+    if not NEG.empty:
+        # Splitting negative GC spectrums
+        NEG_GC = NEG[NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False, na=False)]
+        if progress_callback:
+            progress_callback(len(POS) + len(NEG_GC))
+
+        # Splitting negative LC spectrums
+        NEG_LC = NEG[~NEG['INSTRUMENTTYPE'].str.contains('GC|EI', case=False, na=False)]
+
+    # Indicate that all rows have been processed
     if progress_callback:
-        progress_callback(total_rows)  # Indicate that all rows have been processed
+        progress_callback(total_rows)
+
+    # --- MODIFICATION END ---
 
     # Returning separated DataFrames
     return POS_LC, POS_GC, NEG_LC, NEG_GC
