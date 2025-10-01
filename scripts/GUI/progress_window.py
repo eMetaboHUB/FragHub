@@ -104,7 +104,7 @@ class ProgressWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.main_window_ref = parent
-        self.setWindowTitle("FragHub 1.4.0")
+        self.setWindowTitle("FragHub 1.4.1")
         # CORRECTION: Chemin de l'icône
         icon_path = os.path.join(BASE_DIR, "GUI", "assets", "FragHub_icon.png")
         self.setWindowIcon(QIcon(icon_path))
