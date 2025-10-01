@@ -12,19 +12,18 @@ def init_json_update_file(json_update_file):
     * input JSON update file is not None, it will be returned as is.
     """
     # Initialize the "first run" flag as False
-    first_run = False
 
     # If the json_update_file is not provided (None), set the "first run" flag to True,
     # and initialize a new dictionary with "SPLASH_LIST" key and an empty value,
     # then return this dictionary and the first_run flag
     if not bool(json_update_file):
-        first_run = True
         # Creating a new dictionary to represent the JSON update file
         json_update_file = {"SPLASH_LIST": {}}
-        return json_update_file, first_run
+        return json_update_file
     else:
         # If json_update_file is already provided, simply return it as is along with the first_run flag
-        return json_update_file, first_run
+        return json_update_file
+
 
 def check_for_update(spectrum):
     """
@@ -85,7 +84,7 @@ def check_for_update_processing(spectrum_list, output_directory, progress_callba
         json_update_file = json.load(f)
 
     # Initialize the update file and first run flag
-    json_update_file, first_run = init_json_update_file(json_update_file)
+    json_update_file = init_json_update_file(json_update_file)
 
     # Define chunk size for parallel processing
     chunk_size = calculate_maximized_chunk_size(data_list=spectrum_list)
@@ -140,4 +139,4 @@ def check_for_update_processing(spectrum_list, output_directory, progress_callba
     scripts.deletion_report.deleted_spectrum_list = []
 
     # Return the final spectrum list, the update flag, and the first run flag
-    return final_spectrum_list, update, first_run
+    return final_spectrum_list, update

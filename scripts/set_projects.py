@@ -17,19 +17,21 @@ def remove_files(directory):
 
 def reset_updates(output_directory):
     """
-    Resets the updates by deleting the contents of the updates.json file and removing any existing output files.
+    Réinitialise les mises à jour en supprimant le fichier updates.json
+    et les fichiers de sortie existants.
     """
+    json_update_path = os.path.join(output_directory, "updates.json")
+    output_path = output_directory
 
-    json_update_path = os.path.join(output_directory, "updates.json")  # path to the relevant update.json file
-    output_path = output_directory  # path to the relevant output directory
+    # --- CORRECTION ---
+    # Au lieu de vider le fichier, on le supprime.
+    # On vérifie d'abord s'il existe pour éviter une erreur si le fichier est déjà absent.
+    if os.path.exists(json_update_path):
+        os.remove(json_update_path)
 
-    # Reset the json file - Writing an empty json object to the file effectively clears it
-    with open(json_update_path, 'w') as f:
-        json.dump({}, f)
-
-    # Remove output files
-    if os.path.exists(output_path):  # if the output directory exists
-        remove_files(output_path)  # call the remove_files function to remove all files in the directory
+    # Le reste de la fonction pour supprimer les fichiers de sortie est correct
+    if os.path.exists(output_path):
+        remove_files(output_path)
 
 def init_project(output_directory):
     """
