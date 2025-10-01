@@ -1,4 +1,6 @@
+from numba import jit
 
+@jit(nopython=True, nogil=True)
 def reduce_peak_list(peak_array, max_peaks):
     """
     Reduce the peak list to a specified number of maximum peaks.

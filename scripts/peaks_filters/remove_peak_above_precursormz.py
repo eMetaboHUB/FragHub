@@ -1,4 +1,6 @@
+from numba import jit
 
+@jit(nopython=True, nogil=True)
 def remove_peak_above_precursormz(peak_array, precursormz):
     """
     Remove peaks that are above a specified precursor m/z value.

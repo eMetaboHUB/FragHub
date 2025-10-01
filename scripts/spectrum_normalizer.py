@@ -105,7 +105,12 @@ def spectrum_cleaning(spectrum):
                 return None
             # Converts peak list to a numpy array
             peak_list_np = peak_list_cleaning(spectrum, peak_list, float_precursor_mz)
-            spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
+
+            if peak_list_np.size == 0:
+                return None
+
+            intensities = peak_list_np[:, 1]
+            spectrum["ENTROPY"] = str(entropy_calculation(intensities))
             if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
                 if re.search(scripts.globals_vars.float_check_pattern, str(spectrum["ENTROPY"])):
                     if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:
@@ -129,7 +134,12 @@ def spectrum_cleaning(spectrum):
     elif "_GC" in spectrum["FILENAME"] or re.search(r"\bGC\b", spectrum["INSTRUMENTTYPE"]):
         float_precursor_mz = None
         peak_list_np = peak_list_cleaning(spectrum, peak_list, float_precursor_mz)
-        spectrum["ENTROPY"] = str(entropy_calculation(peak_list))
+
+        if peak_list_np.size == 0:
+            return None
+
+        intensities = peak_list_np[:, 1]
+        spectrum["ENTROPY"] = str(entropy_calculation(intensities))
         if parameters_dict["remove_spectrum_under_entropy_score"] == 1.0:
             if re.search(scripts.globals_vars.float_check_pattern, str(spectrum["ENTROPY"])):
                 if float(spectrum["ENTROPY"]) < parameters_dict["remove_spectrum_under_entropy_score_value"]:

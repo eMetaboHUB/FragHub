@@ -1,4 +1,6 @@
+from numba import jit
 
+@jit(nopython=True, nogil=True)
 def keep_mz_in_range(peak_array, mz_from, mz_to):
     """
     This function is designed to filter a given peak array based on a specified
