@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 - **01_10_2025**:
   - fixing missing headers issue when writing a previously not existing csv file.
+  - optimizing peaks filter with Numba just-in-time (jit)
 
 
 - **26_09_2025**:
