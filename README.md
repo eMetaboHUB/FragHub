@@ -27,9 +27,9 @@ Key features:<br>
 
 ## INSTALLATION
 1) Download FragHub executable corresponding to your OS HERE:<br>
-   **Windows** x64: [Download Windows x64 Installer](https://zenodo.org/api/records/17176165/draft/files/FragHub_1.4.1_setup_windows_x64.exe/content)<br>
-   **Linux** x64: [Download Linux x64 Installer](https://zenodo.org/api/records/17176165/draft/files/FragHub_1.4.1_setup_Linux_x64/content)<br>
-   **macOS** arm64: **_Coming soon_** (Execute commande 'xattr -cr FragHub_macOS_1.4.1.app' in terminal after download)<br>
+   **Windows** x64: [Download Windows x64 Installer](https://zenodo.org/records/17235741/files/FragHub_1.4.1_setup_windows_x64.exe?download=1)<br>
+   **Linux** x64: [Download Linux x64 Installer](https://zenodo.org/records/17235741/files/FragHub_1.4.1_setup_Linux_x64?download=1)<br>
+   **macOS** arm64: [Download macOS arm64 app](https://zenodo.org/records/17235741/files/FragHub_macOS_1.4.1_arm64.dmg?download=1)<br>
 2) Execute setup installer (macOS: drag to App)
 3) select installation folder
 4) click install
