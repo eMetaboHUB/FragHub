@@ -12,7 +12,6 @@ from pathlib import Path
 import ctypes  # For setting AppUserModelID (Windows Taskbar Icon)
 import platform
 import shutil
-import re
 
 if platform.system() == "Windows":
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FragHub.Installer")
@@ -215,7 +214,7 @@ class InstallerApp(QWidget):
 
         # Vérifier si le fichier a été trouvé
         if not zip_path or not zip_path.exists():
-            self.selected_dir_label.setText("FragHub_1.3.1.zip not found!")
+            self.selected_dir_label.setText("FragHub_1.4.1.zip not found!")
             return
 
         install_dir = Path(self.selected_directory)
@@ -314,15 +313,8 @@ class InstallerApp(QWidget):
             return
 
         target = None
-        detected_version = "unknown"  # Valeur par défaut si la version ne peut pas être extraite
-        version_regex = re.compile(r"FragHub_.*(\d+\.\d+\.\d+)")  # Regex pour trouver une version au format x.y.z
-
-        # Recherche du chemin du fichier cible et de la version
         for item in Path(self.selected_directory).iterdir():
             if "FragHub" in item.name and item.is_dir():
-                match = version_regex.search(item.name)  # Application de la regex sur le nom
-                if match:
-                    detected_version = match.group(1)  # Extraction de la version
                 target = item / f"{item.name}.exe"
                 break
 
@@ -332,8 +324,7 @@ class InstallerApp(QWidget):
             self.selected_dir_label.setText("Target for shortcut not found!")
             return
 
-        shortcut_name = f"FragHub_{detected_version}.lnk"  # Construction du nom dynamique
-        self.create_windows_shortcut(desktop / shortcut_name, target)
+        self.create_windows_shortcut(desktop / "FragHub_1.4.1.lnk", target)
 
     def create_windows_shortcut(self, shortcut_path, target):
         """Creates a Windows shortcut."""

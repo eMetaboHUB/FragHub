@@ -16,22 +16,22 @@ def _generate_combinations_numba(element_index, current_mass, composition_array,
                                  element_masses, max_counts,
                                  min_mass, max_mass, max_remaining_masses):
     """
-    Fonction récursive Numba-compatible pour la génération de combinaisons.
-    Retourne une liste de tableaux NumPy, chaque tableau étant une composition valide.
+    Numba-compatible recursive function for combination generation.
+    Returns a list of NumPy arrays, each array being a valid composition.
     """
     if current_mass + max_remaining_masses[element_index] < min_mass:
-        # Le typage de retour doit être cohérent, on retourne une liste vide
+        # The return type must be consistent, so we return an empty list
         return [np.empty((0,), dtype=np.int64)]
 
-    # Cas de base : nous avons considéré tous les éléments
+    # Base case: we have considered all elements
     if element_index == len(element_masses):
         if current_mass >= min_mass:
-            # Retourne la composition trouvée dans une liste
+            # Return the found composition in a list
             return [composition_array.copy()]
         else:
             return [np.empty((0,), dtype=np.int64)]
 
-    # Initialise une liste pour stocker les résultats de cette branche
+    # Initialize a list to store the results of this branch
     results = []
 
     element_mass = element_masses[element_index]
@@ -43,35 +43,35 @@ def _generate_combinations_numba(element_index, current_mass, composition_array,
 
         composition_array[element_index] = count
 
-        # Appel récursif
+        # Recursive call
         sub_results = _generate_combinations_numba(element_index + 1, new_mass, composition_array,
                                                    element_masses, max_counts,
                                                    min_mass, max_mass, max_remaining_masses)
 
-        # Ajoute les compositions valides trouvées dans la sous-branche
+        # Add the valid compositions found in the sub-branch
         for res in sub_results:
-            if res.size > 0: # Vérifie si la liste n'est pas le marqueur vide
+            if res.size > 0: # Check if the list is not the empty marker
                 results.append(res)
 
-    # Réinitialise la composition pour le backtracking
+    # Reset the composition for backtracking
     composition_array[element_index] = 0
     return results
 
 # --- FUNCTION #2: THE SIMPLE CASE (CHNOPS) ---
 def annotate_simple_chnops_case(spectrum_row, atoms, ppm_tolerance):
     """
-    Version ultra-optimisée avec Numba pour la recherche combinatoire.
+    Ultra-optimized version with Numba for combinatorial search.
     """
     max_composition_global, peaks, proton_mass, elements_to_test = _prepare_annotation_data(spectrum_row, atoms)
 
     if not peaks:
         return {}
 
-    # Tri des éléments (inchangé, toujours crucial)
+    # Sort elements (unchanged, always crucial)
     elements_to_test.sort(key=lambda el: atoms[el], reverse=True)
 
-    # Création d'une table de correspondance pour l'index de 'C', 'H', 'N', 'P'
-    # pour la fonction de plausibilité.
+    # Create a mapping table for the index of 'C', 'H', 'N', 'P'
+    # for the plausibility function.
     c_idx, h_idx, n_idx, p_idx = -1, -1, -1, -1
     for i, el in enumerate(elements_to_test):
         if el == 'C': c_idx = i
@@ -79,13 +79,13 @@ def annotate_simple_chnops_case(spectrum_row, atoms, ppm_tolerance):
         elif el == 'N': n_idx = i
         elif el == 'P': p_idx = i
 
-    # Conversion des données en tableaux NumPy pour Numba
+    # Convert data to NumPy arrays for Numba
     element_masses_np = np.array([atoms[el] for el in elements_to_test], dtype=np.float64)
 
-    # La fonction de plausibilité est appliquée en Python sur les résultats de Numba
+    # The plausibility function is applied in Python to the Numba results
     def _is_plausible_formula(comp_array):
         c = comp_array[c_idx] if c_idx != -1 else 0
-        if c == 0: return False, None # On exige au moins un carbone
+        if c == 0: return False, None # At least one carbon is required
 
         h = comp_array[h_idx] if h_idx != -1 else 0
         n = comp_array[n_idx] if n_idx != -1 else 0
@@ -104,20 +104,20 @@ def annotate_simple_chnops_case(spectrum_row, atoms, ppm_tolerance):
         min_mass = target_neutral_mass * (1 - ppm_tolerance / 1_000_000)
         max_mass = target_neutral_mass * (1 + ppm_tolerance / 1_000_000)
 
-        # Création des limites de composition pour ce pic (en NumPy)
+        # Create composition limits for this peak (in NumPy)
         max_counts_list = []
         for el in elements_to_test:
             max_count = int(max_mass // atoms[el])
             max_counts_list.append(min(max_composition_global.get(el, 0), max_count))
         max_counts_np = np.array(max_counts_list, dtype=np.int64)
 
-        # Pré-calcul des masses restantes (en NumPy)
+        # Pre-calculate remaining masses (in NumPy)
         max_remaining_masses_np = np.zeros(len(elements_to_test) + 1, dtype=np.float64)
         for i in range(len(elements_to_test) - 1, -1, -1):
             el_max_mass = max_counts_np[i] * element_masses_np[i]
             max_remaining_masses_np[i] = max_remaining_masses_np[i + 1] + el_max_mass
 
-        # Lancement de la recherche avec Numba
+        # Start the search with Numba
         initial_composition = np.zeros(len(elements_to_test), dtype=np.int64)
         valid_compositions_raw = _generate_combinations_numba(
             0, 0.0, initial_composition,
@@ -125,14 +125,14 @@ def annotate_simple_chnops_case(spectrum_row, atoms, ppm_tolerance):
             min_mass, max_mass, max_remaining_masses_np
         )
 
-        # Traitement et formatage des résultats en Python
+        # Process and format results in Python
         results_for_peak = []
         for comp_array in valid_compositions_raw:
             if comp_array.size == 0: continue
 
             is_plausible, dbe = _is_plausible_formula(comp_array)
             if is_plausible:
-                # Reconstitution du dictionnaire et calcul de la masse finale
+                # Reconstruct the dictionary and calculate the final mass
                 current_mass = np.sum(comp_array * element_masses_np)
                 ion_composition = {elements_to_test[i]: comp_array[i] for i in range(len(elements_to_test))}
                 ion_composition['H'] += 1
@@ -155,7 +155,7 @@ def annotate_simple_chnops_case(spectrum_row, atoms, ppm_tolerance):
 # --- FUNCTION #3: THE COMPLEX CASE (ALL OTHER ATOMS) ---
 def annotate_complex_case(spectrum_row, atoms, ppm_tolerance):
     """
-    Version pour cas complexes, optimisée avec Numba et les élagages algorithmiques.
+    Version for complex cases, optimized with Numba and algorithmic pruning.
     """
     valences = {'C': 4, 'N': 3, 'P': 3, 'H': 1, 'F': 1, 'Cl': 1, 'Br': 1, 'I': 1, 'Na': 1, 'K': 1}
     max_composition_global, peaks, proton_mass, elements_to_test = _prepare_annotation_data(spectrum_row, atoms)
@@ -163,13 +163,13 @@ def annotate_complex_case(spectrum_row, atoms, ppm_tolerance):
     if not peaks:
         return {}
 
-    # --- Tri des éléments par masse (toujours crucial) ---
+    # --- Sort elements by mass (always crucial) ---
     elements_to_test.sort(key=lambda el: atoms[el], reverse=True)
 
-    # --- Préparation des données pour Numba et la plausibilité ---
+    # --- Prepare data for Numba and plausibility ---
     element_masses_np = np.array([atoms[el] for el in elements_to_test], dtype=np.float64)
 
-    # Création des index pour la fonction de plausibilité
+    # Create indexes for the plausibility function
     el_indices = {el: i for i, el in enumerate(elements_to_test)}
     c_idx = el_indices.get('C', -1)
     h_idx = el_indices.get('H', -1)
@@ -179,7 +179,7 @@ def annotate_complex_case(spectrum_row, atoms, ppm_tolerance):
     s_idx = el_indices.get('S', -1)
 
     def _is_plausible_complex_formula_np(comp_array, calculated_mass):
-        # Règle de l'azote
+        # Nitrogen rule
         safe_elements_for_nitrogen_rule = {'C', 'H', 'N', 'O', 'P', 'S', 'F', 'Cl', 'Br', 'I'}
         contains_special_atoms = any(
             elements_to_test[i] not in safe_elements_for_nitrogen_rule
@@ -191,7 +191,7 @@ def annotate_complex_case(spectrum_row, atoms, ppm_tolerance):
             if (round(calculated_mass) % 2) != (nitrogen_type_atom_count % 2):
                 return False, None
 
-        # Règle du DBE
+        # DBE rule
         dbe_contribution = sum(
             count * (valences.get(elements_to_test[i], 2) - 2)
             for i, count in enumerate(comp_array) if count > 0
@@ -200,7 +200,7 @@ def annotate_complex_case(spectrum_row, atoms, ppm_tolerance):
         if dbe < 0 or dbe != floor(dbe):
             return False, None
 
-        # Ratios Senior
+        # Senior ratios
         c = comp_array[c_idx] if c_idx != -1 else 0
         if c > 0:
             h = comp_array[h_idx] if h_idx != -1 else 0
@@ -218,23 +218,23 @@ def annotate_complex_case(spectrum_row, atoms, ppm_tolerance):
         min_mass = target_neutral_mass * (1 - ppm_tolerance / 1_000_000)
         max_mass = target_neutral_mass * (1 + ppm_tolerance / 1_000_000)
 
-        # Limites de composition par pic (en NumPy)
+        # Composition limits per peak (in NumPy)
         max_counts_list = [min(max_composition_global.get(el, 0), int(max_mass // atoms[el])) for el in elements_to_test]
         max_counts_np = np.array(max_counts_list, dtype=np.int64)
 
-        # Pré-calcul des masses restantes (en NumPy)
+        # Pre-calculate remaining masses (in NumPy)
         max_remaining_masses_np = np.zeros(len(elements_to_test) + 1, dtype=np.float64)
         for i in range(len(elements_to_test) - 1, -1, -1):
             max_remaining_masses_np[i] = max_remaining_masses_np[i + 1] + (max_counts_np[i] * element_masses_np[i])
 
-        # Lancement de la recherche avec Numba
+        # Start the search with Numba
         initial_composition = np.zeros(len(elements_to_test), dtype=np.int64)
         valid_compositions_raw = _generate_combinations_numba(
             0, 0.0, initial_composition, element_masses_np, max_counts_np,
             min_mass, max_mass, max_remaining_masses_np
         )
 
-        # Traitement et formatage des résultats en Python
+        # Process and format results in Python
         results_for_peak = []
         for comp_array in valid_compositions_raw:
             if comp_array.size == 0 or (c_idx != -1 and comp_array[c_idx] == 0):
@@ -340,15 +340,15 @@ def parse_and_annotate_spectrum(spectrum_row, atoms, ppm_tolerance):
 
 def process_single_spectrum(spectrum_dict):
     """
-    Traite un seul spectre (représenté par un dictionnaire).
-    C'est la fonction qui sera exécutée par chaque thread.
+    Processes a single spectrum (represented by a dictionary).
+    This is the function that will be executed by each thread.
     """
-    # Étape 1 : Calculer les annotations
-    # Remarque : assurez-vous que 'parse_and_annotate_spectrum' et 'atoms_of_life'
-    # sont accessibles dans ce scope.
+    # Step 1: Calculate annotations
+    # Note: ensure that 'parse_and_annotate_spectrum' and 'atoms_of_life'
+    # are accessible in this scope.
     annotations = parse_and_annotate_spectrum(spectrum_dict, atoms_of_life, ppm_tolerance=ppm_tol)
 
-    # Étape 2 : Générer la nouvelle chaîne PEAKS_LIST
+    # Step 2: Generate the new PEAKS_LIST string
     original_peak_list = spectrum_dict.get('PEAKS_LIST', "")
 
     def _generate_updated_peak_list_string(peak_list_str, annots):
@@ -373,7 +373,7 @@ def process_single_spectrum(spectrum_dict):
 
     updated_list = _generate_updated_peak_list_string(original_peak_list, annotations)
 
-    # Mettre à jour le dictionnaire avec les nouveaux résultats
+    # Update the dictionary with the new results
     spectrum_dict['annotation_results'] = annotations
     spectrum_dict['PEAKS_LIST'] = updated_list
 
@@ -381,52 +381,51 @@ def process_single_spectrum(spectrum_dict):
 
 def de_novo_calculation(spectrum_df, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
-    Calcule les annotations de novo en utilisant un ThreadPoolExecutor et un traitement par lots.
+    Calculates de novo annotations using a ThreadPoolExecutor and batch processing.
     """
-    # Configuration des callbacks
+    # Configure callbacks
     if prefix_callback:
         prefix_callback("Calculating de novo formulas")
     if item_type_callback:
         item_type_callback("spectra")
 
-    # 1. Conversion du DataFrame en une liste de dictionnaires pour le traitement
+    # 1. Convert the DataFrame into a list of dictionaries for processing
     records = spectrum_df.to_dict('records')
     total_items = len(records)
 
     if total_items_callback:
         total_items_callback(total_items, 0)
 
-    # 2. Calcul de la taille des lots (chunks)
+    # 2. Calculate the batch size (chunks)
     chunk_size = calculate_maximized_chunk_size(data_list=records)
 
-    # Liste pour collecter les résultats finaux
+    # List to collect the final results
     final_results = []
     processed_items = 0
 
-    # 3. Boucle sur la liste, en traitant un lot à la fois
+    # 3. Loop over the list, processing one batch at a time
     for i in range(0, total_items, chunk_size):
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            # Extrait le lot actuel
+            # Extract the current batch
             chunk = records[i:i + chunk_size]
 
-            # Exécute la fonction de traitement sur chaque dictionnaire du lot
+            # Execute the processing function on each dictionary in the batch
             results = list(executor.map(process_single_spectrum, chunk))
 
-        # Ajoute les résultats du lot traité à la liste finale
+        # Add the results of the processed batch to the final list
         final_results.extend(results)
 
-        # Met à jour le nombre d'items traités
+        # Update the number of processed items
         processed_items += len(chunk)
 
-        # 4. Mise à jour de la barre de progression après chaque lot
+        # 4. Update the progress bar after each batch
         if progress_callback:
             progress_callback(processed_items)
 
-    # 5. Reconversion de la liste de dictionnaires en DataFrame
+    # 5. Convert the list of dictionaries back into a DataFrame
     final_df = pd.DataFrame(final_results)
 
-    # Supprimer la colonne 'annotation_results' avant de retourner le résultat.
-    # 'errors='ignore'' empêche une erreur si la colonne n'est pas trouvée.
+    # Remove the 'annotation_results' column before returning the result.
+    # 'errors='ignore'' prevents an error if the column is not found.
     return final_df.drop(columns=['annotation_results'], errors='ignore')
-
 

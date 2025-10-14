@@ -1,6 +1,22 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+- **01_10_2025**:
+  - fixing missing headers issue when writing a previously not existing csv file.
+  - optimizing peaks filter with Numba just-in-time (jit)
+
+
+- **26_09_2025**:
+  - remove peaks with intensity <= 0.
+  - bugfix with json update
+
+- **15_09_2025**:
+  - replace UNKNOWN by NOT FOUND for missing value
+  - improve JSON output with pretty humane-readable JSON.
+  - adding De Novo fragments formula calculations.
+  - adding safety checks to the GUI start button.
+  - adding file hash to spectrums (SHA-256 of the file size).
+  - disabling automatic instrument deduction (e.g., inferring LC if ESI is found).
 
 - **05_06_2025**:
   - replace RETENTIONTIME default field by RT.

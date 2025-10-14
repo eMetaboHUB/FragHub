@@ -1,12 +1,12 @@
 <div align="center">
-  <img src="scripts/GUI/assets/FragHub_icon.png" alt="FragHub Icon" /> 1.3.2
+  <img src="scripts/GUI/assets/FragHub_icon.png" alt="FragHub Icon" /> 1.4.1
 </div>
 
-# FragHub  (1.3.2)
+# FragHub  (1.4.1)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![Required_Python](https://img.shields.io/badge/Python-3.12-blue)
 ![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC--BY--NC%204.0-lightgrey)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15421997.svg)](https://doi.org/10.5281/zenodo.15421997)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17235587.svg)](https://doi.org/10.5281/zenodo.17235587)
 
 ## INSTALL INSTRUCTIONS BELLOW
 [See install instructions](#installation)
@@ -27,9 +27,9 @@ Key features:<br>
 
 ## INSTALLATION
 1) Download FragHub executable corresponding to your OS HERE:<br>
-   **Windows** x64: [Download Windows x64 Installer](https://zenodo.org/records/15607334/files/FragHub_1.3.2_setup_windows_x64.exe?download=1)<br>
-   **Linux** x64: [Download Linux x64 Installer](https://zenodo.org/records/15607334/files/FragHub_1.3.2_setup_Linux_x64?download=1)<br>
-   **macOS** arm64: [Download macOS arm64 Installer](https://zenodo.org/records/15607334/files/FragHub1.3.2.dmg?download=1) (Execute commande 'xattr -cr FragHub_macOS_1.3.2.app' in terminal after download)<br>
+   **Windows** x64: [Download Windows x64 Installer](https://zenodo.org/records/17235741/files/FragHub_1.4.1_setup_windows_x64.exe?download=1)<br>
+   **Linux** x64: [Download Linux x64 Installer](https://zenodo.org/records/17235741/files/FragHub_1.4.1_setup_Linux_x64?download=1)<br>
+   **macOS** arm64: [Download macOS arm64 app](https://zenodo.org/records/17235741/files/FragHub_macOS_1.4.1_arm64.dmg?download=1)<br>
 2) Execute setup installer (macOS: drag to App)
 3) select installation folder
 4) click install
@@ -47,8 +47,9 @@ To use this programme:
    1) First tab: Select single or multiple .json, .csv, .msp, or .mgf files.<br>![img.png](img.png)
    2) Second tab: Create a new empty directory or Select an existing directory where FragHub has already written files<br>![img_1.png](img_1.png)
    3) Third tab: This area allows users to select specific filters for inclusion during the processing stage. Moreover, it provides the option to adjust the respective parameters of each filters.<br>![img_2.png](img_2.png)
-   4) Fourth tab: Select the output file format of your preference. By default, all formats are selected.<br>![img_3.png](img_3.png)
-   5) Fifth tab: FragHub save the splash keys of previous spectra processed.<br>So that at the next update, only new spectra from the database are processed, and added to previous FragHub processes.<br>Reseting project allows you to delete splash keys and output files from the selected project, in order to start a new project from scratch.<br>![img_4.png](img_4.png)
+   4) Fourth tab: This area allows the user to choose whether or not to perform the calculation of de novo fragment formulas.<br> ![img_13.png](img_13.png)
+   4) Fifth tab: Select the output file format of your preference. By default, all formats are selected.<br>![img_3.png](img_3.png)
+   5) Sixth tab: FragHub save the splash keys of previous spectra processed.<br>So that at the next update, only new spectra from the database are processed, and added to previous FragHub processes.<br>Reseting project allows you to delete splash keys and output files from the selected project, in order to start a new project from scratch.<br>![img_4.png](img_4.png)
    6) Click on START button to run the programme.
 3) Progress start. At any time you can click on STOP button to close the programme.<br>![img_5.png](img_5.png)
 4) When Progress is finish, click on FINISH button to close the programme.<br>![img_6.png](img_6.png)
@@ -78,7 +79,7 @@ This function is used to check whether a given array containing peak data has a 
 The entropy score of the spectrum is calculated during processing. If a spectrum has an entropy score lower than the minimum required, it is deleted.<br>
 
 ## required csv file
-1) CSV files need to be separated by '**;**' with quotechar '**"**'.<br>
+1) CSV files need to be separated by '**;**' or '**\t**' with quotechar '**"**'.<br>
 2) peaks columns need to be named '**peaks**'.<br>
 3) '**peaks**' column need to be formatted with one of the following format, in string:
    1) >"[[79.054840, 12486.074219], [79.629868, 854.089905]]"
@@ -90,5 +91,5 @@ The entropy score of the spectrum is calculated during processing. If a spectrum
    137.09664 0.498920401<br>
    165.0915547 0.4243093978<br>
    "<br>
->NB: If you want to read CSV from FragHub output, use separator "\t" and parse peaks list with " "(space) like m/z intensity separator and ";" like lines separator (exemple: "314.00000000 1.00000000;315.00000000 0.15715716;316.00000000 0.35735736;317.00000000 0.05105105")
+   3) > "314.00000000 1.00000000;315.00000000 0.15715716;316.00000000 0.35735736;317.00000000 0.05105105"
     

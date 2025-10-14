@@ -55,57 +55,91 @@ def concatenate_MSP(msp_list, progress_callback=None, total_items_callback=None,
     return spectrum_list
 
 
+def detect_separator(file_path):
+    """
+    Detects if the separator is a semicolon (;) or a tab (\t) by counting
+    occurrences on the first line and returns the most frequent one.
+
+    :param file_path: Path to the file.
+    :return: The detected separator ('\t' or ';'). Defaults to ';'.
+    """
+    try:
+        with open(file_path, 'r', encoding='UTF-8') as f:
+            first_line = f.readline()
+
+            # If the file or the line is empty, return the default.
+            if not first_line:
+                return ';'
+
+            # Directly count the occurrences of the two delimiters.
+            tab_count = first_line.count('\t')
+            semicolon_count = first_line.count(';')
+
+            # Return the tab if it is strictly more frequent.
+            if tab_count > semicolon_count:
+                return '\t'
+
+            # In all other cases (more ';', a tie, or neither is found),
+            # the semicolon is the returned separator (default behavior).
+            return ';'
+
+    except Exception:
+        # In case of a file reading error, also return the default separator.
+        return ';'
+
+
 def concatenate_csv(csv_list, progress_callback=None, total_items_callback=None, prefix_callback=None,
                     item_type_callback=None):
     """
     Concatenates multiple CSV files into a single DataFrame, with support for progress reporting via callbacks.
+
     :param csv_list: List of paths to CSV files to be concatenated.
-    :type csv_list: list[str]
     :param progress_callback: A function to update the progress (optional).
     :param total_items_callback: A function to set the total number of items (optional).
     :param prefix_callback: A function to dynamically set the prefix for the operation (optional).
     :param item_type_callback: A function to specify the type of items processed (optional).
     :return: Concatenated DataFrame.
-    :rtype: pandas.DataFrame
     """
-    # Define the total number of CSV files
     total_files = len(csv_list)
 
-    # Set total items via callback if provided
     if total_items_callback:
-        total_items_callback(total_files, 0)  # total = total_files, completed = 0
+        total_items_callback(total_files, 0)
 
-    # Update the prefix dynamically via callback if provided
     if prefix_callback:
         prefix_callback("Reading CSV files:")
 
-    # Specify the type of items being processed via callback if provided
     if item_type_callback:
         item_type_callback("csv_files")
 
-    df_list = []  # Initialize an empty list to hold dataframes
-    processed_files = 0  # Counter to track progress
+    df_list = []
+    processed_files = 0
 
-    for file in csv_list:  # Iterate over all the CSV files
-
+    for file in csv_list:
         file_hash = generate_file_hash(file)
-        # Read each CSV file as a DataFrame
-        df = pd.read_csv(file, sep=";", quotechar='"', encoding="UTF-8", dtype=str)
-        df['filename'] = os.path.basename(file)  # Add a 'filename' column
-        df['filehash'] = file_hash  # Add a 'filehash' column
-        df.columns = df.columns.str.lower()  # Convert column names to lowercase
-        df = df.astype(str)  # Convert all data to string type
-        df_list.append(df)  # Append the DataFrame to the list
 
-        # Update progress via callback if provided
+        # 1. Detect the separator before reading the file
+        separator = detect_separator(file)
+
+        # 2. Use the detected separator in pd.read_csv
+        df = pd.read_csv(file, sep=separator, quotechar='"', encoding="UTF-8", dtype=str)
+
+        df.columns = df.columns.str.lower()
+
+        if 'filename' not in df.columns:
+            df['filename'] = os.path.basename(file)
+
+        if 'filehash' not in df.columns:
+            df['filehash'] = file_hash
+
+        df.columns = df.columns.str.lower()
+        df = df.astype(str)
+        df_list.append(df)
+
         processed_files += 1
         if progress_callback:
             progress_callback(processed_files)
 
-    # Concatenate all the DataFrames in df_list
     df = pd.concat(df_list, ignore_index=True)
-
-    # Return the final concatenated DataFrame
     return df
 
 

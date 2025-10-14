@@ -2,6 +2,7 @@ from scripts.GUI.utils.global_vars import parameters_dict
 from scripts.normalizer.mols_calculation import *
 from scripts.complete_from_pubchem_datas import *
 from scripts.convertors.parsing_to_dict import *
+from scripts.normalize_to_not_found import *
 from scripts.ontologies_completion import *
 from scripts.convertors.csv_to_msp import *
 from scripts.de_novo_calculation import *
@@ -139,7 +140,6 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
 
         check_stop_flag()
 
-        first_run = False
         update = False
 
         # STEP 4: cleaning spectrums (Multithreaded)
@@ -147,7 +147,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
         if step_callback:
             step_callback("-- CHECKING FOR UPDATES --")
         time.sleep(0.01)
-        spectrum_list, update_temp, first_run_temp = check_for_update_processing(spectrum_list, output_directory,
+        spectrum_list, update_temp = check_for_update_processing(spectrum_list, output_directory,
                                                                                  progress_callback=progress_callback,
                                                                                  total_items_callback=total_items_callback,
                                                                                  prefix_callback=prefix_callback,
@@ -160,8 +160,10 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
 
             if update_temp:
                 update = True
-            if first_run_temp:
-                first_run = True
+
+            if parameters_dict['reset_updates'] == 1.0:
+                update = False
+
             time.sleep(0.01)
             if step_callback:
                 step_callback("-- CLEANING SPECTRUMS --")
@@ -250,6 +252,8 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
 
                 check_stop_flag()
 
+            spectrum_list = normalize_to_not_found(spectrum_list)
+
             # STEP 9: SPLITTING
             # -- SPLITTING [POS / NEG] --
             time.sleep(0.01)
@@ -308,7 +312,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                     step_callback("--  WRITING CSV --")
                 time.sleep(0.01)
                 writting_csv(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df,
-                             NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, first_run, output_directory, update,
+                             NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, output_directory, update,
                              progress_callback=progress_callback, total_items_callback=total_items_callback,
                              prefix_callback=prefix_callback, item_type_callback=item_type_callback)
 
@@ -331,7 +335,7 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
                 if step_callback:
                     step_callback("--  WRITING JSON --")
                 time.sleep(0.01)
-                writting_json(POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df,
+                writting_json(update, POS_LC_df, POS_GC_df, NEG_LC_df, NEG_GC_df, POS_LC_In_Silico_df, POS_GC_In_Silico_df,
                               NEG_LC_In_Silico_df, NEG_GC_In_Silico_df, output_directory,
                               progress_callback=progress_callback, total_items_callback=total_items_callback,
                               prefix_callback=prefix_callback, item_type_callback=item_type_callback)
@@ -339,13 +343,14 @@ def MAIN(progress_callback=None, total_items_callback=None, prefix_callback=None
             deletion_callback(
                 f"Total deletions: {sum([scripts.deletion_report.duplicatas_removed, scripts.deletion_report.previously_cleaned, scripts.deletion_report.no_peaks_list, scripts.deletion_report.no_smiles_no_inchi_no_inchikey, scripts.deletion_report.no_precursor_mz, scripts.deletion_report.low_entropy_score, scripts.deletion_report.minimum_peaks_not_requiered, scripts.deletion_report.all_peaks_above_precursor_mz, scripts.deletion_report.no_peaks_in_mz_range, scripts.deletion_report.minimum_high_peaks_not_requiered])}"
             )
+
+            report(output_directory, POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df,
+                   NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
+
         else:
             deletion_callback("There is no new spectrums to process. Exiting code !")
 
         check_stop_flag()
-
-        report(output_directory, POS_LC_df, POS_LC_In_Silico_df, POS_GC_df, POS_GC_In_Silico_df, NEG_LC_df,
-               NEG_LC_In_Silico_df, NEG_GC_df, NEG_GC_In_Silico_df)
 
         time.sleep(0.01)
         if completion_callback:

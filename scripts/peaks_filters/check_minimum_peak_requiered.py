@@ -20,6 +20,6 @@ def check_minimum_peak_requiered(spectrum, peak_array, n_peaks):
         spectrum['DELETION_REASON'] = "spectrum deleted because its number of peaks is below the threshold chosen by the user"
         scripts.deletion_report.deleted_spectrum_list.append(spectrum)
         scripts.deletion_report.minimum_peaks_not_requiered += 1
-        return np.empty((0, 2))  # return an empty numpy array
+        return np.empty((0, 2), dtype=np.float64)  # return an empty numpy array
     else:
         return peak_array  # Otherwise, return 'peak_array' as is

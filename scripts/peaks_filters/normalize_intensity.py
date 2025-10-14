@@ -1,5 +1,8 @@
+from numba import jit
 import numpy as np
 
+
+@jit(nopython=True, nogil=True)
 def normalize_intensity(peak_array):
     """
     Normalize (rescale) the intensity values of a numpy array.
@@ -24,4 +27,4 @@ def normalize_intensity(peak_array):
         return peak_array
 
     # If maximum intensity is zero, return an empty array
-    return np.array([])
+    return np.empty((0, 2), dtype=np.float64)

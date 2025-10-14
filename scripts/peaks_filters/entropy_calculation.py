@@ -1,5 +1,7 @@
+from numba import jit
 import numpy as np
 
+@jit(nopython=True, nogil=True)
 def entropy_calculation(peak_list):
     """
     Calculate the Shannon entropy of the peak list.
@@ -7,9 +9,6 @@ def entropy_calculation(peak_list):
     :param peak_list: List or numpy array containing peak intensities
     :return: Calculated entropy value
     """
-    # Convert peak list to a numpy array if it's not already
-    if not isinstance(peak_list, np.ndarray):
-        peak_list = np.array(peak_list)
 
     # Normalize the peak list to get probabilities
     total_intensity = np.sum(peak_list)
