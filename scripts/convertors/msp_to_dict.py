@@ -27,6 +27,7 @@ def extract_metadata_and_peak_list(spectrum):
     # Return the metadata and peak_list
     return metadata, peak_list
 
+
 def check_for_metadata_in_comments(metadata_matches):
     """
     This function checks for metadata within comments fields and collects them.
@@ -69,6 +70,7 @@ def check_for_metadata_in_comments(metadata_matches):
 
     # Return the modified metadata matches if any found, otherwise return False
     return new_metadata_matches if new_metadata_matches else False
+
 
 def metadata_to_dict(metadata):
     """
@@ -118,6 +120,7 @@ def metadata_to_dict(metadata):
     # If there are no matches found, return an empty dictionary
     return metadata_dict
 
+
 def peak_list_to_array(peak_list):
     """
     :param peak_list: A string representing a list of peaks. Each peak in the list is represented by a pair of numbers (x, y), where x and y are floats.
@@ -142,6 +145,7 @@ def peak_list_to_array(peak_list):
     # If peak matches not found return an empty list
     else:
         return []
+
 
 def structure_metadata_and_peak_list(metadata, peak_list):
     """
@@ -183,6 +187,7 @@ def structure_metadata_and_peak_list(metadata, peak_list):
                 # If the peak list is, nonetheless, empty, return an empty dictionary and list.
                 return {}, []
 
+
 def msp_to_dict(spectrum):
     # Function to convert a given MSP spectrum to its corresponding JSON format
 
@@ -217,55 +222,54 @@ def msp_to_dict(spectrum):
     # Return the processed metadata, which is a JSON-like structured Python dictionary
     return metadata
 
-def msp_to_dict_processing(FINAL_MSP, progress_callback=None, total_items_callback=None, prefix_callback=None,
-                           item_type_callback=None):
+
+def msp_to_dict_processing(FINAL_MSP, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
-    Process a list of MSP spectrums and convert them to JSON format, with support for progress callbacks.
-    :param FINAL_MSP: List of MSP spectrums to be processed.
+    Process a list of MSP spectra and convert them to JSON format, with support for progress callbacks.
+
+    :param FINAL_MSP: List of MSP spectra to be processed.
     :param progress_callback: A function to update the progress.
     :param total_items_callback: A function to set the total number of items.
     :param prefix_callback: A function to dynamically set the prefix for the operation.
-    :param item_type_callback: A function to specify the type of items processed (e.g., "spectra").
-    :return: List of spectrums in JSON format.
+    :param item_type_callback: A function to specify the type of items being processed (e.g., "spectra").
+    :return: List of spectra in JSON format.
     """
     start = 0
     end = len(FINAL_MSP)
 
-    # Initialiser le total des items via callback (si défini)
+    # Initialize the total number of items via the callback (if defined)
     if total_items_callback:
         total_items_callback(end, 0)  # total = end, completed = 0
 
-    # Mise à jour dynamique du préfixe (si défini)
+    # Dynamically update the prefix (if defined)
     if prefix_callback:
-        prefix_callback("Parsing MSP spectrums:")
+        prefix_callback("Parsing MSP spectra:")
 
-    # Mise à jour du type d'éléments (si défini)
+    # Update the type of items (if defined)
     if item_type_callback:
         item_type_callback("spectra")
 
-    # Initialisation de la variable pour suivre la progression
+    # Initialize the variable to track progress
     processed_items = 0
 
-    # Calculer la taille des chunks une seule fois au départ
+    # Calculate the chunk size once at the beginning
     chunk_size = calculate_maximized_chunk_size(data_list=FINAL_MSP)
 
-    # Traitement en morceaux (chunks) pour les spectres MSP
+    # Process the MSP spectra in chunks
     while start < end:
-        # Utilisation de ThreadPoolExecutor pour le traitement parallèle
+        # Use ThreadPoolExecutor for parallel processing
         with concurrent.futures.ThreadPoolExecutor() as executor:
             FINAL_MSP[start:start + chunk_size] = list(executor.map(msp_to_dict, FINAL_MSP[start:start + chunk_size]))
 
-        # Filtrer les résultats None
+        # Filter out None results
         FINAL_MSP[start:start + chunk_size] = [item for item in FINAL_MSP[start:start + chunk_size] if item is not None]
 
-        # Mise à jour de la progression
-        processed_items += min(chunk_size, end - start)  # S'assurer de ne pas dépasser la taille totale
+        # Update the progress
+        processed_items += min(chunk_size, end - start)  # Ensure the total doesn't exceed the total size
         if progress_callback:
             progress_callback(processed_items)
 
-        # Passer au prochain morceau
+        # Move to the next chunk
         start += chunk_size
 
     return FINAL_MSP
-
-

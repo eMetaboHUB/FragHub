@@ -62,6 +62,7 @@ def apply_transformations(inchi_smiles):
     # Return the transformations dictionary
     return transforms
 
+
 def map_transformations(row, unique_transforms):
     """
     Transforms the given row based on the unique transformations specified.

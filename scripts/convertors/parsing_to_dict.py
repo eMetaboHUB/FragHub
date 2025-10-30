@@ -176,6 +176,7 @@ def concatenate_JSON(json_list, progress_callback=None, total_items_callback=Non
     # The final list of all spectra from all JSON files is returned
     return spectrum_list
 
+
 def concatenate_MGF(mgf_list, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
     Concatenates multiple MGF files into a single spectrum list.

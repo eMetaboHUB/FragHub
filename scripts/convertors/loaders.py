@@ -215,60 +215,57 @@ def load_spectrum_list_json(json_file_path, progress_callback=None, total_items_
             yield spectrum
 
 
-
-
-def load_spectrum_list_json_2(json_file_path, progress_callback=None, total_items_callback=None, prefix_callback=None,
-                              item_type_callback=None):
+def load_spectrum_list_json_2(json_file_path, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
-    Cette fonction charge une liste de spectres à partir d'un fichier JSON donné, avec gestion de la progression
-    basée sur le nombre d'éléments via des callbacks.
+    This function loads a list of spectra from a given JSON file, with progress management
+    based on the number of items using callbacks.
 
-    :param json_file_path: Une chaîne représentant le chemin vers le fichier JSON contenant les spectres.
-    :param progress_callback: Une fonction pour mettre à jour la progression (optionnel).
-    :param total_items_callback: Une fonction pour définir le total des éléments à traiter (optionnel).
-    :param prefix_callback: Une fonction pour définir dynamiquement le préfixe de l'opération (optionnel).
-    :param item_type_callback: Une fonction pour spécifier le type d'éléments traités (optionnel).
-    :return: Un générateur retournant chaque spectre (dictionnaire) du fichier JSON, un à la fois.
+    :param json_file_path: A string representing the path to the JSON file containing the spectra.
+    :param progress_callback: A function to update the progress (optional).
+    :param total_items_callback: A function to set the total number of items to process (optional).
+    :param prefix_callback: A function to dynamically set the operation prefix (optional).
+    :param item_type_callback: A function to specify the type of items being processed (optional).
+    :return: A generator yielding each spectrum (dictionary) from the JSON file, one at a time.
     """
     file_hash = generate_file_hash(json_file_path)
 
-    # Extraire le nom de fichier à partir du chemin donné
+    # Extract the file name from the given path
     filename = os.path.basename(json_file_path)
 
-    # Définir le préfixe dynamique via callback si fourni
+    # Set the dynamic prefix via callback if provided
     if prefix_callback:
         prefix_callback(f"loading [{filename}]:")
 
-    # Spécifier le type d'éléments traités via callback
+    # Specify the type of items processed via callback
     if item_type_callback:
         item_type_callback("spectra")
 
-    # Calculer le nombre total de spectres dans le fichier pour définir `total_items`
+    # Compute the total number of spectra in the file to set `total_items`
     with open(json_file_path, 'r', encoding="UTF-8") as file:
-        total_items = sum(1 for line in file if line.strip())  # Compter les lignes non vides
+        total_items = sum(1 for line in file if line.strip())  # Count non-empty lines
 
-    # Définir le total via `total_items_callback` si fourni
+    # Set the total via `total_items_callback` if provided
     if total_items_callback:
         total_items_callback(total_items, 0)  # total = total_items, completed = 0
 
-    # Réinitialiser le fichier pour commencer la lecture des éléments
+    # Reset the file to start reading items
     with open(json_file_path, 'r', encoding="UTF-8") as file:
-        processed_items = 0  # Variable pour suivre le nombre d'éléments traités
+        processed_items = 0  # Variable to track the number of processed items
 
-        # Lire ligne par ligne
+        # Read line by line
         for line in file:
-            if line.strip():  # Vérifiez que la ligne n'est pas vide
-                # Analyser l'objet JSON à partir de la ligne actuelle
+            if line.strip():  # Check that the line is not empty
+                # Parse the JSON object from the current line
                 spectrum = json.loads(line.strip())
 
-                # Ajouter le nom du fichier d'origine au spectre
+                # Add the original file name to the spectrum
                 spectrum["filename"] = filename
                 spectrum["filehash"] = file_hash
 
-                # Mettre à jour la progression via `progress_callback` si défini
+                # Update progress via `progress_callback` if defined
                 processed_items += 1
                 if progress_callback:
                     progress_callback(processed_items)
 
-                # Produire le spectre actuel
+                # Yield the current spectrum
                 yield spectrum

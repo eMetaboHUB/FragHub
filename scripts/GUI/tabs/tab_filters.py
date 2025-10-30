@@ -7,7 +7,7 @@ from PyQt6.QtGui import QPainter, QColor, QBrush, QPen
 from scripts.GUI.utils.global_vars import parameters_dict
 
 
-# Classe toggle personnalisée avec "ON/OFF"
+# Custom toggle switch class with "ON/OFF"
 class QToggleSwitch(QWidget):
     stateChanged = pyqtSignal(bool)
 
@@ -63,8 +63,7 @@ class QToggleSwitch(QWidget):
         self._state = state
         self.update()
 
-
-# Classe principale des filtres
+# Main class for filters
 class FiltersTab(QWidget):
     def __init__(self):
         super().__init__()
@@ -85,12 +84,12 @@ class FiltersTab(QWidget):
 
         global parameters_dict
 
-        # Initialiser chaque filtre à 1.0 par défaut dans parameters_dict s'il manque
+        # Initialize each filter to 1.0 by default in `parameters_dict` if missing
         for filter_name in filters:
             if filter_name not in parameters_dict:
                 parameters_dict[filter_name] = 1.0
 
-        # Ajouter les filtres au layout principal
+        # Add filters to the main layout
         self.add_filters(self.layout)
 
     def add_filters(self, layout):
@@ -106,25 +105,25 @@ class FiltersTab(QWidget):
 
         global parameters_dict
 
-        # Dictionnaire des messages des filtres (à modifier manuellement si besoin)
+        # Dictionary of filter messages (manually modify them if needed)
         filter_messages = {
             "normalize_intensity": "This function normalizes the intensity of all the peaks in a given spectrum to the maximum intensity.",
             "remove_peak_above_precursormz": "This function removes all peaks from the spectrum whose m/z value is greater than the precursor's m/z value + 5 Da.",
-            "check_minimum_peak_requiered": "This function checks whether a given mass spectrum contains a minimum number of peaks. If the spectrum contains fewer peaks than the minimum requirement, it delete the spectrum.",
+            "check_minimum_peak_requiered": "This function checks whether a given mass spectrum contains a minimum number of peaks. If the spectrum contains fewer peaks than the minimum requirement, it deletes the spectrum.",
             "reduce_peak_list": "This function reduces the peak list to a specified maximum number of peaks. The peaks to retain are chosen based on their intensity, with peaks of greater intensity being selected.",
             "remove_spectrum_under_entropy_score": "The entropy score of the spectrum is calculated during processing. If a spectrum has an entropy score lower than the minimum required, it is deleted.",
-            "keep_mz_in_range": "This function deletes all spectra whose m/z precursor is not between min and max.",
-            "check_minimum_of_high_peaks_requiered": "This function is used to check whether a given array containing peak data has a required minimum number of high peaks.\nA high peak is defined as a peak whose intensity is above a certain percentage (intensity_percent) of the maximum intensity.\nIf the array does not contain a sufficient number of high peaks, the function delete the spectrum.",
+            "keep_mz_in_range": "This function deletes all spectra whose m/z precursor is not between `min` and `max`.",
+            "check_minimum_of_high_peaks_requiered": "This function checks whether a given array containing peak data has a required minimum number of high peaks.\nA high peak is defined as a peak whose intensity is above a certain percentage (intensity_percent) of the maximum intensity.\nIf the array does not contain a sufficient number of high peaks, the function deletes the spectrum.",
         }
 
-        # Layout vertical principal
+        # Main vertical layout
         main_layout = QVBoxLayout()
         main_layout.setSpacing(5)
 
         for filter_name in filters:
-            # Layout horizontal pour une ligne pour chaque filtre
+            # Horizontal layout for each filter row
             filter_layout = QHBoxLayout()
-            filter_layout.setSpacing(5)  # Réduit l'espace entre les widgets, rendu compact
+            filter_layout.setSpacing(5)  # Compact widgets spacing
 
             # ToggleSwitch (ON/OFF)
             toggle = QToggleSwitch(initial_state=parameters_dict.get(filter_name, 1.0) == 1.0)
@@ -133,34 +132,34 @@ class FiltersTab(QWidget):
             )
             filter_layout.addWidget(toggle)
 
-            # Texte du filtre (Label avec le nom)
+            # Filter text label (with the name)
             label = QLabel(filter_name)
             label.setFont(QFont("Arial", 12))
             label.setFixedHeight(30)
             filter_layout.addWidget(label)
 
-            # Bouton Info 🛈 (proche du texte)
+            # Info button 🛈 (near the label)
             info_button = QPushButton("🛈")
             info_button.setFixedSize(25, 25)
 
-            # Définir le message spécifique pour le bouton
+            # Set specific message for the button
             if filter_name in filter_messages:
                 info_button.setToolTip(filter_messages[filter_name])
             else:
-                info_button.setToolTip("Pas de message défini pour ce filtre.")
+                info_button.setToolTip("No message defined for this filter.")
 
             filter_layout.addWidget(info_button)
 
-            # Ajouter un espace extensible après le bouton (optionnel)
+            # Add an expandable space after the button (optional)
             filter_layout.addStretch()
 
-            # Ajouter des champs particuliers pour certains filtres
+            # Add specific fields for some filters
             self.add_additional_fields(filter_layout, filter_name)
 
-            # Finaliser la ligne pour ce filtre
+            # Finalize the row for this filter
             main_layout.addLayout(filter_layout)
 
-        # Appliquer le layout principal
+        # Apply the main layout
         layout.addLayout(main_layout)
 
     def add_additional_fields(self, filter_layout, filter_name):

@@ -33,5 +33,6 @@ def normalize_ionization(metadata_dict):
             metadata_dict["IONIZATION"] = ionization_mode_in_INSTRUMENTTYPE
     if metadata_dict["IONIZATION"] == None:  # if no ionization mode is found, set the ionization field to empty string
         metadata_dict["IONIZATION"] = ''
-    return metadata_dict
-    # The modified dictionary is returned with normalized ionization mode
+
+    return metadata_dict     # The modified dictionary is returned with normalized ionization mode
+

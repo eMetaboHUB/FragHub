@@ -19,44 +19,44 @@ def format_comments(DF_row):
 
 def dataframe_to_msp(dataframe, name, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """
-    Convertit un DataFrame contenant des données spectrales en une liste de chaînes formatées représentant les spectres.
+    Converts a DataFrame containing spectral data into a list of formatted strings representing the spectra.
 
-    :param dataframe: Un DataFrame pandas contenant les données spectrales.
-    :param name: Le nom du spectre (sert de contexte pour les callbacks).
-    :param progress_callback: Fonction callable pour notifier la progression.
-    :param total_items_callback: Fonction callable pour définir le total des éléments.
-    :param prefix_callback: Fonction callable pour signaler le contexte de la tâche.
-    :param item_type_callback: Fonction callable pour signaler le type des éléments traités.
-    :return: Une liste de chaînes formatées représentant les spectres.
+    :param dataframe: A pandas DataFrame containing spectral data.
+    :param name: The name of the spectrum (used as context for the callbacks).
+    :param progress_callback: A callable function to notify progress.
+    :param total_items_callback: A callable function to set the total number of items.
+    :param prefix_callback: A callable function to signal the context of the task.
+    :param item_type_callback: A callable function to signal the type of items being processed.
+    :return: A list of formatted strings representing the spectra.
     """
-    # Réindexer le DataFrame pour garantir un index consécutif (important après des filtrages/splits)
+    # Reindex the DataFrame to ensure consecutive indexing (important after filtering/splitting)
     dataframe = dataframe.reset_index(drop=True)
 
-    # Convertir toutes les colonnes en type chaîne
+    # Convert all columns to string type
     dataframe = dataframe.astype(str)
 
-    # Indique la tâche en cours
+    # Indicate the ongoing task
     if prefix_callback:
         prefix_callback(f"Formatting {name} to MSP:")
 
-    # Définir le type d'éléments traités
+    # Define the type of items being processed
     if item_type_callback:
         item_type_callback("rows")
 
-    # Signaler le total des éléments à traiter
+    # Signal the total number of items to process
     total_rows = len(dataframe)
     if total_items_callback:
-        total_items_callback(total_rows, 0)  # Initialisation des éléments complétés
+        total_items_callback(total_rows, 0)  # Initialize completed items
 
-    # Initialiser une liste pour les chaînes formatées
+    # Initialize a list for the formatted strings
     spectrum_list = []
 
-    # Parcourir chaque ligne du DataFrame
+    # Iterate over each row of the DataFrame
     for index, row in dataframe.iterrows():
-        # Formater le commentaire pour la ligne courante
+        # Format the comment for the current row
         COMMENTS = format_comments(row)
 
-        # Créer la chaîne du spectre basé sur les valeurs de la ligne
+        # Create the spectrum string based on the row values
         SPECTRUM = ""
         SPECTRUM += "NAME: " + (row["NAME"] if row["NAME"] else "NOT FOUND") + "\n"
         SPECTRUM += "PRECURSORMZ: " + (row["PRECURSORMZ"] if row["PRECURSORMZ"] else "NOT FOUND") + "\n"
@@ -77,16 +77,15 @@ def dataframe_to_msp(dataframe, name, progress_callback=None, total_items_callba
         SPECTRUM += "NUM PEAKS: " + (row["NUM PEAKS"] if row["NUM PEAKS"] else "NOT FOUND") + "\n"
         SPECTRUM += row["PEAKS_LIST"] + "\n"
 
-        # Ajouter le spectre formaté à la liste des spectres
+        # Add the formatted spectrum to the list of spectra
         spectrum_list.append(SPECTRUM)
 
-        # Mise à jour de la progression
+        # Update the progress
         if progress_callback:
             progress_callback(index + 1)
 
-    # Retourner la liste des spectres formatés
+    # Return the list of formatted spectra
     return spectrum_list
-
 
 def csv_to_msp(POS_LC_df,POS_LC_df_insilico,POS_GC_df,POS_GC_df_insilico,NEG_LC_df,NEG_LC_df_insilico,NEG_GC_df,NEG_GC_df_insilico, progress_callback=None, total_items_callback=None, prefix_callback=None, item_type_callback=None):
     """

@@ -6,14 +6,14 @@ import sys
 import os
 import re
 
-# Récupérer BASE_DIR dynamiquement
-if getattr(sys, 'frozen', False):  # Si exécuté depuis l'exécutable PyInstaller
+# Dynamically retrieve BASE_DIR
+if getattr(sys, 'frozen', False):  # If executed from a PyInstaller executable
     BASE_DIR = sys._MEIPASS
-else:  # Mode normal (non-congelé, exécuté en tant que script Python)
-    # BASE_DIR pointe sur le dossier parent du projet (racine)
+else:  # Normal mode (not frozen, executed as a Python script)
+    # BASE_DIR points to the parent folder of the project (root)
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-# Construire le chemin vers le dossier ontologies_datas
+# Build the path to the ontologies_datas folder
 ONTOLOGIES_PATH = os.path.join(BASE_DIR, "datas", "ontologies_datas")
 PUBCHEM_PATH = os.path.join(BASE_DIR, "datas", "pubchem_datas")
 ADDUCT_PATH = os.path.join(BASE_DIR, "datas")
@@ -120,32 +120,32 @@ ontologies_df = pd.concat(
     ignore_index=True
 )
 
-# Nettoyer la mémoire
+# Clean up memory
 del files
 
 
 # ================
 
-# Dossier contenant les fichiers CSV
+# Folder containing the CSV files
 folder_path = PUBCHEM_PATH
-# Liste pour stocker chaque DataFrame
+# List to store each DataFrame
 all_dfs = []
-# Fonction pour lire un fichier CSV
+# Function to read a CSV file
 def read_csv(file_path):
     return pd.read_csv(file_path, sep=';', quotechar='"', encoding='utf-8')
 
-# Utiliser ThreadPoolExecutor pour lire les fichiers en parallèle
+# Use ThreadPoolExecutor to read files in parallel
 with ThreadPoolExecutor() as executor:
     futures = []
     for file_name in os.listdir(folder_path):
         if file_name.endswith('.csv'):
             file_path = os.path.join(folder_path, file_name)
             futures.append(executor.submit(read_csv, file_path))
-    # Récupérer les résultats des futures
+    # Retrieve the results from the futures
     for future in futures:
         all_dfs.append(future.result())
 
-# Concaténer tous les DataFrames
+# Concatenate all DataFrames
 global pubchem_datas
 pubchem_datas = pd.concat(all_dfs, ignore_index=True)
 del all_dfs
@@ -153,18 +153,18 @@ del all_dfs
 # ================
 
 global adduct_massdiff_dict_POS, adduct_massdiff_dict_NEG, adduct_dict_POS, adduct_dict_NEG
-adduct_dataframe = pd.read_csv(os.path.abspath(os.path.join(ADDUCT_PATH,"adduct_to_convert.csv")), sep=";", encoding="UTF-8")
+adduct_dataframe = pd.read_csv(os.path.abspath(os.path.join(ADDUCT_PATH, "adduct_to_convert.csv")), sep=";", encoding="UTF-8")
 
-# Filtrage des modes ioniques (positive et negative)
+# Filtering ion modes (positive and negative)
 adduct_dataframe_POS = adduct_dataframe[adduct_dataframe['ionmode'] == "positive"]
 adduct_dataframe_NEG = adduct_dataframe[adduct_dataframe['ionmode'] == "negative"]
 
-# Création des dictionnaires pour "positive"
+# Creating dictionaries for "positive"
 adduct_dict_POS = dict(zip(adduct_dataframe_POS['known_adduct'], adduct_dataframe_POS['fraghub_default']))
 adduct_massdiff_dict_POS = dict(zip(adduct_dataframe_POS['fraghub_default'], adduct_dataframe_POS['massdiff']))
 del adduct_dataframe_POS
 
-# Création des dictionnaires pour "negative"
+# Creating dictionaries for "negative"
 adduct_dict_NEG = dict(zip(adduct_dataframe_NEG['known_adduct'], adduct_dataframe_NEG['fraghub_default']))
 adduct_massdiff_dict_NEG = dict(zip(adduct_dataframe_NEG['fraghub_default'], adduct_dataframe_NEG['massdiff']))
 del adduct_dataframe_NEG
@@ -231,7 +231,7 @@ global available_memory
 available_memory = psutil.virtual_memory().available
 
 global cpu_count
-cpu_count = os.cpu_count()  # Nombre de cœurs logiques
+cpu_count = os.cpu_count()  # Number of logical cores
 
 # ======================================================================================================================
 

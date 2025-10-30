@@ -25,6 +25,7 @@ def init_json_update_file(json_update_file):
         return json_update_file
 
 
+
 def check_for_update(spectrum):
     """
     :param spectrum: The spectrum to check for updates.
