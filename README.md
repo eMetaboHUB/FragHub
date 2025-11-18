@@ -5,7 +5,7 @@
 # FragHub  (1.4.1)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![Required_Python](https://img.shields.io/badge/Python-3.12-blue)
-![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC--BY--NC%204.0-lightgrey)
+![License: CeCILL](https://img.shields.io/badge/License-CeCILL-yellow.svg)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17235587.svg)](https://doi.org/10.5281/zenodo.17235587)
 
 ## INSTALL INSTRUCTIONS BELLOW
@@ -24,6 +24,13 @@ Key features:<br>
 - **Compatibility with various analysis software**: Standardized spectra produced by FragHub are compatible with multiple analysis software, including MSdial, MZmine, and Flash Entropy Search, providing users with maximum flexibility in choosing analysis tools.
 
 **Warning**: All spectra deemed inconsistent, i.e., those lacking SMILES and InChI, precursor m/z, and adduct information, are removed during the processing by FragHub.![img_9.png](img_9.png)
+
+
+## CONTACT
+
+* **Developer :** <axel.dablanc@utoulouse.fr>
+* **Project Manager :** <guillaume.marti@utoulouse.fr>
+
 
 ## INSTALLATION
 1) Download FragHub executable corresponding to your OS HERE:<br>
