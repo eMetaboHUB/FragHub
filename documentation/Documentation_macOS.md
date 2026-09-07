@@ -1,4 +1,4 @@
-# Documentation Développeur : MetaToul Lipido Global
+# Documentation Développeur : FragHub
 
 Ce guide détaille les étapes nécessaires pour installer l'environnement de développement, compiler le backend Python, et générer l'installateur de l'application Electron sous macOS.
 
@@ -34,7 +34,7 @@ Commencez par récupérer le code source, puis installez les dépendances néces
 ```bash
 # 1. Cloner le dépôt localement
 git clone <URL_DU_DEPOT_GIT>
-cd MetaToul_Lipido_Global
+cd FragHub
 
 # 2. Se rendre dans le dossier du Front-End (Interface Graphique)
 cd GUI
@@ -64,9 +64,9 @@ uv run pyinstaller --noconfirm --onedir --noconsole --paths . --icon="GUI/assets
 ```
 
 > **📌 Notes importantes concernant le Backend :**
-> * **Versionnage :** Pensez à adapter l'argument `--name=MetaToul_Lipido_Global_2.4.0` pour correspondre au numéro de version actuel si l'application évolue.
+> * **Versionnage :** Pensez à adapter l'argument `--name=FragHub_Backend` pour correspondre au numéro de version actuel si l'application évolue.
 > * **Icône :** Sous macOS, le format standard pour les icônes est `.icns`.
-> * **Fichiers générés :** PyInstaller va créer le backend compilé sous forme de dossier ou de bundle `.app` (incluant l'exécutable et le dossier `_internal`) dans `scripts/dist/MetaToul_Lipido_Global_2.4.0`.
+> * **Fichiers générés :** PyInstaller va créer le backend compilé sous forme de dossier ou de bundle `.app` (incluant l'exécutable et le dossier `_internal`) dans `scripts/dist/FragHub_Backend`.
 > * ⚠️ **Règle d'or :** Cette commande PyInstaller doit être obligatoirement relancée **à chaque fois que vous modifiez un fichier du code source Python ou des données externes tel que les bases de données**.
 
 ---
