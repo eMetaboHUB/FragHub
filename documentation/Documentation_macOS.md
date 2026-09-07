@@ -60,7 +60,7 @@ Le cœur logique de l'application est développé en Python. Pour qu'Electron pu
 2. Exécutez la commande suivante (notez l'utilisation des deux-points `:` comme séparateur pour macOS) :
 
 ```bash
-uv run pyinstaller --noconfirm --onedir --noconsole --icon="GUI/assets/FragHub_icon.icns" --name="FragHub_Backend" --add-data="../datas:datas" --add-data="GUI/assets:GUI/assets" --hidden-import=uvicorn.logging --hidden-import=uvicorn.loops --hidden-import=uvicorn.loops.auto --hidden-import=uvicorn.protocols.http.auto --hidden-import=uvicorn.protocols.websockets.auto FragHub.py
+uv run pyinstaller --noconfirm --onedir --noconsole --paths . --icon="GUI/assets/FragHub_icon.icns" --name="FragHub_Backend" --add-data="../datas:datas" --add-data="GUI/assets:GUI/assets" --hidden-import=uvicorn.logging --hidden-import=uvicorn.loops --hidden-import=uvicorn.loops.auto --hidden-import=uvicorn.protocols.http.auto --hidden-import=uvicorn.protocols.websockets.auto --hidden-import=mzspeclib_converter --hidden-import=rdkit_worker FragHub.py
 ```
 
 > **📌 Notes importantes concernant le Backend :**

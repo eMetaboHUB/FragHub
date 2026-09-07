@@ -43,8 +43,8 @@
             >
               <span class="text-body-2 font-weight-medium mr-3">{{ p.label }}</span>
               <v-text-field
-                  :value="parameters[p.key]"
-                  @input="handleInput($event.target.value, p.key)"
+                  :model-value="parameters[p.key]"
+                  @update:model-value="handleInput($event, p.key)"
                   type="text"
                   inputmode="decimal"
                   variant="outlined"

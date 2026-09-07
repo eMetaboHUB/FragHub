@@ -224,8 +224,6 @@ def execute_main_safely():
                     total_items_cb=total_items_callback
                 )
             except Exception as cv_e:
-                with open("scratch/mzspeclib_error.log", "w") as f:
-                    f.write(str(cv_e) + "\n" + traceback.format_exc())
                 if completion_callback:
                     completion_callback(f"Warning: mzSpecLib JSON conversion failed: {cv_e}")
                 return # Si on retourne ici, on n'affiche pas le TOTAL TIME

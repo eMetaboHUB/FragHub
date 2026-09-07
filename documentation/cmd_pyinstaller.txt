@@ -1,10 +1,10 @@
 Windows: pyinstaller  --windowed --icon=GUI/assets/FragHub_icon.ico --name=FragHub_Windows_2.0.0_x64 --add-data="../datas;datas" --add-data="GUI/assets;GUI/assets" FragHub.py
 
-pyinstaller --noconfirm --onedir --noconsole --icon="GUI/assets/FragHub_icon.ico" --name="FragHub_Backend" --add-data="../datas;datas" --add-data="GUI/assets;GUI/assets" --hidden-import=uvicorn.logging --hidden-import=uvicorn.loops --hidden-import=uvicorn.loops.auto --hidden-import=uvicorn.protocols.http.auto --hidden-import=uvicorn.protocols.websockets.auto FragHub.py
+pyinstaller --noconfirm --onedir --noconsole --paths . --icon="GUI/assets/FragHub_icon.ico" --name="FragHub_Backend" --add-data="../datas;datas" --add-data="GUI/assets;GUI/assets" --hidden-import=uvicorn.logging --hidden-import=uvicorn.loops --hidden-import=uvicorn.loops.auto --hidden-import=uvicorn.protocols.http.auto --hidden-import=uvicorn.protocols.websockets.auto --hidden-import=mzspeclib_converter --hidden-import=rdkit_worker FragHub.py
 
 macOS: pyinstaller --onefile --windowed --icon=GUI/assets/FragHub_icon.icns --name=FragHub_macOS_2.0.0_arm64 --add-data="../datas:datas" --add-data="GUI/assets:GUI/assets" FragHub.py
 
-pyinstaller --noconfirm --onedir --noconsole --icon="GUI/assets/FragHub_icon.ico" --name="FragHub_Backend" --add-data="../datas:datas" --add-data="GUI/assets:GUI/assets" --hidden-import=uvicorn.logging --hidden-import=uvicorn.loops --hidden-import=uvicorn.loops.auto --hidden-import=uvicorn.protocols.http.auto --hidden-import=uvicorn.protocols.websockets.auto FragHub.py
+pyinstaller --noconfirm --onedir --noconsole --paths . --icon="GUI/assets/FragHub_icon.ico" --name="FragHub_Backend" --add-data="../datas:datas" --add-data="GUI/assets:GUI/assets" --hidden-import=uvicorn.logging --hidden-import=uvicorn.loops --hidden-import=uvicorn.loops.auto --hidden-import=uvicorn.protocols.http.auto --hidden-import=uvicorn.protocols.websockets.auto --hidden-import=mzspeclib_converter --hidden-import=rdkit_worker FragHub.py
 
 Linux: pyinstaller  --windowed --icon=GUI/assets/FragHub_icon.ico --name=FragHub_Linux_2.0.0_x64 --add-data="../datas:datas" --add-data="GUI/assets:GUI/assets" FragHub.py
 

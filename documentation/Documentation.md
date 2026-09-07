@@ -57,10 +57,11 @@ The core logic of the application is developed in Python. For Electron to run it
 2. Run the following command:
 
 ```bash
-uv run pyinstaller --noconfirm --onedir --noconsole --icon="GUI/assets/FragHub_icon.ico" --name="FragHub_Backend" --add-data="../datas;datas" --add-data="GUI/assets;GUI/assets" --hidden-import=uvicorn.logging --hidden-import=uvicorn.loops --hidden-import=uvicorn.loops.auto --hidden-import=uvicorn.protocols.http.auto --hidden-import=uvicorn.protocols.websockets.auto FragHub.py
+uv run pyinstaller --noconfirm --onedir --noconsole --paths . --icon="GUI/assets/FragHub_icon.ico" --name="FragHub_Backend" --add-data="../datas;datas" --add-data="GUI/assets;GUI/assets" --hidden-import=uvicorn.logging --hidden-import=uvicorn.loops --hidden-import=uvicorn.loops.auto --hidden-import=uvicorn.protocols.http.auto --hidden-import=uvicorn.protocols.websockets.auto --hidden-import=mzspeclib_converter --hidden-import=rdkit_worker FragHub.py
 ```
 
 > **📌 Important notes regarding the Backend:**
+> *   `--paths .` and the two `--hidden-import` flags for `mzspeclib_converter` and `rdkit_worker` are required: these two files live next to `FragHub.py` in `scripts/` and PyInstaller's static analysis does not reliably auto-detect sibling local modules without an explicit search path. Omitting them produces a backend that crashes at startup with `ModuleNotFoundError`.
 > *   **Generated files:** PyInstaller will create the compiled backend as a folder (including the executable and the `_internal` folder) in `scripts/dist/FragHub_Backend`.
 > *   ⚠️ **Golden rule:** This PyInstaller command **must be re-run every time you modify a Python source file or external data such as databases**.
 
