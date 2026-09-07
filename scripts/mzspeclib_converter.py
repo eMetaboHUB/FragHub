@@ -17,7 +17,13 @@ def convert_msp_to_mzspeclib_json(input_msp, output_json, progress_cb=None):
         # ne sait pas convertir en polarite) ne doit pas interrompre tout le fichier.
         for record in lib.index:
             try:
+                # La lecture (parsing MSP) ET l'ecriture (JSON) peuvent echouer
+                # independamment sur un spectre precis (ex: bug connu de mzspeclib
+                # sur RT qui pose une cle "ERROR" invalide) : les deux etapes sont
+                # couvertes ici pour qu'un seul spectre foireux ne fasse pas
+                # avorter tout le fichier.
                 spec = lib.get_spectrum(record.number)
+                writer.write_spectrum(spec)
             except Exception as spec_e:
                 skipped += 1
                 print(f"[mzSpecLib] Spectre ignore (#{record.number}) dans {os.path.basename(input_msp)}: {spec_e}")
@@ -25,7 +31,6 @@ def convert_msp_to_mzspeclib_json(input_msp, output_json, progress_cb=None):
                     progress_cb(1)
                 continue
 
-            writer.write_spectrum(spec)
             count += 1
             if progress_cb:
                 progress_cb(1)

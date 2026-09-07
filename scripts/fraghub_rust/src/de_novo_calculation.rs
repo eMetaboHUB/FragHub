@@ -357,18 +357,7 @@ pub fn is_valid_peak(formula: &str, target_mass: f64, ppm_tol: f64) -> bool {
         mass_a.partial_cmp(&mass_b).unwrap().reverse()
     });
 
-    let simple_atoms = ["C", "H", "N", "O", "P", "S"];
-    let is_simple = present_elements.iter().all(|el| simple_atoms.contains(&el.as_str()));
-
-    let c_idx = elements_to_test.iter().position(|x| x == "C");
-    let h_idx = elements_to_test.iter().position(|x| x == "H");
-    let n_idx = elements_to_test.iter().position(|x| x == "N");
-    let o_idx = elements_to_test.iter().position(|x| x == "O");
-    let p_idx = elements_to_test.iter().position(|x| x == "P");
-    let s_idx = elements_to_test.iter().position(|x| x == "S");
-
     let element_masses: Vec<f64> = elements_to_test.iter().map(|el| get_atom_mass(el).unwrap()).collect();
-    let proton_mass = get_atom_mass("H").unwrap();
 
     if target_mass <= 0.0 { return false; }
 

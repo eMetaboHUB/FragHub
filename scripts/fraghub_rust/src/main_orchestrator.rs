@@ -19,7 +19,7 @@ use crate::normalize_to_not_found::normalize_to_not_found_processing;
 use crate::splitter::master_splitter;
 
 use crate::spectra_to_msp::spectra_to_msp_processing;
-use crate::writers::{writting_csv_processing, writting_msp_processing, writting_json_processing, writting_mzspeclib_json_processing};
+use crate::writers::{writting_csv_processing, writting_msp_processing, writting_json_processing};
 use crate::report::generate_report_processing;
 use crate::set_projects::{init_project, reset_updates};
 use crate::deletion_report::DeletionReport;
