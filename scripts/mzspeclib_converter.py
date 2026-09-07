@@ -9,15 +9,30 @@ def convert_msp_to_mzspeclib_json(input_msp, output_json, progress_cb=None):
     try:
         lib = MSPSpectralLibrary(input_msp)
         writer = JSONSpectralLibraryWriter(output_json)
-        
+
         count = 0
-        for spec in lib:
+        skipped = 0
+        # On itere manuellement sur l'index plutot que "for spec in lib" :
+        # un spectre individuel invalide (ex: IONMODE "NOT FOUND" que mzspeclib
+        # ne sait pas convertir en polarite) ne doit pas interrompre tout le fichier.
+        for record in lib.index:
+            try:
+                spec = lib.get_spectrum(record.number)
+            except Exception as spec_e:
+                skipped += 1
+                print(f"[mzSpecLib] Spectre ignore (#{record.number}) dans {os.path.basename(input_msp)}: {spec_e}")
+                if progress_cb:
+                    progress_cb(1)
+                continue
+
             writer.write_spectrum(spec)
             count += 1
             if progress_cb:
                 progress_cb(1)
-                
+
         writer.close()
+        if skipped:
+            print(f"[mzSpecLib] {skipped} spectre(s) ignore(s) dans {os.path.basename(input_msp)} (non convertibles).")
         return count
     except Exception as e:
         traceback.print_exc()

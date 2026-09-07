@@ -114,7 +114,7 @@ pub fn spectra_to_msp_processing(
                         get_string(spec, "EXACTMASS"),
                         get_string(spec, "IONIZATION"),
                         get_string(spec, "MSLEVEL"),
-                        get_string(spec, "FRAGMENTATIONMODE"), // Note: internal col is still FRAGMENTATIONMODE
+                        get_string(spec, "FRAGMENTATIONMETHODE"), // Note: internal col is still FRAGMENTATIONMETHODE
                         get_string(spec, "AVERAGEMASS"),
                         get_string(spec, "ENTROPY"),
                         get_string(spec, "CLASSYFIRE_SUPERCLASS"),

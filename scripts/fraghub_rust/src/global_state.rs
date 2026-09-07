@@ -34,7 +34,7 @@ impl GlobalState {
             keys_list: vec![
                 "FILENAME".to_string(), "FILEHASH".to_string(), "PREDICTED".to_string(), "SPLASH".to_string(),
                 "SPECTRUMID".to_string(), "RESOLUTION".to_string(), "SYNON".to_string(), "IONIZATION".to_string(),
-                "MSLEVEL".to_string(), "FRAGMENTATIONMODE".to_string(), "NAME".to_string(), "PRECURSORMZ".to_string(),
+                "MSLEVEL".to_string(), "FRAGMENTATIONMETHODE".to_string(), "NAME".to_string(), "PRECURSORMZ".to_string(),
                 "EXACTMASS".to_string(), "AVERAGEMASS".to_string(), "PRECURSORTYPE".to_string(), "INSTRUMENTTYPE".to_string(),
                 "INSTRUMENT".to_string(), "SMILES".to_string(), "INCHI".to_string(), "INCHIKEY".to_string(),
                 "COLLISIONENERGY".to_string(), "FORMULA".to_string(), "RT".to_string(), "IONMODE".to_string(),

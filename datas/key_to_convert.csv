@@ -19,7 +19,7 @@ ac$mass_spectrometry:collision_energy;collisionenergy
 ac$mass_spectrometry:collsion_gas;collisiongas
 ac$mass_spectrometry:date;collectiondate
 ac$mass_spectrometry:desolvation_gas_flow;desolvationgas
-ac$mass_spectrometry:fragmentation_mode;fragmentationmode
+ac$mass_spectrometry:fragmentation_mode;fragmentationmethode
 ac$mass_spectrometry:insource_voltage;insourcevoltage
 ac$mass_spectrometry:ion_mobility_drift_gas;ionmobilitydriftgas
 ac$mass_spectrometry:ion_mobility_type;ionmobilitytype
@@ -119,8 +119,8 @@ filename;filename
 filehash;filehash
 formula;formula
 fraghubid;fraghubid
-fragmenation_method;fragmentationmode
-fragmentationmode;fragmentationmode
+fragmenation_method;fragmentationmethode
+fragmentationmethode;fragmentationmethode
 inchi;inchi
 inchiaux;inchiaux
 inchikey;inchikey
@@ -232,7 +232,7 @@ sp$lineage;organismlineage
 sp$link;samplelink
 sp$sample;sample
 sp$scientific_name;organismname
-special_fragmentation;fragmentationmode
+special_fragmentation;fragmentationmethode
 spectrum;peaks_list
 spectrum_id;spectrumid
 spectrum_type;mslevel
