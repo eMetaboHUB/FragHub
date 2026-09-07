@@ -36,6 +36,7 @@ pub fn spectrum_cleaning_processing(
     ordered_columns: Vec<String>,
     deletion_report: &mut crate::deletion_report::DeletionReport,
     parameters_dict: &std::collections::HashMap<String, f64>,
+    update: bool,
     progress_callback: Option<PyObject>,
     total_items_callback: Option<PyObject>,
     prefix_callback: Option<PyObject>,
@@ -205,10 +206,17 @@ pub fn spectrum_cleaning_processing(
                     _ => "other_deletions.csv"
                 };
 
-                let mut wtr = WriterBuilder::new().delimiter(b'\t').quote(b'"').from_path(del_dir.join(file_name)).unwrap();
-                let mut header = ordered_columns.clone();
-                header.push("DELETION_REASON".to_string());
-                wtr.write_record(&header).unwrap();
+                let file_path = del_dir.join(file_name);
+                // On preserve l'historique des runs precedents (mode append, sans reset_updates) :
+                // si le fichier existe deja, on ajoute les lignes a la suite au lieu de l'ecraser.
+                let is_append = update && file_path.exists();
+                let file = std::fs::OpenOptions::new().write(true).create(true).append(is_append).truncate(!is_append).open(&file_path).unwrap();
+                let mut wtr = WriterBuilder::new().delimiter(b'\t').quote(b'"').has_headers(!is_append).from_writer(file);
+                if !is_append {
+                    let mut header = ordered_columns.clone();
+                    header.push("DELETION_REASON".to_string());
+                    wtr.write_record(&header).unwrap();
+                }
 
                 for meta in group {
                     let mut record = Vec::with_capacity(ordered_columns.len() + 1);

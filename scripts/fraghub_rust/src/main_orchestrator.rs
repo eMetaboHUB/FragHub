@@ -147,7 +147,7 @@ pub fn main_orchestrator(
     py.allow_threads(|| { std::thread::sleep(std::time::Duration::from_millis(10)); });
 
     let tuple_dup = remove_duplicatas_processing(
-        py, spectrum_list, output_directory.clone(), ordered_columns.clone(),
+        py, spectrum_list, output_directory.clone(), ordered_columns.clone(), reset_updates_val != 1.0,
         progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone()
     )?;
     let mut spectrum_list = tuple_dup.0;
@@ -166,7 +166,7 @@ pub fn main_orchestrator(
     py.allow_threads(|| { std::thread::sleep(std::time::Duration::from_millis(10)); });
 
     let tuple_up = check_for_update_processing(
-        py, spectrum_list, output_directory.clone(), ordered_columns.clone(),
+        py, spectrum_list, output_directory.clone(), ordered_columns.clone(), reset_updates_val != 1.0,
         progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone()
     )?;
     spectrum_list = tuple_up.0;
@@ -199,7 +199,7 @@ pub fn main_orchestrator(
         }
 
         spectrum_list = spectrum_cleaning_processing(
-            py, spectrum_list.clone(), output_directory.clone(), ordered_columns.clone(), &mut deletion_report, &params_f64,
+            py, spectrum_list.clone(), output_directory.clone(), ordered_columns.clone(), &mut deletion_report, &params_f64, update,
             progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone()
         )?;
 
@@ -233,7 +233,7 @@ pub fn main_orchestrator(
         py.allow_threads(|| { std::thread::sleep(std::time::Duration::from_millis(10)); });
 
         spectrum_list = process_mols(
-            py, spectrum_list, &output_directory, &mut deletion_report,
+            py, spectrum_list, &output_directory, &mut deletion_report, update,
             progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone()
         )?;
 

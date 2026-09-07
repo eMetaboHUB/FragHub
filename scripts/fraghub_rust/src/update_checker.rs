@@ -16,6 +16,7 @@ pub fn check_for_update_processing(
     spectrum_list: Vec<Spectrum>,
     output_directory: String,
     ordered_columns: Vec<String>,
+    append_mode: bool,
     progress_callback: Option<PyObject>,
     total_items_callback: Option<PyObject>,
     prefix_callback: Option<PyObject>,
@@ -84,15 +85,23 @@ pub fn check_for_update_processing(
             fs::create_dir_all(&deleted_dir)?;
             let file_path = deleted_dir.join("previously_cleaned.csv");
 
+            // On preserve l'historique des runs precedents (mode append, sans reset_updates) :
+            // si le fichier existe deja, on ajoute les lignes a la suite au lieu de l'ecraser.
+            let is_append = append_mode && file_path.exists();
+            let file = std::fs::OpenOptions::new().write(true).create(true).append(is_append).truncate(!is_append).open(&file_path)
+                .map_err(|e| pyo3::exceptions::PyIOError::new_err(e.to_string()))?;
+
             let mut wtr = WriterBuilder::new()
                 .delimiter(b'\t')
                 .quote(b'"')
-                .from_path(file_path)
-                .map_err(|e| pyo3::exceptions::PyIOError::new_err(e.to_string()))?;
+                .has_headers(!is_append)
+                .from_writer(file);
 
-            let mut header = ordered_columns.clone();
-            header.push("DELETION_REASON".to_string());
-            wtr.write_record(&header).map_err(|e| pyo3::exceptions::PyIOError::new_err(e.to_string()))?;
+            if !is_append {
+                let mut header = ordered_columns.clone();
+                header.push("DELETION_REASON".to_string());
+                wtr.write_record(&header).map_err(|e| pyo3::exceptions::PyIOError::new_err(e.to_string()))?;
+            }
 
             for &idx in &indices_to_delete {
                 let spec = &spectrum_list[idx];

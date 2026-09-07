@@ -17,6 +17,7 @@ pub fn process_mols(
     mut spectrum_list: Vec<Spectrum>,
     output_directory: &str,
     deletion_report: &mut crate::deletion_report::DeletionReport,
+    update: bool,
     progress_callback: Option<PyObject>,
     total_items_callback: Option<PyObject>,
     prefix_callback: Option<PyObject>,
@@ -223,9 +224,15 @@ pub fn process_mols(
         let del_dir = Path::new(output_directory).join("DELETED_SPECTRUMS");
         fs::create_dir_all(&del_dir).unwrap_or_default();
         let file_path = del_dir.join("deleted_no_inchi_smiles_inchikey_after_re_calculation.csv");
-        
-        let mut wtr = csv::WriterBuilder::new().delimiter(b'\t').from_path(file_path).unwrap();
-        wtr.write_record(&columns).unwrap_or_default();
+
+        // On preserve l'historique des runs precedents (mode append, sans reset_updates) :
+        // si le fichier existe deja, on ajoute les lignes a la suite au lieu de l'ecraser.
+        let is_append = update && file_path.exists();
+        let file = std::fs::OpenOptions::new().write(true).create(true).append(is_append).truncate(!is_append).open(&file_path).unwrap();
+        let mut wtr = csv::WriterBuilder::new().delimiter(b'\t').has_headers(!is_append).from_writer(file);
+        if !is_append {
+            wtr.write_record(&columns).unwrap_or_default();
+        }
         for row in deleted_rows {
             wtr.write_record(&row).unwrap_or_default();
         }
