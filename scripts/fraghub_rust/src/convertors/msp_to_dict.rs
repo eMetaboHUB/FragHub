@@ -2,7 +2,8 @@
 use pyo3::prelude::*;
 use crate::spectrum::Spectrum;
 use rayon::prelude::*;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
+use crate::convertors::raw_metadata::RawMetadata;
 
 
 /// Structure interne pour le multithreading MSP.
@@ -11,8 +12,20 @@ use std::collections::HashMap;
 /// En Rust, les tuples `(f64, f64)` sont stockés de manière contiguë (les uns à côté des autres)
 /// en mémoire RAM, ce qui évite la fragmentation mémoire et accélère drastiquement les accès.
 struct ParsedSpectrum {
-    metadata: HashMap<String, String>,
+    metadata: RawMetadata, // champs bruts, dans l'ordre du fichier
     peaks: Vec<(f64, f64)>, // <-- TUPLES : Fini la fragmentation mémoire !
+}
+
+/// Lit un nombre décimal qui peut utiliser la virgule (ex. "12,5").
+///
+/// Même résultat que `s.replace(",", ".").parse::<f64>().unwrap_or(0.0)`, mais sans créer
+/// de nouvelle chaîne quand il n'y a pas de virgule (le cas de presque tous les pics).
+fn parse_decimal(s: &str) -> f64 {
+    if s.contains(',') {
+        s.replace(",", ".").parse::<f64>().unwrap_or(0.0)
+    } else {
+        s.parse::<f64>().unwrap_or(0.0)
+    }
 }
 
 /// Fonction principale de parsing MSP via Rayon.
@@ -55,6 +68,8 @@ pub fn msp_to_dict_processing(
     let mut result_list = Vec::new();
     let mut processed = 0;
     let chunk_size = 2000;
+    // Ensemble des clés à garder : même réponse que keys_list.contains(), sans parcourir la liste à chaque champ
+    let keys_set: HashSet<&str> = keys_list.iter().map(|s| s.as_str()).collect();
 
     for chunk in rust_strings.chunks(chunk_size) {
 
@@ -100,7 +115,7 @@ pub fn msp_to_dict_processing(
                         }
 
                         if valid_comments && !new_matches.is_empty() {
-                            let mut metadata_dict: HashMap<String, String> = HashMap::new();
+                            let mut metadata_dict = RawMetadata::default();
                             for (k_raw, v_raw) in new_matches.into_iter().filter(|(k, _)| !crate::globals_vars::COMPUTED_PATTERN.is_match(k)) {
                                 let k = crate::globals_vars::METADATA_FIELDS_NAME_PATTERN.replace_all(&k_raw, "").to_lowercase().trim().to_string();
                                 let v = crate::globals_vars::METADATA_STRIP_VALUE_PATTERN.replace_all(&v_raw, "").to_string();
@@ -109,8 +124,8 @@ pub fn msp_to_dict_processing(
 
                             let mut peaks_array = Vec::new();
                             for p in crate::globals_vars::PEAK_LIST_SPLIT_PATTERN.captures_iter(peaks_str) {
-                                let mz = p.get(1).unwrap().as_str().replace(",", ".").parse::<f64>().unwrap_or(0.0);
-                                let int = p.get(2).unwrap().as_str().replace(",", ".").parse::<f64>().unwrap_or(0.0);
+                                let mz = parse_decimal(p.get(1).unwrap().as_str());
+                                let int = parse_decimal(p.get(2).unwrap().as_str());
                                 peaks_array.push((mz, int)); // ✅ TUPLE AU LIEU D'UN VEC
                             }
 
@@ -126,13 +141,8 @@ pub fn msp_to_dict_processing(
 
         for parsed in parsed_chunk {
             let mut spec = Spectrum::default();
-            for (k, v) in parsed.metadata {
-                if let Some(mapped) = keys_dict.get(&k) {
-                    if keys_list.contains(mapped) {
-                        spec.metadata.insert(mapped.clone(), v);
-                    }
-                }
-            }
+            // Renommage vers les clés FragHub : si deux champs donnent la même clé, le premier du fichier gagne
+            parsed.metadata.map_into(&keys_dict, |mapped| keys_set.contains(mapped), &mut spec.metadata);
             spec.metadata.insert("DATABASE_NAME".to_string(), db_name.clone());
 
             spec.peaks = parsed.peaks;
@@ -152,4 +162,20 @@ pub fn msp_to_dict_processing(
     }
 
     Ok(result_list)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::parse_decimal;
+
+    #[test]
+    fn parse_decimal_identique_a_l_ancienne_ecriture() {
+        let cas = ["123.4567", "12,5", "1,2,3", "-0.5", "1e-3", "1E+5", "7", "", "abc", "1.", ",5", "  1.0", "NaN", "inf"];
+        for s in cas {
+            let ancien = s.replace(",", ".").parse::<f64>().unwrap_or(0.0);
+            let nouveau = parse_decimal(s);
+            // to_bits : compare aussi les NaN et le signe de zéro
+            assert_eq!(ancien.to_bits(), nouveau.to_bits(), "valeur {s:?}");
+        }
+    }
 }

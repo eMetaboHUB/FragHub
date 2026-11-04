@@ -215,6 +215,28 @@ pub fn load_spectrum_list_json_2(
 // ----------------------------------------------------------------------
 // MSP FORMAT
 // ----------------------------------------------------------------------
+/// Assemble le texte final d'un spectre MSP : en-tête FILENAME/FILEHASH + lignes du spectre.
+///
+/// Ancienne méthode : on écrivait "FILENAME: <nom>\n<lignes>\n", puis une regex remplaçait cette
+/// première ligne par `replacement`, puis `trim_end()`. Comme la première ligne est toujours celle
+/// qu'on vient d'écrire, on peut écrire `replacement` directement : même texte, sans parcourir
+/// tout le spectre ni le recopier trois fois.
+/// Exception : si le nom contient '$' (interprété par Regex::replace comme un groupe de capture)
+/// ou un retour à la ligne, on garde l'ancienne méthode pour obtenir exactement le même texte.
+fn assemble_msp_spectrum(filename: &str, replacement: &str, re: &Regex, body: &str) -> String {
+    if filename.contains('$') || filename.contains('\n') {
+        let spectrum = format!("FILENAME: {}\n{}\n", filename, body);
+        return re.replace(&spectrum, replacement).trim_end().to_string();
+    }
+    let mut s = String::with_capacity(replacement.len() + body.len() + 1);
+    s.push_str(replacement);
+    s.push_str(body);
+    s.push('\n');
+    let len = s.trim_end().len();
+    s.truncate(len);
+    s
+}
+
 /// RUST NATIVE MSP LOADER
 ///
 /// # Arguments
@@ -249,7 +271,8 @@ pub fn load_spectrum_list_from_msp(
     let file = File::open(msp_file_path)?;
     let mut reader = BufReader::with_capacity(1024 * 1024 * 4, file);
     let mut spectrum_list = Vec::new();
-    let mut buffer = vec![format!("FILENAME: {}", filename)];
+    // Lignes du spectre en cours, déjà séparées par "\n" (avant : une String par ligne puis join)
+    let mut body = String::with_capacity(16 * 1024);
     let mut total_consumed: u64 = 0;
     let mut last_update = Instant::now();
 
@@ -265,12 +288,9 @@ pub fn load_spectrum_list_from_msp(
 
         let trimmed = line.trim();
         if trimmed.is_empty() {
-            if buffer.len() > 1 {
-                let spectrum = buffer.join("\n") + "\n";
-                let replaced = re.replace(&spectrum, replacement.as_str()).to_string();
-                spectrum_list.push(replaced.trim_end().to_string());
-                buffer.clear();
-                buffer.push(format!("FILENAME: {}", filename));
+            if !body.is_empty() {
+                spectrum_list.push(assemble_msp_spectrum(&filename, &replacement, &re, &body));
+                body.clear();
 
                 if last_update.elapsed() >= Duration::from_millis(50) {
                     let current_mb = total_consumed / (1024 * 1024);
@@ -280,14 +300,15 @@ pub fn load_spectrum_list_from_msp(
                 }
             }
         } else {
-            buffer.push(trimmed.to_string());
+            if !body.is_empty() {
+                body.push('\n');
+            }
+            body.push_str(trimmed);
         }
     }
 
-    if buffer.len() > 1 {
-        let spectrum = buffer.join("\n") + "\n";
-        let replaced = re.replace(&spectrum, replacement.as_str()).to_string();
-        spectrum_list.push(replaced.trim_end().to_string());
+    if !body.is_empty() {
+        spectrum_list.push(assemble_msp_spectrum(&filename, &replacement, &re, &body));
     }
 
     if let Some(cb) = &progress_callback { let _ = cb.call1(py, (total_mb,)); }
@@ -370,4 +391,46 @@ pub fn load_spectrum_list_from_mgf(
     if let Some(cb) = &progress_callback { let _ = cb.call1(py, (total_mb,)); }
 
     Ok(spectrum_list)
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::assemble_msp_spectrum;
+    use regex::Regex;
+
+    /// Copie exacte de l'ancien assemblage (buffer de lignes + join + regex + trim_end).
+    fn ancien(filename: &str, file_hash: &str, lines: &[&str]) -> String {
+        let re = Regex::new(r"(?i)FILENAME: .*\n").unwrap();
+        let replacement = format!("FILENAME: {}\nFILEHASH: {}\n", filename, file_hash);
+        let mut buffer = vec![format!("FILENAME: {}", filename)];
+        for l in lines {
+            buffer.push(l.to_string());
+        }
+        let spectrum = buffer.join("\n") + "\n";
+        let replaced = re.replace(&spectrum, replacement.as_str()).to_string();
+        replaced.trim_end().to_string()
+    }
+
+    #[test]
+    fn assemblage_identique_a_l_ancien() {
+        let re = Regex::new(r"(?i)FILENAME: .*\n").unwrap();
+        let noms = ["MoNA-export-LC-MS-MS_Spectra.msp", "", "nom avec espaces.msp", "accentué_é.msp",
+                    "prix$1.msp", "a$$b.msp", "${0}.msp", "ligne\nnouvelle.msp", "filename: piège.msp"];
+        let spectres: [&[&str]; 4] = [
+            &["Name: Caffeine", "Num Peaks: 2", "138.0662 100", "195.0877 45.2"],
+            &["seule ligne"],
+            &["FILENAME: autre.msp", "Comments: \"filename: x\"", "1 2"],
+            &["Name: $1 et \\n", "Num Peaks: 1", "10,5 20,25"],
+        ];
+        for nom in noms {
+            let hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+            let replacement = format!("FILENAME: {}\nFILEHASH: {}\n", nom, hash);
+            for lignes in spectres {
+                let body = lignes.join("\n");
+                assert_eq!(assemble_msp_spectrum(nom, &replacement, &re, &body), ancien(nom, hash, lignes),
+                           "nom {nom:?}, lignes {lignes:?}");
+            }
+        }
+    }
 }

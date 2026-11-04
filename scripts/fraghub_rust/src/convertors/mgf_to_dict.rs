@@ -4,6 +4,7 @@ use pyo3::prelude::*;
 use crate::spectrum::Spectrum;
 use rayon::prelude::*;
 use std::collections::HashMap;
+use crate::convertors::raw_metadata::RawMetadata;
 
 // 1. La structure pour passer les données entre les cœurs CPU sans bloquer Python
 /// Structure interne pour le multithreading.
@@ -13,7 +14,7 @@ use std::collections::HashMap;
 /// En Rust, on passe cette structure entre les threads (cœurs CPU) de manière ultra-rapide
 /// et sans copie superflue de la mémoire.
 struct ParsedSpectrum {
-    metadata: HashMap<String, String>,
+    metadata: RawMetadata, // champs bruts, dans l'ordre du fichier
     peaks: Vec<Vec<f64>>,
 }
 
@@ -66,7 +67,7 @@ pub fn mgf_to_dict_processing(
                 let peaks_str = caps.get(2).map_or("", |m| m.as_str());
 
                 if !metadata_str.is_empty() && !peaks_str.is_empty() {
-                    let mut metadata_dict: HashMap<String, String> = HashMap::new();
+                    let mut metadata_dict = RawMetadata::default();
 
                     // Extraction des métadonnées
                     for m in crate::globals_vars::METADATA_PATTERN_MGF.captures_iter(metadata_str) {
@@ -104,13 +105,8 @@ pub fn mgf_to_dict_processing(
         for parsed in parsed_chunk {
             let mut spec = Spectrum::default();
 
-            for (k, v) in parsed.metadata {
-                if let Some(mapped) = keys_dict.get(&k) {
-                    if keys_list.contains(mapped) {
-                        spec.metadata.insert(mapped.clone(), v);
-                    }
-                }
-            }
+            // Renommage vers les clés FragHub : si deux champs donnent la même clé, le premier du fichier gagne
+            parsed.metadata.map_into(&keys_dict, |mapped| keys_list.iter().any(|k| k == mapped), &mut spec.metadata);
             spec.metadata.insert("DATABASE_NAME".to_string(), db_name.clone());
 
             // Ajout de la liste de pics

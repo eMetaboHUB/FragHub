@@ -5,6 +5,7 @@ import multiprocessing
 import traceback
 import mzspeclib_converter
 import time
+import re
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, BackgroundTasks
 from fastapi.responses import FileResponse
@@ -15,6 +16,7 @@ import sys
 import os
 import fraghub_rust
 import rdkit_worker  # Ensure PyInstaller bundles it for Rust to use
+import perf_log  # PERF_LOG : journal de performances temporaire (voir perf_log.py)
 
 parameters_dict = {}
 
@@ -127,6 +129,7 @@ def progress_callback(*args):
     if global_stop_flag:
         raise Exception("Process stopped by user.")
     if args:
+        perf_log.on_progress(args[0])  # PERF_LOG
         # Si on atteint 100%, on remet le chrono à zéro pour FORCER l'envoi
         if args[0] >= current_total_items:
             last_emit_time = 0
@@ -137,6 +140,7 @@ def total_items_callback(*args):
     global last_emit_time, current_total_items
     last_emit_time = 0
     if args:
+        perf_log.on_total(args[0])  # PERF_LOG
         current_total_items = args[0]  # <-- On enregistre le maximum
         task_state['task'] += 1
         task_state['total'] = args[0]
@@ -147,17 +151,20 @@ def prefix_callback(*args):
     global last_emit_time
     last_emit_time = 0
     if args:
+        perf_log.on_prefix(args[0])  # PERF_LOG
         task_state['prefix'] = args[0]
         emit_to_frontend('prefix', args[0])
 
 def item_type_callback(*args):
     if args:
+        perf_log.on_item_type(args[0])  # PERF_LOG
         task_state['item_type'] = args[0]
         emit_to_frontend('item_type', args[0])
 
 def step_callback(*args):
     global deferred_report
     if args:
+        perf_log.on_step(args[0])  # PERF_LOG
         if args[0] == "Generating Report" and parameters_dict.get("mzspeclib_json", 0.0) == 1.0:
             deferred_report = True
             return
@@ -166,6 +173,7 @@ def step_callback(*args):
 def deletion_callback(*args):
     global deferred_deletion
     if args:
+        perf_log.on_deletion(args[0])  # PERF_LOG
         if parameters_dict.get("mzspeclib_json", 0.0) == 1.0:
             deferred_deletion = args[0]
             return
@@ -173,6 +181,7 @@ def deletion_callback(*args):
 
 def completion_callback(*args):
     if args:
+        perf_log.on_completion(args[0])  # PERF_LOG
         if len(args) > 1:
             emit_to_frontend('completion', {'message': args[0], 'report_path': args[1]})
         else:
@@ -200,11 +209,40 @@ async def get_report(path: str):
 
 @app.get("/init-data")
 async def init_data():
+    perf_t0 = time.perf_counter()  # PERF_LOG
     fraghub_rust.load_internal_databases(BASE_DIR)
+    perf_log.record_init(time.perf_counter() - perf_t0)  # PERF_LOG
     return {"status": "loaded"}
 
 # --- EXÉCUTION ---
+def _format_hms(seconds):
+    seconds = int(seconds)
+    return f"{seconds // 3600:02d}:{(seconds % 3600) // 60:02d}:{seconds % 60:02d}"
+
+
+def _update_total_time(rust_completion_data, run_start):
+    """Remplace le temps total calculé par Rust (qui s'arrête avant la conversion mzSpecLib, faite
+    ensuite en Python) par la vraie durée du run, dans le message de fin ET dans le rapport HTML."""
+    total = _format_hms(time.time() - run_start)
+    msg, report_path = rust_completion_data
+    if isinstance(msg, str) and msg.startswith("--- TOTAL TIME:"):
+        msg = f"--- TOTAL TIME: {total} ---"
+    if report_path and os.path.exists(report_path):
+        try:
+            with open(report_path, "r", encoding="utf-8") as f:
+                html = f.read()
+            new_html = re.sub(r"(Total Processing Time: <strong>)\d{2,}:\d{2}:\d{2}(</strong>)",
+                              lambda m: m.group(1) + total + m.group(2), html, count=1)
+            if new_html != html:
+                with open(report_path, "w", encoding="utf-8") as f:
+                    f.write(new_html)
+        except OSError as e:
+            print(f"[WARNING] Impossible de mettre à jour le temps total dans le rapport : {e}")
+    return (msg, report_path)
+
+
 def execute_main_safely():
+    run_start = time.time()  # début du run, pour le temps total (mzSpecLib compris)
     try:
         # We need to capture the completion data from Rust so it doesn't close the GUI early
         rust_completion_data = None
@@ -246,6 +284,10 @@ def execute_main_safely():
                     completion_callback(f"Warning: mzSpecLib JSON conversion failed: {cv_e}")
                 return # Si on retourne ici, on n'affiche pas le TOTAL TIME
 
+            # Le temps total de Rust ne comptait pas cette conversion : on le recalcule
+            if rust_completion_data:
+                rust_completion_data = _update_total_time(rust_completion_data, run_start)
+
         # On envoie maintenant les étapes qu'on avait différées
         if deferred_deletion:
             emit_to_frontend('deletion', deferred_deletion)
@@ -268,6 +310,13 @@ def execute_main_safely():
             if completion_callback:
                 completion_callback(f"Error: {str(e)}")
 
+def execute_main_safely_with_perf_log():  # PERF_LOG
+    perf_log.start(parameters_dict)  # PERF_LOG
+    try:  # PERF_LOG
+        execute_main_safely()  # PERF_LOG
+    finally:  # PERF_LOG
+        perf_log.finish()  # PERF_LOG
+
 @app.post("/run-analysis")
 async def run_analysis(params: FragHubParams, background_tasks: BackgroundTasks):
     global global_stop_flag
@@ -275,7 +324,7 @@ async def run_analysis(params: FragHubParams, background_tasks: BackgroundTasks)
     params_data = params.model_dump(by_alias=True)
     for key, value in params_data.items():
         parameters_dict[key] = value
-    background_tasks.add_task(execute_main_safely)
+    background_tasks.add_task(execute_main_safely_with_perf_log)  # PERF_LOG (avant : execute_main_safely)
     return {"status": "started"}
 
 if __name__ == "__main__":
@@ -356,7 +405,9 @@ if __name__ == "__main__":
             print("========================================\n")
         
         # Chargement initial des bases
+        perf_t0 = time.perf_counter()  # PERF_LOG
         fraghub_rust.load_internal_databases(BASE_DIR)
+        perf_log.record_init(time.perf_counter() - perf_t0)  # PERF_LOG
         
         global_start_time = time.time()
         
@@ -366,6 +417,7 @@ if __name__ == "__main__":
         cli_start_time = [0.0]
         
         def cli_progress_callback(*cb_args):
+            if cb_args: perf_log.on_progress(cb_args[0])  # PERF_LOG
             if args.quiet or not cb_args: return
             val = cb_args[0]
             total = cli_total_items[0]
@@ -400,11 +452,13 @@ if __name__ == "__main__":
                     print() # Nouvelle ligne à 100%
                     
         def cli_total_items_callback(*cb_args):
+            if cb_args: perf_log.on_total(cb_args[0])  # PERF_LOG
             if cb_args:
                 cli_total_items[0] = cb_args[0]
                 cli_start_time[0] = time.time() # Reset chrono au début de chaque étape
             
         def cli_prefix_callback(*cb_args):
+            if cb_args: perf_log.on_prefix(cb_args[0])  # PERF_LOG
             if args.quiet or not cb_args: return
             prefix = cb_args[0]
             cli_current_prefix[0] = prefix
@@ -412,21 +466,25 @@ if __name__ == "__main__":
             print(f"\n\033[1;37m▶ {prefix}\033[0m")
             
         def cli_item_type_callback(*cb_args):
+            if cb_args: perf_log.on_item_type(cb_args[0])  # PERF_LOG
             pass # Non nécessaire en CLI
             
         def cli_step_callback(*cb_args):
+            if cb_args: perf_log.on_step(cb_args[0])  # PERF_LOG
             if args.quiet or not cb_args: return
             step = cb_args[0]
             # Étape principale en jaune et en gras
             print(f"\n\033[1;33m=== {step} ===\033[0m")
             
         def cli_completion_callback(*cb_args):
+            if cb_args: perf_log.on_completion(cb_args[0])  # PERF_LOG
             if args.quiet or not cb_args: return
             msg = cb_args[0]
             # Message de fin en vert
             print(f"\n\033[1;32m✔ {msg}\033[0m\n")
             
         def cli_deletion_callback(*cb_args):
+            if cb_args: perf_log.on_deletion(cb_args[0])  # PERF_LOG
             if args.quiet or not cb_args: return
             msg = cb_args[0]
             # Rapports de suppression en rouge/orange
@@ -435,6 +493,7 @@ if __name__ == "__main__":
         def cli_get_stop_flag():
             return False # Pas d'interruption via UI en mode CLI (l'utilisateur fera Ctrl+C)
             
+        perf_log.start(parameters_dict)  # PERF_LOG
         try:
             # Lancement de l'orchestrateur de façon synchrone dans le thread principal
             fraghub_rust.main_orchestrator(
@@ -450,7 +509,9 @@ if __name__ == "__main__":
             )
         except Exception as e:
             print(f"\n[ERROR] Une erreur s'est produite : {e}")
+            perf_log.finish(f"Erreur : {e}")  # PERF_LOG
             sys.exit(1)
+        perf_log.finish()  # PERF_LOG
             
         # Calcul et affichage du temps total
         total_time = time.time() - global_start_time

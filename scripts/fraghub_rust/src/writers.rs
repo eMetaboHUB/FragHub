@@ -32,18 +32,18 @@ static RE_2: Lazy<Regex> = Lazy::new(|| Regex::new(r#"\[\n\s*(-?[\d\.eE\+\-]+),\
 /// * `PyResult<()>` : Succès ou erreur IO.
 #[allow(clippy::too_many_arguments)]
 pub fn writting_msp_processing(
-    py: Python, pos_lc: Vec<String>, pos_lc_insilico: Vec<String>, pos_gc: Vec<String>, pos_gc_insilico: Vec<String>, neg_lc: Vec<String>, neg_lc_insilico: Vec<String>, neg_gc: Vec<String>, neg_gc_insilico: Vec<String>, output_directory: &str, update: bool, progress_callback: Option<PyObject>, total_items_callback: Option<PyObject>, prefix_callback: Option<PyObject>, item_type_callback: Option<PyObject>,
+    py: Python, pos_lc: &[String], pos_lc_insilico: &[String], pos_gc: &[String], pos_gc_insilico: &[String], neg_lc: &[String], neg_lc_insilico: &[String], neg_gc: &[String], neg_gc_insilico: &[String], output_directory: &str, update: bool, progress_callback: Option<PyObject>, total_items_callback: Option<PyObject>, prefix_callback: Option<PyObject>, item_type_callback: Option<PyObject>,
 ) -> PyResult<()> {
 
     let tasks = vec![
-        (&pos_lc, "POS_LC.msp", "POS"),
-        (&pos_lc_insilico, "POS_LC_insilico.msp", "POS"),
-        (&pos_gc, "POS_GC.msp", "POS"),
-        (&pos_gc_insilico, "POS_GC_insilico.msp", "POS"),
-        (&neg_lc, "NEG_LC.msp", "NEG"),
-        (&neg_lc_insilico, "NEG_LC_insilico.msp", "NEG"),
-        (&neg_gc, "NEG_GC.msp", "NEG"),
-        (&neg_gc_insilico, "NEG_GC_insilico.msp", "NEG"),
+        (pos_lc, "POS_LC.msp", "POS"),
+        (pos_lc_insilico, "POS_LC_insilico.msp", "POS"),
+        (pos_gc, "POS_GC.msp", "POS"),
+        (pos_gc_insilico, "POS_GC_insilico.msp", "POS"),
+        (neg_lc, "NEG_LC.msp", "NEG"),
+        (neg_lc_insilico, "NEG_LC_insilico.msp", "NEG"),
+        (neg_gc, "NEG_GC.msp", "NEG"),
+        (neg_gc_insilico, "NEG_GC_insilico.msp", "NEG"),
     ];
 
     let total_items: usize = tasks.iter().map(|(list, _, _)| list.len()).sum();
@@ -114,18 +114,18 @@ pub fn writting_msp_processing(
 /// * `PyResult<()>` : Succès ou erreur IO.
 #[allow(clippy::too_many_arguments)]
 pub fn writting_csv_processing(
-    py: Python, pos_lc_df: Vec<Spectrum>, pos_gc_df: Vec<Spectrum>, neg_lc_df: Vec<Spectrum>, neg_gc_df: Vec<Spectrum>, pos_lc_df_insilico: Vec<Spectrum>, pos_gc_df_insilico: Vec<Spectrum>, neg_lc_df_insilico: Vec<Spectrum>, neg_gc_df_insilico: Vec<Spectrum>, ordered_columns: Vec<String>, output_directory: &str, update: bool, progress_callback: Option<PyObject>, total_items_callback: Option<PyObject>, prefix_callback: Option<PyObject>, item_type_callback: Option<PyObject>,
+    py: Python, pos_lc_df: &[Spectrum], pos_gc_df: &[Spectrum], neg_lc_df: &[Spectrum], neg_gc_df: &[Spectrum], pos_lc_df_insilico: &[Spectrum], pos_gc_df_insilico: &[Spectrum], neg_lc_df_insilico: &[Spectrum], neg_gc_df_insilico: &[Spectrum], ordered_columns: Vec<String>, output_directory: &str, update: bool, progress_callback: Option<PyObject>, total_items_callback: Option<PyObject>, prefix_callback: Option<PyObject>, item_type_callback: Option<PyObject>,
 ) -> PyResult<()> {
 
     let tasks = vec![
-        (&pos_lc_df, "POS_LC.csv", "POS"),
-        (&pos_gc_df, "POS_GC.csv", "POS"),
-        (&neg_lc_df, "NEG_LC.csv", "NEG"),
-        (&neg_gc_df, "NEG_GC.csv", "NEG"),
-        (&pos_lc_df_insilico, "POS_LC_In_Silico.csv", "POS"),
-        (&pos_gc_df_insilico, "POS_GC_In_Silico.csv", "POS"),
-        (&neg_lc_df_insilico, "NEG_LC_In_Silico.csv", "NEG"),
-        (&neg_gc_df_insilico, "NEG_GC_In_Silico.csv", "NEG"),
+        (pos_lc_df, "POS_LC.csv", "POS"),
+        (pos_gc_df, "POS_GC.csv", "POS"),
+        (neg_lc_df, "NEG_LC.csv", "NEG"),
+        (neg_gc_df, "NEG_GC.csv", "NEG"),
+        (pos_lc_df_insilico, "POS_LC_In_Silico.csv", "POS"),
+        (pos_gc_df_insilico, "POS_GC_In_Silico.csv", "POS"),
+        (neg_lc_df_insilico, "NEG_LC_In_Silico.csv", "NEG"),
+        (neg_gc_df_insilico, "NEG_GC_In_Silico.csv", "NEG"),
     ];
 
     let total_items: usize = tasks.iter().map(|(list, _, _)| list.len()).sum();
@@ -240,18 +240,18 @@ pub fn writting_csv_processing(
 /// * `PyResult<()>` : Succès ou erreur IO.
 #[allow(clippy::too_many_arguments)]
 pub fn writting_json_processing(
-    py: Python, update: bool, pos_lc_df: Vec<Spectrum>, pos_gc_df: Vec<Spectrum>, neg_lc_df: Vec<Spectrum>, neg_gc_df: Vec<Spectrum>, pos_lc_df_insilico: Vec<Spectrum>, pos_gc_df_insilico: Vec<Spectrum>, neg_lc_df_insilico: Vec<Spectrum>, neg_gc_df_insilico: Vec<Spectrum>, ordered_columns: Vec<String>, output_directory: &str, progress_callback: Option<PyObject>, total_items_callback: Option<PyObject>, prefix_callback: Option<PyObject>, item_type_callback: Option<PyObject>,
+    py: Python, update: bool, pos_lc_df: &[Spectrum], pos_gc_df: &[Spectrum], neg_lc_df: &[Spectrum], neg_gc_df: &[Spectrum], pos_lc_df_insilico: &[Spectrum], pos_gc_df_insilico: &[Spectrum], neg_lc_df_insilico: &[Spectrum], neg_gc_df_insilico: &[Spectrum], ordered_columns: Vec<String>, output_directory: &str, progress_callback: Option<PyObject>, total_items_callback: Option<PyObject>, prefix_callback: Option<PyObject>, item_type_callback: Option<PyObject>,
 ) -> PyResult<()> {
 
     let tasks = vec![
-        (&pos_lc_df, "POS_LC.json", "POS"),
-        (&pos_gc_df, "POS_GC.json", "POS"),
-        (&neg_lc_df, "NEG_LC.json", "NEG"),
-        (&neg_gc_df, "NEG_GC.json", "NEG"),
-        (&pos_lc_df_insilico, "POS_LC_In_Silico.json", "POS"),
-        (&pos_gc_df_insilico, "POS_GC_In_Silico.json", "POS"),
-        (&neg_lc_df_insilico, "NEG_LC_In_Silico.json", "NEG"),
-        (&neg_gc_df_insilico, "NEG_GC_In_Silico.json", "NEG"),
+        (pos_lc_df, "POS_LC.json", "POS"),
+        (pos_gc_df, "POS_GC.json", "POS"),
+        (neg_lc_df, "NEG_LC.json", "NEG"),
+        (neg_gc_df, "NEG_GC.json", "NEG"),
+        (pos_lc_df_insilico, "POS_LC_In_Silico.json", "POS"),
+        (pos_gc_df_insilico, "POS_GC_In_Silico.json", "POS"),
+        (neg_lc_df_insilico, "NEG_LC_In_Silico.json", "NEG"),
+        (neg_gc_df_insilico, "NEG_GC_In_Silico.json", "NEG"),
     ];
 
     let total_items: usize = tasks.iter().map(|(list, _, _)| list.len()).sum();

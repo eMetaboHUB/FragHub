@@ -4,44 +4,7 @@ use std::fs;
 use csv::ReaderBuilder;
 use std::path::Path;
 use crate::global_state::STATE;
-use polars::prelude::*;
-
-fn read_parquet_to_dict_of_dicts(filepath: &str, key_col: &str) -> HashMap<String, HashMap<String, String>> {
-    let mut map = HashMap::new();
-    
-    if let Ok(mut file) = fs::File::open(filepath) {
-        if let Ok(df) = ParquetReader::new(&mut file).finish() {
-            let headers: Vec<String> = df.get_column_names().iter().map(|s| s.to_string()).collect();
-            let n_rows = df.height();
-            let columns = df.get_columns();
-            
-            for i in 0..n_rows {
-                let mut row_dict = HashMap::new();
-                let mut key_val = String::new();
-                
-                for (col_idx, header) in headers.iter().enumerate() {
-                    if let Ok(val) = columns[col_idx].get(i) {
-                        let val_clean = match val {
-                            AnyValue::String(s) => s.to_string(),
-                            AnyValue::StringOwned(s) => s.to_string(),
-                            AnyValue::Null => "".to_string(),
-                            _ => val.to_string(),
-                        };
-                        if header == key_col {
-                            key_val = val_clean.clone();
-                        }
-                        row_dict.insert(header.clone(), val_clean);
-                    }
-                }
-                
-                if !key_val.is_empty() {
-                    map.insert(key_val, row_dict);
-                }
-            }
-        }
-    }
-    map
-}
+use crate::compound_db::CompoundDb;
 
 /// Point d'entrée pour le chargement des bases de données depuis Python.
 ///
@@ -51,26 +14,10 @@ fn read_parquet_to_dict_of_dicts(filepath: &str, key_col: &str) -> HashMap<Strin
 pub fn load_internal_databases(_py: Python, base_dir: &str) -> PyResult<()> {
     let base_path = Path::new(base_dir);
 
-    // 1. Pubchem (Désormais fusionné dans ontologies_datas, on le laisse vide pour économiser la RAM)
-    let pubchem_datas = HashMap::new();
-
-    // 2. Ontologies (Contient désormais TOUTES les données PubChem + NPClassifier + ClassyFire au format Parquet)
+    // 1 et 2. PubChem + ontologies (ClassyFire, NPClassifier) : un seul jeu de fichiers parquet,
+    // gardé en RAM en format compact et indexé par INCHIKEY (voir compound_db.rs).
     let ontologies_parquet_path = base_path.join("datas").join("internal_databases.parquet");
-    let mut ontologies_datas = HashMap::new();
-    
-    if ontologies_parquet_path.is_dir() {
-        if let Ok(entries) = fs::read_dir(&ontologies_parquet_path) {
-            for entry in entries.flatten() {
-                let path = entry.path();
-                if path.extension().and_then(|s| s.to_str()) == Some("parquet") {
-                    let map = read_parquet_to_dict_of_dicts(&path.to_string_lossy(), "INCHIKEY");
-                    ontologies_datas.extend(map);
-                }
-            }
-        }
-    } else {
-        ontologies_datas = read_parquet_to_dict_of_dicts(&ontologies_parquet_path.to_string_lossy(), "INCHIKEY");
-    }
+    let compound_db = CompoundDb::load(&ontologies_parquet_path, "INCHIKEY");
 
     // 3. Adducts
     let adduct_file_path = base_path.join("datas").join("adduct_to_convert.csv");
@@ -148,8 +95,7 @@ pub fn load_internal_databases(_py: Python, base_dir: &str) -> PyResult<()> {
 
     // Update global state
     if let Ok(mut state) = STATE.write() {
-        state.pubchem_datas = pubchem_datas;
-        state.ontologies_datas = ontologies_datas;
+        state.compound_db = compound_db;
         state.adduct_dict_pos = adduct_dict_pos;
         state.adduct_massdiff_dict_pos = adduct_massdiff_dict_pos;
         state.adduct_dict_neg = adduct_dict_neg;

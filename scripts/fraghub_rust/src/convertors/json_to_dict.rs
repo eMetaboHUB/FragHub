@@ -3,11 +3,12 @@ use pyo3::prelude::*;
 use crate::spectrum::Spectrum;
 use rayon::prelude::*;
 use std::collections::HashMap;
+use crate::convertors::raw_metadata::RawMetadata;
 use std::time::Duration;
 
 
 struct ParsedJsonSpectrum {
-    metadata: HashMap<String, String>,
+    metadata: RawMetadata, // champs bruts, dans l'ordre de l'objet JSON
     peaks: Vec<(f64, f64)>,
 }
 
@@ -121,7 +122,7 @@ pub fn json_to_dict_processing(
         let parsed_chunk: Vec<ParsedJsonSpectrum> = py.allow_threads(|| {
             chunk.into_par_iter().filter_map(|json_str| {
                 let v: serde_json::Value = serde_json::from_str(&json_str).ok()?;
-                let mut metadata = HashMap::with_capacity(32);
+                let mut metadata = RawMetadata::with_capacity(32);
                 let mut peaks = Vec::new();
 
                 let is_mona = v.get("compound").is_some() && v.get("id").is_some() && v.get("metaData").is_some() && v.get("spectrum").is_some() && v.get("filename").is_some();
@@ -241,13 +242,8 @@ pub fn json_to_dict_processing(
         for parsed in parsed_chunk {
             let mut spec = Spectrum::default();
 
-            for (k, val) in parsed.metadata {
-                if let Some(mapped) = keys_dict.get(&k) {
-                    if keys_list.contains(mapped) {
-                        spec.metadata.insert(mapped.clone(), val);
-                    }
-                }
-            }
+            // Renommage vers les clés FragHub : si deux champs donnent la même clé, le premier du fichier gagne
+            parsed.metadata.map_into(&keys_dict, |mapped| keys_list.iter().any(|k| k == mapped), &mut spec.metadata);
             spec.metadata.insert("DATABASE_NAME".to_string(), db_name.clone());
 
             spec.peaks = parsed.peaks;

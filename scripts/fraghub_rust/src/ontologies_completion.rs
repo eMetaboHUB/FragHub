@@ -29,14 +29,16 @@ pub fn ontologies_completion_processing(
     let total_items = spectrum_list.len();
     if let Some(cb) = &total_items_callback { cb.call1(py, (total_items, 0))?; }
 
-    // --- Step 2: Récupération de ontologies_df depuis Rust Global State ---
+    // --- Step 2: Récupération de la base interne (PubChem + ontologies) depuis Rust Global State ---
     let state = crate::global_state::STATE.read().unwrap();
-    let ont_dict = &state.ontologies_datas;
+    let db = &state.compound_db;
 
     let columns_to_update = [
         "CLASSYFIRE_SUPERCLASS", "CLASSYFIRE_CLASS", "CLASSYFIRE_SUBCLASS",
         "NPCLASS_PATHWAY", "NPCLASS_SUPERCLASS", "NPCLASS_CLASS"
     ];
+    // Numéros de colonnes calculés une fois pour toutes (None si la colonne n'existe pas dans la base)
+    let column_ids: Vec<(&str, Option<usize>)> = columns_to_update.iter().map(|c| (*c, db.column_id(c))).collect();
 
     let mut processed = 0;
     let chunk_size = 500;
@@ -54,11 +56,11 @@ pub fn ontologies_completion_processing(
                 let inchikey = spec.metadata.get("INCHIKEY").cloned().unwrap_or_default();
 
                 if !inchikey.is_empty() && inchikey.to_lowercase() != "nan" {
-                    if let Some(ont_row) = ont_dict.get(&inchikey) {
-                        for col in &columns_to_update {
-                            if let Some(new_val) = ont_row.get(*col) {
+                    if let Some(loc) = db.locate(&inchikey) {
+                        for (col, column_id) in &column_ids {
+                            if let Some(new_val) = column_id.and_then(|id| db.value(loc, id)) {
                                 if !new_val.trim().is_empty() && new_val.to_lowercase() != "nan" {
-                                    spec.metadata.insert(col.to_string(), new_val.clone());
+                                    spec.metadata.insert(col.to_string(), new_val);
                                 }
                             }
                         }

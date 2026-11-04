@@ -6,6 +6,9 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 use csv::WriterBuilder;
+use std::io::{BufWriter, Write};
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::time::Duration;
 
 /// Moteur principal de nettoyage et de filtrage d'une liste de spectres.
 ///
@@ -69,12 +72,20 @@ pub fn spectrum_cleaning_processing(
     let mut kept_spectra = Vec::new();
     let mut deleted_spectra: HashMap<String, Vec<HashMap<String, String>>> = HashMap::new();
 
-    for chunk in spectrum_list.chunks(chunk_size) {
+    // Les spectres sont DÉPLACÉS paquet par paquet (et non copiés) : chaque paquet est libéré
+    // dès qu'il est traité, en parallèle, au lieu de libérer toute la liste d'un coup à la fin.
+    let mut remaining = spectrum_list.into_iter();
+    loop {
+        let chunk: Vec<Spectrum> = remaining.by_ref().take(chunk_size).collect();
+        if chunk.is_empty() {
+            break;
+        }
+        let chunk_len = chunk.len();
         let results: Vec<_> = py.allow_threads(|| {
-            chunk.par_iter().map(|spec| {
-                let meta = spec.metadata.clone();
+            chunk.into_par_iter().map(|spec| {
+                let Spectrum { metadata: meta, peaks: spec_peaks } = spec;
 
-                if spec.peaks.is_empty() {
+                if spec_peaks.is_empty() {
                     return Err((meta, "spectrum deleted because peaks list is empty".to_string()));
                 }
 
@@ -103,8 +114,8 @@ pub fn spectrum_cleaning_processing(
                         } else { return Err((valid_meta, "spectrum deleted because precursor mz field is empty or contains invalid characters (not a floating number).".to_string())); }
                     }
 
-                    // Filtrage des pics
-                    let mut peaks = spec.peaks.clone();
+                    // Filtrage des pics (les pics du spectre sont repris tels quels, sans copie)
+                    let mut peaks = spec_peaks;
                     peaks.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap_or(std::cmp::Ordering::Equal));
 
                     let mut peak_del_reason = None;
@@ -155,7 +166,7 @@ pub fn spectrum_cleaning_processing(
             }
         }
 
-        processed += chunk.len();
+        processed += chunk_len;
         if let Some(cb) = &progress_callback { cb.call1(py, (processed,))?; }
     }
 
@@ -180,56 +191,41 @@ pub fn spectrum_cleaning_processing(
     }
 
     if let Some(cb) = &progress_callback { cb.call1(py, (total_items,))?; }
+
+    // 4. Écriture des CSV de suppression.
+    // Nouvelle barre de progression (en lignes écrites) : avant, la barre restait figée pendant l'écriture.
+    let total_deleted: usize = deleted_spectra.values().map(|g| g.len()).sum();
+    if total_deleted > 0 {
+        if let Some(cb) = &total_items_callback { let _ = cb.call1(py, (total_deleted,)); }
+    }
     if let Some(cb) = &prefix_callback { cb.call1(py, ("Writing deletion logs...",))?; }
+    if total_deleted > 0 {
+        if let Some(cb) = &item_type_callback { let _ = cb.call1(py, ("rows",)); }
+    }
+
+    if !deleted_spectra.is_empty() {
+        let del_dir = Path::new(&output_directory).join("DELETED_SPECTRUMS");
+        fs::create_dir_all(&del_dir)?;
+
+        let deleted_spectra_vec: Vec<_> = deleted_spectra.into_iter().collect();
+        let written = AtomicUsize::new(0);
+        // L'écriture tourne dans un thread à part ; pendant ce temps, ce thread-ci (qui a le droit
+        // d'appeler Python) met à jour la barre toutes les 100 ms.
+        std::thread::scope(|scope| {
+            let worker = scope.spawn(|| write_deletion_files(deleted_spectra_vec, &del_dir, &ordered_columns, update, &written));
+            while !worker.is_finished() {
+                py.allow_threads(|| std::thread::sleep(Duration::from_millis(100)));
+                // let _ : comme avant, l'écriture n'est pas interrompue par le bouton stop
+                if let Some(cb) = &progress_callback { let _ = cb.call1(py, (written.load(Ordering::Relaxed),)); }
+            }
+            if let Err(panic) = worker.join() {
+                std::panic::resume_unwind(panic);
+            }
+        });
+        if let Some(cb) = &progress_callback { let _ = cb.call1(py, (total_deleted,)); }
+    }
 
     let final_list = py.allow_threads(|| {
-        // 4. Écriture des CSV de suppression
-        if !deleted_spectra.is_empty() {
-            let del_dir = Path::new(&output_directory).join("DELETED_SPECTRUMS");
-            fs::create_dir_all(&del_dir)?;
-
-            let deleted_spectra_vec: Vec<_> = deleted_spectra.into_iter().collect();
-            deleted_spectra_vec.into_par_iter().for_each(|(reason, group)| {
-                let file_name = match reason.as_str() {
-                    "spectrum deleted because peaks list is empty" => "peaks_list_is_empty.csv",
-                    "spectrum deleted because precursor mz is less than or equal to zero." => "precursor_mz_less_than_or_equal_zero.csv",
-                    "spectrum deleted because it's entropy score is lower than the threshold selected by the user." => "entropy_score_lower_than_threshold.csv",
-                    "spectrum deleted because precursor mz field is empty or contains invalid characters (not a floating number)." => "precursor_mz_invalid_or_empty.csv",
-                    "spectrum deleted because it has neither inchi nor smiles nor inchikey" => "no_inchi_smiles_or_inchikey.csv",
-                    "spectrum deleted because its adduct field is empty or the value entered is not an adduct" => "adduct_empty_or_invalid.csv",
-                    "spectrum deleted because the adduct corresponds to the wrong ionization mode (neg adduct in pos ionmode)." => "wrong_adduct_neg_in_pos.csv",
-                    "spectrum deleted because the adduct corresponds to the wrong ionization mode (pos adduct in neg ionmode)." => "wrong_adduct_pos_in_neg.csv",
-                    "spectrum deleted because its number of peaks is below the threshold chosen by the user" => "number_of_peaks_below_threshold.csv",
-                    "spectrum deleted because peaks list is empty after removing peaks above precursor m/z" => "peaks_empty_after_above_precursor_mz_removal.csv",
-                    "spectrum deleted because peaks list is empty after removing peaks out of mz range choiced by the user" => "peaks_empty_after_mz_range_removal.csv",
-                    "spectrum deleted because peaks list does not contain minimum number of high peaks required according to the value choiced by the user" => "insufficient_high_peaks.csv",
-                    _ => "other_deletions.csv"
-                };
-
-                let file_path = del_dir.join(file_name);
-                // On preserve l'historique des runs precedents (mode append, sans reset_updates) :
-                // si le fichier existe deja, on ajoute les lignes a la suite au lieu de l'ecraser.
-                let is_append = update && file_path.exists();
-                let file = std::fs::OpenOptions::new().write(true).create(true).append(is_append).truncate(!is_append).open(&file_path).unwrap();
-                let mut wtr = WriterBuilder::new().delimiter(b'\t').quote(b'"').has_headers(!is_append).from_writer(file);
-                if !is_append {
-                    let mut header = ordered_columns.clone();
-                    header.push("DELETION_REASON".to_string());
-                    wtr.write_record(&header).unwrap();
-                }
-
-                for meta in group {
-                    let mut record = Vec::with_capacity(ordered_columns.len() + 1);
-                    for col in &ordered_columns {
-                        record.push(meta.get(col).cloned().unwrap_or_default());
-                    }
-                    record.push(meta.get("DELETION_REASON").cloned().unwrap_or_default());
-                    wtr.write_record(&record).unwrap();
-                }
-                wtr.flush().unwrap();
-            });
-        }
-
         // 5. Reconstruction de la liste finale
         let mut final_list = Vec::with_capacity(kept_spectra.len());
         for (meta, peaks) in kept_spectra {
@@ -243,4 +239,156 @@ pub fn spectrum_cleaning_processing(
     })?;
 
     Ok(final_list)
+}
+
+/// Nom du fichier CSV de suppression pour un motif donné (liste inchangée).
+fn deletion_file_name(reason: &str) -> &'static str {
+    match reason {
+                    "spectrum deleted because peaks list is empty" => "peaks_list_is_empty.csv",
+                    "spectrum deleted because precursor mz is less than or equal to zero." => "precursor_mz_less_than_or_equal_zero.csv",
+                    "spectrum deleted because it's entropy score is lower than the threshold selected by the user." => "entropy_score_lower_than_threshold.csv",
+                    "spectrum deleted because precursor mz field is empty or contains invalid characters (not a floating number)." => "precursor_mz_invalid_or_empty.csv",
+                    "spectrum deleted because it has neither inchi nor smiles nor inchikey" => "no_inchi_smiles_or_inchikey.csv",
+                    "spectrum deleted because its adduct field is empty or the value entered is not an adduct" => "adduct_empty_or_invalid.csv",
+                    "spectrum deleted because the adduct corresponds to the wrong ionization mode (neg adduct in pos ionmode)." => "wrong_adduct_neg_in_pos.csv",
+                    "spectrum deleted because the adduct corresponds to the wrong ionization mode (pos adduct in neg ionmode)." => "wrong_adduct_pos_in_neg.csv",
+                    "spectrum deleted because its number of peaks is below the threshold chosen by the user" => "number_of_peaks_below_threshold.csv",
+                    "spectrum deleted because peaks list is empty after removing peaks above precursor m/z" => "peaks_empty_after_above_precursor_mz_removal.csv",
+                    "spectrum deleted because peaks list is empty after removing peaks out of mz range choiced by the user" => "peaks_empty_after_mz_range_removal.csv",
+                    "spectrum deleted because peaks list does not contain minimum number of high peaks required according to the value choiced by the user" => "insufficient_high_peaks.csv",
+                    _ => "other_deletions.csv"
+    }
+}
+
+/// Nombre de lignes préparées par paquet, et nombre de paquets préparés en parallèle avant
+/// d'être écrits (limite la mémoire utilisée par le texte en attente d'écriture).
+const ROWS_PER_CHUNK: usize = 2000;
+const CHUNKS_PER_BATCH: usize = 64;
+
+/// Écrit les CSV de DELETED_SPECTRUMS : un fichier par motif, comme avant.
+///
+/// Le texte des lignes est préparé en parallèle par paquets (chaque paquet avec un writer CSV
+/// configuré à l'identique), puis les paquets sont écrits dans l'ordre. Un writer CSV produit
+/// exactement le même texte pour une ligne quel que soit ce qu'il a écrit avant : le fichier
+/// obtenu est donc identique, octet pour octet, à celui de l'ancienne écriture ligne par ligne.
+fn write_deletion_files(
+    groups: Vec<(String, Vec<HashMap<String, String>>)>,
+    del_dir: &Path,
+    ordered_columns: &[String],
+    update: bool,
+    written: &AtomicUsize,
+) {
+    let new_writer = |is_append: bool| {
+        WriterBuilder::new().delimiter(b'\t').quote(b'"').has_headers(!is_append).from_writer(Vec::new())
+    };
+    groups.into_par_iter().for_each(|(reason, group)| {
+        let file_path = del_dir.join(deletion_file_name(&reason));
+        // On preserve l'historique des runs precedents (mode append, sans reset_updates) :
+        // si le fichier existe deja, on ajoute les lignes a la suite au lieu de l'ecraser.
+        let is_append = update && file_path.exists();
+        let file = std::fs::OpenOptions::new().write(true).create(true).append(is_append).truncate(!is_append).open(&file_path).unwrap();
+        let mut out = BufWriter::with_capacity(4 * 1024 * 1024, file);
+        if !is_append {
+            let mut header = ordered_columns.to_vec();
+            header.push("DELETION_REASON".to_string());
+            let mut wtr = new_writer(is_append);
+            wtr.write_record(&header).unwrap();
+            out.write_all(&wtr.into_inner().unwrap()).unwrap();
+        }
+
+        for batch in group.chunks(ROWS_PER_CHUNK * CHUNKS_PER_BATCH) {
+            let texts: Vec<Vec<u8>> = batch.par_chunks(ROWS_PER_CHUNK).map(|rows| {
+                let mut wtr = new_writer(is_append);
+                for meta in rows {
+                    let mut record = Vec::with_capacity(ordered_columns.len() + 1);
+                    for col in ordered_columns {
+                        record.push(meta.get(col).map(|s| s.as_str()).unwrap_or(""));
+                    }
+                    record.push(meta.get("DELETION_REASON").map(|s| s.as_str()).unwrap_or(""));
+                    wtr.write_record(&record).unwrap();
+                }
+                wtr.into_inner().unwrap()
+            }).collect();
+            for text in &texts {
+                out.write_all(text).unwrap();
+            }
+            written.fetch_add(batch.len(), Ordering::Relaxed);
+        }
+        out.flush().unwrap();
+    });
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Copie exacte de l'ancienne écriture (un writer CSV directement sur le fichier, ligne par ligne).
+    fn ancienne_ecriture(groups: &[(String, Vec<HashMap<String, String>>)], del_dir: &Path, ordered_columns: &[String], update: bool) {
+        for (reason, group) in groups {
+            let file_path = del_dir.join(deletion_file_name(reason));
+            let is_append = update && file_path.exists();
+            let file = std::fs::OpenOptions::new().write(true).create(true).append(is_append).truncate(!is_append).open(&file_path).unwrap();
+            let mut wtr = WriterBuilder::new().delimiter(b'\t').quote(b'"').has_headers(!is_append).from_writer(file);
+            if !is_append {
+                let mut header = ordered_columns.to_vec();
+                header.push("DELETION_REASON".to_string());
+                wtr.write_record(&header).unwrap();
+            }
+            for meta in group {
+                let mut record = Vec::with_capacity(ordered_columns.len() + 1);
+                for col in ordered_columns {
+                    record.push(meta.get(col).cloned().unwrap_or_default());
+                }
+                record.push(meta.get("DELETION_REASON").cloned().unwrap_or_default());
+                wtr.write_record(&record).unwrap();
+            }
+            wtr.flush().unwrap();
+        }
+    }
+
+    fn jeu_de_test() -> (Vec<String>, Vec<(String, Vec<HashMap<String, String>>)>) {
+        let cols: Vec<String> = ["NAME", "SMILES", "COMMENT", "PEAKS_LIST"].iter().map(|s| s.to_string()).collect();
+        let pieges = ["simple", "avec\ttabulation", "avec \"guillemets\"", "multi\nligne", "", " espaces ", "é ü 中", "\"", "a;b,c"];
+        let mut groups = Vec::new();
+        for (g, reason) in ["spectrum deleted because peaks list is empty", "motif inconnu"].iter().enumerate() {
+            let mut rows = Vec::new();
+            // Plus de lignes qu'un lot complet (ROWS_PER_CHUNK * CHUNKS_PER_BATCH) pour tester les lots
+            for i in 0..(ROWS_PER_CHUNK * CHUNKS_PER_BATCH + 4321 + g) {
+                let mut m = HashMap::new();
+                m.insert("NAME".to_string(), format!("cpd {i} {}", pieges[i % pieges.len()]));
+                if i % 3 != 0 { m.insert("SMILES".to_string(), pieges[(i / 3) % pieges.len()].to_string()); }
+                m.insert("PEAKS_LIST".to_string(), "10.00000000 20.00000000\n30.00000000 40.00000000".to_string());
+                m.insert("DELETION_REASON".to_string(), reason.to_string());
+                rows.push(m);
+            }
+            groups.push((reason.to_string(), rows));
+        }
+        (cols, groups)
+    }
+
+    #[test]
+    fn csv_de_suppression_identiques_a_l_ancienne_ecriture() {
+        let base = std::env::temp_dir().join(format!("fraghub_deletion_test_{}", std::process::id()));
+        let (old_dir, new_dir) = (base.join("old"), base.join("new"));
+        let _ = fs::remove_dir_all(&base);
+        fs::create_dir_all(&old_dir).unwrap();
+        fs::create_dir_all(&new_dir).unwrap();
+        let (cols, groups) = jeu_de_test();
+
+        // Premier run, puis un second en mode ajout (update = true, fichiers déjà présents)
+        for update in [false, true] {
+            ancienne_ecriture(&groups, &old_dir, &cols, update);
+            let written = AtomicUsize::new(0);
+            write_deletion_files(groups.clone(), &new_dir, &cols, update, &written);
+            assert_eq!(written.load(Ordering::Relaxed), groups.iter().map(|(_, g)| g.len()).sum::<usize>());
+            for (reason, _) in &groups {
+                let name = deletion_file_name(reason);
+                let a = fs::read(old_dir.join(name)).unwrap();
+                let b = fs::read(new_dir.join(name)).unwrap();
+                assert!(a == b, "fichier {name} différent (update = {update})");
+            }
+        }
+        let _ = fs::remove_dir_all(&base);
+    }
 }

@@ -1,6 +1,7 @@
 use pyo3::prelude::*;
 use crate::spectrum::Spectrum;
 use std::collections::HashMap;
+use rayon::prelude::*;
 use crate::globals_vars::{INDIGO_SMILES_CORRECTION_PATTERN, INCHIKEY_PATTERN};
 use std::fs;
 use std::path::Path;
@@ -37,28 +38,33 @@ pub fn process_mols(
 
     // 1. Extraire les molécules uniques de manière très rapide
     // Nouveau : inclut le PRECURSORTYPE et PRECURSORMZ pour la logique de fragmentation PY1b
-    let mut unique_mols: std::collections::HashSet<(String, String, String)> = std::collections::HashSet::new();
-    for spec in &spectrum_list {
-        let inchi = spec.metadata.get("INCHI").map(|s| s.as_str()).unwrap_or("");
-        let smiles = spec.metadata.get("SMILES").map(|s| s.as_str()).unwrap_or("");
-        let target_mol = if !inchi.is_empty() && inchi != "nan" { inchi } else { smiles };
-        if !target_mol.is_empty() && target_mol != "nan" {
-            let mut clean_mol = target_mol.to_string();
-            if !clean_mol.contains("InChI=") {
-                clean_mol = INDIGO_SMILES_CORRECTION_PATTERN.replace_all(&clean_mol, "").to_string();
-            }
-            
-            let precursortype = spec.metadata.get("PRECURSORTYPE").cloned().unwrap_or_default();
-            let precursormz_raw = spec.metadata.get("PRECURSORMZ").map(|s| s.as_str()).unwrap_or("");
-            let precursormz_str = if let Ok(mz) = precursormz_raw.parse::<f64>() {
-                format!("{:.4}", mz)
+    // Calcul en parallèle (sans garder le verrou Python) : chaque spectre donne au plus une clé,
+    // calculée exactement comme avant, et l'ensemble final est le même (un ensemble n'a pas d'ordre).
+    let unique_mols: std::collections::HashSet<(String, String, String)> = py.allow_threads(|| {
+        spectrum_list.par_iter().filter_map(|spec| {
+            let inchi = spec.metadata.get("INCHI").map(|s| s.as_str()).unwrap_or("");
+            let smiles = spec.metadata.get("SMILES").map(|s| s.as_str()).unwrap_or("");
+            let target_mol = if !inchi.is_empty() && inchi != "nan" { inchi } else { smiles };
+            if !target_mol.is_empty() && target_mol != "nan" {
+                let mut clean_mol = target_mol.to_string();
+                if !clean_mol.contains("InChI=") {
+                    clean_mol = INDIGO_SMILES_CORRECTION_PATTERN.replace_all(&clean_mol, "").to_string();
+                }
+
+                let precursortype = spec.metadata.get("PRECURSORTYPE").cloned().unwrap_or_default();
+                let precursormz_raw = spec.metadata.get("PRECURSORMZ").map(|s| s.as_str()).unwrap_or("");
+                let precursormz_str = if let Ok(mz) = precursormz_raw.parse::<f64>() {
+                    format!("{:.4}", mz)
+                } else {
+                    "".to_string()
+                };
+
+                Some((clean_mol, precursortype, precursormz_str))
             } else {
-                "".to_string()
-            };
-            
-            unique_mols.insert((clean_mol, precursortype, precursormz_str));
-        }
-    }
+                None
+            }
+        }).collect()
+    });
 
     if let Some(cb) = &prefix_callback { cb.call1(py, ("RDKit calculation",))?; }
 
@@ -87,7 +93,8 @@ pub fn process_mols(
     if let Some(cb) = &prefix_callback { cb.call1(py, ("Checking failures & fallback PubChem (Pass 2)...",))?; }
 
     let state = crate::global_state::STATE.read().unwrap();
-    let pubchem_dict = &state.ontologies_datas;
+    let db = &state.compound_db;
+    let smiles_column = db.column_id("SMILES");
     let mut unique_mols_pass2: std::collections::HashSet<(String, String, String)> = std::collections::HashSet::new();
 
     for spec in &mut spectrum_list {
@@ -122,11 +129,11 @@ pub fn process_mols(
             // RDKit a échoué. On tente de trouver un SMILES de secours via l'INCHIKEY.
             let inchikey = spec.metadata.get("INCHIKEY").cloned().unwrap_or_default();
             if INCHIKEY_PATTERN.is_match(&inchikey) {
-                if let Some(pubchem_row) = pubchem_dict.get(&inchikey) {
-                    if let Some(fallback_smiles) = pubchem_row.get("SMILES") {
+                if let Some(loc) = db.locate(&inchikey) {
+                    if let Some(fallback_smiles) = smiles_column.and_then(|id| db.value(loc, id)) {
                         if !fallback_smiles.trim().is_empty() && fallback_smiles.to_lowercase() != "nan" {
                             unique_mols_pass2.insert((fallback_smiles.clone(), precursortype, precursormz_str));
-                            spec.metadata.insert("FALLBACK_SMILES_PY1".to_string(), fallback_smiles.clone());
+                            spec.metadata.insert("FALLBACK_SMILES_PY1".to_string(), fallback_smiles);
                         }
                     }
                 }

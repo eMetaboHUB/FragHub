@@ -7,7 +7,7 @@ use crate::spectrum::Spectrum;
 ///
 /// Pour un développeur Python : Au lieu de faire un `.merge()` extrêmement coûteux
 /// en RAM avec Pandas, on itère simplement sur notre liste de spectres (`iter_mut()`).
-/// Si l'INCHIKEY du spectre existe dans le dictionnaire `pubchem_datas` (déjà chargé en RAM
+/// Si l'INCHIKEY du spectre existe dans la base interne `compound_db` (déjà chargée en RAM
 /// par `loading_db.rs`), on copie instantanément les valeurs manquantes sans recréer de nouvelle table.
 pub fn complete_from_pubchem_datas(
     py: Python,
@@ -25,11 +25,13 @@ pub fn complete_from_pubchem_datas(
     let total_items = spectrum_list.len();
     if let Some(cb) = &total_items_callback { cb.call1(py, (total_items, 0))?; }
 
-    // --- Step 2: Récupération de ontologies_datas (qui contient désormais pubchem) depuis Rust Global State ---
+    // --- Step 2: Récupération de la base interne (PubChem + ontologies) depuis Rust Global State ---
     let state = crate::global_state::STATE.read().unwrap();
-    let pubchem_dict = &state.ontologies_datas;
+    let db = &state.compound_db;
 
     let columns_to_update = ["INCHI", "SMILES", "FORMULA", "NAME", "EXACTMASS", "AVERAGEMASS"];
+    // Numéros de colonnes calculés une fois pour toutes (None si la colonne n'existe pas dans la base)
+    let column_ids: Vec<(&str, Option<usize>)> = columns_to_update.iter().map(|c| (*c, db.column_id(c))).collect();
     let mut processed = 0;
     let chunk_size = 500;
 
@@ -40,11 +42,11 @@ pub fn complete_from_pubchem_datas(
                 let inchikey = spec.metadata.get("INCHIKEY").cloned().unwrap_or_default();
 
                 if !inchikey.is_empty() && inchikey.to_lowercase() != "nan" {
-                    if let Some(pubchem_row) = pubchem_dict.get(&inchikey) {
-                        for col in &columns_to_update {
-                            if let Some(new_val) = pubchem_row.get(*col) {
+                    if let Some(loc) = db.locate(&inchikey) {
+                        for (col, column_id) in &column_ids {
+                            if let Some(new_val) = column_id.and_then(|id| db.value(loc, id)) {
                                 if !new_val.trim().is_empty() && new_val.to_lowercase() != "nan" {
-                                    spec.metadata.insert(col.to_string(), new_val.clone());
+                                    spec.metadata.insert(col.to_string(), new_val);
                                 }
                             }
                         }

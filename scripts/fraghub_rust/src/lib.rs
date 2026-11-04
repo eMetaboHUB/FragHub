@@ -8,10 +8,18 @@ use pyo3::prelude::*;
 /// En bas, la macro `#[pymodule]` crée le point d'entrée que Python appellera
 /// quand vous ferez `import fraghub_rust`.
 
+// Allocateur mémoire : mimalloc au lieu de celui du système.
+// Il ne change aucun résultat, seulement la vitesse des allocations (très nombreuses
+// et en parallèle pendant le parsing). Seule la mémoire réservée par Rust est concernée,
+// Python garde son propre allocateur.
+#[global_allocator]
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
+
 // Déclaration de vos modules
 pub mod spectrum;
 pub mod globals_vars;
 pub mod global_state;
+pub mod compound_db;
 pub mod loading_db;
 pub mod convertors;
 pub mod splash_generator;

@@ -1,6 +1,7 @@
 use once_cell::sync::Lazy;
 use std::collections::HashMap;
 use std::sync::RwLock;
+use crate::compound_db::CompoundDb;
 
 /// État global de l'application stocké en RAM.
 ///
@@ -10,8 +11,9 @@ use std::sync::RwLock;
 /// (Read-Write Lock) pour s'assurer que plusieurs cœurs peuvent lire la RAM
 /// simultanément en toute sécurité.
 pub struct GlobalState {
-    pub pubchem_datas: HashMap<String, HashMap<String, String>>,
-    pub ontologies_datas: HashMap<String, HashMap<String, String>>,
+    /// Base interne des composés (PubChem + ClassyFire + NPClassifier), indexée par INCHIKEY.
+    /// Format compact : voir compound_db.rs (≈ 3 Go au lieu de ≈ 14 Go).
+    pub compound_db: CompoundDb,
     pub adduct_dict_pos: HashMap<String, String>,
     pub adduct_massdiff_dict_pos: HashMap<String, f64>,
     pub adduct_dict_neg: HashMap<String, String>,
@@ -24,8 +26,7 @@ pub struct GlobalState {
 impl GlobalState {
     pub fn new() -> Self {
         GlobalState {
-            pubchem_datas: HashMap::new(),
-            ontologies_datas: HashMap::new(),
+            compound_db: CompoundDb::default(),
             adduct_dict_pos: HashMap::new(),
             adduct_massdiff_dict_pos: HashMap::new(),
             adduct_dict_neg: HashMap::new(),

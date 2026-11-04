@@ -199,7 +199,9 @@ pub fn main_orchestrator(
         }
 
         spectrum_list = spectrum_cleaning_processing(
-            py, spectrum_list.clone(), output_directory.clone(), ordered_columns.clone(), &mut deletion_report, &params_f64, update,
+            // std::mem::take : on passe la liste elle-même (elle est remplacée juste après par le résultat),
+            // au lieu d'une copie complète de tous les spectres qui était ensuite libérée.
+            py, std::mem::take(&mut spectrum_list), output_directory.clone(), ordered_columns.clone(), &mut deletion_report, &params_f64, update,
             progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone()
         )?;
 
@@ -322,6 +324,10 @@ pub fn main_orchestrator(
             item_type_callback.clone()
         )?;
 
+        // La liste complète n'est plus utilisée après le tri par catégories : on la libère tout de suite
+        // (avant, elle restait en mémoire pendant toute l'écriture, en plus des tables triées).
+        drop(spectrum_list);
+
         let pos_lc_df = tuple_split.0;
         let pos_lc_in_silico_df = tuple_split.1;
         let pos_gc_df = tuple_split.2;
@@ -334,6 +340,8 @@ pub fn main_orchestrator(
         check_stop_flag()?;
 
         // STEP 11: MSP / CSV / JSON
+        // Les tables sont passées par référence (&) aux fonctions d'écriture, qui ne font que les lire :
+        // avant, chaque fonction recevait une copie complète (.clone()), d'où un pic de mémoire.
         let mut pos_lc_msp = Vec::new();
         let mut pos_lc_insilico_msp = Vec::new();
         let mut pos_gc_msp = Vec::new();
@@ -349,7 +357,7 @@ pub fn main_orchestrator(
             if let Some(cb) = &step_callback { cb.call1(py, ("Converting CSV to MSP",))?; }
             py.allow_threads(|| { std::thread::sleep(std::time::Duration::from_millis(10)); });
 
-            let tuple_msp = spectra_to_msp_processing(py, pos_lc_df.clone(), pos_lc_in_silico_df.clone(), pos_gc_df.clone(), pos_gc_in_silico_df.clone(), neg_lc_df.clone(), neg_lc_in_silico_df.clone(), neg_gc_df.clone(), neg_gc_in_silico_df.clone(), progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone())?;
+            let tuple_msp = spectra_to_msp_processing(py, &pos_lc_df, &pos_lc_in_silico_df, &pos_gc_df, &pos_gc_in_silico_df, &neg_lc_df, &neg_lc_in_silico_df, &neg_gc_df, &neg_gc_in_silico_df, progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone())?;
             pos_lc_msp = tuple_msp.0;
             pos_lc_insilico_msp = tuple_msp.1;
             pos_gc_msp = tuple_msp.2;
@@ -367,7 +375,7 @@ pub fn main_orchestrator(
             if let Some(cb) = &step_callback { cb.call1(py, ("Writing CSV",))?; }
             py.allow_threads(|| { std::thread::sleep(std::time::Duration::from_millis(10)); });
 
-            writting_csv_processing(py, pos_lc_df.clone(), pos_gc_df.clone(), neg_lc_df.clone(), neg_gc_df.clone(), pos_lc_in_silico_df.clone(), pos_gc_in_silico_df.clone(), neg_lc_in_silico_df.clone(), neg_gc_in_silico_df.clone(), ordered_columns.clone(), &output_directory, update, progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone())?;
+            writting_csv_processing(py, &pos_lc_df, &pos_gc_df, &neg_lc_df, &neg_gc_df, &pos_lc_in_silico_df, &pos_gc_in_silico_df, &neg_lc_in_silico_df, &neg_gc_in_silico_df, ordered_columns.clone(), &output_directory, update, progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone())?;
         }
 
         if msp_val == 1.0 {
@@ -375,7 +383,7 @@ pub fn main_orchestrator(
             if let Some(cb) = &step_callback { cb.call1(py, ("Writing MSP",))?; }
             py.allow_threads(|| { std::thread::sleep(std::time::Duration::from_millis(10)); });
 
-            writting_msp_processing(py, pos_lc_msp.clone(), pos_lc_insilico_msp.clone(), pos_gc_msp.clone(), pos_gc_insilico_msp.clone(), neg_lc_msp.clone(), neg_lc_insilico_msp.clone(), neg_gc_msp.clone(), neg_gc_insilico_msp.clone(), &output_directory, update, progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone())?;
+            writting_msp_processing(py, &pos_lc_msp, &pos_lc_insilico_msp, &pos_gc_msp, &pos_gc_insilico_msp, &neg_lc_msp, &neg_lc_insilico_msp, &neg_gc_msp, &neg_gc_insilico_msp, &output_directory, update, progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone())?;
         }
 
         let json_val: f64 = parameters_dict.get_item("json")?.map(|v| v.extract().unwrap_or(0.0)).unwrap_or(0.0);
@@ -384,7 +392,7 @@ pub fn main_orchestrator(
             if let Some(cb) = &step_callback { cb.call1(py, ("Writing JSON",))?; }
             py.allow_threads(|| { std::thread::sleep(std::time::Duration::from_millis(10)); });
 
-            writting_json_processing(py, update, pos_lc_df.clone(), pos_gc_df.clone(), neg_lc_df.clone(), neg_gc_df.clone(), pos_lc_in_silico_df.clone(), pos_gc_in_silico_df.clone(), neg_lc_in_silico_df.clone(), neg_gc_in_silico_df.clone(), ordered_columns.clone(), &output_directory, progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone())?;
+            writting_json_processing(py, update, &pos_lc_df, &pos_gc_df, &neg_lc_df, &neg_gc_df, &pos_lc_in_silico_df, &pos_gc_in_silico_df, &neg_lc_in_silico_df, &neg_gc_in_silico_df, ordered_columns.clone(), &output_directory, progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone())?;
 
 
         }

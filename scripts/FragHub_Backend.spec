@@ -1,4 +1,11 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
+import sys
+
+# Icône adaptée à la plateforme : .icns sur macOS, .ico sous Windows et Linux.
+# Les icônes sont dans GUI/app/assets (chemin relatif au dossier de ce .spec).
+IS_MAC = sys.platform == "darwin"
+ICON = os.path.join(SPECPATH, '..', 'GUI', 'app', 'assets', 'FragHub_icon.' + ('icns' if IS_MAC else 'ico'))
 
 
 a = Analysis(
@@ -32,7 +39,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['GUI/assets/FragHub_icon.icns'],
+    icon=[ICON],
 )
 coll = COLLECT(
     exe,
@@ -43,9 +50,11 @@ coll = COLLECT(
     upx_exclude=[],
     name='FragHub_Backend',
 )
-app = BUNDLE(
-    coll,
-    name='FragHub_Backend.app',
-    icon='GUI/assets/FragHub_icon.icns',
-    bundle_identifier=None,
-)
+# Le bundle .app n'a de sens que sur macOS
+if IS_MAC:
+    app = BUNDLE(
+        coll,
+        name='FragHub_Backend.app',
+        icon=ICON,
+        bundle_identifier=None,
+    )

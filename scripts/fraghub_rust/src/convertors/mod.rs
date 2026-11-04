@@ -8,3 +8,4 @@ pub mod json_to_dict;
 pub mod mgf_to_dict;
 pub mod msp_to_dict;
 pub mod parsing_to_dict;
+pub mod raw_metadata;

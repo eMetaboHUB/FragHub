@@ -78,26 +78,24 @@ pub fn mz_correction_processing(
                             // Cherche un meilleur adduit
                             let adduct_dict = if ion_mode == "positive" { &adduct_massdiff_pos } else { &adduct_massdiff_neg };
                             
-                            let mut best_adduct: Option<String> = None;
-                            let mut best_delta = 1.0;
-                            let mut best_precursor_formula = String::new();
-                            let mut best_mz = 0.0;
-                            
+                            // On évalue tous les adduits candidats, puis on garde le plus proche (écart < 1.0).
+                            // En cas d'égalité (ex. [M+Cl]- et [2M+2Cl]2- ont exactement le même m/z),
+                            // on garde l'adduit le plus simple : voir best_candidate. Avant, l'égalité était
+                            // tranchée par l'ordre de parcours de la HashMap, tiré au hasard à chaque lancement.
+                            let mut candidates: Vec<(f64, &String, String, f64)> = Vec::new();
                             for candidate_adduct in adduct_dict.keys() {
                                 let cand_formula = adduct_mass_calculator::apply_adduct_to_formula(&formula, candidate_adduct);
                                 if cand_formula.is_empty() { continue; }
-                                
+
                                 if let Some(cand_mz) = adduct_mass_calculator::compute_mz(&cand_formula) {
                                     let cand_delta = (author_mz - cand_mz).abs();
-                                    if cand_delta < best_delta {
-                                        best_delta = cand_delta;
-                                        best_adduct = Some(candidate_adduct.clone());
-                                        best_precursor_formula = cand_formula;
-                                        best_mz = cand_mz;
-                                    }
+                                    candidates.push((cand_delta, candidate_adduct, cand_formula, cand_mz));
                                 }
                             }
-                            
+                            let best = best_candidate(&candidates, 1.0);
+                            let best_adduct = best.map(|c| c.1.clone());
+                            let (best_precursor_formula, best_mz) = best.map(|c| (c.2.clone(), c.3)).unwrap_or_default();
+
                             match best_adduct {
                                 Some(new_adduct) => {
                                     new_spec.metadata.insert("PRECURSORTYPE".to_string(), new_adduct);
@@ -214,4 +212,78 @@ pub fn mz_correction_processing(
     
 
     Ok(all_processed)
+}
+
+
+/// Écart de m/z en dessous duquel deux adduits sont considérés à égalité (absorbe les arrondis
+/// des calculs en virgule flottante ; très en dessous de toute précision d'instrument).
+const ADDUCT_TIE_TOLERANCE: f64 = 1e-9;
+
+/// Ordre de préférence entre adduits à égalité : le moins de molécules M, puis la charge la plus
+/// faible, puis l'ordre alphabétique. Un adduit au format non reconnu passe après les autres.
+fn adduct_simplicity(adduct: &str) -> (u32, u32, &str) {
+    let (n, z) = adduct_mass_calculator::adduct_nmol_and_charge(adduct).unwrap_or((u32::MAX, u32::MAX));
+    (n, z, adduct)
+}
+
+/// Choisit l'adduit le plus proche parmi `candidates` (écart, adduit, formule, m/z), à condition
+/// que l'écart soit < `max_delta`. Parmi les adduits à égalité (à ADDUCT_TIE_TOLERANCE près),
+/// le plus simple gagne. Le résultat ne dépend pas de l'ordre des candidats.
+fn best_candidate<'a, 'b>(candidates: &'a [(f64, &'b String, String, f64)], max_delta: f64) -> Option<&'a (f64, &'b String, String, f64)> {
+    let min_delta = candidates.iter().map(|c| c.0).filter(|d| !d.is_nan()).fold(f64::INFINITY, f64::min);
+    if !(min_delta < max_delta) {
+        return None;
+    }
+    candidates.iter()
+        .filter(|c| c.0 < max_delta && c.0 - min_delta <= ADDUCT_TIE_TOLERANCE)
+        .min_by(|a, b| adduct_simplicity(a.1).cmp(&adduct_simplicity(b.1)))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn cands(list: &[(f64, &str)]) -> Vec<(f64, String)> {
+        list.iter().map(|(d, a)| (*d, a.to_string())).collect()
+    }
+
+    fn pick(list: &[(f64, &str)]) -> Option<String> {
+        let owned = cands(list);
+        let c: Vec<(f64, &String, String, f64)> = owned.iter().map(|(d, a)| (*d, a, String::new(), 0.0)).collect();
+        best_candidate(&c, 1.0).map(|x| x.1.clone())
+    }
+
+    #[test]
+    fn egalite_l_adduit_le_plus_simple_gagne() {
+        assert_eq!(pick(&[(0.001, "[2M+2Cl]2-"), (0.001, "[M+Cl]-")]).as_deref(), Some("[M+Cl]-"));
+        assert_eq!(pick(&[(0.001, "[M+Cl]-"), (0.001, "[2M+2Cl]2-")]).as_deref(), Some("[M+Cl]-"));
+        // Écart minuscule dû aux arrondis : toujours considéré comme une égalité
+        assert_eq!(pick(&[(0.001 + 1e-12, "[M+Cl]-"), (0.001, "[2M+2Cl]2-")]).as_deref(), Some("[M+Cl]-"));
+    }
+
+    #[test]
+    fn le_plus_proche_gagne_toujours_sans_egalite() {
+        assert_eq!(pick(&[(0.002, "[M+Cl]-"), (0.001, "[2M+2Cl]2-")]).as_deref(), Some("[2M+2Cl]2-"));
+        assert_eq!(pick(&[(0.5, "[M-H]-"), (0.3, "[M+FA-H]-"), (0.9, "[M+Cl]-")]).as_deref(), Some("[M+FA-H]-"));
+    }
+
+    #[test]
+    fn rien_sous_le_seuil_aucun_adduit() {
+        assert_eq!(pick(&[(1.0, "[M-H]-"), (1.5, "[M+Cl]-")]), None);
+        assert_eq!(pick(&[]), None);
+    }
+
+    #[test]
+    fn resultat_independant_de_l_ordre() {
+        let base = [(0.004, "[M-H]-"), (0.001, "[2M+2Cl]2-"), (0.001, "[M+Cl]-"), (0.001, "[3M+3Cl]3-"), (0.2, "[M+FA-H]-")];
+        let attendu = pick(&base);
+        let mut v = base.to_vec();
+        for i in 0..v.len() {
+            v.rotate_left(1);
+            assert_eq!(pick(&v), attendu, "ordre {i}");
+            v.reverse();
+            assert_eq!(pick(&v), attendu, "ordre inversé {i}");
+        }
+        assert_eq!(attendu.as_deref(), Some("[M+Cl]-"));
+    }
 }
