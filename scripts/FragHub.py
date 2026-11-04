@@ -44,7 +44,10 @@ last_emit_time = 0
 EMIT_THROTTLE = 0.05  # 20ms pour une fluidité maximale
 
 # Configuration Socket.IO et FastAPI
-sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins='*')
+# ping_timeout allongé : le moteur Rust garde parfois le verrou Python (GIL) plusieurs dizaines de secondes,
+# ce qui empêche le serveur de répondre aux pings. Avec la valeur par défaut (20 s), l'interface croyait la
+# connexion morte, se reconnectait, et les messages envoyés pendant la coupure étaient perdus.
+sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins='*', ping_interval=25, ping_timeout=300)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -111,6 +114,14 @@ deferred_deletion = None
 deferred_report = False
 current_total_items = 0  # <-- Nouvelle variable globale
 
+# État de la tâche en cours, renvoyé avec CHAQUE message de progression.
+# Si un message 'total_items' / 'prefix' / 'item_type' se perd (reconnexion du socket), l'interface
+# retrouve quand même la bonne tâche, son libellé, son total et son heure de début.
+task_state = {'task': 0, 'total': 0, 'prefix': '', 'item_type': 'items', 'started': 0}
+
+def task_meta():
+    return dict(task_state)
+
 def progress_callback(*args):
     global last_emit_time, current_total_items
     if global_stop_flag:
@@ -120,22 +131,29 @@ def progress_callback(*args):
         if args[0] >= current_total_items:
             last_emit_time = 0
 
-        emit_to_frontend('progress', args[0])
+        emit_to_frontend('progress', {'value': args[0], **task_meta()})
 
 def total_items_callback(*args):
     global last_emit_time, current_total_items
     last_emit_time = 0
     if args:
         current_total_items = args[0]  # <-- On enregistre le maximum
-        emit_to_frontend('total_items', args[0])
+        task_state['task'] += 1
+        task_state['total'] = args[0]
+        task_state['started'] = time.time() * 1000  # ms, même horloge que Date.now() côté interface
+        emit_to_frontend('total_items', task_meta())
 
 def prefix_callback(*args):
     global last_emit_time
     last_emit_time = 0
-    if args: emit_to_frontend('prefix', args[0])
+    if args:
+        task_state['prefix'] = args[0]
+        emit_to_frontend('prefix', args[0])
 
 def item_type_callback(*args):
-    if args: emit_to_frontend('item_type', args[0])
+    if args:
+        task_state['item_type'] = args[0]
+        emit_to_frontend('item_type', args[0])
 
 def step_callback(*args):
     global deferred_report

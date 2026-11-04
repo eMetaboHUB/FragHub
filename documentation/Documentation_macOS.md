@@ -64,7 +64,7 @@ uv run pyinstaller --noconfirm --onedir --noconsole --paths . --icon="GUI/assets
 ```
 
 > **📌 Notes importantes concernant le Backend :**
-> * **Versionnage :** Pensez à adapter l'argument `--name=FragHub_Backend` pour correspondre au numéro de version actuel si l'application évolue.
+> * **Versionnage :** Gardez `--name=FragHub_Backend` tel quel : Electron cherche un exécutable portant exactement ce nom. Pour changer le numéro de version de FragHub, voir la section 6.
 > * **Icône :** Sous macOS, le format standard pour les icônes est `.icns`.
 > * **Fichiers générés :** PyInstaller va créer le backend compilé sous forme de dossier ou de bundle `.app` (incluant l'exécutable et le dossier `_internal`) dans `scripts/dist/FragHub_Backend`.
 > * ⚠️ **Règle d'or :** Cette commande PyInstaller doit être obligatoirement relancée **à chaque fois que vous modifiez un fichier du code source Python ou des données externes tel que les bases de données**.
@@ -105,3 +105,34 @@ npm run generate
 npm run build:electron -- --mac
 ```
 > * **Fichiers générés :** Une fois le processus terminé, l'installeur macOS (fichier `.dmg`) prêt à être distribué se trouvera dans le dossier `dist_electron/`, situé à la racine de votre dossier `GUI`.
+
+---
+
+## 6. Changer le numéro de version
+
+Le numéro de version de FragHub est défini à **un seul endroit** : la ligne `version` de la section `[project]` du fichier `pyproject.toml`, à la racine du projet.
+
+```toml
+[project]
+name = "fraghub"
+version = "2.0.0"
+```
+
+**Ne modifiez pas la version à la main ailleurs** : le script `sync_version.py` la recopie dans tous les autres fichiers.
+
+### Procédure
+Depuis la racine du projet :
+```bash
+python sync_version.py 2.1.0
+```
+Cette commande écrit `2.1.0` dans `pyproject.toml`, puis la recopie partout. Si vous préférez modifier `pyproject.toml` vous-même, lancez ensuite `python sync_version.py` (sans numéro).
+
+Pour vérifier que tous les fichiers sont cohérents, sans rien modifier :
+```bash
+python sync_version.py --check
+```
+
+> * **Automatique :** `build_all.py`, `build_backend.py` et `build_frontend.py` lancent cette synchronisation au démarrage. Un build utilise donc toujours la version de `pyproject.toml`.
+> * **Fichiers mis à jour :** `GUI/package.json` (qui donne aussi son nom à l'installeur, ex. `FragHub-2.1.0-arm64.dmg`), `GUI/package-lock.json`, `scripts/fraghub_rust/Cargo.toml`, `scripts/fraghub_rust/Cargo.lock`, `scripts/fraghub_rust/pyproject.toml`, `uv.lock`, le titre du `README.md` et `documentation/cmd_pyinstaller.txt`.
+> * **Volontairement non modifiés :** `CHANGELOG.md` (ajoutez vous-même la nouvelle entrée), la phrase « FragHub 2.0 introduces… » du README, et les liens de téléchargement Zenodo du README (à mettre à jour à la main une fois la nouvelle version publiée sur Zenodo, car l'identifiant du dépôt change).
+> * ⚠️ **Si le script affiche un avertissement ⚠**, un fichier cible a changé de structure et la version n'y a pas été trouvée : vérifiez le fichier et, si besoin, ajustez son motif dans la liste `TARGETS` en haut de `sync_version.py`.

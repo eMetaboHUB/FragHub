@@ -101,3 +101,34 @@ npm run generate
 npm run build:electron -- --win
 ```
 > *   **Generated files:** Once the process is complete, the Windows installer ready for distribution will be located in the `dist_electron/` folder, at the root of your `GUI` folder.
+
+---
+
+## 6. Changing the Version Number
+
+The FragHub version number is defined in **one single place**: the `version` line of the `[project]` section in the `pyproject.toml` file at the root of the project.
+
+```toml
+[project]
+name = "fraghub"
+version = "2.0.0"
+```
+
+**Do not edit the version by hand anywhere else**: the `sync_version.py` script copies it into all the other files.
+
+### Procedure
+From the root of the project:
+```bash
+python sync_version.py 2.1.0
+```
+This command writes `2.1.0` into `pyproject.toml`, then copies it everywhere else. If you prefer to edit `pyproject.toml` yourself, run `python sync_version.py` afterwards (without a number).
+
+To check that every file is consistent, without modifying anything:
+```bash
+python sync_version.py --check
+```
+
+> * **Automatic:** `build_all.py`, `build_backend.py` and `build_frontend.py` run this synchronization at startup, so a build always uses the version from `pyproject.toml`.
+> * **Updated files:** `GUI/package.json` (which also names the installer, e.g. `FragHub-2.1.0-arm64.dmg`), `GUI/package-lock.json`, `scripts/fraghub_rust/Cargo.toml`, `scripts/fraghub_rust/Cargo.lock`, `scripts/fraghub_rust/pyproject.toml`, `uv.lock`, the title of `README.md` and `documentation/cmd_pyinstaller.txt`.
+> * **Intentionally left unchanged:** `CHANGELOG.md` (add the new entry yourself), the "FragHub 2.0 introduces…" sentence in the README, and the Zenodo download links in the README (update them by hand once the new release is published on Zenodo, since the record ID changes).
+> * ⚠️ **If the script shows a ⚠ warning**, a target file has changed its structure and the version could not be found in it: check the file and, if needed, adjust its pattern in the `TARGETS` list at the top of `sync_version.py`.

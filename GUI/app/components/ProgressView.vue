@@ -130,6 +130,7 @@ const progressValue = ref(0)
 const totalItems = ref(0)
 const htmlReportPath = ref(null)
 let taskFinishedLogged = false
+let currentTask = null // numéro de la tâche en cours, envoyé par le back-end
 let timerHandle = null
 
 // --- Calculs Mathématiques ---
@@ -223,21 +224,43 @@ onMounted(() => {
   // Met à jour la variable réactive 'now' toutes les secondes pour actualiser le temps
   timerHandle = setInterval(() => { now.value = Date.now() }, 1000)
 
-  socket.on('progress', (val) => {
-    progressValue.value = val
-    checkTaskFinished()
-  })
-
-  socket.on('total_items', (val) => {
+  // Démarre une nouvelle tâche : fige la précédente (encadré vert) si elle n'était pas terminée,
+  // puis remet la barre à zéro. `meta` = { task, total, prefix, item_type, started } envoyé par le back-end.
+  const startTask = (meta) => {
     if (totalItems.value > 0 && !taskFinishedLogged) {
       progressValue.value = totalItems.value
       checkTaskFinished()
     }
+    currentTask = meta.task ?? null
     progressValue.value = 0
-    totalItems.value = val
-    startTime.value = Date.now()
+    totalItems.value = meta.total ?? 0
+    startTime.value = meta.started || Date.now()
     now.value = Date.now()
     taskFinishedLogged = false
+  }
+
+  socket.on('progress', (val) => {
+    if (val !== null && typeof val === 'object') {
+      // Message ancien d'une tâche déjà dépassée : on l'ignore.
+      if (currentTask !== null && val.task < currentTask) return
+      // Le message de début de tâche s'est perdu : on rattrape grâce aux infos jointes.
+      if (val.task !== currentTask) startTask(val)
+      if (val.prefix) currentPrefix.value = val.prefix
+      if (val.item_type) itemType.value = val.item_type
+      progressValue.value = val.value
+    } else {
+      progressValue.value = val
+    }
+    checkTaskFinished()
+  })
+
+  socket.on('total_items', (val) => {
+    if (val !== null && typeof val === 'object') {
+      if (currentTask !== null && val.task <= currentTask) return // déjà démarrée via 'progress'
+      startTask(val)
+    } else {
+      startTask({ task: null, total: val })
+    }
   })
 
   socket.on('prefix', (val) => { currentPrefix.value = val })
