@@ -37,6 +37,37 @@ lazy_static! {
     static ref CHARGED_RE: Regex = Regex::new(r"^\[([^\]]+)\](\d*)([+-])$").unwrap();
     static ref ADDUCT_RE: Regex = Regex::new(r"^\[(\d*)M((?:[+-][^]]+)*)\](\d*)(\*?[+-])$").unwrap();
     static ref MOD_SPLIT_RE: Regex = Regex::new(r"([+-])(\d*)([A-Z][A-Za-z0-9]*)").unwrap();
+
+    // Nombre de molécules M en tête d'adduit : "[2M+H]+", "[(2M-2H+Ca)-H]-", "[M+H]+" (vide = 1).
+    static ref ADDUCT_NMOL_RE: Regex = Regex::new(r"^\s*\[\(?(\d*)M").unwrap();
+    // Charge après le crochet fermant : "]2-", "]+", "]*+" (radical), suffixe isotopique toléré ("]2-_37Cl1").
+    static ref ADDUCT_CHARGE_RE: Regex = Regex::new(r"\](\d*)\*?[+-]").unwrap();
+}
+
+/// Lit le nombre de molécules (n) et la valeur absolue de la charge (z) d'un adduit au format FragHub
+/// (colonne `fraghub_default` de `adduct_to_convert.csv`).
+///
+/// Exemples : "[M+H]+" -> (1, 1) ; "[2M+H]+" -> (2, 1) ; "[M+2H]2+" -> (1, 2) ; "[(2M-2H+Ca)-H]-" -> (2, 1).
+/// Retourne `None` si le format n'est pas reconnu.
+pub fn adduct_nmol_and_charge(adduct: &str) -> Option<(u32, u32)> {
+    let n_caps = ADDUCT_NMOL_RE.captures(adduct)?;
+    let z_caps = ADDUCT_CHARGE_RE.captures(adduct)?;
+    let n_str = n_caps.get(1).map_or("", |m| m.as_str());
+    let z_str = z_caps.get(1).map_or("", |m| m.as_str());
+    let n = if n_str.is_empty() { 1 } else { n_str.parse::<u32>().ok()? };
+    let z = if z_str.is_empty() { 1 } else { z_str.parse::<u32>().ok()? };
+    if n == 0 || z == 0 { return None; }
+    Some((n, z))
+}
+
+/// m/z du précurseur à partir de la masse exacte neutre M de la molécule et de la différence de masse
+/// de l'adduit (`massdiff`, masse TOTALE ajoutée/retirée, électrons compris, telle que dans
+/// `adduct_to_convert.csv`) : m/z = (n·M + massdiff) / z.
+///
+/// Si le format de l'adduit n'est pas reconnu, on retombe sur n = 1, z = 1 (comportement historique).
+pub fn precursor_mz_from_exact_mass(exact_mass: f64, mass_diff: f64, adduct: &str) -> f64 {
+    let (n, z) = adduct_nmol_and_charge(adduct).unwrap_or((1, 1));
+    (n as f64 * exact_mass + mass_diff) / z as f64
 }
 
 pub const ELECTRON_MASS: f64 = 0.000548579909;
@@ -242,5 +273,52 @@ pub fn compute_mz(precursor_formula: &str) -> Option<f64> {
         Some((mz * 1_000_000.0).round() / 1_000_000.0) // Arrondi à 6 décimales
     } else {
         None
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const CAFFEINE: f64 = 194.080376; // masse monoisotopique neutre
+
+    fn close(a: f64, b: f64) -> bool { (a - b).abs() < 1e-5 }
+
+    #[test]
+    fn reads_nmol_and_charge() {
+        assert_eq!(adduct_nmol_and_charge("[M+H]+"), Some((1, 1)));
+        assert_eq!(adduct_nmol_and_charge("[2M+H]+"), Some((2, 1)));
+        assert_eq!(adduct_nmol_and_charge("[M+2H]2+"), Some((1, 2)));
+        assert_eq!(adduct_nmol_and_charge("[3M+H]+"), Some((3, 1)));
+        assert_eq!(adduct_nmol_and_charge("[2M+2Cl]2-"), Some((2, 2)));
+        assert_eq!(adduct_nmol_and_charge("[2M+3Cl]3-_37Cl1"), Some((2, 3)));
+        assert_eq!(adduct_nmol_and_charge("[(2M-2H+Ca)-H]-"), Some((2, 1)));
+        assert_eq!(adduct_nmol_and_charge("[M]*+"), Some((1, 1)));
+        assert_eq!(adduct_nmol_and_charge("M+H"), None);
+    }
+
+    #[test]
+    fn single_charge_monomer_is_unchanged() {
+        // [M+H]+ : 194.080376 + 1.007276
+        assert!(close(precursor_mz_from_exact_mass(CAFFEINE, 1.007276, "[M+H]+"), 195.087652));
+    }
+
+    #[test]
+    fn dimer_uses_twice_the_mass() {
+        // [2M+H]+ : 2 x 194.080376 + 1.007276
+        assert!(close(precursor_mz_from_exact_mass(CAFFEINE, 1.007276, "[2M+H]+"), 389.168028));
+    }
+
+    #[test]
+    fn multiply_charged_is_divided_by_z() {
+        // [M+2H]2+ : (194.080376 + 2.014552) / 2
+        assert!(close(precursor_mz_from_exact_mass(CAFFEINE, 2.014552, "[M+2H]2+"), 98.047464));
+        // [2M+2Cl]2- : (2 x 194.080376 + 69.938802) / 2
+        assert!(close(precursor_mz_from_exact_mass(CAFFEINE, 69.938802, "[2M+2Cl]2-"), 229.049777));
+    }
+
+    #[test]
+    fn unknown_format_falls_back_to_old_behaviour() {
+        assert!(close(precursor_mz_from_exact_mass(CAFFEINE, 1.007276, "M+H"), 195.087652));
     }
 }

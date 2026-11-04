@@ -102,7 +102,8 @@ pub fn missing_precursormz_re_calculation(
         let smiles = metadata_dict.get("SMILES").cloned().unwrap_or_default();
 
         if let Some(em) = get_exact_mass_from_rdkit(&inchi, &smiles) {
-            let new_pmz = em + diff;
+            // m/z = (n·M + Δ) / z : gère les multimères ([2M+H]+) et les ions multichargés ([M+2H]2+).
+            let new_pmz = crate::adduct_mass_calculator::precursor_mz_from_exact_mass(em, diff, &adduct);
             metadata_dict.insert("PRECURSORMZ".to_string(), new_pmz.to_string());
         }
     }

@@ -58,16 +58,25 @@ pub static IONMODE_POS_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)^p|^
 
 pub static IONMODE_NEG_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)^n|^\-|^neg").unwrap());
 
-pub static REPAIR_INCHI_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)^(?:inchi=)?").unwrap());
+// Préfixe "InChI=" éventuel (y compris doublé, ex. "InChI=InChI=1S/...", vu dans MoNA), remplacé par un seul "InChI=".
+pub static REPAIR_INCHI_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)^\s*(?:inchi=)*").unwrap());
 
-// Match inchi
-pub static INCHI_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)InChI=.*|/[0-9A-Z]*/").unwrap());
+// Match inchi : la valeur doit COMMENCER par "InChI=1S/..." ou "1S/..." (préfixe absent).
+// Ancré au début : un SMILES ne peut pas commencer par un chiffre, et un SMILES stéréo
+// contenant "/C/" n'est plus confondu avec un InChI.
+pub static INCHI_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)^\s*(?:InChI=)*1S?/\S+").unwrap());
 
 // Match smiles
 pub static SMILES_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)[^J][a-z0-9@+\-\[\]\(\)\\/%=#$]{6,}").unwrap());
 
-// Match inchikey or short inchikey
-pub static INCHIKEY_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)([A-Z]{14}-[A-Z]{10}-[NO])|([A-Z]{14})").unwrap());
+// Match inchikey complet (XXXXXXXXXXXXXX-YYYYYYYYYY-Z) ou court (14 majuscules), valeur ENTIÈRE uniquement.
+// Ancré des deux côtés : un SMILES contenant 14 lettres consécutives (chaîne alkyle C14+) n'est plus reconnu.
+// À n'utiliser que sur le champ INCHIKEY lui-même (une forme courte seule reste ambiguë, ex. tétradécane "CCCCCCCCCCCCCC").
+pub static INCHIKEY_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"^\s*(?:(?i:[A-Z]{14}-[A-Z]{10}-[A-Z])|[A-Z]{14})\s*$").unwrap());
+
+// Match inchikey complet uniquement. Sert à détecter un InChIKey rangé dans un AUTRE champ (SMILES, INCHI),
+// où la forme courte serait indiscernable d'un SMILES purement carboné.
+pub static INCHIKEY_FULL_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)^\s*[A-Z]{14}-[A-Z]{10}-[A-Z]\s*$").unwrap());
 
 pub static IN_SILICO_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)in.silico|insilico|predicted|theoretical|Annotation\.level\.3").unwrap());
 
