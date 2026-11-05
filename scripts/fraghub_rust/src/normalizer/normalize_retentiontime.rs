@@ -18,7 +18,7 @@ pub fn normalize_retention_time(mut metadata_dict: HashMap<String, String>) -> H
         if let Some(time_match) = caps.get(1) {
             // `.parse::<f64>()` remplace le `float(valeur)` de Python. 
             // Si la conversion réussit (`Ok`), on rentre dans le bloc.
-            if let Ok(time_val) = time_match.as_str().parse::<f64>() {
+            if let Ok(time_val) = time_match.as_str().replace(',', ".").parse::<f64>() { // virgule décimale acceptée
                 // On récupère l'unité (groupe 2 de la regex) ou "" par défaut
                 let unit = caps.get(2).map(|m| m.as_str().to_lowercase()).unwrap_or_default();
                 
@@ -35,4 +35,35 @@ pub fn normalize_retention_time(mut metadata_dict: HashMap<String, String>) -> H
         }
     }
     metadata_dict
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn rt(v: &str) -> String {
+        let mut m = HashMap::new();
+        m.insert("RT".to_string(), v.to_string());
+        normalize_retention_time(m)["RT"].clone()
+    }
+
+    #[test]
+    fn unites_converties_en_minutes() {
+        assert_eq!(rt("70.99 s"), (70.99_f64 / 60.0).to_string()); // RTINSECONDS marqué à la lecture
+        assert_eq!(rt("90 sec"), "1.5");
+        assert_eq!(rt("12 ms"), (12.0_f64 / 60000.0).to_string()); // était lu comme 12 minutes
+        assert_eq!(rt("120000 milliseconds"), "2");
+        assert_eq!(rt("5.2 min"), "5.2");
+        assert_eq!(rt("5 minutes"), "5");
+        assert_eq!(rt("3 m"), "3");
+        assert_eq!(rt("12,5 s"), (12.5_f64 / 60.0).to_string()); // virgule décimale
+        assert_eq!(rt("5,2 min"), "5.2");
+    }
+
+    #[test]
+    fn nombre_seul_reste_en_minutes() {
+        assert_eq!(rt("5.2"), "5.2");
+        assert_eq!(rt("61.971333"), "61.971333");
+        assert_eq!(rt(""), "");
+    }
 }
