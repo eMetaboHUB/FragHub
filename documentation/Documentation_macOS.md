@@ -136,3 +136,40 @@ python sync_version.py --check
 > * **Fichiers mis à jour :** `GUI/package.json` (qui donne aussi son nom à l'installeur, ex. `FragHub-2.1.0-arm64.dmg`), `GUI/package-lock.json`, `scripts/fraghub_rust/Cargo.toml`, `scripts/fraghub_rust/Cargo.lock`, `scripts/fraghub_rust/pyproject.toml`, `uv.lock`, le titre du `README.md` et `documentation/cmd_pyinstaller.txt`.
 > * **Volontairement non modifiés :** `CHANGELOG.md` (ajoutez vous-même la nouvelle entrée), la phrase « FragHub 2.0 introduces… » du README, et les liens de téléchargement Zenodo du README (à mettre à jour à la main une fois la nouvelle version publiée sur Zenodo, car l'identifiant du dépôt change).
 > * ⚠️ **Si le script affiche un avertissement ⚠**, un fichier cible a changé de structure et la version n'y a pas été trouvée : vérifiez le fichier et, si besoin, ajustez son motif dans la liste `TARGETS` en haut de `sync_version.py`.
+
+---
+
+## 7. RDKit C++ (moteur de calcul natif)
+
+Le moteur Rust appelle RDKit en C++ (`scripts/fraghub_rust/build.rs`, `src/rdkit_native/`). RDKit C++ n'est pas installé par `uv` : il vient de conda-forge.
+
+### Installation (une seule fois)
+1. Outils de compilation Apple (C++20) :
+```bash
+xcode-select --install
+```
+2. RDKit C++ avec `micromamba` (un seul exécutable, sans modifier le `.zshrc` ; `mamba` s'utilise avec la même syntaxe) :
+```bash
+brew install micromamba
+micromamba create -y -p ~/rdkit_cpp -c conda-forge librdkit-dev=2026.09.1 libboost-headers=1.90.0
+```
+3. Vérifier l'architecture : la commande suivante doit afficher `arm64` sur un Mac Apple Silicon.
+```bash
+file ~/rdkit_cpp/lib/libRDKitGraphMol.dylib
+```
+> * **Emplacement :** `build.rs` et les scripts de build cherchent RDKit dans la variable d'environnement `RDKIT_PREFIX`, sinon dans `~/rdkit_cpp` (`include/` et `lib/`).
+> * **Si micromamba affiche** `Removing lock file '~/.mamba/pkgs/pkgs.lock' failed` : sans conséquence, supprimez ce fichier avec `rm -f ~/.mamba/pkgs/pkgs.lock`.
+
+### Qui en a besoin ?
+* **L'utilisateur de l'installeur ou de l'exécutable : rien à installer.** PyInstaller copie les bibliothèques de RDKit C++ dans l'exécutable (`scripts/dist/FragHub_Backend/_internal`) et remplace leurs chemins par des chemins relatifs (`@loader_path`). `build_backend.py` s'arrête avec une erreur si elles manquent ou si un binaire pointe encore vers `~/rdkit_cpp`.
+* **Toute personne qui compile FragHub, ou le lance depuis le code source** (`python scripts/FragHub.py --cli …`) : RDKit C++ doit être installé. Le module Rust y est lié et ne se charge pas sans lui, même avec `FRAGHUB_RDKIT_BACKEND=python` (cette variable ne choisit que le moteur de calcul).
+
+### Moteur de calcul
+Par défaut, les calculs RDKit sont faits en C++, directement depuis Rust. L'ancien moteur Python (`rdkit_worker.py`) reste disponible et donne des résultats identiques :
+```bash
+FRAGHUB_RDKIT_BACKEND=python python scripts/FragHub.py --cli ...
+```
+
+### Particularités macOS
+> * **`strip` désactivé :** avec les outils Apple récents (SDK 27), l'étape `strip` de Cargo produisait un module que macOS refusait de charger (`mis-aligned LINKEDIT string pool`). `build_backend.py` la désactive sur macOS (`CARGO_PROFILE_RELEASE_STRIP=false`) puis vérifie que le module se charge. Sans effet sur les résultats.
+> * **Premier lancement plus lent :** le premier lancement d'un exécutable fraîchement construit peut prendre une quinzaine de secondes de plus, le temps que macOS analyse les nouvelles bibliothèques. Les lancements suivants sont normaux.

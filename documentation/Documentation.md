@@ -132,3 +132,28 @@ python sync_version.py --check
 > * **Updated files:** `GUI/package.json` (which also names the installer, e.g. `FragHub-2.1.0-arm64.dmg`), `GUI/package-lock.json`, `scripts/fraghub_rust/Cargo.toml`, `scripts/fraghub_rust/Cargo.lock`, `scripts/fraghub_rust/pyproject.toml`, `uv.lock`, the title of `README.md` and `documentation/cmd_pyinstaller.txt`.
 > * **Intentionally left unchanged:** `CHANGELOG.md` (add the new entry yourself), the "FragHub 2.0 introduces…" sentence in the README, and the Zenodo download links in the README (update them by hand once the new release is published on Zenodo, since the record ID changes).
 > * ⚠️ **If the script shows a ⚠ warning**, a target file has changed its structure and the version could not be found in it: check the file and, if needed, adjust its pattern in the `TARGETS` list at the top of `sync_version.py`.
+
+---
+
+## 7. RDKit C++ (native calculation engine)
+
+The Rust engine calls RDKit in C++ (`scripts/fraghub_rust/build.rs`, `src/rdkit_native/`). RDKit C++ is not installed by `uv`: it comes from conda-forge.
+
+### Installation (once)
+With `mamba` (or `micromamba`, same syntax):
+```powershell
+mamba create -p C:\Users\<name>\rdkit_cpp -c conda-forge librdkit-dev=2026.09.1 libboost-headers=1.90.0
+```
+* **Location:** `build.rs` and the build scripts look for RDKit in the `RDKIT_PREFIX` environment variable, otherwise in `%USERPROFILE%\rdkit_cpp` (headers in `Library\include`, DLLs in `Library\bin`).
+* **In development**, `FragHub.py` adds `%USERPROFILE%\rdkit_cpp\Library\bin` to the DLL search path.
+* **Compiler:** Visual Studio Build Tools (MSVC, C++20).
+
+### Who needs it?
+* **End users of the installer / executable: nothing to install.** PyInstaller copies the RDKit C++ libraries into the executable (`scripts/dist/FragHub_Backend/_internal`), and `build_backend.py` stops with an error if they are missing.
+* **Anyone who compiles FragHub, or runs it from source** (`python scripts/FragHub.py --cli …`): RDKit C++ must be installed. The Rust module is linked to it and does not load without it, even with `FRAGHUB_RDKIT_BACKEND=python` (that variable only selects the calculation engine).
+
+### Calculation engine
+By default, RDKit calculations are done in C++, directly from Rust. The former Python engine (`rdkit_worker.py`) is still available and gives identical results:
+```bash
+FRAGHUB_RDKIT_BACKEND=python python scripts/FragHub.py --cli ...
+```
