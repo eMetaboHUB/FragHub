@@ -134,7 +134,35 @@ pub static EMPTY_PATTERN: Lazy<Regex> = Lazy::new(|| {
 // VARIABLES AJOUTÉES CÔTÉ RUST (N'existaient pas dans globals_vars.py)
 // ======================================================================================================================
 
-pub static GC_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)\bGC\b").unwrap());
+// Spectre GC (ou EI, ionisation électronique, en masse nominale et sans adduit) : "GC" ou "EI" en MOTS ENTIERS
+// dans le type d'instrument ("GC-EI-TOF", "EI-B", "EI-EBEB", "GC-APCI-QTOF"…).
+pub static GC_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)\b(?:GC|EI)\b").unwrap());
+
+/// Règle UNIQUE « ce spectre est-il GC ? », utilisée partout (normalisation de l'adduit, contrôle de l'adduit,
+/// test du m/z précurseur, correction de masse, tri final) :
+/// - le nom du fichier contient "_GC" (convention du README pour un fichier qui ne contient que du GC), ou
+/// - le type d'instrument contient "GC" ou "EI" en mots entiers.
+/// Avant, chaque étape avait sa règle : le tri final rangeait "EI-B" en GC, mais le contrôle de l'adduit ne le
+/// reconnaissait pas et supprimait ces spectres (sans adduit) ; le suffixe "_GC" n'était pas vu partout.
+pub fn is_gc_spectrum(filename: &str, instrument_type: &str) -> bool {
+    filename.contains("_GC") || GC_PATTERN.is_match(instrument_type)
+}
 
 // Regex pour extraire Collision Energy du Compound_Name (ex: GNPS, supporte 20-30, 102040/13334, 10 20 30)
 pub static GNPS_COLLISION_ENERGY_EXTRACT_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)(?:\W|_)*collision[-\s_]?energy[\s:=]*(\d+(?:[\s.,\-/]+\d+)*\s*(?:eV|V)?)(?:\W|_)*").unwrap());
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn gc_reconnu_par_le_type_d_instrument_ou_le_nom_de_fichier() {
+        for it in ["GC-EI-TOF", "GC-APCI-QTOF", "EI-B", "EI-EBEB", "EI-QTOF", "GC-HRMS", "gc-ei-q", "GC"] {
+            assert!(is_gc_spectrum("a.msp", it), "{it}");
+        }
+        assert!(is_gc_spectrum("GMD_20111121_MDN35_ALK_MSP_GC.msp", "")); // suffixe _GC du README
+        for it in ["LC-ESI-QTOF", "Q-TOF", "Orbitrap", "ESI-ITFT", "HEIDELBERG", "GCMS", "LC-ESI-QQ", ""] {
+            assert!(!is_gc_spectrum("a.msp", it), "{it}");
+        }
+    }
+}

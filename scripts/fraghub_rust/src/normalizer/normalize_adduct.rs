@@ -42,10 +42,10 @@ pub fn standardize_adduct_key(adduct: &str) -> String {
 /// # Returns
 /// * `HashMap<String, String>` : Le dictionnaire avec l'adduct standardisé.
 pub fn normalize_adduct(mut metadata_dict: HashMap<String, String>, context: &super::NormalizerContext) -> HashMap<String, String> {
-    if let Some(inst_type) = metadata_dict.get("INSTRUMENTTYPE") {
-        if crate::globals_vars::GC_PATTERN.is_match(inst_type) {
-            return metadata_dict; // On ignore les GC
-        }
+    let filename = metadata_dict.get("FILENAME").map(|s| s.as_str()).unwrap_or("");
+    let inst_type = metadata_dict.get("INSTRUMENTTYPE").map(|s| s.as_str()).unwrap_or("");
+    if crate::globals_vars::is_gc_spectrum(filename, inst_type) {
+        return metadata_dict; // On ignore les GC
     }
 
     // `.cloned()` permet d'extraire une copie de la valeur pour la modifier librement.

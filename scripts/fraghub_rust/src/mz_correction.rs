@@ -160,8 +160,14 @@ pub fn mz_correction_processing(
                 let top: Vec<&(f64, f64, usize)> = valid_peaks.iter().take(2).collect();
                 
                 if !top.is_empty() {
-                    // Niveau 1 : vérification décimale (MIN_DECIMALS = 3)
-                    if top.iter().all(|p| p.2 < 3) {
+                    // Niveau 1 : vérification décimale (MIN_DECIMALS = 3).
+                    // Pas pour le GC (règle unique is_gc_spectrum) : un spectre GC-EI est par nature en masse nominale.
+                    // Le crash-test ci-dessous reste appliqué : il n'utilise que les pics à 3 décimales ou plus.
+                    let is_gc = crate::globals_vars::is_gc_spectrum(
+                        new_spec.metadata.get("FILENAME").map(|s| s.as_str()).unwrap_or(""),
+                        new_spec.metadata.get("INSTRUMENTTYPE").map(|s| s.as_str()).unwrap_or(""),
+                    );
+                    if !is_gc && top.iter().all(|p| p.2 < 3) {
                         return Err("low_res");
                     }
                     

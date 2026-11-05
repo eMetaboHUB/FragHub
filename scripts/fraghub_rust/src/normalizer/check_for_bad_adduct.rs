@@ -37,7 +37,8 @@ pub fn check_for_bad_adduct(
     }
 
     // 2. Gérer les instruments spécifiques (ex: GC-MS)
-    if crate::globals_vars::GC_PATTERN.is_match(&instrument_type) && adduct.is_empty() {
+    let filename = metadata_dict.get("FILENAME").cloned().unwrap_or_default();
+    if crate::globals_vars::is_gc_spectrum(&filename, &instrument_type) && adduct.is_empty() {
         return Some(metadata_dict); // OK, on garde
     }
 
@@ -74,4 +75,39 @@ pub fn check_for_bad_adduct(
     }
 
     Some(metadata_dict) // Tout est valide, on renvoie le spectre
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn context() -> super::super::NormalizerContext {
+        super::super::NormalizerContext {
+            adduct_pos: HashMap::new(), adduct_neg: HashMap::new(),
+            adduct_massdiff_pos: HashMap::new(), adduct_massdiff_neg: HashMap::new(),
+            instrument_tree: serde_json::Value::Null,
+        }
+    }
+
+    fn check(fields: &[(&str, &str)]) -> bool {
+        let m: HashMap<String, String> = fields.iter().map(|(k, v)| (k.to_string(), v.to_string())).collect();
+        let mut reason = None;
+        check_for_bad_adduct(m, &mut reason, &context()).is_some()
+    }
+
+    #[test]
+    fn spectres_gc_et_ei_sans_adduit_gardes() {
+        // Cas réels supprimés à tort avant (MoNA, MassBank) : ionisation électronique, pas d'adduit
+        assert!(check(&[("INSTRUMENTTYPE", "EI-B"), ("IONMODE", "positive"), ("FILENAME", "MoNA.msp")]));
+        assert!(check(&[("INSTRUMENTTYPE", "EI-EBEB"), ("IONMODE", "positive"), ("FILENAME", "MassBank.msp")]));
+        assert!(check(&[("INSTRUMENTTYPE", "GC-EI-TOF"), ("IONMODE", "positive"), ("FILENAME", "a.msp")]));
+        // Fichier marqué _GC (README), type d'instrument inconnu
+        assert!(check(&[("INSTRUMENTTYPE", ""), ("IONMODE", "positive"), ("FILENAME", "lib_GC.msp")]));
+    }
+
+    #[test]
+    fn spectre_lc_sans_adduit_toujours_supprime() {
+        assert!(!check(&[("INSTRUMENTTYPE", "LC-ESI-QTOF"), ("IONMODE", "positive"), ("FILENAME", "a.msp")]));
+        assert!(!check(&[("INSTRUMENTTYPE", ""), ("IONMODE", "positive"), ("FILENAME", "a.msp")]));
+    }
 }

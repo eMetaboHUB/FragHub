@@ -96,7 +96,7 @@ pub fn spectrum_cleaning_processing(
                 if let Some(mut valid_meta) = metadata_opt {
                     let filename = valid_meta.get("FILENAME").cloned().unwrap_or_default();
                     let instrument = valid_meta.get("INSTRUMENTTYPE").cloned().unwrap_or_default();
-                    let is_gc = filename.contains("_GC") || crate::globals_vars::GC_PATTERN.is_match(&instrument);
+                    let is_gc = crate::globals_vars::is_gc_spectrum(&filename, &instrument);
 
                     let mut float_pmz: Option<f64> = None;
 
