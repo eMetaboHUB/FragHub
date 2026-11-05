@@ -1,9 +1,55 @@
-/datas/adduct_to_convert.xlsx
-/scripts/build/
-/scripts/FragHub.spec
-/scripts/dist/FragHub/
-/scripts/dist/FragHub.zip
-/scripts/dist/build/
-/scripts/dist/dist/
+# =============================================================================
+# FragHub — fichiers à ne pas versionner
+# =============================================================================
 
-datas/*backup*.parquet
+# --- Fichiers temporaires (règle de .agents/AGENTS.md : tout le temporaire dans scratch/) ---
+/scratch/
+
+# --- Sorties de runs lancés à la racine du projet ---
+/DELETED_SPECTRUMS/
+/updates.json
+/dummy.csv
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+
+# --- Rust (dossiers de compilation de chaque crate) ---
+/scripts/fraghub_rust/target/
+/scripts/build_dataset/target/
+# Ancienne copie du code Rust (plus utilisée)
+/scripts/fraghub_rust/src_backup/
+# node_modules de puppeteer, sans rapport avec le moteur Rust
+/scripts/fraghub_rust/node_modules/
+
+# --- PyInstaller (exécutable du back-end) ---
+/scripts/build/
+/scripts/dist/
+/scripts/FragHub.spec
+
+# --- Front-end Nuxt / Electron ---
+/GUI/node_modules/
+/GUI/.nuxt/
+/GUI/.output/
+/GUI/dist
+/GUI/dist_electron/
+
+# --- Anciens dossiers Python vides (il n'y reste que des __pycache__) ---
+/scripts/convertors/
+/scripts/normalizer/
+/scripts/peaks_filters/
+/scripts/splash/
+/scripts/GUI/tabs/
+/scripts/GUI/utils/
+
+# --- Données : sauvegardes et modèles non utilisés ---
+/datas/adduct_to_convert.xlsx
+/datas/*backup*
+/datas/npclassifier_models/
+
+# --- Réglages personnels des éditeurs et du système ---
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
