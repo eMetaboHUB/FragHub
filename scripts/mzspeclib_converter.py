@@ -5,9 +5,16 @@ import os
 import re
 import sys
 import traceback
+import warnings
 from mzspeclib.backends.msp import MSPSpectralLibrary
 from mzspeclib.backends.json import JSONSpectralLibraryWriter
 import time
+
+# mzspeclib avertit pour chaque spectre dont l'énergie de collision n'est pas un nombre simple
+# ("NOT FOUND", "-60,-20", "[15.0, 60.0]", "-70 eV"…). Le spectre est quand même converti (sans ce champ) :
+# message sans intérêt, répété des milliers de fois. Seul ce message est masqué, les autres restent visibles.
+# Placé ici (au chargement du module), le filtre s'applique aussi aux processus de conversion parallèle.
+warnings.filterwarnings("ignore", message=r"Failed to parse .* for COLLISIONENERGY", category=UserWarning)
 
 # ---------------------------------------------------------------------------
 # Conversion MSP -> mzSpecLib JSON
