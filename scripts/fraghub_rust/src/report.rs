@@ -484,10 +484,27 @@ pub fn generate_report_processing(
         let splash = spec.metadata.get("SPLASH").map(|s| s.as_str()).unwrap_or("");
         let inchikey = spec.metadata.get("INCHIKEY").map(|s| s.as_str()).unwrap_or("");
         let dbname = spec.metadata.get("DATABASE_NAME").map(|s| s.as_str()).unwrap_or("Unknown").to_string();
-        
+
+        // Bases de tous les doublons retirés (clé interne posée par le dédoublonnage), sinon la base du spectre.
+        // Un nom vide ou "Unknown" s'affiche "NOT FOUND", comme DATABASE_NAME dans les sorties.
+        let dbnames: Vec<String> = match spec.metadata.get(crate::globals_vars::ALL_DATABASE_NAMES_KEY) {
+            Some(list) if list != "NOT FOUND" => list
+                .split(crate::globals_vars::INTERNAL_LIST_SEP)
+                .map(|name| {
+                    let name = name.trim();
+                    if crate::globals_vars::EMPTY_PATTERN.is_match(name) { "NOT FOUND".to_string() } else { name.to_string() }
+                })
+                .collect::<std::collections::BTreeSet<String>>()
+                .into_iter()
+                .collect(),
+            _ => vec![dbname],
+        };
+
         let id = format!("{}_{}", splash, inchikey);
-        spec_to_dbs.entry(id).or_default().insert(dbname.clone());
-        *db_counts.entry(dbname).or_insert(0) += 1;
+        for name in dbnames {
+            spec_to_dbs.entry(id.clone()).or_default().insert(name.clone());
+            *db_counts.entry(name).or_insert(0) += 1;
+        }
     }
 
     let mut dbs_vec: Vec<(String, usize)> = db_counts.into_iter().collect();

@@ -1,7 +1,7 @@
 // src/duplicatas_remover.rs
 use pyo3::prelude::*;
 use crate::spectrum::Spectrum;
-use std::collections::{HashMap, HashSet};
+use std::collections::{BTreeSet, HashMap, HashSet};
 use std::fs;
 use std::path::Path;
 use csv::WriterBuilder;
@@ -32,6 +32,9 @@ pub fn remove_duplicatas_processing(
     if let Some(cb) = &item_type_callback { cb.call1(py, ("spectra",))?; }
 
     let mut best_indices: HashMap<(String, String), (usize, usize)> = HashMap::new();
+    // Bases d'origine de chaque groupe de doublons (pour le rapport UpSet : sinon, seule la base du
+    // spectre gardé restait connue, et le rapport ne pouvait montrer aucun recoupement entre bases)
+    let mut group_dbs: HashMap<(String, String), BTreeSet<String>> = HashMap::new();
     let mut empty_inchi_indices: Vec<usize> = Vec::new();
 
     let mut processed = 0;
@@ -51,6 +54,8 @@ pub fn remove_duplicatas_processing(
             empty_inchi_indices.push(i);
         } else {
             let key = (splash, inchikey);
+            let db = spec.metadata.get("DATABASE_NAME").map(|s| s.trim().to_string()).unwrap_or_default();
+            group_dbs.entry(key.clone()).or_default().insert(db);
             if let Some(&(_, best_size)) = best_indices.get(&key) {
                 if row_size > best_size {
                     best_indices.insert(key, (i, row_size));
@@ -113,10 +118,25 @@ pub fn remove_duplicatas_processing(
         wtr.flush()?;
     }
 
+    // Spectre gardé dont les doublons venaient de plusieurs bases : liste interne de ces bases
+    // (clé jamais écrite dans les sorties ; DATABASE_NAME reste celle du spectre gardé)
+    let mut all_dbs: HashMap<usize, String> = HashMap::new();
+    for (key, &(idx, _)) in &best_indices {
+        if let Some(dbs) = group_dbs.get(key) {
+            if dbs.len() > 1 {
+                let list: Vec<&str> = dbs.iter().map(|s| s.as_str()).collect();
+                all_dbs.insert(idx, list.join(crate::globals_vars::INTERNAL_LIST_SEP));
+            }
+        }
+    }
+
     let mut final_list = Vec::with_capacity(indices_to_keep.len());
     let mut current_idx = 0;
-    for spec in spectrum_list.into_iter() {
+    for mut spec in spectrum_list.into_iter() {
         if indices_to_keep.contains(&current_idx) {
+            if let Some(list) = all_dbs.remove(&current_idx) {
+                spec.metadata.insert(crate::globals_vars::ALL_DATABASE_NAMES_KEY.to_string(), list);
+            }
             final_list.push(spec);
         }
         current_idx += 1;

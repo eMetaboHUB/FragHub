@@ -58,6 +58,23 @@ pub static IONMODE_POS_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)^p|^
 
 pub static IONMODE_NEG_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)^n|^\-|^neg").unwrap());
 
+// Mot positive / negative ailleurs dans le texte (ex. "ESI Positive"), utilisé si le début du texte ne dit rien
+pub static IONMODE_POS_WORD_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)\bpos(?:itive)?\b").unwrap());
+
+pub static IONMODE_NEG_WORD_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)\bneg(?:ative)?\b").unwrap());
+
+// Charge écrite après le "]" d'un adduit : "+", "2-", "--", "+*"…
+pub static ADDUCT_CHARGE_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"^(?:\d*[+\-]+|[+\-]+\d*)\*?$").unwrap());
+
+// Clés internes : jamais écrites dans les sorties (CSV, JSON, MSP et fichiers de suppression utilisent
+// des listes de colonnes fixes), comme les clés TREE_* de l'arbre des instruments.
+/// Toutes les lignes "Synon:" d'un spectre (le champ SYNON ne garde que la dernière) : sert à la détection in silico.
+pub const ALL_SYNONS_KEY: &str = "ALL_SYNONS";
+/// Bases d'origine d'un spectre gardé par le dédoublonnage, quand ses doublons venaient d'autres bases (rapport UpSet).
+pub const ALL_DATABASE_NAMES_KEY: &str = "ALL_DATABASE_NAMES";
+/// Séparateur des listes internes ci-dessus (caractère de contrôle, absent des fichiers).
+pub const INTERNAL_LIST_SEP: &str = "\u{1f}";
+
 // Préfixe "InChI=" éventuel (y compris doublé, ex. "InChI=InChI=1S/...", vu dans MoNA), remplacé par un seul "InChI=".
 pub static REPAIR_INCHI_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)^\s*(?:inchi=)*").unwrap());
 

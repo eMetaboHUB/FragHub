@@ -66,9 +66,105 @@ pub fn normalize_adduct(mut metadata_dict: HashMap<String, String>, context: &su
         } else if let Some(canonical) = context.adduct_neg.get(&standard_key) {
             metadata_dict.insert("PRECURSORTYPE".to_string(), canonical.clone());
         } else {
-            metadata_dict.insert("PRECURSORTYPE".to_string(), cleaned);
+            // Adduit absent des tables : on le garde sous la forme standard "[...]charge".
+            // Avant, le texte nettoyé était gardé tel quel : "[M+HCOOH-H]-" devenait "M+HCOOH-H".
+            let ion_mode = metadata_dict.get("IONMODE").cloned().unwrap_or_default();
+            metadata_dict.insert("PRECURSORTYPE".to_string(), unknown_adduct_form(&adduct, &cleaned, &ion_mode));
         }
     }
 
     metadata_dict
+}
+
+/// Forme écrite d'un adduit absent des tables : "[" + adduit nettoyé + "]" + charge.
+///
+/// La charge est celle du texte d'origine (après le dernier "]", ou signe final sans crochets :
+/// "M+CH3COO-"), sinon celle du mode d'ionisation ("+" / "-"), sinon elle est omise.
+/// Un signe collé au M ("M+", "2M-") est la charge de l'ion moléculaire : "[M]+", "[2M]-".
+/// Un adduit vide reste vide.
+fn unknown_adduct_form(original: &str, cleaned: &str, ion_mode: &str) -> String {
+    if cleaned.is_empty() {
+        return String::new();
+    }
+    if cleaned.ends_with("M+") || cleaned.ends_with("M-") {
+        let (body, sign) = cleaned.split_at(cleaned.len() - 1);
+        return format!("[{}]{}", body, sign);
+    }
+    let written = match original.rfind(']') {
+        Some(close) => original[close + 1..].trim().to_string(),
+        None => {
+            // Sans crochets : le nettoyage a pu retirer un signe final, c'est la charge écrite
+            let stripped = crate::globals_vars::SUB_ADDUCT_PATTERN.replace_all(original, "");
+            stripped.get(cleaned.len()..).unwrap_or("").trim().to_string()
+        }
+    };
+    let charge = if crate::globals_vars::ADDUCT_CHARGE_PATTERN.is_match(&written) {
+        written
+    } else {
+        match ion_mode {
+            "positive" => "+".to_string(),
+            "negative" => "-".to_string(),
+            _ => String::new(),
+        }
+    };
+    format!("[{}]{}", cleaned, charge)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn context() -> super::super::NormalizerContext {
+        let mut pos = HashMap::new();
+        pos.insert("M+H".to_string(), "[M+H]+".to_string());
+        super::super::NormalizerContext {
+            adduct_pos: pos, adduct_neg: HashMap::new(),
+            adduct_massdiff_pos: HashMap::new(), adduct_massdiff_neg: HashMap::new(),
+            instrument_tree: serde_json::Value::Null,
+        }
+    }
+
+    fn adduct(raw: &str, ion_mode: &str) -> String {
+        let mut m = HashMap::new();
+        m.insert("PRECURSORTYPE".to_string(), raw.to_string());
+        m.insert("IONMODE".to_string(), ion_mode.to_string());
+        m.insert("FILENAME".to_string(), "a.msp".to_string());
+        m.insert("INSTRUMENTTYPE".to_string(), "LC-ESI-QTOF".to_string());
+        normalize_adduct(m, &context())["PRECURSORTYPE"].clone()
+    }
+
+    #[test]
+    fn adduit_connu_inchange() {
+        assert_eq!(adduct("[M+H]+", "positive"), "[M+H]+");
+        assert_eq!(adduct("M+H", ""), "[M+H]+");
+    }
+
+    #[test]
+    fn adduit_inconnu_garde_crochets_et_charge() {
+        // Cas réels de l'échantillon (MoNA, MassBank, GNPS)
+        assert_eq!(adduct("[M+HCOOH-H]-", "negative"), "[M+HCOOH-H]-");
+        assert_eq!(adduct("[M+Hac-H]-", "negative"), "[M+Hac-H]-");
+        assert_eq!(adduct("[4M+Ca]2+", "positive"), "[4M+Ca]2+");
+        assert_eq!(adduct("[M-C3H6NO2]-", "negative"), "[M-C3H6NO2]-");
+        // Sans crochets ni charge : charge prise du mode d'ionisation
+        assert_eq!(adduct("M-H1", "negative"), "[M-H1]-");
+        assert_eq!(adduct("M+NH3", "positive"), "[M+NH3]+");
+        assert_eq!(adduct("M+NH3", ""), "[M+NH3]");
+        // Sans crochets, signe final écrit
+        assert_eq!(adduct("M+CH3COO-", "negative"), "[M+CH3COO]-");
+        // Ion moléculaire
+        assert_eq!(adduct("M", "positive"), "[M]+");
+        assert_eq!(adduct("M+", ""), "[M]+");
+        // Vide : reste vide
+        assert_eq!(adduct("", "positive"), "");
+    }
+
+    #[test]
+    fn spectre_gc_non_touche() {
+        let mut m = HashMap::new();
+        m.insert("PRECURSORTYPE".to_string(), "M-H1".to_string());
+        m.insert("FILENAME".to_string(), "a.msp".to_string());
+        m.insert("INSTRUMENTTYPE".to_string(), "GC-EI-TOF".to_string());
+        assert_eq!(normalize_adduct(m, &context())["PRECURSORTYPE"], "M-H1");
+    }
 }

@@ -6,6 +6,15 @@ use crate::deletion_report::DeletionReport;
 use crate::adduct_mass_calculator;
 use crate::spectrum::Spectrum;
 
+/// Motifs de suppression de cette étape. Avant, les spectres supprimés ici n'étaient que comptés dans le
+/// rapport et n'apparaissaient dans aucun fichier de DELETED_SPECTRUMS (~36 500 spectres sur l'échantillon de 20 %).
+pub const MZ_NO_MATCHING_ADDUCT_REASON: &str =
+    "spectrum deleted because its precursor m/z matches neither its adduct nor any other adduct of its ionization mode";
+pub const LOW_RESOLUTION_MS2_REASON: &str =
+    "spectrum deleted because its most intense fragments have fewer than 3 decimals (low resolution MS2)";
+pub const MS2_CHEMICAL_CRASH_REASON: &str =
+    "spectrum deleted because none of its most intense precise fragments can be explained by the precursor formula (MS2 chemical crash test)";
+
 /// Étape autonome de l'orchestrateur (STEP 6.5) : Mass & Adduct Correction
 ///
 /// Recalcule la masse exacte et corrige l'adduit si la masse expérimentale dévie trop.
@@ -13,6 +22,9 @@ pub fn mz_correction_processing(
     py: Python,
     spectrum_list: Vec<Spectrum>,
     deletion_report: &mut DeletionReport,
+    output_directory: &str,
+    ordered_columns: &[String],
+    update: bool,
     progress_callback: Option<PyObject>,
     total_items_callback: Option<PyObject>,
     prefix_callback: Option<PyObject>,
@@ -45,12 +57,14 @@ pub fn mz_correction_processing(
     let mut skipped_empty_formula = 0;
     let mut skipped_theorical_0 = 0;
     let mut skipped_mz_range = 0;
+    // Spectres supprimés, par motif (dans l'ordre de première apparition), écrits à la fin dans DELETED_SPECTRUMS
+    let mut deleted: Vec<(String, Vec<std::collections::HashMap<String, String>>)> = Vec::new();
     
     let chunks: Vec<_> = spectrum_list.chunks(batch_size).collect();
     
     for chunk in chunks {
         py.allow_threads(|| {
-            let processed_chunk: Vec<Result<Spectrum, &'static str>> = chunk.par_iter().map(|spec| {
+            let processed_chunk: Vec<Result<Spectrum, (&'static str, Spectrum)>> = chunk.par_iter().map(|spec| {
                 let mut new_spec = spec.clone();
                 
                 let formula = new_spec.metadata.get("FORMULA").cloned().unwrap_or_default();
@@ -104,7 +118,7 @@ pub fn mz_correction_processing(
                                     final_formula = best_precursor_formula;
                                 },
                                 None => {
-                                    return Err("bad_adduct");
+                                    return Err(("bad_adduct", new_spec));
                                 }
                             }
                         }
@@ -168,7 +182,7 @@ pub fn mz_correction_processing(
                         new_spec.metadata.get("INSTRUMENTTYPE").map(|s| s.as_str()).unwrap_or(""),
                     );
                     if !is_gc && top.iter().all(|p| p.2 < 3) {
-                        return Err("low_res");
+                        return Err(("low_res", new_spec));
                     }
                     
                     // Niveau 2 : Crash-Test Chimique (PPM_TOL = 20.0)
@@ -189,7 +203,7 @@ pub fn mz_correction_processing(
                     }
                     
                     if !has_valid_peak && !precise.is_empty() && !final_formula.is_empty() {
-                        return Err("crash_test");
+                        return Err(("crash_test", new_spec));
                     }
                 }
 
@@ -197,15 +211,24 @@ pub fn mz_correction_processing(
             }).collect();
             
             for res in processed_chunk {
-                match res {
-                    Ok(valid_spec) => all_processed.push(valid_spec),
-                    Err("bad_adduct") => deletion_report.no_or_bad_adduct += 1,
-                    Err("low_res") => deletion_report.low_resolution_ms2 += 1,
-                    Err("crash_test") => deletion_report.ms2_chemical_crash += 1,
-                    Err("skip_formula") => skipped_empty_formula += 1,
-                    Err("skip_mz") => skipped_theorical_0 += 1,
-                    Err("skip_mz_range") => skipped_mz_range += 1,
-                    _ => {}
+                let (code, spec) = match res {
+                    Ok(valid_spec) => { all_processed.push(valid_spec); continue; }
+                    Err(e) => e,
+                };
+                let reason = match code {
+                    "bad_adduct" => { deletion_report.no_or_bad_adduct += 1; MZ_NO_MATCHING_ADDUCT_REASON }
+                    "low_res" => { deletion_report.low_resolution_ms2 += 1; LOW_RESOLUTION_MS2_REASON }
+                    "crash_test" => { deletion_report.ms2_chemical_crash += 1; MS2_CHEMICAL_CRASH_REASON }
+                    "skip_formula" => { skipped_empty_formula += 1; continue; }
+                    "skip_mz" => { skipped_theorical_0 += 1; continue; }
+                    "skip_mz_range" => { skipped_mz_range += 1; continue; }
+                    _ => continue,
+                };
+                let mut meta = spec.metadata;
+                meta.insert("DELETION_REASON".to_string(), reason.to_string());
+                match deleted.iter_mut().find(|(r, _)| r == reason) {
+                    Some((_, group)) => group.push(meta),
+                    None => deleted.push((reason.to_string(), vec![meta])),
                 }
             }
         });
@@ -215,7 +238,14 @@ pub fn mz_correction_processing(
             cb.call1(py, (total_processed,))?;
         }
     }
-    
+
+    // Écriture des suppressions, au même format que les autres fichiers de DELETED_SPECTRUMS
+    if !deleted.is_empty() {
+        let del_dir = std::path::Path::new(output_directory).join("DELETED_SPECTRUMS");
+        std::fs::create_dir_all(&del_dir)?;
+        let written = std::sync::atomic::AtomicUsize::new(0);
+        py.allow_threads(|| crate::spectrum_cleaning::write_deletion_files(deleted, &del_dir, ordered_columns, update, &written));
+    }
 
     Ok(all_processed)
 }

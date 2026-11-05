@@ -253,7 +253,7 @@ pub fn main_orchestrator(
         py.allow_threads(|| { std::thread::sleep(std::time::Duration::from_millis(10)); });
 
         spectrum_list = mz_correction_processing(
-            py, spectrum_list, &mut deletion_report,
+            py, spectrum_list, &mut deletion_report, &output_directory, &ordered_columns, update,
             progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone()
         )?;
 

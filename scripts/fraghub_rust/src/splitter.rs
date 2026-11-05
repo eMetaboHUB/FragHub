@@ -39,7 +39,8 @@ pub fn master_splitter(
                 |mut acc, spec| {
                     let ionmode = spec.metadata.get("IONMODE").map(|s| s.as_str()).unwrap_or("").to_lowercase();
 
-                    // On ignore si ce n'est ni positif ni négatif (comme dans le code initial)
+                    // Ni positif ni négatif : ne devrait plus arriver, check_for_bad_adduct supprime ces spectres
+                    // avec un motif (ionmode_missing_or_invalid.csv). Avant, ils disparaissaient ici sans trace.
                     if ionmode == "positive" || ionmode == "negative" {
                         let is_pos = ionmode == "positive";
                         let instr = spec.metadata.get("INSTRUMENTTYPE").map(|s| s.as_str()).unwrap_or("");

@@ -33,9 +33,11 @@ pub fn normalize_values(
     metadata_dict = metadata_opt.unwrap();
 
     // 4. Standardise le statut in-silico (prédit). AVANT la normalisation des instruments, pour lire INSTRUMENTTYPE
-    //    tel qu'il est dans le fichier (ex. LipidBlast : "in-silico QTOF"). Les étapes 5 à 9 ne lisent ni ne modifient
-    //    COMMENT, NAME, FILENAME et PREDICTED : déplacer cette étape ne change rien d'autre.
+    //    tel qu'il est dans le fichier (ex. LipidBlast : "in-silico QTOF"). Les étapes suivantes ne lisent ni ne
+    //    modifient COMMENT, NAME, FILENAME et PREDICTED.
     metadata_dict = super::normalize_predicted::normalize_predicted(metadata_dict);
+    // Liste interne de toutes les lignes "Synon:", lue seulement par normalize_predicted
+    metadata_dict.remove(crate::globals_vars::ALL_SYNONS_KEY);
 
     // 5. Normalise la méthode d'ionisation
     metadata_dict = super::normalize_ionization::normalize_ionization(metadata_dict);
@@ -43,26 +45,33 @@ pub fn normalize_values(
     // 6. Détermine et normalise l'instrument et la résolution à partir des dictionnaires JSON en RAM
     metadata_dict = super::normalize_instruments_and_resolution::normalize_instruments_and_resolution(metadata_dict, context);
 
-    // 7. Normalise le type de précurseur (adduct)
-    metadata_dict = super::normalize_adduct::normalize_adduct(metadata_dict, context);
-
-    // 8. Recalculate missing or invalid PRECURSORMZ via RDKit (en passant par pyo3)
-    metadata_dict = super::missing_precursormz_re_calculation::missing_precursormz_re_calculation(metadata_dict, context);
-
-    // 9. Standardise le mode d'ionisation ("positive" / "negative")
+    // 7. Standardise le mode d'ionisation ("positive" / "negative"). AVANT l'adduit : un adduit inconnu
+    //    écrit sans charge la prend du mode d'ionisation. Ni l'étape 5 ni l'étape 6 ne lisent IONMODE.
     metadata_dict = super::normalize_ionmode::normalize_ion_mode(metadata_dict);
 
-    // 10. Valide la cohérence Adduct / Mode Ionisation ; supprime si incohérent
+    // 8. Normalise le type de précurseur (adduct)
+    metadata_dict = super::normalize_adduct::normalize_adduct(metadata_dict, context);
+
+    // 9. Mode d'ionisation absent ou illisible : déduit du signe de l'adduit ("[M+H]+" -> positive)
+    metadata_dict = super::normalize_ionmode::ion_mode_from_adduct_if_missing(metadata_dict);
+
+    // 10. Complète l'adduit (in silico sans adduit, forme courte "M") AVANT le recalcul du m/z, qui en a besoin
+    metadata_dict = super::check_for_bad_adduct::complete_adduct(metadata_dict);
+
+    // 11. Recalcule le PRECURSORMZ manquant ou invalide avec RDKit (C++)
+    metadata_dict = super::missing_precursormz_re_calculation::missing_precursormz_re_calculation(metadata_dict, context);
+
+    // 12. Valide la cohérence Adduct / Mode Ionisation, et la présence du mode ; supprime sinon
     let metadata_opt_2 = super::check_for_bad_adduct::check_for_bad_adduct(metadata_dict, deletion_reason, context);
     if metadata_opt_2.is_none() {
         return None;
     }
     metadata_dict = metadata_opt_2.unwrap();
 
-    // 11. Normalise le niveau MS (ex: "MS2")
+    // 13. Normalise le niveau MS (ex: "MS2")
     metadata_dict = super::normalize_ms_level::normalize_ms_level(metadata_dict);
 
-    // 12. Normalise les unités de temps de rétention en minutes
+    // 14. Normalise les unités de temps de rétention en minutes
     metadata_dict = super::normalize_retentiontime::normalize_retention_time(metadata_dict);
 
     // On enveloppe le dictionnaire valide et entièrement normalisé dans `Some` pour le renvoyer.

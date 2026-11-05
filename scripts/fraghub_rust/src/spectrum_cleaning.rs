@@ -183,6 +183,8 @@ pub fn spectrum_cleaning_processing(
             "spectrum deleted because its adduct field is empty or the value entered is not an adduct" => deletion_report.no_or_bad_adduct += count,
             "spectrum deleted because the adduct corresponds to the wrong ionization mode (neg adduct in pos ionmode)." => deletion_report.no_or_bad_adduct += count,
             "spectrum deleted because the adduct corresponds to the wrong ionization mode (pos adduct in neg ionmode)." => deletion_report.no_or_bad_adduct += count,
+            // Mode d'ionisation inconnu : compté avec les problèmes d'adduit (même rubrique du rapport)
+            crate::normalizer::check_for_bad_adduct::IONMODE_MISSING_REASON => deletion_report.no_or_bad_adduct += count,
             "spectrum deleted because its number of peaks is below the threshold chosen by the user" => deletion_report.minimum_peaks_not_requiered += count,
             "spectrum deleted because peaks list is empty after removing peaks above precursor m/z" => deletion_report.all_peaks_above_precursor_mz += count,
             "spectrum deleted because peaks list is empty after removing peaks out of mz range choiced by the user" => deletion_report.no_peaks_in_mz_range += count,
@@ -243,7 +245,7 @@ pub fn spectrum_cleaning_processing(
 }
 
 /// Nom du fichier CSV de suppression pour un motif donné (liste inchangée).
-fn deletion_file_name(reason: &str) -> &'static str {
+pub(crate) fn deletion_file_name(reason: &str) -> &'static str {
     match reason {
                     "spectrum deleted because peaks list is empty" => "peaks_list_is_empty.csv",
                     "spectrum deleted because precursor mz is less than or equal to zero." => "precursor_mz_less_than_or_equal_zero.csv",
@@ -253,6 +255,11 @@ fn deletion_file_name(reason: &str) -> &'static str {
                     "spectrum deleted because its adduct field is empty or the value entered is not an adduct" => "adduct_empty_or_invalid.csv",
                     "spectrum deleted because the adduct corresponds to the wrong ionization mode (neg adduct in pos ionmode)." => "wrong_adduct_neg_in_pos.csv",
                     "spectrum deleted because the adduct corresponds to the wrong ionization mode (pos adduct in neg ionmode)." => "wrong_adduct_pos_in_neg.csv",
+                    crate::normalizer::check_for_bad_adduct::IONMODE_MISSING_REASON => "ionmode_missing_or_invalid.csv",
+                    // Étape « Mass & Adduct Correction » (mz_correction.rs)
+                    crate::mz_correction::MZ_NO_MATCHING_ADDUCT_REASON => "precursor_mz_matches_no_adduct.csv",
+                    crate::mz_correction::LOW_RESOLUTION_MS2_REASON => "low_resolution_ms2.csv",
+                    crate::mz_correction::MS2_CHEMICAL_CRASH_REASON => "ms2_chemical_crash_test.csv",
                     "spectrum deleted because its number of peaks is below the threshold chosen by the user" => "number_of_peaks_below_threshold.csv",
                     "spectrum deleted because peaks list is empty after removing peaks above precursor m/z" => "peaks_empty_after_above_precursor_mz_removal.csv",
                     "spectrum deleted because peaks list is empty after removing peaks out of mz range choiced by the user" => "peaks_empty_after_mz_range_removal.csv",
@@ -272,7 +279,7 @@ const CHUNKS_PER_BATCH: usize = 64;
 /// configuré à l'identique), puis les paquets sont écrits dans l'ordre. Un writer CSV produit
 /// exactement le même texte pour une ligne quel que soit ce qu'il a écrit avant : le fichier
 /// obtenu est donc identique, octet pour octet, à celui de l'ancienne écriture ligne par ligne.
-fn write_deletion_files(
+pub(crate) fn write_deletion_files(
     groups: Vec<(String, Vec<HashMap<String, String>>)>,
     del_dir: &Path,
     ordered_columns: &[String],

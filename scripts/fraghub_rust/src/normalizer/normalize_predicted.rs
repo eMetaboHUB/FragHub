@@ -20,6 +20,8 @@ pub fn normalize_predicted(mut metadata_dict: HashMap<String, String>) -> HashMa
     let filename = metadata_dict.get("FILENAME").cloned().unwrap_or_default();
     let name = metadata_dict.get("NAME").cloned().unwrap_or_default();
     let instrument_type = metadata_dict.get("INSTRUMENTTYPE").cloned().unwrap_or_default();
+    // Toutes les lignes "Synon:" du fichier (SYNON n'en garde que la dernière), voir raw_metadata.rs
+    let all_synons = metadata_dict.get(crate::globals_vars::ALL_SYNONS_KEY).cloned().unwrap_or_default();
 
     // On retire d'abord les formulations qui ne concernent pas le spectre ("predicted rt", "theoretical m/z"…)
     let comment_clean = crate::globals_vars::IN_SILICO_EXCLUDE_PATTERN.replace_all(&comment, " ");
@@ -31,6 +33,9 @@ pub fn normalize_predicted(mut metadata_dict: HashMap<String, String>) -> HashMa
         is_predicted = true;
     } else if crate::globals_vars::IN_SILICO_STRONG_PATTERN.is_match(&instrument_type) {
         // Type d'instrument valeur brute (cette étape passe avant la normalisation des instruments)
+        is_predicted = true;
+    } else if crate::globals_vars::IN_SILICO_STRONG_PATTERN.is_match(&all_synons) {
+        // MoNA : "Synon: $:07 In-Silico-Spectrum", souvent suivie d'une autre ligne Synon
         is_predicted = true;
     } else if !filename.contains("MSMS_Public") {
         // `format!` est l'équivalent parfait des f-strings Python : f"{filename} {name}"
@@ -143,5 +148,18 @@ mod tests {
     #[test]
     fn explicit_false_is_kept() {
         assert_eq!(run(&[("PREDICTED", "false"), ("COMMENT", "in silico")]), "false");
+    }
+
+    #[test]
+    fn synon_in_silico_reconnu_meme_s_il_n_est_pas_le_dernier() {
+        // Cas réel MoNA (DMED-FAHFA) : la ligne "$:07 In-Silico-Spectrum" est suivie de "$:00in-source"
+        let sep = crate::globals_vars::INTERNAL_LIST_SEP;
+        let synons = ["$:00 ms2", "$:05 30V CID", "$:07 In-Silico-Spectrum", "$:00in-source"].join(sep);
+        assert_eq!(run(&[(crate::globals_vars::ALL_SYNONS_KEY, synons.as_str())]), "true");
+        // Synonymes ordinaires : pas in silico
+        let synons = ["Cinchonain Ia, 6TMS", "$:00in-source"].join(sep);
+        assert_eq!(run(&[(crate::globals_vars::ALL_SYNONS_KEY, synons.as_str())]), "false");
+        // "predicted" seul dans un synonyme ne suffit pas (motif fort uniquement)
+        assert_eq!(run(&[(crate::globals_vars::ALL_SYNONS_KEY, "predicted metabolite")]), "false");
     }
 }
