@@ -13,15 +13,17 @@
 //! Deux optimisations qui ne changent aucun résultat :
 //! - une molécule sans « . » (ou sans m/z lisible) donne le même résultat quels que soient l'adduit et le m/z
 //!   (ils ne servent qu'à choisir un fragment) : elle n'est calculée qu'une fois ;
-//! - les molécules les plus longues (les plus lentes) sont lancées en premier, pour éviter qu'en fin de calcul
-//!   un seul thread travaille pendant que les autres attendent.
+//! - répartition par FILE D'ATTENTE PARTAGÉE : chaque thread prend la molécule suivante dès qu'il est libre.
+//!   (Avant : `par_iter` de rayon, qui découpe la liste en gros blocs ; mesuré sur 189 752 molécules et
+//!   12 threads, des threads finissaient seuls leur bloc : 311 s au lieu des 201 s possibles.) Les molécules
+//!   les plus longues partent toujours en premier.
 
 use pyo3::prelude::*;
 use rayon::prelude::*;
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::sync::Once;
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 #[cxx::bridge(namespace = "fraghub")]
 mod ffi {
@@ -45,6 +47,7 @@ mod ffi {
         include!("fraghub_rust/src/rdkit_native/shim.h");
         fn init_rdkit();
         fn process_single(clean_mol: &str, ptype: &str, precursormz: f64, has_mz: bool) -> MolResult;
+        fn exact_mass(mol: &str, is_inchi: bool) -> f64;
     }
 }
 
@@ -119,6 +122,28 @@ pub fn process_single(clean_mol: &str, precursortype: &str, precursormz_str: &st
     out
 }
 
+/// Masse exacte d'une molécule, même choix que l'ancienne version Python de
+/// `missing_precursormz_re_calculation` : l'InChI s'il contient "InChI=", sinon le SMILES s'il n'est pas vide.
+/// `None` si la molécule ne se lit pas (Python : MolFromInchi / MolFromSmiles renvoie None).
+pub fn exact_mass(inchi: &str, smiles: &str) -> Option<f64> {
+    INIT.call_once(ffi::init_rdkit);
+    let m = if !inchi.is_empty() && inchi.contains("InChI=") {
+        ffi::exact_mass(inchi, true)
+    } else if !smiles.is_empty() {
+        ffi::exact_mass(smiles, false)
+    } else {
+        return None;
+    };
+    if m.is_nan() { None } else { Some(m) }
+}
+
+/// Fonction de vérification appelable depuis Python : `fraghub_rust.native_exact_mass(inchi, smiles)`.
+/// Sert à comparer le C++ avec `Descriptors.ExactMolWt` de RDKit Python (voir scratch/).
+#[pyfunction]
+pub fn native_exact_mass(inchi: &str, smiles: &str) -> Option<f64> {
+    exact_mass(inchi, smiles)
+}
+
 /// Le résultat dépend-il de l'adduit et du m/z ? Seulement pour une molécule à plusieurs fragments
 /// (« . ») avec un m/z lisible : c'est la seule branche de process_single qui les utilise.
 fn depends_on_precursor(clean_mol: &str, precursormz_str: &str) -> bool {
@@ -180,25 +205,40 @@ fn compute_cache<E>(
 
     let done = AtomicUsize::new(0);
     let cancel = AtomicBool::new(false);
+    // Mesure facultative (FRAGHUB_RDKIT_TIMING=<dossier>) : début et durée de chaque molécule, sans effet sur les résultats
+    let timing_dir = std::env::var("FRAGHUB_RDKIT_TIMING").ok().filter(|d| !d.trim().is_empty());
+    let t0 = Instant::now();
     let mut results: Vec<Option<Vec<(&'static str, String)>>> = Vec::new();
     let mut tick_error: Option<E> = None;
 
     std::thread::scope(|scope| {
         let worker = scope.spawn(|| {
-            let computed: Vec<(usize, Vec<(&'static str, String)>)> = order
-                .par_iter()
-                .filter_map(|&id| {
-                    if cancel.load(Ordering::Relaxed) {
-                        return None;
+            // File d'attente partagée : `next` est le rang de la prochaine molécule à calculer dans `order`.
+            // Un travailleur par thread de rayon ; chacun prend la suivante dès qu'il a fini la sienne.
+            let next = AtomicUsize::new(0);
+            let workers = rayon::current_num_threads().max(1);
+            let computed: Vec<(usize, Vec<(&'static str, String)>, Timing)> = (0..workers)
+                .into_par_iter()
+                .flat_map_iter(|_| {
+                    let mut mine = Vec::new();
+                    while !cancel.load(Ordering::Relaxed) {
+                        let i = next.fetch_add(1, Ordering::Relaxed);
+                        let Some(&id) = order.get(i) else { break };
+                        let (m, pt, mz) = units[id];
+                        let start = t0.elapsed();
+                        let r = process_single(m, pt, mz);
+                        let duration = t0.elapsed() - start;
+                        done.fetch_add(weights[id], Ordering::Relaxed);
+                        mine.push((id, r, Timing { thread: rayon::current_thread_index().unwrap_or(usize::MAX), start, duration }));
                     }
-                    let (m, pt, mz) = units[id];
-                    let r = process_single(m, pt, mz);
-                    done.fetch_add(weights[id], Ordering::Relaxed);
-                    Some((id, r))
+                    mine
                 })
                 .collect();
+            if let Some(dir) = &timing_dir {
+                write_timing(dir, &order, &units, &weights, &computed);
+            }
             let mut by_unit: Vec<Option<Vec<(&'static str, String)>>> = vec![None; units.len()];
-            for (id, r) in computed {
+            for (id, r, _) in computed {
                 by_unit[id] = Some(r);
             }
             by_unit
@@ -235,6 +275,48 @@ fn compute_cache<E>(
         cache.insert(format!("{}|{}|{}", m, pt, mz), transforms);
     }
     Ok(cache)
+}
+
+/// Mesure d'une molécule : thread rayon, début et durée (depuis le début du calcul).
+struct Timing {
+    thread: usize,
+    start: Duration,
+    duration: Duration,
+}
+
+static TIMING_PASS: AtomicUsize = AtomicUsize::new(0);
+
+/// Écrit `<dossier>/rdkit_timing_<date>_passN.tsv` : une ligne par molécule calculée, par ordre de début.
+/// Colonnes : rang dans l'ordre de traitement, thread, début (s), durée (s), nombre de spectres qui
+/// utilisent ce résultat, longueur du texte, molécule. Une erreur d'écriture est signalée sans arrêter FragHub.
+fn write_timing(dir: &str, order: &[usize], units: &[(&str, &str, &str)], weights: &[usize],
+                computed: &[(usize, Vec<(&'static str, String)>, Timing)]) {
+    use std::io::Write;
+    let pass = TIMING_PASS.fetch_add(1, Ordering::Relaxed) + 1;
+    let date = chrono::Local::now().format("%Y%m%d-%H%M%S");
+    let path = std::path::Path::new(dir).join(format!("rdkit_timing_{date}_pass{pass}.tsv"));
+    let mut rank = vec![0usize; units.len()];
+    for (r, &id) in order.iter().enumerate() {
+        rank[id] = r;
+    }
+    let mut rows: Vec<&(usize, Vec<(&'static str, String)>, Timing)> = computed.iter().collect();
+    rows.sort_by_key(|(_, _, t)| t.start);
+    let write = || -> std::io::Result<()> {
+        std::fs::create_dir_all(dir)?;
+        let mut f = std::io::BufWriter::new(std::fs::File::create(&path)?);
+        writeln!(f, "# threads={} unites={}", rayon::current_num_threads(), units.len())?;
+        writeln!(f, "rang\tthread\tdebut_s\tduree_s\tpoids\tlongueur\tmolecule")?;
+        for (id, _, t) in rows {
+            let m = units[*id].0.replace(&['\t', '\n', '\r'][..], " ");
+            writeln!(f, "{}\t{}\t{:.6}\t{:.6}\t{}\t{}\t{}", rank[*id], t.thread, t.start.as_secs_f64(),
+                     t.duration.as_secs_f64(), weights[*id], units[*id].0.len(), m)?;
+        }
+        f.flush()
+    };
+    match write() {
+        Ok(()) => println!("[RDKIT_TIMING] {}", path.display()),
+        Err(e) => eprintln!("[RDKIT_TIMING] écriture impossible ({}) : {e}", path.display()),
+    }
 }
 
 /// Faut-il utiliser l'ancienne version Python (rdkit_worker.py) ? Oui si FRAGHUB_RDKIT_BACKEND=python.
@@ -282,6 +364,38 @@ mod tests {
             assert_eq!(cache[&format!("{m}|{pt}|{mz}")], attendu, "{m} {pt} {mz}");
         }
         assert!(cache["pas une molécule||"].is_empty());
+    }
+
+    #[test]
+    fn masse_exacte() {
+        // Éthanol C2H6O : 46.041864814 (RDKit)
+        let m = exact_mass("", "CCO").unwrap();
+        assert!((m - 46.041864814).abs() < 1e-6, "{m}");
+        assert_eq!(exact_mass("InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3", "").unwrap(), m);
+        assert_eq!(exact_mass("1S/C2H6O/c1-2-3", "CCO").unwrap(), m); // InChI sans préfixe : le SMILES est utilisé
+        assert_eq!(exact_mass("", "pas une molécule"), None);
+        assert_eq!(exact_mass("InChI=1S/n'importe quoi", "CCO"), None); // comme Python : pas de repli sur le SMILES
+        assert_eq!(exact_mass("", ""), None);
+    }
+
+    #[test]
+    fn mesure_ecrite_si_demandee_sans_changer_les_resultats() {
+        let dir = std::env::temp_dir().join(format!("fraghub_timing_test_{}", std::process::id()));
+        let mols: Vec<_> = ["CCO", "c1ccccc1O", "CC(=O)Nc1ccc(O)cc1"].iter()
+            .map(|m| (m.to_string(), String::new(), String::new())).collect();
+        let sans = compute_cache(mols.clone(), |_| Ok::<(), ()>(()), || std::thread::sleep(Duration::from_millis(2))).unwrap();
+        std::env::set_var("FRAGHUB_RDKIT_TIMING", &dir);
+        let avec = compute_cache(mols, |_| Ok::<(), ()>(()), || std::thread::sleep(Duration::from_millis(2))).unwrap();
+        std::env::remove_var("FRAGHUB_RDKIT_TIMING");
+        assert_eq!(sans, avec);
+        // Un fichier avec l'en-tête et une ligne par molécule (d'autres tests peuvent en écrire en parallèle)
+        let ok = std::fs::read_dir(&dir).unwrap().any(|e| {
+            let t = std::fs::read_to_string(e.unwrap().path()).unwrap();
+            t.lines().nth(1) == Some("rang\tthread\tdebut_s\tduree_s\tpoids\tlongueur\tmolecule")
+                && t.lines().count() == 5 && t.contains("\tCC(=O)Nc1ccc(O)cc1")
+        });
+        let _ = std::fs::remove_dir_all(&dir);
+        assert!(ok);
     }
 
     #[test]

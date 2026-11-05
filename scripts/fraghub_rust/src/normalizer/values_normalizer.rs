@@ -32,23 +32,25 @@ pub fn normalize_values(
     if metadata_opt.is_none() { return None; } // Interruption prématurée si le spectre est mauvais
     metadata_dict = metadata_opt.unwrap();
 
-    // 4. Normalise la méthode d'ionisation
+    // 4. Standardise le statut in-silico (prédit). AVANT la normalisation des instruments, pour lire INSTRUMENTTYPE
+    //    tel qu'il est dans le fichier (ex. LipidBlast : "in-silico QTOF"). Les étapes 5 à 9 ne lisent ni ne modifient
+    //    COMMENT, NAME, FILENAME et PREDICTED : déplacer cette étape ne change rien d'autre.
+    metadata_dict = super::normalize_predicted::normalize_predicted(metadata_dict);
+
+    // 5. Normalise la méthode d'ionisation
     metadata_dict = super::normalize_ionization::normalize_ionization(metadata_dict);
 
-    // 5. Détermine et normalise l'instrument et la résolution à partir des dictionnaires JSON en RAM
+    // 6. Détermine et normalise l'instrument et la résolution à partir des dictionnaires JSON en RAM
     metadata_dict = super::normalize_instruments_and_resolution::normalize_instruments_and_resolution(metadata_dict, context);
 
-    // 6. Normalise le type de précurseur (adduct)
+    // 7. Normalise le type de précurseur (adduct)
     metadata_dict = super::normalize_adduct::normalize_adduct(metadata_dict, context);
 
-    // 7. Recalculate missing or invalid PRECURSORMZ via RDKit (en passant par pyo3)
+    // 8. Recalculate missing or invalid PRECURSORMZ via RDKit (en passant par pyo3)
     metadata_dict = super::missing_precursormz_re_calculation::missing_precursormz_re_calculation(metadata_dict, context);
 
-    // 8. Standardise le mode d'ionisation ("positive" / "negative")
+    // 9. Standardise le mode d'ionisation ("positive" / "negative")
     metadata_dict = super::normalize_ionmode::normalize_ion_mode(metadata_dict);
-
-    // 9. Standardise le statut in-silico (prédit)
-    metadata_dict = super::normalize_predicted::normalize_predicted(metadata_dict);
 
     // 10. Valide la cohérence Adduct / Mode Ionisation ; supprime si incohérent
     let metadata_opt_2 = super::check_for_bad_adduct::check_for_bad_adduct(metadata_dict, deletion_reason, context);

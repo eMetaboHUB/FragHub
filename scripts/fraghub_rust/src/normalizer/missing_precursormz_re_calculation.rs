@@ -18,6 +18,11 @@ static IE_EI_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)\b(IE|EI)\b").
 /// # Returns
 /// * `Option<f64>` : Masse exacte calculée par RDKit, ou `None` si échec.
 fn get_exact_mass_from_rdkit(inchi: &str, smiles: &str) -> Option<f64> {
+    // Par défaut : RDKit C++ (src/rdkit_native), sans verrou Python, donc en parallèle sur tous les cœurs.
+    // FRAGHUB_RDKIT_BACKEND=python : ancienne version ci-dessous (RDKit Python), même résultat.
+    if !crate::rdkit_native::use_python_backend() {
+        return crate::rdkit_native::exact_mass(inchi, smiles);
+    }
     Python::with_gil(|py| {
         // Désactiver les logs rdkit comme en Python
         if let Ok(rdlogger) = py.import_bound("rdkit.RDLogger") {

@@ -78,7 +78,46 @@ pub static INCHIKEY_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"^\s*(?:(?i:
 // où la forme courte serait indiscernable d'un SMILES purement carboné.
 pub static INCHIKEY_FULL_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)^\s*[A-Z]{14}-[A-Z]{10}-[A-Z]\s*$").unwrap());
 
-pub static IN_SILICO_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)in.silico|insilico|predicted|theoretical|Annotation\.level\.3").unwrap());
+// Termes qui signalent un spectre prédit (in silico). Testés sur COMMENT (après retrait des formulations
+// de IN_SILICO_EXCLUDE_PATTERN), et sur FILENAME + NAME.
+// (Ancien terme "Annotation\.level\.3" retiré : il ne reconnaissait rien, et chez MassBank "Annotation level-3"
+//  désigne la confiance de l'identification d'un spectre expérimental.)
+//
+// Outils qui GÉNÈRENT des spectres (CFM-ID, QCEIMS, NEIMS, MassFormer, ICEBERG, SCARF, 3DMolMS, GRAFF-MS, FraGNNet) et
+// bibliothèques in silico (ISDB, LipidBlast) : reconnus en mots entiers ("_" et "-" comptent comme séparateurs, pour
+// "UNPD_ISDB_R_p01.mgf"), sinon "ISDB" se trouverait au milieu d'InChIKeys (ex. "...-GOSISDBHSA-N").
+// ICEBERG et SCARF : en majuscules seulement (sinon "iceberg lettuce" dans un nom de composé).
+// Volontairement ABSENTS : SIRIUS, MS-FINDER, MetFrag, MAGMa, CSI:FingerID. Ce sont des outils d'IDENTIFICATION, cités
+// dans les commentaires de spectres expérimentaux (MassBank "PROPOSED_COMPOUND SIRIUS", MoNA "MSFinder used to
+// identify", GNPS "sirius atomic difference").
+pub static IN_SILICO_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(&format!(
+    r"(?i)in.silico|insilico|predicted|theoretical|{}", IN_SILICO_TOOLS
+)).unwrap());
+
+const IN_SILICO_TOOLS: &str =
+    r"(?:^|[^a-z0-9])(?:cfm.?id|qce?ims|qcxms|neims|massformer|3dmolms|graff.?ms|fragnnet|isdb|lipidblast|(?-i:ICEBERG|SCARF))(?:[^a-z0-9]|$)";
+
+// Formulations qui contiennent "predicted" ou "theoretical" sans dire que le SPECTRE est prédit :
+// retirées du texte avant le test (le moteur de regex de Rust n'a pas de "sauf si suivi de").
+// - "predicted rt rp=…", "predicted rt hilic=…", "predicted retention time", "predicted RI", "predicted CCS" (MoNA)
+// - "predicted molecular formula SIRIUS" (GNPS)
+// - "Annotation Predicted", "origin=MassBank; Predicted" : annotation des pics prédite (MassBank)
+// - "theoretical m/z …, mass diff … (… ppm)" : m/z théorique d'une annotation (MoNA)
+// - clauses d'IDENTIFICATION d'un spectre mesuré, qui citent les outils utilisés pour proposer un composé :
+//   "PROPOSED_COMPOUND CFM-ID:MsfinderDB 1", "PROPOSED_MF SIRIUS5_Zodiac", "Proposed by SIRIUS5_Confidence",
+//   "Supported by CFM-ID:MsfinderDB (Ranking 1), MS-FINDER:…", "Similarity by SIMILARITY:GNPS" (MassBank),
+//   "annotation=MS-FINDER ver 3" (MoNA), "identified trough in silico generated spectrum" (MoNA, dans NAME).
+//   Retirées jusqu'au prochain ";" (ou guillemet / parenthèse) : CFM-ID reste reconnu quand il décrit l'origine du spectre.
+pub static IN_SILICO_EXCLUDE_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(
+    r#"(?i)predicted\s+(?:rt|retention|ri\b|ccs|collision.cross.section|molecular\s+formula|formula)|annotation\s+predicted|origin=massbank;\s*predicted|theoretical\s+(?:m/z|mz|mass|exact\s+mass|precursor)|proposed_(?:compound|mf)\s+[^;"]*|(?:proposed|supported|similarity)\s+by\s+[^;")]*|annotation\s*=\s*[^;"]*|identified\s+(?:through|trough|thru|via|by|using|with)\s+(?:an?\s+)?in.silico"#
+).unwrap());
+
+// Marqueurs sans ambiguïté, cherchés aussi dans INSTRUMENTTYPE (ex. LipidBlast : "in-silico QTOF").
+// Pas "predicted" ni "theoretical" dans ce champ : trop ambigus.
+// Les noms d'outils de prédiction y sont aussi cherchés (MoNA : "Instrument_type: QCEIMS").
+pub static IN_SILICO_STRONG_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(&format!(
+    r"(?i)in.silico|insilico|{}", IN_SILICO_TOOLS
+)).unwrap());
 
 pub static RETENTION_TIME_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(m|min|minute|minutes|s|sec|second|seconds|ms|millisecond|milliseconds)(?:\W)?").unwrap());
 

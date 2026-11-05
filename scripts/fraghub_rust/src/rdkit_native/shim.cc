@@ -115,6 +115,19 @@ void init_rdkit() {
   boost::logging::disable_logs("rdApp.*");
 }
 
+// Descriptors.ExactMolWt(Chem.MolFromInchi(...) ou Chem.MolFromSmiles(...)), utilisé pour recalculer un m/z
+// précurseur manquant (normalizer/missing_precursormz_re_calculation.rs). NaN si la molécule ne se lit pas.
+double exact_mass(rust::Str mol_rs, bool is_inchi) {
+  const std::string s(mol_rs.data(), mol_rs.size());
+  try {
+    std::unique_ptr<ROMol> mol = is_inchi ? mol_from_inchi(s) : mol_from_smiles(s);
+    if (!mol) return std::nan("");
+    return RDKit::Descriptors::calcExactMW(*mol);  // ExactMolWt(mol) = CalcExactMolWt(mol, onlyHeavy=False)
+  } catch (...) {
+    return std::nan("");
+  }
+}
+
 MolResult process_single(rust::Str clean_mol_rs, rust::Str ptype_rs, double precursormz,
                          bool has_mz) {
   MolResult r{};

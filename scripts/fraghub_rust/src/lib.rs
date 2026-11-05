@@ -48,6 +48,8 @@ pub mod adduct_mass_calculator;
 fn fraghub_rust(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
     // --- Orchestrator ---
     m.add_function(wrap_pyfunction!(main_orchestrator::main_orchestrator, m)?)?;
+    // Vérification : masse exacte calculée par RDKit C++ (à comparer avec RDKit Python)
+    m.add_function(wrap_pyfunction!(rdkit_native::native_exact_mass, m)?)?;
 
     // --- Partie 1 : Chargement des bases de données ---
     m.add_function(wrap_pyfunction!(loading_db::load_internal_databases, m)?)?;
