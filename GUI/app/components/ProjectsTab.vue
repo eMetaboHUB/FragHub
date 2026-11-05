@@ -1,5 +1,5 @@
 <template>
-  <v-container class="fill-height d-flex flex-column justify-center align-center">
+  <v-container fluid class="h-100 fill-height position-relative d-flex flex-column justify-center align-center">
     <h1 class="text-red font-weight-bold mb-6 blinking">RESET PROJECT ?</h1>
 
     <v-switch
@@ -13,9 +13,8 @@
         size="x-large"
     ></v-switch>
 
-    <v-divider class="my-8" style="width: 320px;"></v-divider>
-
-    <div class="d-flex align-center">
+    <!-- Journal de performances : en bas à droite, comme les boutons d'information des autres onglets -->
+    <div class="position-absolute d-flex align-center" style="bottom: 10px; right: 10px;">
       <v-switch
           v-model="parameters.write_perf_logs"
           :true-value="1.0"
