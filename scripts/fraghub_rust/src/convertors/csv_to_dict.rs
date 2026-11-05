@@ -166,7 +166,9 @@ pub fn load_and_parse_csv(
 
                     if let Some(mapped_key) = keys_dict.get(header) {
                         if keys_list.contains(mapped_key) {
-                            spec.metadata.insert(mapped_key.clone(), field.to_string());
+                            // Unité portée par le nom de colonne (ex. RTINSECONDS -> "70.99 s"), comme pour MSP/MGF/JSON
+                            spec.metadata.insert(mapped_key.clone(),
+                                crate::convertors::raw_metadata::keep_unit_from_key(header, field.to_string()));
                         }
                     }
                 }

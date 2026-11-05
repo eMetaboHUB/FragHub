@@ -119,7 +119,9 @@ pub static IN_SILICO_STRONG_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(&form
     r"(?i)in.silico|insilico|{}", IN_SILICO_TOOLS
 )).unwrap());
 
-pub static RETENTION_TIME_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(m|min|minute|minutes|s|sec|second|seconds|ms|millisecond|milliseconds)(?:\W)?").unwrap());
+// Temps de rétention + unité. Les unités LONGUES sont testées avant les courtes : sinon "12 ms" était lu comme
+// "12 m" (minutes). Un nombre sans unité ne correspond pas : il reste tel quel (minutes par défaut).
+pub static RETENTION_TIME_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)(-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?)(?:\W)?(milliseconds|millisecond|ms|minutes|minute|min|m|seconds|second|sec|s)(?:\W)?").unwrap());
 
 // Regex optimisée pour capturer les modes d'ionisation avec détection des limites de mots (\b)
 pub static IONIZATION_MODE_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)\b(APCI|ACPI|APPI|EI|ESI|FAB|MALDI)\b").unwrap());

@@ -13,6 +13,23 @@ use std::collections::HashMap;
 /// - deux champs DIFFÉRENTS qui donnent la même clé FragHub : le premier du fichier gagne ;
 /// - le MÊME champ présent plusieurs fois (ex. plusieurs lignes "Synon:") : la dernière valeur
 ///   gagne, comme avant.
+/// Champs dont le NOM dit que la valeur est en secondes (format MGF : RTINSECONDS).
+/// Sans ce marquage, le renommage RTINSECONDS -> RT (key_to_convert.csv) perdait l'unité, et le nombre seul
+/// passait pour des minutes (règle par défaut, qui reste vraie pour tous les autres champs).
+const SECONDS_KEYS: &[&str] = &["rtinseconds"];
+
+/// Garde l'unité portée par le nom du champ : "70.99" d'un champ RTINSECONDS devient "70.99 s",
+/// que normalize_retention_time convertit ensuite en minutes. Toute autre valeur est rendue telle quelle.
+pub fn keep_unit_from_key(raw_key: &str, value: String) -> String {
+    if SECONDS_KEYS.contains(&raw_key) {
+        let t = value.trim();
+        if t.replace(',', ".").parse::<f64>().map_or(false, |x| x.is_finite()) {
+            return format!("{t} s");
+        }
+    }
+    value
+}
+
 #[derive(Default)]
 pub struct RawMetadata {
     values: HashMap<String, String>,
@@ -52,7 +69,7 @@ impl RawMetadata {
         for key in self.order {
             if let (Some(mapped), Some(value)) = (keys_dict.get(&key), self.values.remove(&key)) {
                 if keep(mapped) {
-                    target.entry(mapped.clone()).or_insert(value);
+                    target.entry(mapped.clone()).or_insert_with(|| keep_unit_from_key(&key, value));
                 }
             }
         }
@@ -77,6 +94,28 @@ mod tests {
         let mut out = HashMap::new();
         raw.map_into(&keys(), |k| k != "HORS_LISTE", &mut out);
         out
+    }
+
+    #[test]
+    fn rtinseconds_garde_son_unite() {
+        let mut k = keys();
+        k.insert("rtinseconds".into(), "RT".into());
+        k.insert("retentiontime".into(), "RT".into());
+        let mut raw = RawMetadata::default();
+        raw.insert("rtinseconds".into(), "70.99".into());
+        let mut out = HashMap::new();
+        raw.map_into(&k, |_| true, &mut out);
+        assert_eq!(out["RT"], "70.99 s");
+        // Autres champs de temps : nombre seul inchangé (minutes par défaut)
+        let mut raw = RawMetadata::default();
+        raw.insert("retentiontime".into(), "5.2".into());
+        let mut out = HashMap::new();
+        raw.map_into(&k, |_| true, &mut out);
+        assert_eq!(out["RT"], "5.2");
+        // Valeur vide ou non numérique : inchangée
+        assert_eq!(keep_unit_from_key("rtinseconds", "".into()), "");
+        assert_eq!(keep_unit_from_key("rtinseconds", "NaN".into()), "NaN");
+        assert_eq!(keep_unit_from_key("rtinseconds", " 12,5 ".into()), "12,5 s");
     }
 
     #[test]
