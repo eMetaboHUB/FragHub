@@ -24,6 +24,11 @@ hashbrown = { version = "0.14", features = ["raw"] }
 # Allocateur mémoire plus rapide que celui du système (surtout sous Windows) quand 20 threads
 # créent des millions de petites chaînes en même temps. Ne change aucun calcul.
 mimalloc = { version = "0.1", default-features = false }
+# Passerelle vers RDKit en C++ (voir build.rs et src/rdkit_native)
+cxx = "1.0"
+
+[build-dependencies]
+cxx-build = "1.0"
 
 [profile.release]
 lto = "fat"

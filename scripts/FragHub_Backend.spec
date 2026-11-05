@@ -7,6 +7,18 @@ import sys
 IS_MAC = sys.platform == "darwin"
 ICON = os.path.join(SPECPATH, '..', 'GUI', 'app', 'assets', 'FragHub_icon.' + ('icns' if IS_MAC else 'ico'))
 
+# Le moteur Rust est lié à RDKit C++ (installé avec mamba dans ~/rdkit_cpp ou dans RDKIT_PREFIX).
+# PyInstaller cherche les DLL dont dépend un module dans le PATH (Windows) ou LD_LIBRARY_PATH / DYLD_LIBRARY_PATH :
+# on y ajoute le dossier des bibliothèques de RDKit pour qu'il les copie dans l'exécutable,
+# avec leurs propres dépendances (Boost, InChI, zlib…). Seules celles réellement utilisées sont copiées.
+RDKIT_PREFIX = os.environ.get('RDKIT_PREFIX') or os.path.join(os.path.expanduser('~'), 'rdkit_cpp')
+if sys.platform == 'win32':
+    _rdkit_libs, _path_var = os.path.join(RDKIT_PREFIX, 'Library', 'bin'), 'PATH'
+else:
+    _rdkit_libs, _path_var = os.path.join(RDKIT_PREFIX, 'lib'), ('DYLD_LIBRARY_PATH' if IS_MAC else 'LD_LIBRARY_PATH')
+if os.path.isdir(_rdkit_libs):
+    os.environ[_path_var] = _rdkit_libs + os.pathsep + os.environ.get(_path_var, '')
+
 
 a = Analysis(
     ['FragHub.py'],

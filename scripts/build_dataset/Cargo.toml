@@ -1,0 +1,12 @@
+[package]
+name = "build_dataset"
+version = "2.0.0"
+edition = "2021"
+description = "Fabrique un petit jeu de données de test (échantillon de spectres) à partir d'un dossier d'entrée FragHub"
+publish = false
+
+# Aucune dépendance : compile en quelques secondes.
+[dependencies]
+
+[profile.release]
+opt-level = 3

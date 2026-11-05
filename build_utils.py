@@ -15,6 +15,8 @@ SCRIPTS_DIR = ROOT / "scripts"
 GUI_DIR = ROOT / "GUI"
 VENV_DIR = ROOT / ".venv"
 IS_WINDOWS = sys.platform == "win32"
+# RDKit C++ (bibliothèques et en-têtes) installé avec mamba, utilisé pour compiler le moteur Rust
+RDKIT_PREFIX = Path(os.environ.get("RDKIT_PREFIX") or Path.home() / "rdkit_cpp")
 
 DRY_RUN = "--dry-run" in sys.argv
 

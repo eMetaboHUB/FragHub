@@ -14,6 +14,16 @@ from pydantic import BaseModel, Field, ConfigDict
 
 import sys
 import os
+
+# Windows, mode développement : le moteur Rust utilise les DLL de RDKit C++ (installé avec mamba
+# dans ~/rdkit_cpp ou dans le dossier indiqué par RDKIT_PREFIX). Depuis Python 3.8, le PATH n'est plus
+# utilisé pour trouver les DLL d'un module compilé : il faut indiquer le dossier explicitement.
+# (Dans l'exécutable PyInstaller, les DLL sont copiées à côté du module : rien à faire.)
+if sys.platform == 'win32' and not getattr(sys, 'frozen', False):
+    _rdkit_bin = os.path.join(os.environ.get('RDKIT_PREFIX') or os.path.join(os.path.expanduser('~'), 'rdkit_cpp'), 'Library', 'bin')
+    if os.path.isdir(_rdkit_bin):
+        os.add_dll_directory(_rdkit_bin)
+
 import fraghub_rust
 import rdkit_worker  # Ensure PyInstaller bundles it for Rust to use
 import perf_log  # PERF_LOG : journal de performances temporaire (voir perf_log.py)
