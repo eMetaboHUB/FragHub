@@ -132,7 +132,19 @@ Specify which formats you want FragHub to generate at the end of the processing 
 | `--csv` | `yes` | Output data as tabular `.csv` files. |
 | `--msp` | `yes` | Output data as `.msp` spectral files. |
 | `--json` | `yes` | Output data as highly compacted `.json` files. |
-| `--reset_updates` | `no` | If `yes`, forces FragHub to ignore previously cleaned caches and run everything from scratch in the output directory. |
+| `--mzspeclib_json` | `yes` | Also write the spectra in the [mzSpecLib](https://www.psidev.info/mzspeclib) JSON format, in `<output_directory>/mzSpecLib`. The conversion starts from the `.msp` files written by FragHub, so it requires `--msp yes`. |
+| `--reset_updates` | `no` | If `yes`, forces FragHub to ignore previously cleaned caches and run everything from scratch in the output directory. ⚠️ The content of the output directory is deleted first (including previous performance logs). |
+| `--write_perf_logs` | `no` | If `yes`, writes a performance log at the end of the run (see below). Same as the "Write perf logs" switch of the GUI. |
+
+### 📊 Performance logs (`--write_perf_logs yes`)
+At the end of the run, three files are written in `<output_directory>/PERF_LOGS`:
+- `perf_<date>.txt`: duration, memory (at the end and peak) and average number of CPU cores used by each processing step, with the input files, the parameters and the deletion reports;
+- `perf_<date>.csv`: the same table, separated by `;` (opens directly in Excel);
+- `historique.csv`: one line per run, to compare runs (versions, computers) with each other.
+
+The logs do not change the results. Two optional environment variables:
+- `FRAGHUB_PERF_DIR`: write the logs in this folder instead of `<output_directory>/PERF_LOGS`;
+- `FRAGHUB_PERF_LABEL`: name the run in the history (e.g. `before-optim-msp`).
 
 ---
 
@@ -156,7 +168,19 @@ uv run python scripts/FragHub.py \
   --output_directory "/path/to/output_folder" \
   --csv no \
   --msp no \
-  --json yes
+  --json yes \
+  --mzspeclib_json no
+```
+> `--mzspeclib_json no` is needed here: the mzSpecLib conversion starts from the `.msp` files, which are disabled.
+
+### 4. Benchmarking a Run
+Writes a performance log in `/path/to/output_folder/PERF_LOGS`, named in the run history.
+```bash
+FRAGHUB_PERF_LABEL="mac-m3-native-rdkit" uv run python scripts/FragHub.py \
+  --cli \
+  --input_directory "/path/to/my_library.msp" \
+  --output_directory "/path/to/output_folder" \
+  --write_perf_logs yes
 ```
 
 ### 3. Strict Custom Filtering

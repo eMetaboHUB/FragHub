@@ -100,6 +100,8 @@ class FragHubParams(BaseModel):
     json_enabled: float = Field(alias='json')
     mzspeclib_json: float = Field(alias='mzspeclib_json', default=1.0)
     reset_updates: float
+    # Journal de performances (PERF_LOGS) : 1.0 = écrit, 0.0 = non écrit (défaut). Ignoré par le moteur Rust.
+    write_perf_logs: float = 0.0
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -321,6 +323,11 @@ def execute_main_safely():
                 completion_callback(f"Error: {str(e)}")
 
 def execute_main_safely_with_perf_log():  # PERF_LOG
+    # Interrupteur "Write perf logs" de l'onglet Projects : sans lui, aucun journal n'est écrit
+    # (les fonctions perf_log.on_* ne font rien tant qu'aucun run n'a été démarré avec perf_log.start).
+    if parameters_dict.get("write_perf_logs", 0.0) != 1.0:  # PERF_LOG
+        execute_main_safely()
+        return
     perf_log.start(parameters_dict)  # PERF_LOG
     try:  # PERF_LOG
         execute_main_safely()  # PERF_LOG
@@ -362,6 +369,8 @@ if __name__ == "__main__":
         parser.add_argument("--json", type=str, choices=['yes', 'no'], default='yes')
         parser.add_argument("--mzspeclib_json", type=str, choices=['yes', 'no'], default='yes')
         parser.add_argument("--reset_updates", type=str, choices=['yes', 'no'], default='no')
+        parser.add_argument("--write_perf_logs", type=str, choices=['yes', 'no'], default='no',
+                            help="Write a performance log in <output_directory>/PERF_LOGS (default: no, as in the GUI)")
         
         # Valeurs numériques (seuils, tolérances)
         parser.add_argument("--check_minimum_peak_requiered_n_peaks", type=float, default=3.0)
@@ -400,7 +409,7 @@ if __name__ == "__main__":
         yes_no_keys = [
             'normalize_intensity', 'remove_peak_above_precursormz', 'check_minimum_peak_requiered',
             'reduce_peak_list', 'remove_spectrum_under_entropy_score', 'keep_mz_in_range',
-            'check_minimum_of_high_peaks_requiered', 'calculate_de_novo', 'csv', 'msp', 'json', 'mzspeclib_json', 'reset_updates'
+            'check_minimum_of_high_peaks_requiered', 'calculate_de_novo', 'csv', 'msp', 'json', 'mzspeclib_json', 'reset_updates', 'write_perf_logs'
         ]
         for key in yes_no_keys:
             args_dict[key] = 1.0 if args_dict[key] == 'yes' else 0.0
@@ -503,7 +512,10 @@ if __name__ == "__main__":
         def cli_get_stop_flag():
             return False # Pas d'interruption via UI en mode CLI (l'utilisateur fera Ctrl+C)
             
-        perf_log.start(parameters_dict)  # PERF_LOG
+        # Journal de performances seulement si --write_perf_logs yes (comme l'interrupteur de l'onglet Projects).
+        # Sinon perf_log n'est pas démarré : ses fonctions ne font rien et finish() n'écrit aucun fichier.
+        if parameters_dict.get("write_perf_logs", 0.0) == 1.0:  # PERF_LOG
+            perf_log.start(parameters_dict)  # PERF_LOG
         try:
             # Lancement de l'orchestrateur de façon synchrone dans le thread principal
             fraghub_rust.main_orchestrator(
@@ -521,6 +533,22 @@ if __name__ == "__main__":
             print(f"\n[ERROR] Une erreur s'est produite : {e}")
             perf_log.finish(f"Erreur : {e}")  # PERF_LOG
             sys.exit(1)
+
+        # Conversion mzSpecLib JSON, comme dans l'interface (execute_main_safely) : à partir des fichiers
+        # MSP écrits dans le dossier de sortie, vers <output_directory>/mzSpecLib.
+        if parameters_dict.get("mzspeclib_json", 0.0) == 1.0:
+            try:
+                mzspeclib_converter.convert_all_msp(
+                    parameters_dict["output_directory"],
+                    step_cb=cli_step_callback,
+                    prefix_cb=cli_prefix_callback,
+                    progress_cb=cli_progress_callback,
+                    total_items_cb=cli_total_items_callback
+                )
+            except Exception as cv_e:
+                print(f"\n[ERROR] La conversion mzSpecLib JSON a échoué : {cv_e}")
+                perf_log.finish(f"Erreur mzSpecLib : {cv_e}")  # PERF_LOG
+                sys.exit(1)
         perf_log.finish()  # PERF_LOG
             
         # Calcul et affichage du temps total

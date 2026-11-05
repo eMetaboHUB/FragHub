@@ -107,7 +107,8 @@ const parameters = useState('parameters', () => ({
   msp: 1.0,
   json: 1.0,
   mzspeclib_json: 1.0,
-  reset_updates: 0.0
+  reset_updates: 0.0,
+  write_perf_logs: 0.0
 }))
 
 watch(isDarkMode, async (val) => {

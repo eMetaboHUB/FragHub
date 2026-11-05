@@ -62,7 +62,7 @@ To use this programme:
    3) Third tab: This area allows users to select specific filters for inclusion during the processing stage. Moreover, it provides the option to adjust the respective parameters of each filters.<br>![img_2.png](img_2.png)
    4) Fourth tab: This area allows the user to choose whether or not to perform the calculation of de novo fragment formulas.<br>![img_13.png](img_13.png)
    4) Fifth tab: Select the output file format of your preference. By default, all formats are selected.<br>![img_3.png](img_3.png)
-   5) Sixth tab: FragHub save the splash keys of previous spectra processed.<br>So that at the next update, only new spectra from the database are processed, and added to previous FragHub processes.<br>Reseting project allows you to delete splash keys and output files from the selected project, in order to start a new project from scratch.<br>![img_4.png](img_4.png)
+   5) Sixth tab: FragHub save the splash keys of previous spectra processed.<br>So that at the next update, only new spectra from the database are processed, and added to previous FragHub processes.<br>Reseting project allows you to delete splash keys and output files from the selected project, in order to start a new project from scratch.<br>The "Write perf logs" switch (off by default) writes a performance log of the run (duration, memory and CPU usage of each step) in the PERF_LOGS sub-folder of the output directory.<br>![img_4.png](img_4.png)
    6) Click on START button to run the programme.
 3) Progress start. At any time you can click on STOP button to close the programme.<br>![img_5.png](img_5.png)
 4) When Progress is finish, click on FINISH button to close the programme.<br>![img_6.png](img_6.png)
