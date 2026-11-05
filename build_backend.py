@@ -36,8 +36,13 @@ def build_rust():
     maturin = venv_bin("maturin")
     cmd = [maturin, "develop", "--release"] if maturin.exists() else [venv_bin("python"), "-m", "maturin", "develop", "--release"]
     # VIRTUAL_ENV : indique à maturin d'installer le module dans le .venv du projet
-    run(cmd, cwd=RUST_DIR, title="Compilation et installation de fraghub_rust dans .venv",
-        env_extra={"VIRTUAL_ENV": str(VENV_DIR), "RDKIT_PREFIX": str(RDKIT_PREFIX)})
+    env = {"VIRTUAL_ENV": str(VENV_DIR), "RDKIT_PREFIX": str(RDKIT_PREFIX)}
+    if sys.platform == "darwin":
+        # macOS : pas de "strip" après l'édition de liens. Avec les outils Apple récents (SDK 27),
+        # le strip par défaut de Cargo laisse la table des symboles mal alignée et macOS refuse de charger
+        # le module ("mis-aligned LINKEDIT string pool"). Sans effet sur le code compilé ni sur les résultats.
+        env["CARGO_PROFILE_RELEASE_STRIP"] = "false"
+    run(cmd, cwd=RUST_DIR, title="Compilation et installation de fraghub_rust dans .venv", env_extra=env)
 
 
 def build_pyinstaller():
