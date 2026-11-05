@@ -2,52 +2,23 @@
 name = "fraghub"
 version = "2.0.0"
 requires-python = ">=3.12"
+# Seulement ce que le code importe directement ; uv installe le reste (dépendances des dépendances).
 dependencies = [
-    "altgraph",
-    "annotated-doc",
-    "annotated-types",
-    "anyio",
-    "bidict",
-    "click",
     "fastapi",
     "fraghub-rust",
-    "h11",
-    "idna",
-    "ijson",
-    "llvmlite",
-    "macholib",
     "mzspeclib>=1.0.7",
-    "numba",
-    "numpy",
-    "packaging",
-    "pandas",
-    "pandas-stubs",
-    "pefile",
-    "pillow",
     "psutil",
     "pydantic",
-    "pydantic-core",
-    "pyinstaller",
-    "pyinstaller-hooks-contrib",
-    "pyqt6",
-    "pyqt6-qt6",
-    "pyqt6-sip",
-    "python-dateutil",
-    "python-engineio",
     "python-socketio",
-    "pytz",
-    "pywin32-ctypes",
-    "rdkit",
-    "setuptools",
-    "simple-websocket",
-    "six",
-    "starlette",
-    "types-pytz",
-    "typing-extensions",
-    "typing-inspection",
-    "tzdata",
     "uvicorn",
-    "wsproto",
+]
+
+# Outils de compilation (installés aussi par `uv sync`) : maturin pour le moteur Rust,
+# PyInstaller pour l'exécutable.
+[dependency-groups]
+dev = [
+    "maturin>=1.5,<2.0",
+    "pyinstaller",
 ]
 
 [tool.uv.workspace]

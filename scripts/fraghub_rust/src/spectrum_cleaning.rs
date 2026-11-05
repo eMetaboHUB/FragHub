@@ -107,7 +107,8 @@ pub fn spectrum_cleaning_processing(
                                 let replaced = matched_str.replace(',', ".");
                                 if let Ok(val) = replaced.parse::<f64>() {
                                     if val <= 0.0 { return Err((valid_meta, "spectrum deleted because precursor mz is less than or equal to zero.".to_string())); }
-                                    valid_meta.insert("PRECURSORMZ".to_string(), matched_str.to_string());
+                                    // On écrit la valeur corrigée (virgule -> point), pas le texte d'origine
+                                    valid_meta.insert("PRECURSORMZ".to_string(), replaced);
                                     float_pmz = Some(val);
                                 } else { return Err((valid_meta, "spectrum deleted because precursor mz field is empty or contains invalid characters (not a floating number).".to_string())); }
                             } else { return Err((valid_meta, "spectrum deleted because precursor mz field is empty or contains invalid characters (not a floating number).".to_string())); }

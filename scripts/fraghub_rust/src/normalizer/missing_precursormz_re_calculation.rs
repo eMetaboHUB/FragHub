@@ -1,15 +1,10 @@
 use std::collections::HashMap;
-use pyo3::prelude::*;
 use regex::Regex;
 use once_cell::sync::Lazy;
 
 static IE_EI_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)\b(IE|EI)\b").unwrap());
 
-/// Appel direct au RDKit de Python depuis Rust !
-///
-/// Pour un développeur Python : C'est ici qu'intervient la magie de `pyo3`.
-/// La fonction `Python::with_gil` acquiert le Global Interpreter Lock (GIL) de Python,
-/// ce qui permet à Rust d'importer et d'utiliser la librairie `rdkit` comme si c'était du Python natif.
+/// Masse exacte de la molécule (InChI de préférence, sinon SMILES), calculée par RDKit C++ (src/rdkit_native).
 ///
 /// # Arguments
 /// * `inchi` (&str) : Chaîne de caractères InChI.
@@ -18,41 +13,8 @@ static IE_EI_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)\b(IE|EI)\b").
 /// # Returns
 /// * `Option<f64>` : Masse exacte calculée par RDKit, ou `None` si échec.
 fn get_exact_mass_from_rdkit(inchi: &str, smiles: &str) -> Option<f64> {
-    // Par défaut : RDKit C++ (src/rdkit_native), sans verrou Python, donc en parallèle sur tous les cœurs.
-    // FRAGHUB_RDKIT_BACKEND=python : ancienne version ci-dessous (RDKit Python), même résultat.
-    if !crate::rdkit_native::use_python_backend() {
-        return crate::rdkit_native::exact_mass(inchi, smiles);
-    }
-    Python::with_gil(|py| {
-        // Désactiver les logs rdkit comme en Python
-        if let Ok(rdlogger) = py.import_bound("rdkit.RDLogger") {
-            let _ = rdlogger.call_method1("DisableLog", ("rdApp.*",)); // L'équivalent de rdLogger.DisableLog('rdApp.*')
-        }
-
-        // Importation dynamique des modules
-        let chem = py.import_bound("rdkit.Chem").ok()?;
-        let descriptors = py.import_bound("rdkit.Chem.Descriptors").ok()?;
-
-        // Instanciation de la molécule (MolFromInchi ou MolFromSmiles)
-        let mol = if !inchi.is_empty() && inchi.contains("InChI=") {
-            chem.call_method1("MolFromInchi", (inchi,)).ok()
-        } else if !smiles.is_empty() {
-            chem.call_method1("MolFromSmiles", (smiles,)).ok()
-        } else {
-            None
-        };
-
-        if let Some(mol) = mol {
-            if !mol.is_none() {
-                // Calcul de la masse exacte (ExactMolWt)
-                if let Ok(mass_obj) = descriptors.call_method1("ExactMolWt", (&mol,)) {
-                    // `.extract::<f64>()` convertit l'objet Python renvoyé en un `float` Rust !
-                    return mass_obj.extract::<f64>().ok();
-                }
-            }
-        }
-        None
-    })
+    // Sans verrou Python, donc en parallèle sur tous les cœurs.
+    crate::rdkit_native::exact_mass(inchi, smiles)
 }
 
 /// Recalcule la valeur PRECURSORMZ si elle est manquante en utilisant la masse de RDKit et le delta de l'adduct.

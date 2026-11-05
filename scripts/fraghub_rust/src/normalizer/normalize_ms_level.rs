@@ -2,10 +2,11 @@ use std::collections::HashMap;
 
 /// Standardise le niveau MS (MS1, MS2, MS3, etc.).
 ///
-/// Pour un développeur Python : L'utilisation de `.find_iter()` sur une regex en Rust renvoie un itérateur.
-/// On utilise ensuite `.map(|m| m.as_str())` pour transformer chaque `Match` en simple texte `&str`,
-/// et enfin `.collect()` pour rassembler tout ça dans un vecteur (`Vec<&str>`). C'est l'équivalent
-/// d'une liste en compréhension en Python : `[m.group() for m in pattern.finditer(text)]`.
+/// Seul le chiffre est gardé : "MS2", "ms2" et "2" donnent tous "2", "MS2/MS3" donne "2-3".
+///
+/// Pour un développeur Python : `.captures_iter()` sur une regex en Rust renvoie un itérateur de captures.
+/// On prend le groupe 1 (le chiffre) de chacune, puis `.collect()` rassemble le tout dans un vecteur
+/// (`Vec<&str>`). C'est l'équivalent de `[m.group(1) for m in pattern.finditer(text)]`.
 ///
 /// # Arguments
 /// * `metadata_dict` (HashMap<String, String>) : Le dictionnaire des métadonnées du spectre.
@@ -16,10 +17,12 @@ pub fn normalize_ms_level(mut metadata_dict: HashMap<String, String>) -> HashMap
     let ms_level = metadata_dict.get("MSLEVEL").cloned().unwrap_or_default();
 
     if !ms_level.is_empty() {
-        // Extraction de tous les niveaux MS mentionnés (ex: "MS2/MS3" -> ["2", "3"])
+        // Extraction de tous les niveaux MS mentionnés (ex: "MS2/MS3" -> ["2", "3"]).
+        // On garde le groupe 1 (le chiffre) et non tout le texte trouvé, sinon "MS2" restait "MS2"
+        // alors que "2" restait "2" : les deux écritures se mélangeaient dans les sorties.
         let matched_levels: Vec<&str> = crate::globals_vars::MS_LEVEL_PATTERN
-            .find_iter(&ms_level)
-            .map(|m| m.as_str())
+            .captures_iter(&ms_level)
+            .filter_map(|c| c.get(1).map(|m| m.as_str()))
             .collect();
 
         // Si on a trouvé exactement 1 niveau, on l'utilise.
@@ -41,4 +44,32 @@ pub fn normalize_ms_level(mut metadata_dict: HashMap<String, String>) -> HashMap
     }
 
     metadata_dict
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn level(raw: &str) -> String {
+        let mut m = HashMap::new();
+        m.insert("MSLEVEL".to_string(), raw.to_string());
+        normalize_ms_level(m)["MSLEVEL"].clone()
+    }
+
+    #[test]
+    fn niveau_ms_reduit_au_chiffre() {
+        assert_eq!(level("MS2"), "2");
+        assert_eq!(level("ms2"), "2");
+        assert_eq!(level("2"), "2");
+        assert_eq!(level("MS1"), "1");
+        assert_eq!(level("MS3"), "3");
+        assert_eq!(level("MS2/MS3"), "2-3");
+    }
+
+    #[test]
+    fn niveau_ms_absent_ou_illisible_vaut_2() {
+        assert_eq!(level(""), "2");
+        assert_eq!(level("MSn"), "2");
+        assert_eq!(normalize_ms_level(HashMap::new())["MSLEVEL"], "2");
+    }
 }

@@ -60,7 +60,7 @@ Le cœur logique de l'application est développé en Python. Pour qu'Electron pu
 2. Exécutez la commande suivante (notez l'utilisation des deux-points `:` comme séparateur pour macOS) :
 
 ```bash
-uv run pyinstaller --noconfirm --onedir --noconsole --paths . --icon="GUI/assets/FragHub_icon.icns" --name="FragHub_Backend" --add-data="../datas:datas" --add-data="GUI/assets:GUI/assets" --hidden-import=uvicorn.logging --hidden-import=uvicorn.loops --hidden-import=uvicorn.loops.auto --hidden-import=uvicorn.protocols.http.auto --hidden-import=uvicorn.protocols.websockets.auto --hidden-import=mzspeclib_converter --hidden-import=rdkit_worker FragHub.py
+uv run pyinstaller --noconfirm --onedir --noconsole --paths . --icon="GUI/assets/FragHub_icon.icns" --name="FragHub_Backend" --add-data="../datas:datas" --add-data="GUI/assets:GUI/assets" --hidden-import=uvicorn.logging --hidden-import=uvicorn.loops --hidden-import=uvicorn.loops.auto --hidden-import=uvicorn.protocols.http.auto --hidden-import=uvicorn.protocols.websockets.auto --hidden-import=mzspeclib_converter FragHub.py
 ```
 
 > **📌 Notes importantes concernant le Backend :**
@@ -162,13 +162,10 @@ file ~/rdkit_cpp/lib/libRDKitGraphMol.dylib
 
 ### Qui en a besoin ?
 * **L'utilisateur de l'installeur ou de l'exécutable : rien à installer.** PyInstaller copie les bibliothèques de RDKit C++ dans l'exécutable (`scripts/dist/FragHub_Backend/_internal`) et remplace leurs chemins par des chemins relatifs (`@loader_path`). `build_backend.py` s'arrête avec une erreur si elles manquent ou si un binaire pointe encore vers `~/rdkit_cpp`.
-* **Toute personne qui compile FragHub, ou le lance depuis le code source** (`python scripts/FragHub.py --cli …`) : RDKit C++ doit être installé. Le module Rust y est lié et ne se charge pas sans lui, même avec `FRAGHUB_RDKIT_BACKEND=python` (cette variable ne choisit que le moteur de calcul).
+* **Toute personne qui compile FragHub, ou le lance depuis le code source** (`python scripts/FragHub.py --cli …`) : RDKit C++ doit être installé. Le module Rust y est lié et ne se charge pas sans lui.
 
 ### Moteur de calcul
-Par défaut, les calculs RDKit sont faits en C++, directement depuis Rust. L'ancien moteur Python (`rdkit_worker.py`) reste disponible et donne des résultats identiques :
-```bash
-FRAGHUB_RDKIT_BACKEND=python python scripts/FragHub.py --cli ...
-```
+Les calculs RDKit sont faits uniquement en C++, directement depuis Rust (`scripts/fraghub_rust/src/rdkit_native`). L'ancien moteur Python (`rdkit_worker.py`) a été supprimé après vérification de résultats identiques : RDKit Python n'est plus nécessaire, ni dans l'environnement Python, ni dans l'exécutable.
 
 ### Particularités macOS
 > * **`strip` désactivé :** avec les outils Apple récents (SDK 27), l'étape `strip` de Cargo produisait un module que macOS refusait de charger (`mis-aligned LINKEDIT string pool`). `build_backend.py` la désactive sur macOS (`CARGO_PROFILE_RELEASE_STRIP=false`) puis vérifie que le module se charge. Sans effet sur les résultats.

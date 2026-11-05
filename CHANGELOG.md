@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
   - **Interactive Reporting**: Developed a comprehensive HTML execution report incorporating interactive Sunburst and UpSetPlot charts that summarize dataset evolution after processing.
   - **UI/UX & Logs Polishing**: Disabled the automatic launch of Electron Developer Tools at startup, unified the application icons, and drastically cleaned/standardized all the real-time progress steps displayed during processing.
   - **Packaging Fixes**: Resolved Python multiprocessing freeze issues when packaging the Rust-RDKit bridge with PyInstaller, and updated Electron metadata.
+  - **RDKit C++**: molecule derivation and exact masses are computed by RDKit C++ called directly from Rust, on all cores; RDKit Python is no longer used nor bundled.
+  - **License**: FragHub is now distributed under the CeCILL 2.1 license (`LICENSE`), replacing CC BY-NC 4.0.
 
 - **31_05_2026**:
   - modernizing GUI and desktop integration with Nuxt 4 + electron.js 

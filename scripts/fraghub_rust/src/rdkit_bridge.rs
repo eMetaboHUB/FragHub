@@ -6,10 +6,10 @@ use crate::globals_vars::{INDIGO_SMILES_CORRECTION_PATTERN, INCHIKEY_PATTERN};
 use std::fs;
 use std::path::Path;
 
-/// Orchestre le recalcul des formules et des masses à l'aide de RDKit (qui tourne en Python).
+/// Orchestre le recalcul des formules et des masses à l'aide de RDKit (en C++, voir src/rdkit_native).
 ///
-/// Pour un développeur Python : C'est ici qu'on fait le "pont" (bridge) entre la vitesse de Rust
-/// et la puissance de la librairie Python RDKit. L'astuce cruciale est l'utilisation d'un `cache`
+/// Pour un développeur Python : C'est ici qu'on fait le "pont" (bridge) entre les spectres et
+/// RDKit. L'astuce cruciale est l'utilisation d'un `cache`
 /// en RAM (HashMap). Comme on croise souvent les mêmes molécules, Rust va mémoriser les résultats
 /// de RDKit pour ne jamais recalculer deux fois la même chose. C'est ce qui fait passer le
 /// temps de calcul de plusieurs heures à quelques minutes.
@@ -68,8 +68,7 @@ pub fn process_mols(
 
     if let Some(cb) = &prefix_callback { cb.call1(py, ("RDKit calculation",))?; }
 
-    // 2. Calcul RDKit : en C++ depuis Rust (src/rdkit_native), ou par l'ancienne version Python
-    //    (rdkit_worker.py, multiprocessing) si FRAGHUB_RDKIT_BACKEND=python. Même résultat.
+    // 2. Calcul RDKit : en C++ depuis Rust (src/rdkit_native).
     let total_unique = unique_mols.len();
     if let Some(cb) = &total_items_callback { cb.call1(py, (total_unique, 0))?; }
 
@@ -237,23 +236,11 @@ pub fn process_mols(
 
 
 /// Calcule les molécules avec RDKit et renvoie le dictionnaire "molécule|adduit|m/z" -> résultats.
-/// Par défaut en C++ (src/rdkit_native) ; FRAGHUB_RDKIT_BACKEND=python pour l'ancienne version Python.
+/// Calcul en C++ (src/rdkit_native), réparti sur tous les cœurs.
 fn run_rdkit(
     py: Python,
     mols: Vec<(String, String, String)>,
     progress_callback: &Option<PyObject>,
 ) -> PyResult<HashMap<String, HashMap<String, String>>> {
-    if !crate::rdkit_native::use_python_backend() {
-        return crate::rdkit_native::run_parallel(py, mols, progress_callback.clone());
-    }
-    // Ancienne version : rdkit_worker.run_parallel (multiprocessing.Pool)
-    let sys = py.import_bound("sys")?;
-    let sys_path = sys.getattr("path")?;
-    sys_path.call_method1("insert", (0, ""))?;
-    let worker_mod = py.import_bound("rdkit_worker").map_err(|e| {
-        pyo3::exceptions::PyRuntimeError::new_err(format!("Cannot import rdkit_worker.py: {}", e))
-    })?;
-    let prog_cb = progress_callback.clone().unwrap_or_else(|| py.None());
-    let cache_dict_obj = worker_mod.call_method1("run_parallel", (mols, prog_cb))?;
-    cache_dict_obj.extract()
+    crate::rdkit_native::run_parallel(py, mols, progress_callback.clone())
 }

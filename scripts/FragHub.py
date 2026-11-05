@@ -25,7 +25,6 @@ if sys.platform == 'win32' and not getattr(sys, 'frozen', False):
         os.add_dll_directory(_rdkit_bin)
 
 import fraghub_rust
-import rdkit_worker  # Ensure PyInstaller bundles it for Rust to use
 import perf_log  # PERF_LOG : journal de performances temporaire (voir perf_log.py)
 
 parameters_dict = {}

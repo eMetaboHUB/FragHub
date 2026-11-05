@@ -53,7 +53,7 @@ The core logic of the application is developed in Python. For Electron to run it
 2. Run the following command (note the use of `:` as separator for Linux):
 
 ```bash
-uv run pyinstaller --noconfirm --onedir --noconsole --paths . --icon="GUI/assets/FragHub_icon.ico" --name="FragHub_Backend" --add-data="../datas:datas" --add-data="GUI/assets:GUI/assets" --hidden-import=uvicorn.logging --hidden-import=uvicorn.loops --hidden-import=uvicorn.loops.auto --hidden-import=uvicorn.protocols.http.auto --hidden-import=uvicorn.protocols.websockets.auto --hidden-import=mzspeclib_converter --hidden-import=rdkit_worker FragHub.py
+uv run pyinstaller --noconfirm --onedir --noconsole --paths . --icon="GUI/assets/FragHub_icon.ico" --name="FragHub_Backend" --add-data="../datas:datas" --add-data="GUI/assets:GUI/assets" --hidden-import=uvicorn.logging --hidden-import=uvicorn.loops --hidden-import=uvicorn.loops.auto --hidden-import=uvicorn.protocols.http.auto --hidden-import=uvicorn.protocols.websockets.auto --hidden-import=mzspeclib_converter FragHub.py
 ```
 
 > **📌 Important notes regarding the Backend:**
@@ -145,10 +145,7 @@ mamba create -p ~/rdkit_cpp -c conda-forge librdkit-dev=2026.09.1 libboost-heade
 
 ### Who needs it?
 * **End users of the installer / executable: nothing to install.** PyInstaller copies the RDKit C++ libraries into the executable (`scripts/dist/FragHub_Backend/_internal`), and `build_backend.py` stops with an error if they are missing.
-* **Anyone who compiles FragHub, or runs it from source** (`python scripts/FragHub.py --cli …`): RDKit C++ must be installed. The Rust module is linked to it and does not load without it, even with `FRAGHUB_RDKIT_BACKEND=python` (that variable only selects the calculation engine).
+* **Anyone who compiles FragHub, or runs it from source** (`python scripts/FragHub.py --cli …`): RDKit C++ must be installed. The Rust module is linked to it and does not load without it.
 
 ### Calculation engine
-By default, RDKit calculations are done in C++, directly from Rust. The former Python engine (`rdkit_worker.py`) is still available and gives identical results:
-```bash
-FRAGHUB_RDKIT_BACKEND=python python scripts/FragHub.py --cli ...
-```
+RDKit calculations are done in C++ only, directly from Rust (`scripts/fraghub_rust/src/rdkit_native`). The former Python engine (`rdkit_worker.py`) has been removed after its results were checked identical: RDKit Python is no longer needed, neither in the Python environment nor in the executable.

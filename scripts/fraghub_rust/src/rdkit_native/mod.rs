@@ -1,12 +1,13 @@
 // src/rdkit_native/mod.rs
 //! Calcul RDKit directement en C++ (bibliothèques précompilées de conda-forge), sans Python.
 //!
-//! Pour un développeur Python : avant, Rust envoyait toutes les molécules à `rdkit_worker.py`, qui les
-//! répartissait sur ~20 processus Python (multiprocessing). Ici, Rust appelle RDKit en C++ via une petite
-//! passerelle (shim.cc) qui reproduit EXACTEMENT `rdkit_worker.process_single`, et répartit le travail sur
-//! des threads (rayon) : un seul processus, pas de copie des molécules entre processus.
+//! Pour un développeur Python : avant, Rust envoyait toutes les molécules à un script Python
+//! (`rdkit_worker.py`, supprimé depuis), qui les répartissait sur ~20 processus Python (multiprocessing).
+//! Ici, Rust appelle RDKit en C++ via une petite passerelle (shim.cc) qui reproduit EXACTEMENT les calculs
+//! de cet ancien script (sorties vérifiées identiques), et répartit le travail sur des threads (rayon) :
+//! un seul processus, pas de copie des molécules entre processus.
 //!
-//! `run_parallel` renvoie le même dictionnaire que `rdkit_worker.run_parallel` :
+//! `run_parallel` renvoie le dictionnaire :
 //! clé "molécule|adduit|m/z" -> {INCHI, INCHIKEY, SMILES, FORMULA, EXACTMASS, AVERAGEMASS}
 //! (une clé est absente si le calcul correspondant a échoué).
 //!
@@ -107,7 +108,7 @@ fn py_float(s: &str) -> Option<f64> {
     s.trim().parse::<f64>().ok()
 }
 
-/// Équivalent exact de `rdkit_worker.process_single` : (clé, valeur) dans l'ordre du dictionnaire Python.
+/// Calcul d'une molécule (équivalent exact de l'ancien `rdkit_worker.process_single`) : (clé, valeur).
 pub fn process_single(clean_mol: &str, precursortype: &str, precursormz_str: &str) -> Vec<(&'static str, String)> {
     INIT.call_once(ffi::init_rdkit);
     let mz = py_float(precursormz_str);
@@ -150,7 +151,7 @@ fn depends_on_precursor(clean_mol: &str, precursormz_str: &str) -> bool {
     clean_mol.contains('.') && py_float(precursormz_str).is_some()
 }
 
-/// Remplace `rdkit_worker.run_parallel` : calcule toutes les molécules et renvoie le même dictionnaire.
+/// Calcule toutes les molécules et renvoie le dictionnaire (voir en tête de fichier).
 /// La barre de progression avance en nombre de molécules d'entrée (comme avant).
 /// Si `progress_callback` lève une exception (bouton stop), le calcul s'arrête et l'erreur est renvoyée.
 pub fn run_parallel(
@@ -317,11 +318,6 @@ fn write_timing(dir: &str, order: &[usize], units: &[(&str, &str, &str)], weight
         Ok(()) => println!("[RDKIT_TIMING] {}", path.display()),
         Err(e) => eprintln!("[RDKIT_TIMING] écriture impossible ({}) : {e}", path.display()),
     }
-}
-
-/// Faut-il utiliser l'ancienne version Python (rdkit_worker.py) ? Oui si FRAGHUB_RDKIT_BACKEND=python.
-pub fn use_python_backend() -> bool {
-    std::env::var("FRAGHUB_RDKIT_BACKEND").map(|v| v.eq_ignore_ascii_case("python")).unwrap_or(false)
 }
 
 #[cfg(test)]

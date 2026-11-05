@@ -1,6 +1,6 @@
 // Passerelle C++ vers RDKit pour FragHub (essai).
 //
-// Reproduit EXACTEMENT rdkit_worker.process_single (scripts/rdkit_worker.py), avec les mêmes
+// Reproduit EXACTEMENT l'ancien rdkit_worker.process_single (scripts/rdkit_worker.py, supprimé), avec les mêmes
 // fonctions RDKit appelées dans le même ordre et avec les mêmes paramètres par défaut que
 // les fonctions Python correspondantes :
 //   Chem.MolFromSmiles / MolFromInchi, GetNumHeavyAtoms, CalcExactMolWt, GetFormalCharge,
@@ -31,7 +31,7 @@ namespace fraghub {
 
 using RDKit::ROMol;
 
-// --- Table des adduits : copie exacte de ADDUCT_TABLE (rdkit_worker.py), mêmes expressions ---
+// --- Table des adduits : copie exacte de ADDUCT_TABLE (ancien rdkit_worker.py), mêmes expressions ---
 namespace {
 const double H = 1.007276, Na = 22.989218, K = 38.963158, Li = 6.015123, NH4 = 18.034164,
              H2O = 18.010565, NH3 = 17.026549, ACN = 41.026549;

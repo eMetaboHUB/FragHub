@@ -259,7 +259,7 @@ def convert_all_msp(output_directory, step_cb=None, prefix_cb=None, progress_cb=
         os.makedirs(os.path.dirname(json_path), exist_ok=True)
         jobs.append((msp_path, json_path))
 
-    # Même réglage que rdkit_worker.run_parallel (déjà éprouvé dans l'exécutable PyInstaller)
+    # Même réglage que l'ancien rdkit_worker.run_parallel (éprouvé dans l'exécutable PyInstaller)
     workers = workers or max(1, multiprocessing.cpu_count() - 1)
     try:
         pool = multiprocessing.Pool(processes=workers)
