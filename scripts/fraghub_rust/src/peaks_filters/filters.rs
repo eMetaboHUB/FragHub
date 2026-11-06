@@ -1,7 +1,13 @@
 // src/peaks_filters/filters.rs
 use std::collections::HashMap;
 
-/// Filtre obligatoire pour enlever les pics d'intensité négative ou nulle.
+/// Filtre obligatoire : enlève les pics inutilisables, c'est-à-dire
+/// - d'intensité négative, nulle, NaN ou infinie,
+/// - de m/z négatif, nul, NaN ou infini.
+///
+/// Un m/z ou une intensité NaN fausse les tris (et depuis Rust 1.81 un tri dont la comparaison
+/// n'est pas cohérente peut faire planter le programme) ; une intensité infinie rend la
+/// normalisation fausse (inf / inf = NaN). Sur des données propres, rien n'est retiré.
 ///
 /// Pour un développeur Python : En Rust, passer `mut peaks: Vec` transfère la "propriété" (Ownership)
 /// de la variable à cette fonction. La fonction a le droit de la modifier et doit la renvoyer.
@@ -12,7 +18,7 @@ use std::collections::HashMap;
 /// # Returns
 /// * `Vec<(f64, f64)>` : La liste de pics nettoyée.
 pub fn remove_non_positive_peaks(mut peaks: Vec<(f64, f64)>) -> Vec<(f64, f64)> {
-    peaks.retain(|&(_, int)| int > 0.0);
+    peaks.retain(|&(mz, int)| mz.is_finite() && mz > 0.0 && int.is_finite() && int > 0.0);
     peaks
 }
 
@@ -48,6 +54,9 @@ pub fn apply_filters(
 
     // --- Step 1: Mandatory filter ---
     peaks = remove_non_positive_peaks(peaks);
+    // Plus aucun pic utilisable : motif générique « peaks list is empty » (sinon le filtre
+    // suivant inscrirait un motif faux, par exemple « pics au-dessus du précurseur »).
+    if peaks.is_empty() { return peaks; }
 
     // --- Filter 1: Remove peaks above precursor m/z ---
     if parameters.get("remove_peak_above_precursormz").copied().unwrap_or(0.0) == 1.0 {
@@ -145,6 +154,32 @@ mod tests {
         let mut reason = None;
         let out = apply_filters(peaks, None, &p, &mut reason);
         assert_eq!(out, vec![(60.0, 0.25), (70.0, 1.0)]);
+    }
+
+    #[test]
+    fn pics_inutilisables_retires() {
+        let peaks = vec![
+            (f64::NAN, 10.0), (f64::INFINITY, 10.0), (-5.0, 10.0), (0.0, 10.0),
+            (60.0, f64::NAN), (70.0, f64::INFINITY), (80.0, 0.0), (90.0, -1.0),
+            (100.0, 20.0), (110.0, 40.0),
+        ];
+        assert_eq!(remove_non_positive_peaks(peaks), vec![(100.0, 20.0), (110.0, 40.0)]);
+    }
+
+    #[test]
+    fn spectre_propre_inchange_par_le_filtre_obligatoire() {
+        let peaks = vec![(50.5, 1.0), (60.25, 1e-9), (1999.9, 1e9)];
+        assert_eq!(remove_non_positive_peaks(peaks.clone()), peaks);
+    }
+
+    #[test]
+    fn aucun_pic_utilisable_motif_generique() {
+        // Toutes les intensités nulles : le motif ne doit pas être celui du filtre « précurseur ».
+        let peaks = vec![(50.0, 0.0), (300.0, 0.0)];
+        let p = params(&[("remove_peak_above_precursormz", 1.0)]);
+        let mut reason = None;
+        assert!(apply_filters(peaks, Some(100.0), &p, &mut reason).is_empty());
+        assert!(reason.is_none());
     }
 
     #[test]

@@ -116,7 +116,9 @@ pub fn spectrum_cleaning_processing(
                     }
 
                     // Filtrage des pics (les pics du spectre sont repris tels quels, sans copie)
-                    let mut peaks = spec_peaks;
+                    // Les pics inutilisables (m/z ou intensité NaN, infinie, <= 0) sont retirés AVANT le tri :
+                    // un NaN rend la comparaison incohérente et peut faire planter le tri.
+                    let mut peaks = crate::peaks_filters::filters::remove_non_positive_peaks(spec_peaks);
                     peaks.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap_or(std::cmp::Ordering::Equal));
 
                     let mut peak_del_reason = None;
