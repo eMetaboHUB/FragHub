@@ -437,3 +437,11 @@ M-C6H10O5+H;[M-C6H10O5+H]+;-162.0528;positive
 M-H2O;[M-H2O]+;-18.0111;positive
 M+ACN+Na;[M+ACN+Na]+;63.01577;positive
 M+DMSO+H;[M+DMSO+H]+;79.021212;positive
+M+HCOOH-H;[M+HCOO]-;44.9982;negative
+M+formate;[M+HCOO]-;44.9982;negative
+M+CHOO;[M+HCOO]-;44.9982;negative
+M+Hac-H;[M+CH3COO]-;59.0139;negative
+M+HAc-H;[M+CH3COO]-;59.0139;negative
+M+C2H4O2-H;[M+CH3COO]-;59.0139;negative
+M-H1;[M-H]-;-1.007276;negative
+M+2Na-H;[M+2Na-H]+;44.971165;positive
