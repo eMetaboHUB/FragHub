@@ -132,7 +132,11 @@ pub fn check_for_update_processing(
                 wtr.write_all(b":true").map_err(|e| pyo3::exceptions::PyIOError::new_err(e.to_string()))?;
                 first = false;
             }
+            // Un même SPLASH peut appartenir à plusieurs spectres du run (doublons retirés plus tard,
+            // ou même spectre avec une autre InChIKey) : on ne l'écrit qu'une fois.
+            let mut written: HashSet<&String> = HashSet::new();
             for s in &new_splashes {
+                if !written.insert(s) { continue; }
                 if !first { wtr.write_all(b",").map_err(|e| pyo3::exceptions::PyIOError::new_err(e.to_string()))?; }
                 serde_json::to_writer(&mut wtr, s).map_err(|e| pyo3::exceptions::PyIOError::new_err(e.to_string()))?;
                 wtr.write_all(b":true").map_err(|e| pyo3::exceptions::PyIOError::new_err(e.to_string()))?;

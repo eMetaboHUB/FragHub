@@ -31,8 +31,14 @@ pub fn normalize_ms_level(mut metadata_dict: HashMap<String, String>) -> HashMap
         } 
         // Si on en a trouvé plusieurs, on fait un format combiné (ex: "2-3")
         else if matched_levels.len() >= 2 {
-            // `format!` est l'équivalent de f"{matched_levels[0]}-{matched_levels[1]}"
-            metadata_dict.insert("MSLEVEL".to_string(), format!("{}-{}", matched_levels[0], matched_levels[1]));
+            // Deux fois le même niveau ("MS2-MS2") : un seul chiffre
+            let level = if matched_levels[0] == matched_levels[1] {
+                matched_levels[0].to_string()
+            } else {
+                // `format!` est l'équivalent de f"{matched_levels[0]}-{matched_levels[1]}"
+                format!("{}-{}", matched_levels[0], matched_levels[1])
+            };
+            metadata_dict.insert("MSLEVEL".to_string(), level);
         } 
         // Par défaut, si rien ne match (ou MS inconnu), on suppose MS2.
         else {
@@ -64,6 +70,7 @@ mod tests {
         assert_eq!(level("MS1"), "1");
         assert_eq!(level("MS3"), "3");
         assert_eq!(level("MS2/MS3"), "2-3");
+        assert_eq!(level("MS2-MS2"), "2");
     }
 
     #[test]

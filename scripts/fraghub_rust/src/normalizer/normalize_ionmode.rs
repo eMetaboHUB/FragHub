@@ -61,11 +61,18 @@ pub fn normalize_ion_mode(mut metadata_dict: HashMap<String, String>) -> HashMap
 
 /// Mode d'ionisation absent ou illisible : on le déduit du signe de l'adduit (déjà normalisé).
 /// Avant, ces spectres arrivaient au splitter sans mode et y disparaissaient sans laisser de trace.
-/// Sans adduit exploitable, IONMODE reste tel quel et check_for_bad_adduct supprime le spectre (avec un motif).
+/// Spectre GC sans adduit exploitable : positif (l'ionisation électronique donne des ions positifs).
+/// Sinon IONMODE reste tel quel et check_for_bad_adduct supprime le spectre (avec un motif).
 pub fn ion_mode_from_adduct_if_missing(mut metadata_dict: HashMap<String, String>) -> HashMap<String, String> {
     let known = matches!(metadata_dict.get("IONMODE").map(|s| s.as_str()), Some("positive") | Some("negative"));
     if !known {
-        if let Some(mode) = metadata_dict.get("PRECURSORTYPE").and_then(|a| ion_mode_from_adduct(a)) {
+        let from_adduct = metadata_dict.get("PRECURSORTYPE").and_then(|a| ion_mode_from_adduct(a));
+        let mode = from_adduct.or_else(|| {
+            let filename = metadata_dict.get("FILENAME").map(|s| s.as_str()).unwrap_or("");
+            let instrument_type = metadata_dict.get("INSTRUMENTTYPE").map(|s| s.as_str()).unwrap_or("");
+            crate::globals_vars::is_gc_spectrum(filename, instrument_type).then_some("positive")
+        });
+        if let Some(mode) = mode {
             metadata_dict.insert("IONMODE".to_string(), mode.to_string());
         }
     }
@@ -128,5 +135,11 @@ mod tests {
         // Pas d'adduit exploitable : inchangé
         let m = ion_mode_from_adduct_if_missing(with(&[("IONMODE", ""), ("PRECURSORTYPE", "")]));
         assert_eq!(m["IONMODE"], "");
+        // Spectre GC sans mode ni adduit : positif d'office
+        let m = ion_mode_from_adduct_if_missing(with(&[("IONMODE", ""), ("PRECURSORTYPE", ""), ("INSTRUMENTTYPE", "GC-EI-TOF")]));
+        assert_eq!(m["IONMODE"], "positive");
+        // Spectre GC dont l'adduit dit négatif : négatif
+        let m = ion_mode_from_adduct_if_missing(with(&[("IONMODE", ""), ("PRECURSORTYPE", "[M-H]-"), ("INSTRUMENTTYPE", "GC-APCI-QTOF")]));
+        assert_eq!(m["IONMODE"], "negative");
     }
 }

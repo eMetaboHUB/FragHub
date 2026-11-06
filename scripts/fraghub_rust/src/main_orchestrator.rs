@@ -142,22 +142,7 @@ pub fn main_orchestrator(
     let ordered_columns_str = vec!["FILENAME", "DATABASE_NAME", "FILEHASH", "PREDICTED", "SPLASH", "SPECTRUMID", "RESOLUTION", "SYNON", "IONIZATION", "MSLEVEL", "FRAGMENTATIONMETHODE", "NAME", "PRECURSORMZ", "EXACTMASS", "AVERAGEMASS", "PRECURSORTYPE", "INSTRUMENTTYPE", "INSTRUMENT", "SMILES", "INCHI", "INCHIKEY", "COLLISIONENERGY", "FORMULA", "RT", "IONMODE", "COMMENT", "ENTROPY", "CLASSYFIRE_SUPERCLASS", "CLASSYFIRE_CLASS", "CLASSYFIRE_SUBCLASS", "NPCLASS_PATHWAY", "NPCLASS_SUPERCLASS", "NPCLASS_CLASS", "NUM PEAKS", "PEAKS_LIST"];
     let ordered_columns: Vec<String> = ordered_columns_str.into_iter().map(|s| s.to_string()).collect();
 
-    // STEP 3: DUPLICATAS
-    if let Some(cb) = &step_callback { cb.call1(py, ("Removing Duplicates",))?; }
-    py.allow_threads(|| { std::thread::sleep(std::time::Duration::from_millis(10)); });
-
-    let tuple_dup = remove_duplicatas_processing(
-        py, spectrum_list, output_directory.clone(), ordered_columns.clone(), reset_updates_val != 1.0,
-        progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone()
-    )?;
-    let mut spectrum_list = tuple_dup.0;
-    let deleted_count_dup = tuple_dup.1;
-    {
-        
-        deletion_report.duplicatas_removed = deleted_count_dup;
-    }
-    if let Some(cb) = &deletion_callback { cb.call1(py, (format!("duplicatas removed: {}", deleted_count_dup),))?; }
-    check_stop_flag()?;
+    // (Le dédoublonnage a été déplacé après RDKit et la correction de masse, voir STEP 6.7.)
 
     // STEP 4: UPDATES
     let mut update = false;
@@ -262,6 +247,24 @@ pub fn main_orchestrator(
             cb.call1(py, (format!("Deleted by mz mismatch (NO_MATCH): {}", report.no_or_bad_adduct),))?;
         }
 
+        check_stop_flag()?;
+
+        // STEP 6.7: DUPLICATAS (SPLASH + INCHIKEY)
+        // Après le nettoyage, RDKit et la correction de masse : l'InChIKey est alors réparée ou calculée
+        // par RDKit, et seuls des spectres valides sont comparés. Avant (juste après le calcul du SPLASH),
+        // les spectres sans InChIKey dans le fichier n'étaient jamais dédoublonnés, et le doublon gardé
+        // pouvait être supprimé ensuite alors que son jumeau, déjà jeté, aurait été gardé.
+        py.allow_threads(|| { std::thread::sleep(std::time::Duration::from_millis(10)); });
+        if let Some(cb) = &step_callback { cb.call1(py, ("Removing Duplicates",))?; }
+        py.allow_threads(|| { std::thread::sleep(std::time::Duration::from_millis(10)); });
+
+        let tuple_dup = remove_duplicatas_processing(
+            py, spectrum_list, output_directory.clone(), ordered_columns.clone(), reset_updates_val != 1.0,
+            progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone()
+        )?;
+        spectrum_list = tuple_dup.0;
+        deletion_report.duplicatas_removed = tuple_dup.1;
+        if let Some(cb) = &deletion_callback { cb.call1(py, (format!("duplicatas removed: {}", tuple_dup.1),))?; }
         check_stop_flag()?;
 
         // STEP 7: PUBCHEM
