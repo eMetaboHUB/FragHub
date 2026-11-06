@@ -37,14 +37,18 @@ else:
 
 is_cli_mode = "--cli" in sys.argv
 is_quiet_mode = "--quiet" in sys.argv
+# Sous Windows (et dans l'exécutable), chaque processus de la conversion mzSpecLib relit ce fichier
+# au démarrage : la bannière et la redirection du journal ne doivent se faire que dans le processus
+# principal (sinon la bannière est répétée et chaque processus vide fraghub_debug.txt).
+is_main_process = multiprocessing.current_process().name == "MainProcess"
 
 # Redirection forcée de la sortie standard et d'erreur vers un fichier (UNIQUEMENT si packagé avec PyInstaller)
-if getattr(sys, 'frozen', False) and not is_cli_mode:
+if getattr(sys, 'frozen', False) and not is_cli_mode and is_main_process:
     log_path = os.path.join(os.path.expanduser("~"), "fraghub_debug.txt")
     sys.stdout = open(log_path, 'w')
     sys.stderr = sys.stdout
 
-if not is_quiet_mode:
+if not is_quiet_mode and is_main_process:
     print(f"--- Démarrage de FragHub ---")
     print(f"CWD: {os.getcwd()}")
     print(f"sys.argv: {sys.argv}")
@@ -510,6 +514,52 @@ if __name__ == "__main__":
             
         def cli_get_stop_flag():
             return False # Pas d'interruption via UI en mode CLI (l'utilisateur fera Ctrl+C)
+
+        # Comme dans l'interface (execute_main_safely) : si la conversion mzSpecLib est demandée, elle
+        # se fait APRÈS le moteur Rust ; le bilan des suppressions, « Generating Report » et le message
+        # de fin (TOTAL TIME) envoyés par Rust sont donc gardés et affichés après la conversion.
+        with_mzspeclib = parameters_dict.get("mzspeclib_json", 0.0) == 1.0
+        cli_deferred = []  # messages retenus, dans leur ordre d'arrivée : (callback, arguments)
+
+        def rust_step_callback(*cb_args):
+            if with_mzspeclib and cb_args and cb_args[0] == "Generating Report":
+                if cb_args: perf_log.on_step(cb_args[0])  # PERF_LOG (au moment réel de l'étape)
+                cli_deferred.append(("step", cb_args))
+                return
+            cli_step_callback(*cb_args)
+
+        def rust_deletion_callback(*cb_args):
+            if with_mzspeclib:
+                if cb_args: perf_log.on_deletion(cb_args[0])  # PERF_LOG
+                cli_deferred.append(("deletion", cb_args))
+                return
+            cli_deletion_callback(*cb_args)
+
+        def rust_completion_callback(*cb_args):
+            if with_mzspeclib:
+                if cb_args: perf_log.on_completion(cb_args[0])  # PERF_LOG
+                cli_deferred.append(("completion", cb_args))
+                return
+            cli_completion_callback(*cb_args)
+
+        def replay_deferred():
+            # Affiche les messages retenus ; le temps total (message et rapport HTML) est recalculé
+            # pour compter la conversion mzSpecLib.
+            for kind, cb_args in cli_deferred:
+                if not cb_args:
+                    continue
+                if kind == "completion":
+                    # Rapport HTML mis à jour même en mode --quiet
+                    report_path = cb_args[1] if len(cb_args) > 1 else ""
+                    msg, _ = _update_total_time((cb_args[0], report_path), global_start_time)
+                    if not args.quiet:
+                        print(f"\n\033[1;32m✔ {msg}\033[0m\n")
+                elif args.quiet:
+                    continue
+                elif kind == "step":
+                    print(f"\n\033[1;33m=== {cb_args[0]} ===\033[0m")
+                else:
+                    print(f"\033[38;5;208m[REPORT] {cb_args[0]}\033[0m")
             
         # Journal de performances seulement si --write_perf_logs yes (comme l'interrupteur de l'onglet Projects).
         # Sinon perf_log n'est pas démarré : ses fonctions ne font rien et finish() n'écrit aucun fichier.
@@ -523,9 +573,9 @@ if __name__ == "__main__":
                 cli_total_items_callback,
                 cli_prefix_callback,
                 cli_item_type_callback,
-                cli_step_callback,
-                cli_completion_callback,
-                cli_deletion_callback,
+                rust_step_callback,
+                rust_completion_callback,
+                rust_deletion_callback,
                 cli_get_stop_flag
             )
         except Exception as e:
@@ -548,6 +598,7 @@ if __name__ == "__main__":
                 print(f"\n[ERROR] La conversion mzSpecLib JSON a échoué : {cv_e}")
                 perf_log.finish(f"Erreur mzSpecLib : {cv_e}")  # PERF_LOG
                 sys.exit(1)
+            replay_deferred()
         perf_log.finish()  # PERF_LOG
             
         # Calcul et affichage du temps total

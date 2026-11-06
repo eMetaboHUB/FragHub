@@ -34,6 +34,7 @@ pub fn remove_non_positive_peaks(mut peaks: Vec<(f64, f64)>) -> Vec<(f64, f64)> 
 /// # Arguments
 /// * `peaks` (Vec<(f64, f64)>) : La liste de pics du spectre à traiter.
 /// * `precursormz` (Option<f64>) : La masse m/z du précurseur (optionnelle).
+/// * `charge` (u32) : Valeur absolue de la charge du précurseur, lue dans l'adduit (1 si inconnue).
 /// * `parameters` (&HashMap<String, f64>) : Le dictionnaire des paramètres définis par l'utilisateur.
 /// * `deletion_reason` (&mut Option<String>) : Pointeur mutable pour inscrire la raison si le spectre est rejeté.
 ///
@@ -42,6 +43,7 @@ pub fn remove_non_positive_peaks(mut peaks: Vec<(f64, f64)>) -> Vec<(f64, f64)> 
 pub fn apply_filters(
     mut peaks: Vec<(f64, f64)>,
     precursormz: Option<f64>,
+    charge: u32,
     parameters: &HashMap<String, f64>,
     deletion_reason: &mut Option<String>
 ) -> Vec<(f64, f64)> {
@@ -63,7 +65,7 @@ pub fn apply_filters(
         // `if let Some(pmz) = precursormz` vérifie que precursormz n'est pas None,
         // et déballe sa valeur dans `pmz` si elle existe. (Pattern matching)
         if let Some(pmz) = precursormz {
-            peaks = super::remove_peak_above_precursormz::remove_peak_above_precursormz(peaks, pmz, deletion_reason);
+            peaks = super::remove_peak_above_precursormz::remove_peak_above_precursormz(peaks, pmz, charge, deletion_reason);
             if peaks.is_empty() { return peaks; }
         }
     }
@@ -127,7 +129,7 @@ mod tests {
             ("remove_peak_above_precursormz", 1.0),
         ]);
         let mut reason = None;
-        let out = apply_filters(peaks, Some(100.0), &p, &mut reason);
+        let out = apply_filters(peaks, Some(100.0), 1, &p, &mut reason);
         assert!(out.is_empty());
         assert!(reason.unwrap().contains("number of peaks is below"));
     }
@@ -140,7 +142,7 @@ mod tests {
             ("keep_mz_in_range", 1.0), ("keep_mz_in_range_from_mz", 50.0), ("keep_mz_in_range_to_mz", 2000.0),
         ]);
         let mut reason = None;
-        assert!(apply_filters(peaks, None, &p, &mut reason).is_empty());
+        assert!(apply_filters(peaks, None, 1, &p, &mut reason).is_empty());
     }
 
     #[test]
@@ -152,7 +154,7 @@ mod tests {
             ("keep_mz_in_range", 1.0), ("keep_mz_in_range_from_mz", 50.0), ("keep_mz_in_range_to_mz", 200.0),
         ]);
         let mut reason = None;
-        let out = apply_filters(peaks, None, &p, &mut reason);
+        let out = apply_filters(peaks, None, 1, &p, &mut reason);
         assert_eq!(out, vec![(60.0, 0.25), (70.0, 1.0)]);
     }
 
@@ -178,8 +180,18 @@ mod tests {
         let peaks = vec![(50.0, 0.0), (300.0, 0.0)];
         let p = params(&[("remove_peak_above_precursormz", 1.0)]);
         let mut reason = None;
-        assert!(apply_filters(peaks, Some(100.0), &p, &mut reason).is_empty());
+        assert!(apply_filters(peaks, Some(100.0), 1, &p, &mut reason).is_empty());
         assert!(reason.is_none());
+    }
+
+    #[test]
+    fn multicharge_fragments_gardes_dans_le_pipeline() {
+        // [M+2H]2+ à m/z 300 : les fragments à 450 et 550 sont gardés (limite 605), 700 est retiré.
+        let peaks = vec![(100.0, 10.0), (450.0, 50.0), (550.0, 100.0), (700.0, 5.0)];
+        let p = params(&[("remove_peak_above_precursormz", 1.0)]);
+        let mut reason = None;
+        assert_eq!(apply_filters(peaks.clone(), Some(300.0), 2, &p, &mut reason).len(), 3);
+        assert_eq!(apply_filters(peaks, Some(300.0), 1, &p, &mut reason).len(), 1);
     }
 
     #[test]
@@ -195,7 +207,7 @@ mod tests {
             ("check_minimum_of_high_peaks_requiered_no_peaks", 2.0),
         ]);
         let mut reason = None;
-        let out = apply_filters(peaks, Some(120.0), &p, &mut reason);
+        let out = apply_filters(peaks, Some(120.0), 1, &p, &mut reason);
         assert_eq!(out.len(), 4);
         assert!(reason.is_none());
         assert_eq!(out.iter().map(|p| p.1).fold(0.0_f64, f64::max), 1.0);

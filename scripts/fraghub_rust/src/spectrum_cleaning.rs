@@ -121,8 +121,13 @@ pub fn spectrum_cleaning_processing(
                     let mut peaks = crate::peaks_filters::filters::remove_non_positive_peaks(spec_peaks);
                     peaks.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap_or(std::cmp::Ordering::Equal));
 
+                    // Charge du précurseur lue dans l'adduit normalisé ("[M+2H]2+" -> 2) ; 1 si l'adduit n'est pas lisible.
+                    let charge = valid_meta.get("PRECURSORTYPE")
+                        .and_then(|a| crate::adduct_mass_calculator::adduct_nmol_and_charge(a))
+                        .map_or(1, |(_, z)| z);
+
                     let mut peak_del_reason = None;
-                    peaks = crate::peaks_filters::filters::apply_filters(peaks, float_pmz, &parameters_dict, &mut peak_del_reason);
+                    peaks = crate::peaks_filters::filters::apply_filters(peaks, float_pmz, charge, &parameters_dict, &mut peak_del_reason);
 
                     if peaks.is_empty() {
                         let reason = peak_del_reason.unwrap_or_else(|| "spectrum deleted because peaks list is empty".to_string());
