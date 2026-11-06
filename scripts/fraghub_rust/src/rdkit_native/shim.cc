@@ -162,9 +162,11 @@ MolResult process_single(rust::Str clean_mol_rs, rust::Str ptype_rs, double prec
   const std::string ptype(ptype_rs.data(), ptype_rs.size());
   const AdductParams csv{adduct_known, adduct_mult, adduct_delta, adduct_charge};
   try {
-    std::unique_ptr<ROMol> mol = clean_mol.find("InChI=") != std::string::npos
-                                     ? mol_from_inchi(clean_mol)
-                                     : mol_from_smiles(clean_mol);
+    // boost::shared_ptr : le composant gardé au dessalage est repris tel que RDKit l'a créé, sans copie
+    // (copier une ROMol ici ne se lie pas sous Windows : RDKit n'y exporte pas ROMol::destroy).
+    boost::shared_ptr<ROMol> mol((clean_mol.find("InChI=") != std::string::npos
+                                      ? mol_from_inchi(clean_mol)
+                                      : mol_from_smiles(clean_mol)).release());
     if (!mol) return r;
 
     // --- Dessalage : structure à plusieurs composants (sel, contre-ion) ---
@@ -214,7 +216,7 @@ MolResult process_single(rust::Str clean_mol_rs, rust::Str ptype_rs, double prec
                 unsigned second_n = order.size() > 1 ? fragments[order[1]].n : 0;
                 if (second_n <= 4) chosen = order[0];
               }
-              if (chosen < fragments.size()) mol.reset(new ROMol(*fragments[chosen].m));
+              if (chosen < fragments.size()) mol = fragments[chosen].m;
             }
           }
         }
@@ -225,7 +227,7 @@ MolResult process_single(rust::Str clean_mol_rs, rust::Str ptype_rs, double prec
     try {
       if (RDKit::MolOps::getFormalCharge(*mol) != 0) {
         std::unique_ptr<ROMol> neutral(tools().uncharger.uncharge(*mol));
-        if (neutral && RDKit::MolOps::getFormalCharge(*neutral) == 0) mol = std::move(neutral);
+        if (neutral && RDKit::MolOps::getFormalCharge(*neutral) == 0) mol.reset(neutral.release());
       }
     } catch (...) {
     }
