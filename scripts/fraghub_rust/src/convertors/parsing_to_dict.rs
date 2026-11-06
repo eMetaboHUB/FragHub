@@ -1,7 +1,7 @@
 // src/convertors/parsing_to_dict.rs
 use pyo3::prelude::*;
 
-use crate::convertors::loaders::{load_spectrum_list_json, load_spectrum_list_json_2, load_spectrum_list_from_msp, load_spectrum_list_from_mgf};
+use crate::loaders::{load_spectrum_list_json, load_spectrum_list_json_2, load_spectrum_list_from_msp, load_spectrum_list_from_mgf};
 use crate::convertors::json_to_dict::json_to_dict_processing;
 use crate::convertors::msp_to_dict::msp_to_dict_processing;
 use crate::convertors::mgf_to_dict::mgf_to_dict_processing;

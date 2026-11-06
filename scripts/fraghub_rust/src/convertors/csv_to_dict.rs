@@ -6,7 +6,7 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 
 // Import du générateur de hash
-use crate::convertors::loaders::generate_file_hash;
+use crate::loaders::generate_file_hash;
 
 // 1. Détection du séparateur (comme dans votre Python)
 /// Détecte si le fichier CSV utilise des tabulations (\t) ou des points-virgules (;).

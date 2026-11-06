@@ -21,6 +21,7 @@ pub mod globals_vars;
 pub mod global_state;
 pub mod compound_db;
 pub mod loading_db;
+pub mod loaders;
 pub mod convertors;
 pub mod splash_generator;
 pub mod duplicatas_remover;
