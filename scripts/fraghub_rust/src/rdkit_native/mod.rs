@@ -47,7 +47,16 @@ mod ffi {
     unsafe extern "C++" {
         include!("fraghub_rust/src/rdkit_native/shim.h");
         fn init_rdkit();
-        fn process_single(clean_mol: &str, ptype: &str, precursormz: f64, has_mz: bool) -> MolResult;
+        fn process_single(
+            clean_mol: &str,
+            ptype: &str,
+            precursormz: f64,
+            has_mz: bool,
+            adduct_known: bool,
+            adduct_mult: i32,
+            adduct_delta: f64,
+            adduct_charge: i32,
+        ) -> MolResult;
         fn exact_mass(mol: &str, is_inchi: bool) -> f64;
     }
 }
@@ -112,7 +121,11 @@ fn py_float(s: &str) -> Option<f64> {
 pub fn process_single(clean_mol: &str, precursortype: &str, precursormz_str: &str) -> Vec<(&'static str, String)> {
     INIT.call_once(ffi::init_rdkit);
     let mz = py_float(precursormz_str);
-    let r = ffi::process_single(clean_mol, py_strip(precursortype), mz.unwrap_or(f64::NAN), mz.is_some());
+    let ptype = py_strip(precursortype);
+    // Adduit pour le dessalage : paramètres lus dans adduct_to_convert.csv (formes FragHub) ; à défaut,
+    // le code C++ cherche dans sa propre table.
+    let (known, mult, delta, charge) = adduct_params(ptype).map_or((false, 0, 0.0, 0), |(n, d, z)| (true, n, d, z));
+    let r = ffi::process_single(clean_mol, ptype, mz.unwrap_or(f64::NAN), mz.is_some(), known, mult, delta, charge);
     let mut out = Vec::with_capacity(6);
     if r.has_inchi { out.push(("INCHI", r.inchi)); }
     if r.has_inchikey { out.push(("INCHIKEY", r.inchikey)); }
@@ -121,6 +134,16 @@ pub fn process_single(clean_mol: &str, precursortype: &str, precursormz_str: &st
     if r.has_exactmass { out.push(("EXACTMASS", py_float_str(r.exactmass))); }
     if r.has_averagemass { out.push(("AVERAGEMASS", py_float_str(r.averagemass))); }
     out
+}
+
+/// (n molécules, différence de masse totale, charge) d'un adduit au format FragHub, d'après les tables
+/// chargées depuis adduct_to_convert.csv. None si l'adduit n'y est pas.
+fn adduct_params(ptype: &str) -> Option<(i32, f64, i32)> {
+    if ptype.is_empty() { return None; }
+    let state = crate::global_state::STATE.read().ok()?;
+    let delta = state.adduct_massdiff_dict_pos.get(ptype).or_else(|| state.adduct_massdiff_dict_neg.get(ptype)).copied()?;
+    let (n, z) = crate::adduct_mass_calculator::adduct_nmol_and_charge(ptype)?;
+    Some((n as i32, delta, z as i32))
 }
 
 /// Masse exacte d'une molécule, même choix que l'ancienne version Python de
@@ -400,4 +423,48 @@ mod tests {
         let r = compute_cache(mols, |_| Err::<(), &str>("stop"), || std::thread::sleep(Duration::from_millis(1)));
         assert_eq!(r.unwrap_err(), "stop");
     }
+
+    fn get<'a>(out: &'a [(&'static str, String)], k: &str) -> &'a str {
+        out.iter().find(|x| x.0 == k).map(|x| x.1.as_str()).unwrap_or("")
+    }
+
+    #[test]
+    fn inchikey_calculee_avant_le_tautomere_stereo_gardee() {
+        // L-ornithine : avant, le tautomère canonique effaçait la stéréo (clé ...-UHFFFAOYSA-N)
+        let out = process_single("NCCC[C@H](N)C(=O)O", "[M+H]+", "133.0972");
+        assert_eq!(get(&out, "INCHIKEY"), "AHLPHDHHMVZTML-BYPYZUCNSA-N");
+        assert_eq!(get(&out, "SMILES"), "NCCC[C@H](N)C(=O)O");
+    }
+
+    #[test]
+    fn tautomere_qui_change_la_molecule_ignore_pour_le_smiles() {
+        // Énone de stéroïde : RDKit déplaçait la double liaison (autre composé). Clé et SMILES de la molécule lue.
+        let smi = "C[C@]12CC[C@H]3[C@@H](CCC4=CC(=O)CC[C@]43C)[C@@H]1CC[C@@H]2O";
+        let out = process_single(smi, "[M+H]+", "289.2162");
+        assert_eq!(get(&out, "INCHIKEY"), "MUMGGOZAMZWBJJ-VIUKOLAESA-N");
+        assert_eq!(get(&out, "SMILES"), smi);
+    }
+
+    #[test]
+    fn tautomere_entre_heteroatomes_normalise_le_smiles() {
+        // Iminol -> amide : même InChI standard, le SMILES est écrit sous la forme normalisée
+        let a = process_single("CC(O)=NCC(=O)O", "", "");
+        let b = process_single("CC(=O)NCC(=O)O", "", "");
+        assert_eq!(get(&a, "SMILES"), "CC(=O)NCC(=O)O");
+        assert_eq!(get(&a, "SMILES"), get(&b, "SMILES"));
+        assert_eq!(get(&a, "INCHIKEY"), get(&b, "INCHIKEY"));
+    }
+
+    #[test]
+    fn sel_ecrit_en_inchi_dessale() {
+        // Sulfate d'agmatine (InChI à deux composants), mesuré en [M+H]+ à m/z 131,13 : on garde l'agmatine
+        let inchi = "InChI=1S/C5H14N4.H2O4S/c6-3-1-2-4-9-5(7)8;1-5(2,3)4/h1-4,6H2,(H4,7,8,9);(H2,1,2,3,4)";
+        let out = process_single(inchi, "[M+H]+", "131.13");
+        assert_eq!(get(&out, "INCHIKEY"), "QYPPJABKJHAVHS-UHFFFAOYSA-N");
+        assert_eq!(get(&out, "FORMULA"), "C5H14N4");
+        // Sans m/z précurseur : pas de dessalage (comportement inchangé)
+        let out = process_single(inchi, "[M+H]+", "");
+        assert!(get(&out, "FORMULA").contains('S'));
+    }
 }
+

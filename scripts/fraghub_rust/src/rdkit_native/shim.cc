@@ -1,11 +1,20 @@
-// Passerelle C++ vers RDKit pour FragHub (essai).
+// Passerelle C++ vers RDKit pour FragHub.
 //
-// Reproduit EXACTEMENT l'ancien rdkit_worker.process_single (scripts/rdkit_worker.py, supprimé), avec les mêmes
-// fonctions RDKit appelées dans le même ordre et avec les mêmes paramètres par défaut que
-// les fonctions Python correspondantes :
-//   Chem.MolFromSmiles / MolFromInchi, GetNumHeavyAtoms, CalcExactMolWt, GetFormalCharge,
-//   rdMolStandardize.Uncharger().uncharge, rdMolStandardize.TautomerEnumerator().Canonicalize,
-//   MolToInchi, MolToInchiKey, MolToSmiles, CalcMolFormula, MolWt.
+// Traitement d'une molécule (process_single), dans cet ordre :
+//   1. lecture de l'InChI ou du SMILES ;
+//   2. dessalage : si la structure a plusieurs composants (sel, contre-ion), on garde celui dont le m/z
+//      attendu pour l'adduit correspond au m/z précurseur (sinon le plus gros si les autres sont petits) ;
+//   3. neutralisation de la charge ;
+//   4. IDENTIFIANTS (InChI, InChIKey) et formule / masses, calculés sur cette molécule : InChI STANDARD de la
+//      molécule mesurée, comparable à PubChem et à la base interne ;
+//   5. tautomère canonique RDKit, en gardant la stéréochimie, utilisé SEULEMENT pour écrire le SMILES
+//      (SMILES normalisés). Si ce tautomère change l'InChI (ex. céto/énol, double liaison déplacée), il ne
+//      décrit plus la même molécule : on écrit alors le SMILES de la molécule de l'étape 3.
+//
+// Historique : jusqu'à la version 2.0.0 (dev), copie exacte de l'ancien rdkit_worker.py. Changements :
+// dessalage des InChI (avant : seulement des SMILES), adduits lus dans adduct_to_convert.csv, InChI/InChIKey
+// calculés AVANT le tautomère (avant : après, ce qui effaçait la stéréo de ~6 % des molécules et changeait
+// le squelette de ~2,6 %), tautomère sans perte de stéréo.
 // La mise en forme des masses en texte (str(float) en Python) est faite côté Rust.
 
 #include "fraghub_rust/src/rdkit_native/shim.h"
@@ -69,10 +78,18 @@ const std::map<std::string, Adduct> &adduct_table() {
   return t;
 }
 
-// calc_expected_mz : renvoie false si l'adduit est inconnu (None en Python).
-// `ptype` est déjà débarrassé de ses espaces (str(precursor_type).strip(), fait côté Rust).
-bool calc_expected_mz(double neutral_mass, const std::string &ptype, double &out) {
-  if (ptype.empty()) return false;  // "if not precursor_type: return None"
+// Adduit du spectre pour le dessalage. Si l'adduit est dans adduct_to_convert.csv, Rust passe ses
+// paramètres (n molécules, différence de masse totale, charge) ; sinon on cherche dans la table ci-dessus.
+struct AdductParams { bool known; int mult; double delta; int charge; };
+
+// calc_expected_mz : renvoie false si l'adduit est inconnu.
+// `ptype` est déjà débarrassé de ses espaces (fait côté Rust).
+bool calc_expected_mz(double neutral_mass, const std::string &ptype, const AdductParams &csv, double &out) {
+  if (csv.known && csv.charge > 0) {
+    out = (csv.mult * neutral_mass + csv.delta) / csv.charge;
+    return true;
+  }
+  if (ptype.empty()) return false;
   auto it = adduct_table().find(ptype);
   if (it == adduct_table().end()) return false;
   out = (it->second.mult * neutral_mass + it->second.delta) / it->second.charge;
@@ -99,10 +116,19 @@ std::unique_ptr<ROMol> mol_from_inchi(const std::string &s) {
   }
 }
 
-// Outils créés une fois par thread (en Python : une fois par molécule, résultat identique)
+// Réglages du tautomère canonique : par défaut, RDKit efface la stéréo des atomes et des doubles liaisons
+// qui changent d'un tautomère à l'autre (ex. carbone alpha des acides aminés) ; on la garde.
+RDKit::MolStandardize::CleanupParameters tautomer_params() {
+  RDKit::MolStandardize::CleanupParameters p;
+  p.tautomerRemoveSp3Stereo = false;
+  p.tautomerRemoveBondStereo = false;
+  return p;
+}
+
+// Outils créés une fois par thread
 struct Tools {
   RDKit::MolStandardize::Uncharger uncharger;
-  RDKit::MolStandardize::TautomerEnumerator enumerator;
+  RDKit::MolStandardize::TautomerEnumerator enumerator{tautomer_params()};
 };
 Tools &tools() {
   thread_local Tools t;
@@ -129,64 +155,66 @@ double exact_mass(rust::Str mol_rs, bool is_inchi) {
 }
 
 MolResult process_single(rust::Str clean_mol_rs, rust::Str ptype_rs, double precursormz,
-                         bool has_mz) {
+                         bool has_mz, bool adduct_known, int adduct_mult, double adduct_delta,
+                         int adduct_charge) {
   MolResult r{};
   const std::string clean_mol(clean_mol_rs.data(), clean_mol_rs.size());
   const std::string ptype(ptype_rs.data(), ptype_rs.size());
+  const AdductParams csv{adduct_known, adduct_mult, adduct_delta, adduct_charge};
   try {
     std::unique_ptr<ROMol> mol = clean_mol.find("InChI=") != std::string::npos
                                      ? mol_from_inchi(clean_mol)
                                      : mol_from_smiles(clean_mol);
     if (!mol) return r;
 
-    // --- Résolution des fragments (SMILES contenant un '.') ---
-    if (clean_mol.find('.') != std::string::npos && has_mz) {
-      struct Frag { std::unique_ptr<ROMol> m; unsigned n; double mass; };
-      std::vector<Frag> fragments;
-      size_t start = 0;
-      while (true) {  // clean_mol.split('.') (garde les morceaux vides, comme Python)
-        size_t dot = clean_mol.find('.', start);
-        std::string part = clean_mol.substr(start, dot == std::string::npos ? std::string::npos : dot - start);
-        auto m = mol_from_smiles(part);
-        if (m) {
-          unsigned n = m->getNumHeavyAtoms();
-          double mass = RDKit::Descriptors::calcExactMW(*m);
-          fragments.push_back({std::move(m), n, mass});
+    // --- Dessalage : structure à plusieurs composants (sel, contre-ion) ---
+    // Les composants sont séparés par RDKit sur la molécule lue : marche pour un SMILES ("A.B") comme pour
+    // un InChI ("InChI=1S/C20H24N2O2.H2O4S/..."). Avant, la chaîne était coupée au '.' et chaque morceau lu
+    // comme un SMILES : les InChI n'étaient jamais dessalés.
+    if (has_mz) {
+      std::vector<boost::shared_ptr<ROMol>> parts;
+      try { parts = RDKit::MolOps::getMolFrags(*mol, true); } catch (...) { parts.clear(); }
+      if (parts.size() > 1) {
+        struct Frag { boost::shared_ptr<ROMol> m; unsigned n; double mass; };
+        std::vector<Frag> fragments;
+        for (auto &p : parts) {
+          if (!p) continue;
+          fragments.push_back({p, p->getNumHeavyAtoms(), RDKit::Descriptors::calcExactMW(*p)});
         }
-        if (dot == std::string::npos) break;
-        start = dot + 1;
-      }
-      if (!fragments.empty()) {
-        unsigned long sum = 0, mn = fragments[0].n;
-        for (auto &f : fragments) { sum += f.n; if (f.n < mn) mn = f.n; }
-        if (sum > mn) {
-          double mass_full = RDKit::Descriptors::calcExactMW(*mol);
-          double mz_full;
-          bool full_matches = calc_expected_mz(mass_full, ptype, mz_full) &&
-                              std::fabs(mz_full - precursormz) <= 0.02;
-          if (!full_matches) {
-            std::vector<size_t> matching;
-            for (size_t i = 0; i < fragments.size(); ++i) {
-              double mz_f;
-              if (calc_expected_mz(fragments[i].mass, ptype, mz_f) &&
-                  std::fabs(mz_f - precursormz) <= 0.02)
-                matching.push_back(i);
-            }
-            if (matching.size() == 1) {
-              mol = std::move(fragments[matching[0]].m);
-            } else if (matching.size() > 1) {
-              // max(..., key=n) : le PREMIER fragment ayant le plus d'atomes lourds
-              size_t best = matching[0];
-              for (size_t i : matching) if (fragments[i].n > fragments[best].n) best = i;
-              mol = std::move(fragments[best].m);
-            } else {
-              // sorted(..., reverse=True) est stable : à égalité, l'ordre d'origine est gardé
-              std::vector<size_t> order(fragments.size());
-              for (size_t i = 0; i < order.size(); ++i) order[i] = i;
-              std::stable_sort(order.begin(), order.end(),
-                               [&](size_t a, size_t b) { return fragments[a].n > fragments[b].n; });
-              unsigned second_n = order.size() > 1 ? fragments[order[1]].n : 0;
-              if (second_n <= 4) mol = std::move(fragments[order[0]].m);
+        if (!fragments.empty()) {
+          unsigned long sum = 0, mn = fragments[0].n;
+          for (auto &f : fragments) { sum += f.n; if (f.n < mn) mn = f.n; }
+          if (sum > mn) {
+            double mass_full = RDKit::Descriptors::calcExactMW(*mol);
+            double mz_full;
+            bool full_matches = calc_expected_mz(mass_full, ptype, csv, mz_full) &&
+                                std::fabs(mz_full - precursormz) <= 0.02;
+            if (!full_matches) {
+              std::vector<size_t> matching;
+              for (size_t i = 0; i < fragments.size(); ++i) {
+                double mz_f;
+                if (calc_expected_mz(fragments[i].mass, ptype, csv, mz_f) &&
+                    std::fabs(mz_f - precursormz) <= 0.02)
+                  matching.push_back(i);
+              }
+              size_t chosen = fragments.size();
+              if (matching.size() == 1) {
+                chosen = matching[0];
+              } else if (matching.size() > 1) {
+                // le PREMIER fragment ayant le plus d'atomes lourds
+                size_t best = matching[0];
+                for (size_t i : matching) if (fragments[i].n > fragments[best].n) best = i;
+                chosen = best;
+              } else {
+                // aucun ne correspond : le plus gros, si les autres sont petits (<= 4 atomes lourds)
+                std::vector<size_t> order(fragments.size());
+                for (size_t i = 0; i < order.size(); ++i) order[i] = i;
+                std::stable_sort(order.begin(), order.end(),
+                                 [&](size_t a, size_t b) { return fragments[a].n > fragments[b].n; });
+                unsigned second_n = order.size() > 1 ? fragments[order[1]].n : 0;
+                if (second_n <= 4) chosen = order[0];
+              }
+              if (chosen < fragments.size()) mol.reset(new ROMol(*fragments[chosen].m));
             }
           }
         }
@@ -202,20 +230,26 @@ MolResult process_single(rust::Str clean_mol_rs, rust::Str ptype_rs, double prec
     } catch (...) {
     }
 
-    // --- Tautomère canonique ---
-    try {
-      std::unique_ptr<ROMol> canon(tools().enumerator.canonicalize(*mol));
-      if (canon) mol = std::move(canon);
-    } catch (...) {
-    }
-
-    // --- Sorties (chacune protégée, comme les try/except du Python) ---
-    try { RDKit::ExtraInchiReturnValues rv; r.inchi = rust::String(RDKit::MolToInchi(*mol, rv, "")); r.has_inchi = true; } catch (...) {}
+    // --- Identifiants, formule et masses : sur la molécule dessalée et neutralisée (avant le tautomère) ---
+    std::string inchi;
+    try { RDKit::ExtraInchiReturnValues rv; inchi = RDKit::MolToInchi(*mol, rv, ""); r.inchi = rust::String(inchi); r.has_inchi = true; } catch (...) {}
     try { r.inchikey = rust::String(RDKit::MolToInchiKey(*mol, "")); r.has_inchikey = true; } catch (...) {}
-    try { r.smiles = rust::String(RDKit::MolToSmiles(*mol)); r.has_smiles = true; } catch (...) {}
     try { r.formula = rust::String(RDKit::Descriptors::calcMolFormula(*mol)); r.has_formula = true; } catch (...) {}
     try { r.exactmass = RDKit::Descriptors::calcExactMW(*mol); r.has_exactmass = true; } catch (...) {}
     try { r.averagemass = RDKit::Descriptors::calcAMW(*mol); r.has_averagemass = true; } catch (...) {}
+
+    // --- SMILES normalisé : tautomère canonique (stéréo gardée), seulement s'il garde le même InChI ---
+    const ROMol *for_smiles = mol.get();
+    std::unique_ptr<ROMol> canon;
+    try {
+      canon.reset(tools().enumerator.canonicalize(*mol));
+      if (canon && r.has_inchi) {
+        RDKit::ExtraInchiReturnValues rv;
+        if (RDKit::MolToInchi(*canon, rv, "") == inchi) for_smiles = canon.get();
+      }
+    } catch (...) {
+    }
+    try { r.smiles = rust::String(RDKit::MolToSmiles(*for_smiles)); r.has_smiles = true; } catch (...) {}
   } catch (...) {
   }
   return r;

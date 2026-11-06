@@ -25,6 +25,10 @@ Key features:<br>
 - **Data standardization**: FragHub standardizes field names and values of MS spectra from various databases, ensuring data consistency and compatibility.![img_12.png](img_12.png)![img_7.png](img_7.png)
 - **Optional peak list filtering**: FragHub applies filters to peak lists to streamline them by retaining only essential data, significantly reducing data size without compromising relevance for analysis.
 - **Recalculation and normalization of chemical identifiers**: The program recalculates and normalizes chemical identifiers such as SMILES, InChI, and InChIKey, ensuring a uniform representation of molecular structures.
+  - Salts are removed (desalting): for a structure with several components (e.g. "quinine sulfate"), the component matching the precursor m/z is kept, since only that molecule is measured.
+  - Charges are neutralized when possible.
+  - **InChI and InChIKey** are the standard IUPAC identifiers of this desalted, neutralized molecule, so they can be compared with PubChem and other databases.
+  - **Output SMILES are normalized with RDKit**: they are written in the RDKit canonical tautomer form (stereochemistry kept), so that the same molecule is always written the same way. When the canonical tautomer would describe a different molecule (different InChI, e.g. keto/enol), the SMILES of the molecule as given is written instead. Output SMILES may therefore differ from the SMILES of the input files.
 - **Ontologies**: FragHub complete ontologic information from PubChem datas bases on Inchikey.
 - **Spectra organization**: FragHub separates spectra based on different experimental parameters such as polarity (positive/negative), chromatographic mode (LC/GC), and acquisition type (experimental/in silico), facilitating their use and subsequent analysis.![img_8.png](img_8.png)
 - **Compatibility with various analysis software**: Standardized spectra produced by FragHub are compatible with multiple analysis software, including MSdial, MZmine, and Flash Entropy Search, providing users with maximum flexibility in choosing analysis tools.

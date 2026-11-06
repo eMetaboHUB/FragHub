@@ -154,3 +154,17 @@ mamba create -p C:\Users\<name>\rdkit_cpp -c conda-forge librdkit-dev=2026.09.1 
 
 ### Calculation engine
 RDKit calculations are done in C++ only, directly from Rust (`scripts/fraghub_rust/src/rdkit_native`). The former Python engine (`rdkit_worker.py`) has been removed after its results were checked identical: RDKit Python is no longer needed, neither in the Python environment nor in the executable.
+
+Processing of one molecule (`shim.cc`, `process_single`), in this order:
+1. read the InChI (or the SMILES if there is no InChI);
+2. desalting: if the structure has several components, keep the one whose expected m/z for the spectrum adduct (from `datas/adduct_to_convert.csv`) matches the precursor m/z, otherwise the largest one if the others have at most 4 heavy atoms;
+3. charge neutralization (RDKit `Uncharger`);
+4. **InChI, InChIKey**, formula and masses of this molecule (standard identifiers);
+5. **SMILES**: RDKit canonical tautomer with stereochemistry kept (`tautomerRemoveSp3Stereo` and `tautomerRemoveBondStereo` set to false); if this tautomer has another InChI than step 4, the SMILES of step 3 is written instead.
+
+### Internal database
+The InChIKeys of the spectra are looked up in `datas/internal_databases.parquet` (PubChem completion, ontologies). For keys and SMILES to be computed the same way on both sides, the database must be re-normalized with the same processing whenever this processing (or the RDKit version) changes:
+```bash
+python -c "import fraghub_rust; print(fraghub_rust.renormalize_internal_database('datas/internal_databases.parquet', 'internal_databases_new.parquet'))"
+```
+It writes a new folder (the original database is not modified) and prints the counts: rows, rows with a structure, InChIKeys changed, SMILES changed, unreadable molecules, InChIKeys present on several rows. Then replace `datas/internal_databases.parquet` with the new folder. (On Windows, the RDKit DLL folder must be added first, as in `scripts/FragHub.py`.)

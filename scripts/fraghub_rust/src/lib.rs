@@ -44,6 +44,7 @@ pub mod rdkit_native;
 pub mod main_orchestrator;
 pub mod mz_correction;
 pub mod adduct_mass_calculator;
+pub mod database_renormalization;
 
 #[pymodule]
 fn fraghub_rust(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -54,6 +55,8 @@ fn fraghub_rust(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
 
     // --- Partie 1 : Chargement des bases de données ---
     m.add_function(wrap_pyfunction!(loading_db::load_internal_databases, m)?)?;
+    // Outil de maintenance : re-normalise les SMILES de la base interne (voir database_renormalization.rs)
+    m.add_function(wrap_pyfunction!(database_renormalization::renormalize_internal_database, m)?)?;
 
     // --- Projets et rapports ---
     m.add_function(wrap_pyfunction!(set_projects::reset_updates, m)?)?;
