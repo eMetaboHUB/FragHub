@@ -30,6 +30,35 @@ lazy_static! {
         m.insert("Cu", 62.92959772);
         m.insert("Mn", 54.9380451);
         m.insert("Co", 58.9331950);
+        // Ajoutés le 6 novembre 2026 : oligo-éléments, métaux lourds, médicaments et agents de contraste.
+        // Masse de l'isotope le plus abondant, valeurs NIST (« Atomic Weights and Isotopic Compositions »,
+        // mêmes valeurs que les 23 éléments ci-dessus, écart < 1e-6 Da), recoupées avec l'évaluation AME2020
+        // (écart < 1e-5 Da). Tc est absent : il n'a pas d'isotope stable.
+        m.insert("Al", 26.98153863);   // Al-27
+        m.insert("V", 50.9439595);     // V-51
+        m.insert("Cr", 51.9405075);    // Cr-52
+        m.insert("Ni", 57.9353429);    // Ni-58
+        m.insert("Ga", 68.9255736);    // Ga-69
+        m.insert("Ge", 73.9211778);    // Ge-74
+        m.insert("As", 74.9215965);    // As-75
+        m.insert("Rb", 84.911789738);  // Rb-85
+        m.insert("Sr", 87.9056121);    // Sr-88
+        m.insert("Mo", 97.9054082);    // Mo-98
+        m.insert("Ag", 106.905097);    // Ag-107
+        m.insert("Cd", 113.9033585);   // Cd-114
+        m.insert("Sn", 119.9021947);   // Sn-120
+        m.insert("Sb", 120.9038157);   // Sb-121
+        m.insert("Te", 129.9062244);   // Te-130
+        m.insert("Cs", 132.905451933); // Cs-133
+        m.insert("Ba", 137.9052472);   // Ba-138
+        m.insert("Gd", 157.9241039);   // Gd-158
+        m.insert("W", 183.9509312);    // W-184
+        m.insert("Pt", 194.9647911);   // Pt-195
+        m.insert("Au", 196.9665687);   // Au-197
+        m.insert("Hg", 201.970643);    // Hg-202
+        m.insert("Tl", 204.9744275);   // Tl-205
+        m.insert("Pb", 207.9766521);   // Pb-208
+        m.insert("Bi", 208.9803987);   // Bi-209
         m
     };
 
@@ -278,6 +307,16 @@ pub fn compute_mz(precursor_formula: &str) -> Option<f64> {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn masses_des_elements_ajoutes() {
+        // Valeurs de référence calculées avec pyteomics (masses NIST), indépendamment de cette table
+        let close = |f: &str, v: f64| (exact_mass_from_counts(&parse_formula(f)) - v).abs() < 1e-6;
+        assert!(close("PtCl2H6N2", 298.95559466));      // cisplatine
+        assert!(close("C5H11AsO2", 177.99750109));      // arsénobétaïne
+        assert!(close("C16H28GdN6O9", 606.11588040));   // gadotéridol
+        assert!(close("C2H6Hg", 232.01759319));         // diméthylmercure
+    }
+
     use super::*;
 
     const CAFFEINE: f64 = 194.080376; // masse monoisotopique neutre
