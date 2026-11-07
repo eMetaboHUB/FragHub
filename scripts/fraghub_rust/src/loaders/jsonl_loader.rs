@@ -49,7 +49,7 @@ pub fn load_spectrum_list_json_2(
     let mut total_consumed: u64 = 0;
     let mut last_update = Instant::now();
 
-    let injection_prefix = format!(r#"{{"filename":"{}","filehash":"{}","#, filename, file_hash);
+    let injection_prefix = format!(r#"{{"{}":"{}","{}":"{}","#, super::INJECTED_FILENAME, filename, super::INJECTED_FILEHASH, file_hash);
 
     loop {
         line.clear();

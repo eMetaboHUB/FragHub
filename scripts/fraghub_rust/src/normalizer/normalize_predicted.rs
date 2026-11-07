@@ -17,7 +17,7 @@ pub fn normalize_predicted(mut metadata_dict: HashMap<String, String>) -> HashMa
     }
 
     let comment = metadata_dict.get("COMMENT").cloned().unwrap_or_default();
-    let filename = metadata_dict.get("FILENAME").cloned().unwrap_or_default();
+    let filename = crate::globals_vars::input_filename(&metadata_dict).to_string();
     let name = metadata_dict.get("NAME").cloned().unwrap_or_default();
     let instrument_type = metadata_dict.get("INSTRUMENTTYPE").cloned().unwrap_or_default();
     // Toutes les lignes "Synon:" du fichier (SYNON n'en garde que la dernière), voir raw_metadata.rs

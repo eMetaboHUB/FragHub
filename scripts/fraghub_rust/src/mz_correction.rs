@@ -178,7 +178,7 @@ pub fn mz_correction_processing(
                     // Pas pour le GC (règle unique is_gc_spectrum) : un spectre GC-EI est par nature en masse nominale.
                     // Le crash-test ci-dessous reste appliqué : il n'utilise que les pics à 3 décimales ou plus.
                     let is_gc = crate::globals_vars::is_gc_spectrum(
-                        new_spec.metadata.get("FILENAME").map(|s| s.as_str()).unwrap_or(""),
+                        crate::globals_vars::input_filename(&new_spec.metadata),
                         new_spec.metadata.get("INSTRUMENTTYPE").map(|s| s.as_str()).unwrap_or(""),
                     );
                     if !is_gc && top.iter().all(|p| p.2 < 3) {

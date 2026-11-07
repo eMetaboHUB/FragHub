@@ -94,7 +94,7 @@ pub fn spectrum_cleaning_processing(
                 let metadata_opt = crate::normalizer::values_normalizer::normalize_values(meta.clone(), &mut deletion_reason, &context);
 
                 if let Some(mut valid_meta) = metadata_opt {
-                    let filename = valid_meta.get("FILENAME").cloned().unwrap_or_default();
+                    let filename = crate::globals_vars::input_filename(&valid_meta).to_string();
                     let instrument = valid_meta.get("INSTRUMENTTYPE").cloned().unwrap_or_default();
                     let is_gc = crate::globals_vars::is_gc_spectrum(&filename, &instrument);
 

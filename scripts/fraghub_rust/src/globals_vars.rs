@@ -20,7 +20,9 @@ pub static METADATA_STRIP_VALUE_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r
 
 pub static METADATA_FIELDS_NAME_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"^[\W_]+|[\W_]+$").unwrap());
 
-pub static METADATA_PATTERN_MGF: Lazy<Regex> = Lazy::new(|| Regex::new(r"([^:\n]*?)=\s*([^\n]*)(?:\n|$)").unwrap());
+// Après « = », seulement des espaces ou tabulations (avant : \s*, qui passait aussi la fin de ligne : un champ
+// vide "KEY=" prenait la ligne suivante comme valeur, et ce champ suivant était perdu).
+pub static METADATA_PATTERN_MGF: Lazy<Regex> = Lazy::new(|| Regex::new(r"([^:\n]*?)=[ \t]*([^\n]*)(?:\n|$)").unwrap());
 
 pub static METADATA_PATTERN_MSP: Lazy<Regex> = Lazy::new(|| Regex::new(r"([^:]*):(?: )?([^\n]*)(?:\n|$)").unwrap());
 
@@ -74,6 +76,16 @@ pub const ALL_SYNONS_KEY: &str = "ALL_SYNONS";
 pub const ALL_DATABASE_NAMES_KEY: &str = "ALL_DATABASE_NAMES";
 /// Séparateur des listes internes ci-dessus (caractère de contrôle, absent des fichiers).
 pub const INTERNAL_LIST_SEP: &str = "\u{1f}";
+/// Nom du fichier d'entrée lu par FragHub. FILENAME, lui, garde le nom du fichier de la base d'origine
+/// quand le spectre en donne un (MGF MSnLib "FILENAME=…mzML", MGF GNPS "FILENAME=…mgf", GNPS JSON
+/// "source_file"...), sinon le nom du fichier d'entrée. Les règles qui reconnaissent un fichier à son
+/// nom (spectres GC "_GC", bibliothèques in silico...) lisent celui-ci : voir input_filename().
+pub const INPUT_FILENAME_KEY: &str = "INPUT_FILENAME";
+
+/// Nom du fichier d'entrée d'un spectre (INPUT_FILENAME), ou FILENAME s'il manque.
+pub fn input_filename(metadata: &std::collections::HashMap<String, String>) -> &str {
+    metadata.get(INPUT_FILENAME_KEY).or_else(|| metadata.get("FILENAME")).map(|s| s.as_str()).unwrap_or("")
+}
 
 // Préfixe "InChI=" éventuel (y compris doublé, ex. "InChI=InChI=1S/...", vu dans MoNA), remplacé par un seul "InChI=".
 pub static REPAIR_INCHI_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i)^\s*(?:inchi=)*").unwrap());
@@ -173,6 +185,19 @@ pub static GNPS_COLLISION_ENERGY_EXTRACT_PATTERN: Lazy<Regex> = Lazy::new(|| Reg
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn regles_de_nom_de_fichier_sur_le_fichier_d_entree() {
+        // FILENAME = fichier de la base d'origine ; le suffixe "_GC" se lit sur le fichier d'entrée
+        let mut m = std::collections::HashMap::new();
+        m.insert("FILENAME".to_string(), "acquisition.mzML".to_string());
+        m.insert(INPUT_FILENAME_KEY.to_string(), "GMD_MSP_GC.msp".to_string());
+        assert_eq!(input_filename(&m), "GMD_MSP_GC.msp");
+        assert!(is_gc_spectrum(input_filename(&m), ""));
+        // Sans clé interne (spectre construit à la main, tests) : FILENAME
+        m.remove(INPUT_FILENAME_KEY);
+        assert_eq!(input_filename(&m), "acquisition.mzML");
+    }
 
     #[test]
     fn gc_reconnu_par_le_type_d_instrument_ou_le_nom_de_fichier() {

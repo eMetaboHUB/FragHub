@@ -41,7 +41,27 @@ pub fn repair_inchi(mut metadata_dict: HashMap<String, String>) -> HashMap<Strin
 ///
 /// # Returns
 /// * `HashMap<String, String>` : Le dictionnaire avec les descripteurs moléculaires aux bons endroits.
+/// Retire les espaces et les guillemets qui entourent une valeur ("\"InChI=1S/...\"" -> "InChI=1S/...").
+/// Cas réel (GNPS JSON) : un InChI écrit entre guillemets n'était plus reconnu comme InChI ; pris pour un
+/// SMILES, il remplaçait le vrai SMILES du spectre et l'InChI était vidé.
+fn strip_quotes(v: &str) -> &str {
+    let mut s = v.trim();
+    while s.len() >= 2 && ((s.starts_with('"') && s.ends_with('"')) || (s.starts_with('\'') && s.ends_with('\''))) {
+        s = s[1..s.len() - 1].trim();
+    }
+    s
+}
+
 pub fn repair_mol_descriptors(mut metadata_dict: HashMap<String, String>) -> HashMap<String, String> {
+    for key in ["SMILES", "INCHI", "INCHIKEY"] {
+        if let Some(v) = metadata_dict.get(key) {
+            let s = strip_quotes(v);
+            if s.len() != v.len() {
+                let s = s.to_string();
+                metadata_dict.insert(key.to_string(), s);
+            }
+        }
+    }
     // `.cloned()` crée une vraie copie de la String pour nous permettre de la manipuler.
     // `.unwrap_or_default()` renvoie une chaîne vide `""` si la clé n'existait pas (au lieu de crasher).
     let smiles = metadata_dict.get("SMILES").cloned().unwrap_or_default();
@@ -116,6 +136,19 @@ mod tests {
         m.insert("INCHI".to_string(), inchi.to_string());
         m.insert("INCHIKEY".to_string(), inchikey.to_string());
         m
+    }
+
+    #[test]
+    fn inchi_entre_guillemets_reconnu() {
+        // GNPS JSON (CCMSLIB00010152168) : INCHI écrit entre guillemets
+        let smiles = "C[C@H]1CN(Cc2ccc(CC(=O)N3CCC(Nc4cc(F)ccc4)CC3)cc2)CCN1";
+        let out = repair_mol_descriptors(meta(smiles, "\"InChI=1S/C25H33FN4O/c1-19-17-29\"", "RZKDEGZIFSJVNA-IBGZPJMESA-N"));
+        assert_eq!(out["SMILES"], smiles);
+        assert_eq!(out["INCHI"], "InChI=1S/C25H33FN4O/c1-19-17-29");
+        assert_eq!(out["INCHIKEY"], "RZKDEGZIFSJVNA-IBGZPJMESA-N");
+        // Valeur sans guillemets : inchangée
+        let out = repair_mol_descriptors(meta(smiles, "InChI=1S/C25H33FN4O/c1", ""));
+        assert_eq!(out["INCHI"], "InChI=1S/C25H33FN4O/c1");
     }
 
     #[test]

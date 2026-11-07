@@ -25,6 +25,7 @@ pub mod delete_no_smiles_no_inchi;
 pub mod normalize_ionization;
 pub mod normalize_instruments_and_resolution;
 pub mod normalize_adduct;
+pub mod normalize_name;
 pub mod normalize_ionmode;
 pub mod normalize_predicted; // <-- NOUVEAU
 pub mod normalize_ms_level; // <-- NOUVEAU

@@ -20,6 +20,13 @@ pub use jsonl_loader::load_spectrum_list_json_2;
 pub use msp_loader::load_spectrum_list_from_msp;
 pub use mgf_loader::load_spectrum_list_from_mgf;
 
+/// Clés ajoutées par les lecteurs JSON / JSONL en tête de chaque spectre : nom et empreinte du fichier.
+/// Préfixe à part pour ne jamais se confondre avec une clé du fichier (avant : "filename" et "filehash",
+/// remplacés par une clé "filename" présente dans le spectre).
+pub const INJECTED_PREFIX: &str = "__fraghub_";
+pub const INJECTED_FILENAME: &str = "__fraghub_filename";
+pub const INJECTED_FILEHASH: &str = "__fraghub_filehash";
+
 /// Gets the size of a file in bytes, converts it to a string, and returns the SHA-256 hash.
 ///
 /// Pour un développeur Python : La macro `#[pyfunction]` indique à PyO3 que cette fonction

@@ -76,7 +76,9 @@ pub fn load_spectrum_list_from_mgf(
                     last_update = Instant::now();
                 }
             }
-        } else {
+        } else if !trimmed.is_empty() {
+            // Lignes vides ignorées : certains fichiers en mettent entre les pics ; avant, la lecture des pics
+            // s'arrêtait à la première ligne vide (les pics suivants étaient perdus).
             buffer.push(trimmed.to_string());
         }
     }

@@ -58,7 +58,7 @@ pub fn check_for_bad_adduct(
     let adduct = metadata_dict.get("PRECURSORTYPE").cloned().unwrap_or_default();
     let ion_mode = metadata_dict.get("IONMODE").cloned().unwrap_or_default();
     let instrument_type = metadata_dict.get("INSTRUMENTTYPE").cloned().unwrap_or_default();
-    let filename = metadata_dict.get("FILENAME").cloned().unwrap_or_default();
+    let filename = crate::globals_vars::input_filename(&metadata_dict).to_string();
 
     // 1. Spectres GC (ionisation électronique) : pas d'adduit, c'est normal
     if crate::globals_vars::is_gc_spectrum(&filename, &instrument_type) && adduct.is_empty() {

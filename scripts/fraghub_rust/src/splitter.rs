@@ -44,7 +44,7 @@ pub fn master_splitter(
                     if ionmode == "positive" || ionmode == "negative" {
                         let is_pos = ionmode == "positive";
                         let instr = spec.metadata.get("INSTRUMENTTYPE").map(|s| s.as_str()).unwrap_or("");
-                        let filename = spec.metadata.get("FILENAME").map(|s| s.as_str()).unwrap_or("");
+                        let filename = crate::globals_vars::input_filename(&spec.metadata);
                         let is_gc = crate::globals_vars::is_gc_spectrum(filename, instr);
                         let pred = spec.metadata.get("PREDICTED").map(|s| s.as_str()).unwrap_or("").to_lowercase();
                         let is_insilico = pred == "true";

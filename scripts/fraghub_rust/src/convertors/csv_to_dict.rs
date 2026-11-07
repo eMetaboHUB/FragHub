@@ -152,6 +152,9 @@ pub fn load_and_parse_csv(
                 let mut spec = Spectrum::default();
 
                 spec.metadata.insert("FILENAME".to_string(), filename.clone());
+                // Nom du fichier d'entrée, gardé en interne (voir globals_vars::INPUT_FILENAME_KEY)
+                spec.metadata.insert(crate::globals_vars::INPUT_FILENAME_KEY.to_string(), filename.clone());
+                let mut original_filename: Option<String> = None;
                 spec.metadata.insert("FILEHASH".to_string(), file_hash.clone());
                 spec.metadata.insert("DATABASE_NAME".to_string(), db_name.clone());
 
@@ -165,12 +168,25 @@ pub fn load_and_parse_csv(
                     }
 
                     if let Some(mapped_key) = keys_dict.get(header) {
+                        // FILEHASH : celui du fichier CSV. FILENAME : une colonne remplie donne le nom du fichier
+                        // de la base d'origine (la première), sinon c'est le nom du fichier CSV
+                        if mapped_key == "FILEHASH" { continue; }
+                        if mapped_key == "FILENAME" {
+                            let v = field.trim();
+                            if original_filename.is_none() && !crate::globals_vars::EMPTY_PATTERN.is_match(v) {
+                                original_filename = Some(v.to_string());
+                            }
+                            continue;
+                        }
                         if keys_list.contains(mapped_key) {
                             // Unité portée par le nom de colonne (ex. RTINSECONDS -> "70.99 s"), comme pour MSP/MGF/JSON
                             spec.metadata.insert(mapped_key.clone(),
                                 crate::convertors::raw_metadata::keep_unit_from_key(header, field.to_string()));
                         }
                     }
+                }
+                if let Some(original) = original_filename {
+                    spec.metadata.insert("FILENAME".to_string(), original);
                 }
 
                 for key in &keys_list {

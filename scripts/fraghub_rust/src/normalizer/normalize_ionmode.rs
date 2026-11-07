@@ -68,7 +68,7 @@ pub fn ion_mode_from_adduct_if_missing(mut metadata_dict: HashMap<String, String
     if !known {
         let from_adduct = metadata_dict.get("PRECURSORTYPE").and_then(|a| ion_mode_from_adduct(a));
         let mode = from_adduct.or_else(|| {
-            let filename = metadata_dict.get("FILENAME").map(|s| s.as_str()).unwrap_or("");
+            let filename = crate::globals_vars::input_filename(&metadata_dict);
             let instrument_type = metadata_dict.get("INSTRUMENTTYPE").map(|s| s.as_str()).unwrap_or("");
             crate::globals_vars::is_gc_spectrum(filename, instrument_type).then_some("positive")
         });

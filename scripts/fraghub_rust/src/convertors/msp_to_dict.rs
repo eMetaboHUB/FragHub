@@ -33,6 +33,22 @@ fn parse_decimal(s: &str) -> f64 {
 
 /// Ligne de pics au format NIST : plusieurs pics séparés par « ; » (`85 999; 86 23; 87 5;`), chaque pic
 /// pouvant porter une annotation entre guillemets (`85 999 "C5H9+";`).
+/// Valeur qui commence par un autre nom de champ : "CCS: 123" dans la ligne "RETENTIONTIME: CCS: 123".
+static SECOND_FIELD: Lazy<Regex> = Lazy::new(|| Regex::new(r"^\s*([A-Za-z][A-Za-z0-9_]*):(?: )?(.*)$").unwrap());
+
+/// Si la valeur d'un champ MSP commence par un nom de champ CONNU (key_to_convert.csv) suivi de « : »,
+/// renvoie ce second champ et sa valeur. Un texte ordinaire ("PC 34:1", "12:30", une URL...) n'est pas coupé :
+/// son début n'est pas un nom de champ connu.
+fn second_field_on_line(value: &str, keys_dict: &HashMap<String, String>) -> Option<(String, String)> {
+    let caps = SECOND_FIELD.captures(value)?;
+    let key = caps.get(1)?.as_str();
+    if keys_dict.contains_key(&key.to_lowercase()) {
+        Some((key.to_string(), caps.get(2).map_or("", |m| m.as_str()).to_string()))
+    } else {
+        None
+    }
+}
+
 static NIST_PEAK_LINE: Lazy<Regex> = Lazy::new(|| {
     let num = r"-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?";
     let pair = format!(r#"{num}(?:[ \t]+|:){num}(?:[ \t]+"[^"]*")?"#);
@@ -57,6 +73,91 @@ fn split_nist_peak_lines(peaks_str: &str) -> Cow<'_, str> {
         }
     }
     Cow::Owned(out)
+}
+
+/// Analyse UN spectre MSP (texte venant du lecteur, avec FILENAME / FILEHASH en tête) : champs bruts
+/// (avant renommage) et pics. `None` si ce n'est pas un spectre lisible. Sortie de la boucle parallèle telle
+/// quelle, pour pouvoir la tester.
+fn parse_msp_spectrum(spectrum: &str, keys_dict: &HashMap<String, String>) -> Option<ParsedSpectrum> {
+    if let Some(caps) = crate::globals_vars::METADATA_PEAK_LIST_SPLIT_PATTERN_MSP.captures(spectrum) {
+        let metadata_str = caps.get(1).map_or("", |m| m.as_str());
+        let peaks_str = caps.get(2).map_or("", |m| m.as_str());
+
+        if !metadata_str.is_empty() && !peaks_str.is_empty() {
+            let mut metadata_matches = Vec::new();
+            for m in crate::globals_vars::METADATA_PATTERN_MSP.captures_iter(metadata_str) {
+                metadata_matches.push((m.get(1).unwrap().as_str().to_string(), m.get(2).unwrap().as_str().to_string()));
+            }
+
+            let mut new_matches = Vec::new();
+            let mut valid_comments = true;
+            for (k, v) in metadata_matches {
+                if crate::globals_vars::COMMENT_PATTERN.is_match(&k) {
+                    new_matches.push((k.clone(), v.clone()));
+                    if v.contains("=") {
+                        let mut found_sub = false;
+                        for sub_m in crate::globals_vars::SUB_FIELDS_PATTERN.captures_iter(&v) {
+                            let mut g_k = String::new();
+                            let mut g_v = String::new();
+                            let mut count = 0;
+                            for i in 1..sub_m.len() {
+                                if let Some(grp) = sub_m.get(i) {
+                                    if !grp.as_str().is_empty() {
+                                        if count == 0 { g_k = grp.as_str().to_string(); count += 1; }
+                                        else if count == 1 { g_v = grp.as_str().to_string(); count += 1; break; }
+                                    }
+                                }
+                            }
+                            if count == 2 {
+                                new_matches.push((g_k, g_v));
+                                found_sub = true;
+                            }
+                        }
+                        if !found_sub { valid_comments = false; break; }
+                    }
+                } else if let Some((k2, v2)) = second_field_on_line(&v, &keys_dict) {
+                    // Deux champs sur une même ligne (MSP GNPS : "RETENTIONTIME: CCS: ") : avant,
+                    // RETENTIONTIME valait "CCS: "
+                    new_matches.push((k, String::new()));
+                    new_matches.push((k2, v2));
+                } else { new_matches.push((k, v)); }
+            }
+
+            if valid_comments && !new_matches.is_empty() {
+                let mut metadata_dict = RawMetadata::default();
+                // Champs « computed » (MoNA : "computed SMILES=...", recalculés par MoNA) : gardés
+                // seulement à défaut de la valeur d'origine, comme en JSON (avant : écartés)
+                let mut computed: Vec<(String, String)> = Vec::new();
+                for (k_raw, v_raw) in new_matches {
+                    let is_computed = crate::globals_vars::COMPUTED_PATTERN.is_match(&k_raw);
+                    let k_raw = if is_computed { crate::globals_vars::COMPUTED_PATTERN.replace_all(&k_raw, "").into_owned() } else { k_raw };
+                    let k = crate::globals_vars::METADATA_FIELDS_NAME_PATTERN.replace_all(&k_raw, "").to_lowercase().trim().to_string();
+                    let v = crate::globals_vars::METADATA_STRIP_VALUE_PATTERN.replace_all(&v_raw, "").to_string();
+                    if is_computed {
+                        computed.push((k, v));
+                    } else {
+                        metadata_dict.insert(k, v);
+                    }
+                }
+                for (k, v) in computed {
+                    metadata_dict.insert_if_absent(k, v);
+                }
+
+                let mut peaks_array = Vec::new();
+                let peaks_str = split_nist_peak_lines(peaks_str);
+                for p in crate::globals_vars::PEAK_LIST_SPLIT_PATTERN.captures_iter(&peaks_str) {
+                    let mz = parse_decimal(p.get(1).unwrap().as_str());
+                    let int = parse_decimal(p.get(2).unwrap().as_str());
+                    peaks_array.push((mz, int)); // ✅ TUPLE AU LIEU D'UN VEC
+                }
+
+                if !peaks_array.is_empty() {
+                    return Some(ParsedSpectrum { metadata: metadata_dict, peaks: peaks_array });
+                }
+            }
+        }
+    }
+    None
 }
 
 /// Fonction principale de parsing MSP via Rayon.
@@ -105,70 +206,7 @@ pub fn msp_to_dict_processing(
     for chunk in rust_strings.chunks(chunk_size) {
 
         let parsed_chunk: Vec<ParsedSpectrum> = py.allow_threads(|| {
-            chunk.par_iter().filter_map(|spectrum| {
-                if let Some(caps) = crate::globals_vars::METADATA_PEAK_LIST_SPLIT_PATTERN_MSP.captures(spectrum) {
-                    let metadata_str = caps.get(1).map_or("", |m| m.as_str());
-                    let peaks_str = caps.get(2).map_or("", |m| m.as_str());
-
-                    if !metadata_str.is_empty() && !peaks_str.is_empty() {
-                        let mut metadata_matches = Vec::new();
-                        for m in crate::globals_vars::METADATA_PATTERN_MSP.captures_iter(metadata_str) {
-                            metadata_matches.push((m.get(1).unwrap().as_str().to_string(), m.get(2).unwrap().as_str().to_string()));
-                        }
-
-                        let mut new_matches = Vec::new();
-                        let mut valid_comments = true;
-                        for (k, v) in metadata_matches {
-                            if crate::globals_vars::COMMENT_PATTERN.is_match(&k) {
-                                new_matches.push((k.clone(), v.clone()));
-                                if v.contains("=") {
-                                    let mut found_sub = false;
-                                    for sub_m in crate::globals_vars::SUB_FIELDS_PATTERN.captures_iter(&v) {
-                                        let mut g_k = String::new();
-                                        let mut g_v = String::new();
-                                        let mut count = 0;
-                                        for i in 1..sub_m.len() {
-                                            if let Some(grp) = sub_m.get(i) {
-                                                if !grp.as_str().is_empty() {
-                                                    if count == 0 { g_k = grp.as_str().to_string(); count += 1; }
-                                                    else if count == 1 { g_v = grp.as_str().to_string(); count += 1; break; }
-                                                }
-                                            }
-                                        }
-                                        if count == 2 {
-                                            new_matches.push((g_k, g_v));
-                                            found_sub = true;
-                                        }
-                                    }
-                                    if !found_sub { valid_comments = false; break; }
-                                }
-                            } else { new_matches.push((k, v)); }
-                        }
-
-                        if valid_comments && !new_matches.is_empty() {
-                            let mut metadata_dict = RawMetadata::default();
-                            for (k_raw, v_raw) in new_matches.into_iter().filter(|(k, _)| !crate::globals_vars::COMPUTED_PATTERN.is_match(k)) {
-                                let k = crate::globals_vars::METADATA_FIELDS_NAME_PATTERN.replace_all(&k_raw, "").to_lowercase().trim().to_string();
-                                let v = crate::globals_vars::METADATA_STRIP_VALUE_PATTERN.replace_all(&v_raw, "").to_string();
-                                metadata_dict.insert(k, v);
-                            }
-
-                            let mut peaks_array = Vec::new();
-                            let peaks_str = split_nist_peak_lines(peaks_str);
-                            for p in crate::globals_vars::PEAK_LIST_SPLIT_PATTERN.captures_iter(&peaks_str) {
-                                let mz = parse_decimal(p.get(1).unwrap().as_str());
-                                let int = parse_decimal(p.get(2).unwrap().as_str());
-                                peaks_array.push((mz, int)); // ✅ TUPLE AU LIEU D'UN VEC
-                            }
-
-                            if !peaks_array.is_empty() {
-                                return Some(ParsedSpectrum { metadata: metadata_dict, peaks: peaks_array });
-                            }
-                        }
-                    }
-                }
-                None
-            }).collect()
+            chunk.par_iter().filter_map(|spectrum| parse_msp_spectrum(spectrum, &keys_dict)).collect()
         });
 
         for parsed in parsed_chunk {
@@ -200,6 +238,38 @@ pub fn msp_to_dict_processing(
 mod tests {
     use super::parse_decimal;
     use super::split_nist_peak_lines;
+    use super::parse_msp_spectrum;
+    use std::collections::HashMap;
+
+    fn mapped(spectrum: &str, keys: &[(&str, &str)]) -> HashMap<String, String> {
+        let k: HashMap<String, String> = keys.iter().map(|(a, b)| (a.to_string(), b.to_string())).collect();
+        let parsed = parse_msp_spectrum(spectrum, &k).expect("spectre lu");
+        let mut out = HashMap::new();
+        parsed.metadata.map_into(&k, |_| true, &mut out);
+        out
+    }
+
+    #[test]
+    fn mona_msp_computed_en_repli_comme_le_json() {
+        // Extrait réel du MSP MoNA (WA002994) : SMILES d'origine et SMILES / InChI calculés dans Comments
+        let spec = "FILENAME: mona.msp\nFILEHASH: h\nName: Cefuroxime\nDB#: WA002994\nComments: \"SMILES=CO/N=C(/C1=CC=CO1)\\C(=O)N\" \"computed SMILES=O=C(O)C1=C(COC(=N)O)\" \"computed InChI=InChI=1S/C16H16N4O8S/calcule\"\nNum Peaks: 2\n100 3.1\n101 1.2\n";
+        let out = mapped(spec, &[("smiles", "SMILES"), ("inchi", "INCHI"), ("name", "NAME"), ("db", "SPECTRUMID")]);
+        assert_eq!(out["SMILES"], "CO/N=C(/C1=CC=CO1)\\C(=O)N");
+        assert_eq!(out["INCHI"], "InChI=1S/C16H16N4O8S/calcule");
+        assert_eq!(out["SPECTRUMID"], "WA002994");
+    }
+
+    #[test]
+    fn deux_champs_sur_une_ligne() {
+        // MSP GNPS : "RETENTIONTIME: CCS: " ; puis texte ordinaire avec « : » : pas coupé
+        let spec = "FILENAME: gnps.msp\nNAME: PC 34:1\nRETENTIONTIME: CCS: 189.9\nCOMMENTS: a\nNum Peaks: 1\n100 1\n";
+        let out = mapped(spec, &[("retentiontime", "RT"), ("ccs", "COLLISIONALCROSSSECTION"), ("name", "NAME")]);
+        assert_eq!(out["RT"], "");
+        assert_eq!(out["COLLISIONALCROSSSECTION"], "189.9");
+        assert_eq!(out["NAME"], "PC 34:1");
+        let out = mapped("FILENAME: a.msp\nNAME: Truc\nRETENTIONTIME: 5.2\nNum Peaks: 1\n100 1\n", &[("retentiontime", "RT")]);
+        assert_eq!(out["RT"], "5.2");
+    }
 
     fn peaks(s: &str) -> Vec<(String, String)> {
         let s = split_nist_peak_lines(s);

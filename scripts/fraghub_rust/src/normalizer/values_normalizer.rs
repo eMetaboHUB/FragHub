@@ -34,7 +34,7 @@ pub fn normalize_values(
 
     // 4. Standardise le statut in-silico (prédit). AVANT la normalisation des instruments, pour lire INSTRUMENTTYPE
     //    tel qu'il est dans le fichier (ex. LipidBlast : "in-silico QTOF"). Les étapes suivantes ne lisent ni ne
-    //    modifient COMMENT, NAME, FILENAME et PREDICTED.
+    //    modifient COMMENT, FILENAME et PREDICTED ; seule l'étape 8 modifie NAME (fin du nom : énergie, InChIKey, adduit).
     metadata_dict = super::normalize_predicted::normalize_predicted(metadata_dict);
     // Liste interne de toutes les lignes "Synon:", lue seulement par normalize_predicted
     metadata_dict.remove(crate::globals_vars::ALL_SYNONS_KEY);
@@ -49,7 +49,11 @@ pub fn normalize_values(
     //    écrit sans charge la prend du mode d'ionisation. Ni l'étape 5 ni l'étape 6 ne lisent IONMODE.
     metadata_dict = super::normalize_ionmode::normalize_ion_mode(metadata_dict);
 
-    // 8. Normalise le type de précurseur (adduct)
+    // 8. Nom : retire l'énergie et l'InChIKey écrites à la fin (MS-DIAL : "Piperine; CE0; MXXW…-N").
+    //    Adduit vide : lu à la fin du nom s'il y est écrit (MGF GNPS : "Hectochlorin M+Na"), puis
+    //    normalisation du type de précurseur (adduct)
+    metadata_dict = super::normalize_name::clean_name_suffixes(metadata_dict);
+    metadata_dict = super::normalize_adduct::adduct_from_name_if_missing(metadata_dict, context);
     metadata_dict = super::normalize_adduct::normalize_adduct(metadata_dict, context);
 
     // 9. Mode d'ionisation absent ou illisible : déduit du signe de l'adduit ("[M+H]+" -> positive)

@@ -48,6 +48,7 @@ accession;spectrumid
 adduct;precursortype
 authors;authors
 averagemass;averagemass
+ccs;collisionalcrosssection
 ch$compound_class;compoundclass
 ch$exact_mass;parentmass
 ch$formula;formula
@@ -74,6 +75,7 @@ colenergy;collisionenergy
 collision energy;collisionenergy
 collision energy;collisionenergy
 collision_energy;collisionenergy
+collision_energy_1;collisionenergy
 collision_gas;collisiongas
 collision-energy-level;collisionenergy
 collision-energy-voltage;collisionenergy
@@ -113,25 +115,34 @@ date;recorddate
 db;spectrumid
 db#;spectrumid
 dbid;spectrumid
+dissociation method;fragmentationmethode
 exact_mass;exactmass
 exactmass;exactmass
 filename;filename
 filehash;filehash
 formula;formula
+formula_inchi;formula
+formula_smiles;formula
 fraghubid;fraghubid
 fragmenation_method;fragmentationmethode
+fragmentation_method;fragmentationmethode
 fragmentationmethode;fragmentationmethode
 inchi;inchi
 inchiaux;inchiaux
 inchikey;inchikey
+inchikey_inchi;inchikey
+inchikey_smiles;inchikey
 instrument;instrument
 instrument type;instrumenttype
 instrument_type;instrumenttype
 instrument-type;instrumenttype
 instrumenttype;instrumenttype
+ion source;ionization
+ion type;precursortype
 ion_mode;ionmode
 ion_source;ionization
 ionimethod;ionization
+ionization;ionization
 ionization mode;ionmode
 ionization-mode;ionmode
 ionmode;ionmode
@@ -160,7 +171,7 @@ ms$focused_ion:base_peak_intensity;basepeakintensity
 ms$focused_ion:derivative_form;derivativeformula
 ms$focused_ion:derivative_mass;derivativemass
 ms$focused_ion:derivative_type;derivativetype
-ms$focused_ion:ion_type;iontype
+ms$focused_ion:ion_type;precursortype
 ms$focused_ion:isolation_width;isolationwindowtargetmz
 ms$focused_ion:isolation_window_lower_offset;isolationwindowloweroffset
 ms$focused_ion:isolation_window_upper_offset;isolationwindowupperoffset
@@ -227,6 +238,8 @@ sample_inlet;sampleinlet
 scans;scans
 seq;peptidesequence
 smiles;smiles
+source file;filename
+source_file;filename
 source_instrument;instrumenttype
 sp$lineage;organismlineage
 sp$link;samplelink

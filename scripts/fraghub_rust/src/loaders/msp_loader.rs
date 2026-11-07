@@ -6,8 +6,48 @@ use std::io::{BufRead, BufReader};
 use std::path::Path;
 use std::time::{Duration, Instant};
 use regex::Regex;
+use once_cell::sync::Lazy;
 
 use super::generate_file_hash;
+
+/// Ligne de pic : deux nombres séparés par des espaces, une tabulation ou « : » (suivis éventuellement d'une
+/// annotation ou d'autres pics au format NIST).
+static PEAK_LINE: Lazy<Regex> = Lazy::new(|| Regex::new(r"^-?\d+(?:[.,]\d+)?(?:[Ee][+-]?\d+)?(?:[ \t]+|:)-?\d+").unwrap());
+
+/// Regroupe les blocs de lignes (séparés par des lignes vides) en spectres.
+///
+/// Un bloc qui ne contient QUE des lignes de pics est la suite du spectre précédent : certains fichiers
+/// (ex. MoNA, MoNA_0015754) mettent une ligne vide entre les pics. Avant, le spectre s'arrêtait à la première
+/// ligne vide (il perdait ses autres pics) et chaque pic suivant devenait un faux spectre, rejeté. Un fichier
+/// sans ce défaut donne exactement les mêmes spectres qu'avant.
+#[derive(Default)]
+struct BlockJoiner {
+    pending: String,
+}
+
+impl BlockJoiner {
+    /// Reçoit le bloc qui vient de finir (et le vide) ; renvoie le spectre précédent s'il est terminé.
+    fn push(&mut self, body: &mut String) -> Option<String> {
+        if body.is_empty() {
+            return None;
+        }
+        if !self.pending.is_empty() && body.split('\n').all(|l| PEAK_LINE.is_match(l)) {
+            self.pending.push('\n');
+            self.pending.push_str(body);
+            body.clear();
+            return None;
+        }
+        let done = (!self.pending.is_empty()).then(|| std::mem::take(&mut self.pending));
+        std::mem::swap(&mut self.pending, body);
+        body.clear();
+        done
+    }
+
+    /// Dernier spectre du fichier.
+    fn finish(self) -> Option<String> {
+        (!self.pending.is_empty()).then_some(self.pending)
+    }
+}
 
 // ----------------------------------------------------------------------
 // MSP FORMAT
@@ -77,6 +117,7 @@ pub fn load_spectrum_list_from_msp(
     let replacement = format!("FILENAME: {}\nFILEHASH: {}\n", filename, file_hash);
 
     let mut line = String::with_capacity(1024);
+    let mut joiner = BlockJoiner::default();
     loop {
         line.clear();
         let bytes_read = reader.read_line(&mut line)?;
@@ -86,8 +127,9 @@ pub fn load_spectrum_list_from_msp(
         let trimmed = line.trim();
         if trimmed.is_empty() {
             if !body.is_empty() {
-                spectrum_list.push(assemble_msp_spectrum(&filename, &replacement, &re, &body));
-                body.clear();
+                if let Some(done) = joiner.push(&mut body) {
+                    spectrum_list.push(assemble_msp_spectrum(&filename, &replacement, &re, &done));
+                }
 
                 if last_update.elapsed() >= Duration::from_millis(50) {
                     let current_mb = total_consumed / (1024 * 1024);
@@ -104,8 +146,11 @@ pub fn load_spectrum_list_from_msp(
         }
     }
 
-    if !body.is_empty() {
-        spectrum_list.push(assemble_msp_spectrum(&filename, &replacement, &re, &body));
+    if let Some(done) = joiner.push(&mut body) {
+        spectrum_list.push(assemble_msp_spectrum(&filename, &replacement, &re, &done));
+    }
+    if let Some(done) = joiner.finish() {
+        spectrum_list.push(assemble_msp_spectrum(&filename, &replacement, &re, &done));
     }
 
     if let Some(cb) = &progress_callback { let _ = cb.call1(py, (total_mb,)); }
@@ -116,7 +161,49 @@ pub fn load_spectrum_list_from_msp(
 #[cfg(test)]
 mod tests {
     use super::assemble_msp_spectrum;
+    use super::BlockJoiner;
     use regex::Regex;
+
+    /// Découpe un texte MSP comme le lecteur (lignes vides = fin de bloc), avec regroupement des blocs.
+    fn spectra(text: &str) -> Vec<String> {
+        let mut out = Vec::new();
+        let mut j = BlockJoiner::default();
+        let mut body = String::new();
+        for line in text.lines() {
+            let t = line.trim();
+            if t.is_empty() {
+                if let Some(d) = j.push(&mut body) { out.push(d); }
+            } else {
+                if !body.is_empty() { body.push('\n'); }
+                body.push_str(t);
+            }
+        }
+        if let Some(d) = j.push(&mut body) { out.push(d); }
+        if let Some(d) = j.finish() { out.push(d); }
+        out
+    }
+
+    #[test]
+    fn pics_separes_par_des_lignes_vides_rattaches_au_spectre() {
+        // Cas réel du MSP MoNA (MoNA_0015754) : une ligne vide entre chaque pic
+        let t = "Name: A\nDB#: MoNA_0015754\nNum Peaks: 3\n147.0706 1.409837\n\n148.0828 3.317018\n\n172.0348 1.410634\n\nName: B\nNum Peaks: 1\n100 1\n";
+        assert_eq!(spectra(t), vec![
+            "Name: A\nDB#: MoNA_0015754\nNum Peaks: 3\n147.0706 1.409837\n148.0828 3.317018\n172.0348 1.410634".to_string(),
+            "Name: B\nNum Peaks: 1\n100 1".to_string(),
+        ]);
+        // Métadonnées puis pics après une ligne vide
+        assert_eq!(spectra("Name: C\nNum Peaks: 2\n\n85 999; 86 23;\n87\t5 \"ann\"\n"),
+                   vec!["Name: C\nNum Peaks: 2\n85 999; 86 23;\n87\t5 \"ann\"".to_string()]);
+    }
+
+    #[test]
+    fn fichier_sans_ce_defaut_inchange() {
+        let t = "Name: A\nNum Peaks: 1\n100 1\n\n\nName: B\nComments: \"x=1\"\nNum Peaks: 2\n100 1\n101 2\n\nName: C\n50 2\n";
+        assert_eq!(spectra(t), vec!["Name: A\nNum Peaks: 1\n100 1".to_string(),
+            "Name: B\nComments: \"x=1\"\nNum Peaks: 2\n100 1\n101 2".to_string(), "Name: C\n50 2".to_string()]);
+        // Un bloc de pics en tête de fichier (rien avant) reste un bloc à part
+        assert_eq!(spectra("100 1\n\nName: A\n100 1\n"), vec!["100 1".to_string(), "Name: A\n100 1".to_string()]);
+    }
 
     /// Copie exacte de l'ancien assemblage (buffer de lignes + join + regex + trim_end).
     fn ancien(filename: &str, file_hash: &str, lines: &[&str]) -> String {
