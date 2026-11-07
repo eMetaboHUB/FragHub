@@ -193,6 +193,59 @@ pub struct Progress {
 /// Seuil au-delà duquel une molécule est signalée comme lente (affichage et _molecules_lentes.tsv).
 const SLOW_SECS: f64 = 60.0;
 
+/// Au-delà de ce nombre d'atomes lourds (tous les atomes sauf H), une molécule est gardée pour la fin :
+/// le tautomère des très grosses molécules (porphyrines en chaîne, nanographènes, foldamères de plus de
+/// 200 atomes...) peut prendre des heures, et douze d'entre elles occupaient tous les cœurs pendant que le
+/// reste de la base attendait. Réglable par la variable d'environnement FRAGHUB_RENORM_BIG_ATOMS.
+/// Ne change que l'ORDRE du calcul : le résultat de chaque molécule est le même.
+const BIG_ATOMS_DEFAULT: usize = 100;
+
+fn big_atoms_threshold() -> usize {
+    std::env::var("FRAGHUB_RENORM_BIG_ATOMS").ok().and_then(|v| v.trim().parse().ok()).unwrap_or(BIG_ATOMS_DEFAULT)
+}
+
+/// Nombre d'atomes lourds d'une molécule, lu dans la formule de l'InChI ("InChI=1S/C216H184N16O8/..." -> 240 ;
+/// "C10H12.2ClH" -> 10 + 2). Pour un SMILES : nombre de symboles d'atomes autres que H (estimation suffisante
+/// pour trier).
+fn heavy_atoms(target: &str) -> usize {
+    if let Some(rest) = target.strip_prefix("InChI=") {
+        let formula = rest.split('/').nth(1).unwrap_or("");
+        return formula.split('.').map(|comp| {
+            let digits: String = comp.chars().take_while(|c| c.is_ascii_digit()).collect();
+            let mult: usize = digits.parse().unwrap_or(1);
+            let body = &comp[digits.len()..];
+            let mut n = 0usize;
+            let chars: Vec<char> = body.chars().collect();
+            let mut i = 0;
+            while i < chars.len() {
+                if chars[i].is_ascii_uppercase() {
+                    let mut sym = chars[i].to_string();
+                    i += 1;
+                    while i < chars.len() && chars[i].is_ascii_lowercase() { sym.push(chars[i]); i += 1; }
+                    let mut num = String::new();
+                    while i < chars.len() && chars[i].is_ascii_digit() { num.push(chars[i]); i += 1; }
+                    if sym != "H" { n += num.parse::<usize>().unwrap_or(1); }
+                } else {
+                    i += 1;
+                }
+            }
+            n * mult
+        }).sum();
+    }
+    // SMILES : majuscules (C, N, O, Cl, Br...) et atomes aromatiques (c, n, o, s, p, b), sauf H
+    let b = target.as_bytes();
+    let mut n = 0;
+    for (i, &c) in b.iter().enumerate() {
+        let prev_upper = i > 0 && (b[i - 1] == b'C' || b[i - 1] == b'B'); // "Cl", "Br" : une seule unité
+        match c {
+            b'A'..=b'Z' if c != b'H' => n += 1,
+            b'c' | b'n' | b'o' | b's' | b'p' | b'b' if !prev_upper => n += 1,
+            _ => {}
+        }
+    }
+    n
+}
+
 struct Part {
     name: String,
     path: std::path::PathBuf,
@@ -289,14 +342,27 @@ pub fn renormalize_database(
         });
     }
 
-    // --- File d'attente : fichiers dans l'ordre, molécules les plus longues d'abord dans chaque fichier ---
+    // --- File d'attente : d'abord toutes les molécules ordinaires (fichiers dans l'ordre, les plus longues
+    //     d'abord dans chaque fichier), puis les très grosses molécules de toute la base, de la plus petite à la
+    //     plus grosse (les fichiers qui en ont peu sont écrits plus tôt) ---
+    let big = big_atoms_threshold();
     let mut queue: Vec<(usize, usize)> = Vec::new();
+    let mut big_queue: Vec<(usize, usize, usize)> = Vec::new();
     for (p, part) in parts.iter().enumerate() {
         let res = part.results.lock().unwrap();
-        let mut rows: Vec<usize> = (0..part.targets.len()).filter(|&i| part.targets[i].is_some() && res[i].is_none()).collect();
+        let mut rows: Vec<usize> = Vec::new();
+        for i in (0..part.targets.len()).filter(|&i| part.targets[i].is_some() && res[i].is_none()) {
+            let atoms = heavy_atoms(part.targets[i].as_ref().unwrap());
+            if atoms > big { big_queue.push((atoms, p, i)); } else { rows.push(i); }
+        }
         rows.sort_by(|&a, &b| part.targets[b].as_ref().unwrap().len().cmp(&part.targets[a].as_ref().unwrap().len()));
         queue.extend(rows.into_iter().map(|r| (p, r)));
     }
+    if !big_queue.is_empty() {
+        log(&format!("{} très grosses molécules (plus de {big} atomes lourds) gardées pour la fin", big_queue.len()));
+    }
+    big_queue.sort();
+    queue.extend(big_queue.into_iter().map(|(_, p, r)| (p, r)));
     let todo = queue.len();
     let workers = rayon::current_num_threads().max(1);
     // État partagé avec le thread de calcul. Ce thread n'est pas attendu à l'arrêt (Ctrl+C) : une molécule
@@ -616,6 +682,17 @@ mod tests {
         let mut f = fs::File::open(dst.join("part_0000.parquet")).unwrap();
         assert!(ParquetReader::new(&mut f).finish().unwrap().equals_missing(&direct));
         let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn atomes_lourds_et_grosses_molecules_a_la_fin() {
+        assert_eq!(heavy_atoms("InChI=1S/C216H184N16O8/c1-137"), 240);
+        assert_eq!(heavy_atoms("InChI=1S/C10H12.2ClH/c1"), 12);
+        assert_eq!(heavy_atoms("InChI=1S/H2O/h1H2"), 1);
+        assert_eq!(heavy_atoms("InChI=1S/C5H12O5/c6-1"), 10);
+        assert_eq!(heavy_atoms("OCC(O)C(O)C(O)CO"), 10);
+        assert_eq!(heavy_atoms("c1ccccc1Cl"), 7);
+        assert_eq!(heavy_atoms("[Na+].[Cl-]"), 2);
     }
 
     #[test]
