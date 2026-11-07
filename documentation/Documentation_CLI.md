@@ -37,7 +37,7 @@ These arguments must be provided for FragHub to run.
 
 | Argument | Type | Description |
 | :--- | :--- | :--- |
-| `--input_directory` | `List[str]` | One or multiple paths to input directories or files (MGF, MSP, JSON, CSV). |
+| `--input_directory` | `List[str]` | One or multiple paths to input directories or files (MGF, MSP, JSON, JSONL, CSV). |
 | `--output_directory` | `str` | The directory where the cleaned and converted datasets will be saved. |
 
 ---
@@ -46,7 +46,7 @@ These arguments must be provided for FragHub to run.
 
 The `--input_directory` argument supports recursive directory parsing and accepts multiple inputs:
 - **Files**: Absolute or relative paths to individual files (`--input_directory file1.msp file2.mgf`).
-- **Directories**: Absolute or relative paths to directories (`--input_directory /my/data/folder`). FragHub will recursively scan all subdirectories to find valid MS files (`.msp`, `.mgf`, `.csv`, `.json`).
+- **Directories**: Absolute or relative paths to directories (`--input_directory /my/data/folder`). FragHub will recursively scan all subdirectories to find valid MS files (`.msp`, `.mgf`, `.csv`, `.json`, `.jsonl`; upper or lower case).
 - **Mixed**: Files and directories can be provided simultaneously.
 
 ---

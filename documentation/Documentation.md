@@ -152,6 +152,14 @@ mamba create -p C:\Users\<name>\rdkit_cpp -c conda-forge librdkit-dev=2026.09.1 
 * **End users of the installer / executable: nothing to install.** PyInstaller copies the RDKit C++ libraries into the executable (`scripts/dist/FragHub_Backend/_internal`), and `build_backend.py` stops with an error if they are missing.
 * **Anyone who compiles FragHub, or runs it from source** (`python scripts/FragHub.py --cli …`): RDKit C++ must be installed. The Rust module is linked to it and does not load without it.
 
+### Input formats
+The format is chosen from the file extension (upper or lower case). Field names are translated to FragHub names with `datas/key_to_convert.csv`.
+- **MSP** (`.msp`): `KEY: value` lines, then the peaks: one peak per line (`m/z intensity`, separated by spaces, a tab or `:`, optionally followed by an annotation), or several peaks per line separated by `;` (NIST format, `85 999; 86 23;`). A MoNA-style `Comments` field (`"key=value" "key=value"`) is split into fields.
+- **MGF** (`.mgf`): `BEGIN IONS` / `END IONS` blocks, `KEY=value` lines, one peak per line.
+- **JSON** (`.json`): an array of objects (GNPS style, peaks in `peaks_json`, `peaks` or `spectrum`), MoNA JSON (`compound` / `metaData` / `spectrum`, detected automatically), or one object per line.
+- **JSONL** (`.jsonl`): one JSON object per line.
+- **CSV** (`.csv`): a header line, `;` or tab separator (detected from the first line), peaks in a `peaks` or `peaks_list` column, the other columns being metadata.
+
 ### Calculation engine
 RDKit calculations are done in C++ only, directly from Rust (`scripts/fraghub_rust/src/rdkit_native`). The former Python engine (`rdkit_worker.py`) has been removed after its results were checked identical: RDKit Python is no longer needed, neither in the Python environment nor in the executable.
 

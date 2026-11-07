@@ -4,6 +4,9 @@ use crate::spectrum::Spectrum;
 use rayon::prelude::*;
 use std::collections::{HashMap, HashSet};
 use crate::convertors::raw_metadata::RawMetadata;
+use once_cell::sync::Lazy;
+use regex::Regex;
+use std::borrow::Cow;
 
 
 /// Structure interne pour le multithreading MSP.
@@ -26,6 +29,34 @@ fn parse_decimal(s: &str) -> f64 {
     } else {
         s.parse::<f64>().unwrap_or(0.0)
     }
+}
+
+/// Ligne de pics au format NIST : plusieurs pics séparés par « ; » (`85 999; 86 23; 87 5;`), chaque pic
+/// pouvant porter une annotation entre guillemets (`85 999 "C5H9+";`).
+static NIST_PEAK_LINE: Lazy<Regex> = Lazy::new(|| {
+    let num = r"-?\d+[.,]?\d*(?:[Ee][+-]?\d+)?";
+    let pair = format!(r#"{num}(?:[ \t]+|:){num}(?:[ \t]+"[^"]*")?"#);
+    Regex::new(&format!(r"^\s*(?:{pair}\s*;\s*)+(?:{pair}\s*;?\s*)?$")).unwrap()
+});
+
+/// Met un pic par ligne dans les lignes au format NIST (`85 999; 86 23;` -> `85 999` / `86 23`).
+/// Avant, seul le premier pic de ces lignes était lu. Les autres lignes ne sont pas touchées : un fichier
+/// sans « ; » dans ses pics est lu exactement comme avant.
+fn split_nist_peak_lines(peaks_str: &str) -> Cow<'_, str> {
+    if !peaks_str.contains(';') {
+        return Cow::Borrowed(peaks_str);
+    }
+    let mut out = String::with_capacity(peaks_str.len() + 16);
+    for (i, line) in peaks_str.split('\n').enumerate() {
+        if i > 0 { out.push('\n'); }
+        if NIST_PEAK_LINE.is_match(line) {
+            let parts: Vec<&str> = line.split(';').map(|p| p.trim()).filter(|p| !p.is_empty()).collect();
+            out.push_str(&parts.join("\n"));
+        } else {
+            out.push_str(line);
+        }
+    }
+    Cow::Owned(out)
 }
 
 /// Fonction principale de parsing MSP via Rayon.
@@ -123,7 +154,8 @@ pub fn msp_to_dict_processing(
                             }
 
                             let mut peaks_array = Vec::new();
-                            for p in crate::globals_vars::PEAK_LIST_SPLIT_PATTERN.captures_iter(peaks_str) {
+                            let peaks_str = split_nist_peak_lines(peaks_str);
+                            for p in crate::globals_vars::PEAK_LIST_SPLIT_PATTERN.captures_iter(&peaks_str) {
                                 let mz = parse_decimal(p.get(1).unwrap().as_str());
                                 let int = parse_decimal(p.get(2).unwrap().as_str());
                                 peaks_array.push((mz, int)); // ✅ TUPLE AU LIEU D'UN VEC
@@ -167,6 +199,44 @@ pub fn msp_to_dict_processing(
 #[cfg(test)]
 mod tests {
     use super::parse_decimal;
+    use super::split_nist_peak_lines;
+
+    fn peaks(s: &str) -> Vec<(String, String)> {
+        let s = split_nist_peak_lines(s);
+        crate::globals_vars::PEAK_LIST_SPLIT_PATTERN.captures_iter(&s)
+            .map(|c| (c[1].to_string(), c[2].to_string())).collect()
+    }
+
+    #[test]
+    fn format_nist_plusieurs_pics_par_ligne() {
+        let p = peaks("85 999; 86 23; 87 5;\n88 1; 89 2\n");
+        assert_eq!(p.len(), 5);
+        assert_eq!(p[2], ("87".to_string(), "5".to_string()));
+        assert_eq!(p[4], ("89".to_string(), "2".to_string()));
+        // annotations entre guillemets et séparateur « : »
+        let p = peaks("41 47 \"C3H5+\"; 43:100 \"C2H3O+\";\n");
+        assert_eq!(p, vec![("41".into(), "47".into()), ("43".into(), "100".into())]);
+    }
+
+    #[test]
+    fn spectre_nist_complet() {
+        // Bloc MSP NIST complet : la séparation métadonnées / pics garde bien toutes les lignes de pics
+        let spec = "FILENAME: nist.msp\nName: Caffeine\nPrecursor_type: [M+H]+\nPrecursorMZ: 195.0877\nNum Peaks: 5\n42 12; 69 30; 110 45;\n138 999; 195 120;\n";
+        let caps = crate::globals_vars::METADATA_PEAK_LIST_SPLIT_PATTERN_MSP.captures(spec).unwrap();
+        assert!(caps.get(1).unwrap().as_str().contains("Num Peaks: 5"));
+        assert_eq!(peaks(caps.get(2).unwrap().as_str()).len(), 5);
+    }
+
+    #[test]
+    fn autres_formats_lus_comme_avant() {
+        for s in ["85 999\n86 23\n", "85\t999\n86\t23", "85:999\n86:23\n", "85 999 \"a;b\"\n86 23\n", "85 999;\n86 23\n", "1.5e2 3,5\n"] {
+            let avant: Vec<(String, String)> = crate::globals_vars::PEAK_LIST_SPLIT_PATTERN.captures_iter(s)
+                .map(|c| (c[1].to_string(), c[2].to_string())).collect();
+            assert_eq!(peaks(s), avant, "{s:?}");
+        }
+        // Sans « ; », la chaîne n'est même pas recopiée
+        assert!(matches!(split_nist_peak_lines("85 999\n"), std::borrow::Cow::Borrowed(_)));
+    }
 
     #[test]
     fn parse_decimal_identique_a_l_ancienne_ecriture() {

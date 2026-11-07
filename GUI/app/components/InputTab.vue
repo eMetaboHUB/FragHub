@@ -13,7 +13,7 @@
             type="file"
             ref="fileInput"
             multiple
-            accept=".json,.csv,.msp,.mgf"
+            accept=".json,.jsonl,.csv,.msp,.mgf"
             class="d-none"
             @change="handleFileChange"
         />
@@ -108,7 +108,7 @@
         <template v-slot:activator="{ props }">
           <v-btn icon="mdi-information" variant="text" size="small" color="grey" v-bind="props"></v-btn>
         </template>
-        <span class="text-body-2">Select single or multiple .json, .csv, .msp, or .mgf files</span>
+        <span class="text-body-2">Select single or multiple .json, .jsonl, .csv, .msp, or .mgf files</span>
       </v-tooltip>
     </div>
 

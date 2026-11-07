@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
   - **Packaging Fixes**: Resolved Python multiprocessing freeze issues when packaging the Rust-RDKit bridge with PyInstaller, and updated Electron metadata.
   - **RDKit C++**: molecule derivation and exact masses are computed by RDKit C++ called directly from Rust, on all cores; RDKit Python is no longer used nor bundled.
   - **License**: FragHub is now distributed under the CeCILL 2.1 license (`LICENSE`), replacing CC BY-NC 4.0.
+  - **Input files**: extensions are recognized in upper or lower case (`.MSP` files were found but silently not read), `.jsonl` files are read, and MSP files with several peaks per line (NIST format, `85 999; 86 23;`) keep all their peaks (only the first peak of each line was read).
   - **Molecule normalization**: InChI and InChIKey are computed on the desalted, neutralized molecule, before the tautomer step (standard identifiers, stereochemistry no longer lost); output SMILES are normalized with the RDKit canonical tautomer (stereochemistry kept), unless it changes the InChI; salts written as InChI are now desalted too. The internal database is re-normalized the same way (`fraghub_rust.renormalize_internal_database`).
 
 - **31_05_2026**:

@@ -216,7 +216,7 @@ app.whenReady().then(() => {
         const { canceled, filePaths } = await dialog.showOpenDialog({
             title: 'Select input files',
             properties: ['openFile', 'multiSelections', 'createDirectory'],
-            filters: [{ name: 'Spectrometry Files', extensions: ['json', 'csv', 'msp', 'mgf'] }]
+            filters: [{ name: 'Spectrometry Files', extensions: ['json', 'jsonl', 'csv', 'msp', 'mgf'] }]
         })
         return canceled ? [] : filePaths
     })

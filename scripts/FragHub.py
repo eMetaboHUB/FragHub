@@ -396,13 +396,13 @@ if __name__ == "__main__":
                 # Parcourt tous les sous-dossiers à la recherche de fichiers valides
                 for root, _, files in os.walk(path):
                     for file in files:
-                        if file.lower().endswith(('.msp', '.mgf', '.csv', '.json')):
+                        if file.lower().endswith(('.msp', '.mgf', '.csv', '.json', '.jsonl')):
                             resolved_files.append(os.path.abspath(os.path.join(root, file)))
             else:
                 print(f"[WARNING] Le chemin spécifié est introuvable : {path}")
 
         if not resolved_files:
-            print("\n[ERROR] Aucun fichier MS valide (.msp, .mgf, .csv, .json) trouvé dans les chemins spécifiés.")
+            print("\n[ERROR] Aucun fichier MS valide (.msp, .mgf, .csv, .json, .jsonl) trouvé dans les chemins spécifiés.")
             sys.exit(1)
             
         # Hydratation du parameters_dict avec les fichiers résolus et conversion yes/no

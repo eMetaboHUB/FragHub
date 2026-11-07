@@ -52,12 +52,14 @@ pub fn parsing_to_dict_processing(
     let mut mgf_files = Vec::new();
     let mut csv_files = Vec::new();
 
-    // Tri des fichiers par extension
+    // Tri des fichiers par extension, sans tenir compte des majuscules (".MSP", ".Mgf"... : le script
+    // Python les accepte, ils doivent donc être lus ici aussi). ".jsonl" : un spectre JSON par ligne.
     for path in input_paths {
-        if path.ends_with(".json") { json_files.push(path); }
-        else if path.ends_with(".msp") { msp_files.push(path); }
-        else if path.ends_with(".mgf") { mgf_files.push(path); }
-        else if path.ends_with(".csv") { csv_files.push(path); }
+        let lower = path.to_lowercase();
+        if lower.ends_with(".json") || lower.ends_with(".jsonl") { json_files.push(path); }
+        else if lower.ends_with(".msp") { msp_files.push(path); }
+        else if lower.ends_with(".mgf") { mgf_files.push(path); }
+        else if lower.ends_with(".csv") { csv_files.push(path); }
     }
 
     // ======================================================
@@ -69,9 +71,14 @@ pub fn parsing_to_dict_processing(
 
         for file in json_files {
             let db_name = input_db_names.get(&file).cloned().unwrap_or_else(|| "Unknown".to_string());
-            let rust_strings = match load_spectrum_list_json(py, &file, progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone()) {
-                Ok(t) => t,
-                Err(_) => load_spectrum_list_json_2(py, &file, progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone())?,
+            // .jsonl : lu directement ligne par ligne ; .json : tableau, et ligne par ligne si ce n'est pas un tableau
+            let rust_strings = if file.to_lowercase().ends_with(".jsonl") {
+                load_spectrum_list_json_2(py, &file, progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone())?
+            } else {
+                match load_spectrum_list_json(py, &file, progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone()) {
+                    Ok(t) => t,
+                    Err(_) => load_spectrum_list_json_2(py, &file, progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone())?,
+                }
             };
 
             let dict_list = json_to_dict_processing(py, rust_strings, keys_dict.clone(), keys_list.clone(), db_name, progress_callback.clone(), total_items_callback.clone(), prefix_callback.clone(), item_type_callback.clone())?;
