@@ -5,7 +5,7 @@ use std::time::SystemTime;
 use chrono::Local;
 
 // On importe toutes les fonctions du module pour pouvoir les utiliser
-use crate::convertors::parsing_to_dict::parsing_to_dict_processing;
+use crate::parsers::dispatcher::parsing_to_dict_processing;
 use crate::splash_generator::generate_splash_processing;
 use crate::duplicatas_remover::remove_duplicatas_processing;
 use crate::update_checker::check_for_update_processing;

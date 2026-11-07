@@ -1,4 +1,4 @@
-// src/convertors/csv_to_dict.rs
+// src/parsers/csv_parser.rs
 use pyo3::prelude::*;
 use crate::spectrum::Spectrum;
 use std::collections::HashMap;
@@ -181,7 +181,7 @@ pub fn load_and_parse_csv(
                         if keys_list.contains(mapped_key) {
                             // Unité portée par le nom de colonne (ex. RTINSECONDS -> "70.99 s"), comme pour MSP/MGF/JSON
                             spec.metadata.insert(mapped_key.clone(),
-                                crate::convertors::raw_metadata::keep_unit_from_key(header, field.to_string()));
+                                crate::parsers::raw_metadata::keep_unit_from_key(header, field.to_string()));
                         }
                     }
                 }

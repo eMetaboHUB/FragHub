@@ -22,7 +22,7 @@ pub mod global_state;
 pub mod compound_db;
 pub mod loading_db;
 pub mod loaders;
-pub mod convertors;
+pub mod parsers;
 pub mod splash_generator;
 pub mod duplicatas_remover;
 pub mod update_checker;

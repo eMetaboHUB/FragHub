@@ -1,11 +1,11 @@
 // src/loaders/mod.rs
 //! Lecture des fichiers d'entrée, un fichier par format : chaque lecteur découpe le fichier en
-//! spectres bruts (textes), ensuite analysés par les modules convertors/*_to_dict.rs.
+//! spectres bruts (textes), ensuite analysés par les parseurs (module parsers : msp_parser.rs, mgf_parser.rs, json_parser.rs).
 //! - `json_loader.rs`  : JSON en tableau (format GNPS) ;
 //! - `jsonl_loader.rs` : JSONL (un spectre JSON par ligne) ;
 //! - `msp_loader.rs`   : MSP ;
 //! - `mgf_loader.rs`   : MGF.
-//! (Le CSV est lu et analysé en une seule étape, dans convertors/csv_to_dict.rs.)
+//! (Le CSV est lu et analysé en une seule étape, dans parsers/csv_parser.rs.)
 
 use pyo3::prelude::*;
 use sha2::{Sha256, Digest};

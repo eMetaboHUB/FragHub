@@ -1,9 +1,9 @@
-// src/convertors/json_to_dict.rs
+// src/parsers/json_parser.rs
 use pyo3::prelude::*;
 use crate::spectrum::Spectrum;
 use rayon::prelude::*;
 use std::collections::HashMap;
-use crate::convertors::raw_metadata::RawMetadata;
+use crate::parsers::raw_metadata::RawMetadata;
 use std::time::Duration;
 
 

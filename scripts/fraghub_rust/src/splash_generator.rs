@@ -99,6 +99,18 @@ fn calculate_splash(spectrum: &SplashSpectrum) -> Option<String> {
     Some(format!("{}-{}-{}-{}", initial_block, prefilter_block, similarity_block, exact_hash))
 }
 
+/// Retire les pics inutilisables (intensité ou m/z nuls, négatifs ou non numériques) puis calcule le SPLASH.
+///
+/// Ces pics étaient retirés plus tard (filtre obligatoire du nettoyage), donc APRÈS le SPLASH : un même spectre
+/// avait deux SPLASH selon qu'il était exporté avec ou sans ses pics d'intensité 0 (GNPS : le JSON les garde,
+/// le MSP et le MGF non), et le dédoublonnage (SPLASH + InChIKey) ne reconnaissait pas le doublon. Un pic
+/// d'intensité 0 n'apporte rien : le spectre gardé ne change pas, seul son SPLASH devient le même partout.
+fn clean_peaks_and_splash(spec: &mut crate::spectrum::Spectrum) -> Option<String> {
+    let peaks = std::mem::take(&mut spec.peaks);
+    spec.peaks = crate::peaks_filters::filters::remove_non_positive_peaks(peaks);
+    calculate_splash(&SplashSpectrum::new(spec.peaks.clone()))
+}
+
 /// Point d'entrée pour la génération parallèle des identifiants SPLASH.
 ///
 /// Pour un développeur Python : Observez `par_iter()` de Rayon, qui découpe intelligemment 
@@ -126,11 +138,8 @@ pub fn generate_splash_processing(
 
     for chunk in spectrum_list.chunks_mut(chunk_size) {
         let splash_results: Vec<Option<String>> = chunk
-            .par_iter()
-            .map(|spec| {
-                let splash_spectrum = SplashSpectrum::new(spec.peaks.clone());
-                calculate_splash(&splash_spectrum)
-            })
+            .par_iter_mut()
+            .map(clean_peaks_and_splash)
             .collect();
 
         for (spec, splash_opt) in chunk.iter_mut().zip(splash_results.into_iter()) {
@@ -147,4 +156,35 @@ pub fn generate_splash_processing(
     if let Some(cb) = &progress_callback { cb.call1(py, (total,))?; }
 
     Ok(spectrum_list)
+}
+
+
+#[cfg(test)]
+mod tests_pics_inutilisables {
+    use super::*;
+    use crate::spectrum::Spectrum;
+
+    fn spec(peaks: &[(f64, f64)]) -> Spectrum {
+        let mut s = Spectrum::default();
+        s.peaks = peaks.to_vec();
+        s
+    }
+
+    #[test]
+    fn meme_splash_avec_ou_sans_pics_d_intensite_nulle() {
+        // GNPS CCMSLIB00000001747 : le JSON a un pic à 0 que le MSP n'a pas
+        let msp = [(100.1, 50.0), (150.2, 100.0), (200.3, 20.0)];
+        let json = [(100.1, 50.0), (123.488281, 0.0), (150.2, 100.0), (200.3, 20.0)];
+        let mut a = spec(&msp);
+        let mut b = spec(&json);
+        let sa = clean_peaks_and_splash(&mut a);
+        let sb = clean_peaks_and_splash(&mut b);
+        assert!(sa.is_some());
+        assert_eq!(sa, sb);
+        assert_eq!(b.peaks, msp.to_vec());
+        // Spectre sans pic utilisable : pas de SPLASH, pics vides (supprimé ensuite, motif « peaks list is empty »)
+        let mut c = spec(&[(100.0, 0.0), (f64::NAN, 5.0)]);
+        assert_eq!(clean_peaks_and_splash(&mut c), None);
+        assert!(c.peaks.is_empty());
+    }
 }

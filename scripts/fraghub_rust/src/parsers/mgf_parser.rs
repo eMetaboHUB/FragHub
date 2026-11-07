@@ -1,10 +1,10 @@
-// src/convertors/mgf_to_dict.rs
+// src/parsers/mgf_parser.rs
 
 use pyo3::prelude::*;
 use crate::spectrum::Spectrum;
 use rayon::prelude::*;
 use std::collections::HashMap;
-use crate::convertors::raw_metadata::RawMetadata;
+use crate::parsers::raw_metadata::RawMetadata;
 
 // 1. La structure pour passer les données entre les cœurs CPU sans bloquer Python
 /// Structure interne pour le multithreading.

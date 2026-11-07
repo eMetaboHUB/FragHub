@@ -1,4 +1,4 @@
-// src/convertors/raw_metadata.rs
+// src/parsers/raw_metadata.rs
 use std::collections::HashMap;
 
 /// Champs dont le NOM dit que la valeur est en secondes (format MGF : RTINSECONDS).

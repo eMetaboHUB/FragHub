@@ -1,11 +1,11 @@
-// src/convertors/parsing_to_dict.rs
+// src/parsers/dispatcher.rs
 use pyo3::prelude::*;
 
 use crate::loaders::{load_spectrum_list_json, load_spectrum_list_json_2, load_spectrum_list_from_msp, load_spectrum_list_from_mgf};
-use crate::convertors::json_to_dict::json_to_dict_processing;
-use crate::convertors::msp_to_dict::msp_to_dict_processing;
-use crate::convertors::mgf_to_dict::mgf_to_dict_processing;
-use crate::convertors::csv_to_dict::load_and_parse_csv;
+use crate::parsers::json_parser::json_to_dict_processing;
+use crate::parsers::msp_parser::msp_to_dict_processing;
+use crate::parsers::mgf_parser::mgf_to_dict_processing;
+use crate::parsers::csv_parser::load_and_parse_csv;
 use crate::spectrum::Spectrum;
 
 /// Orchestrateur principal de parsing. Route les fichiers vers le bon parseur (JSON, MSP, MGF, CSV).

@@ -1,9 +1,9 @@
-// src/convertors/msp_to_dict.rs
+// src/parsers/msp_parser.rs
 use pyo3::prelude::*;
 use crate::spectrum::Spectrum;
 use rayon::prelude::*;
 use std::collections::{HashMap, HashSet};
-use crate::convertors::raw_metadata::RawMetadata;
+use crate::parsers::raw_metadata::RawMetadata;
 use once_cell::sync::Lazy;
 use regex::Regex;
 use std::borrow::Cow;
@@ -257,6 +257,18 @@ mod tests {
         assert_eq!(out["SMILES"], "CO/N=C(/C1=CC=CO1)\\C(=O)N");
         assert_eq!(out["INCHI"], "InChI=1S/C16H16N4O8S/calcule");
         assert_eq!(out["SPECTRUMID"], "WA002994");
+    }
+
+    #[test]
+    fn notation_scientifique_gardee_jusqu_au_splash() {
+        // Pics en notation scientifique (majuscule ou minuscule, avec ou sans signe) : lus comme des nombres,
+        // et gardés par le retrait des pics inutilisables (seuls les pics nuls, négatifs ou non finis partent)
+        let spec = "FILENAME: a.msp\nName: X\nNum Peaks: 5\n1.0012E+02 1.5E+05\n2.5e2 3e-1\n300 2E3\n350.5 0\n400 -1e2\n";
+        let k: HashMap<String, String> = HashMap::new();
+        let parsed = parse_msp_spectrum(spec, &k).unwrap();
+        assert_eq!(parsed.peaks, vec![(100.12, 150000.0), (250.0, 0.3), (300.0, 2000.0), (350.5, 0.0), (400.0, -100.0)]);
+        let kept = crate::peaks_filters::filters::remove_non_positive_peaks(parsed.peaks);
+        assert_eq!(kept, vec![(100.12, 150000.0), (250.0, 0.3), (300.0, 2000.0)]);
     }
 
     #[test]
