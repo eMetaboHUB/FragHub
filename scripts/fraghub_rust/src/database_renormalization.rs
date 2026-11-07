@@ -205,6 +205,19 @@ struct Part {
     written: AtomicBool,
 }
 
+/// Données partagées entre le thread principal et le thread de calcul.
+struct Shared {
+    parts: Vec<Part>,
+    /// (fichier, ligne) dans l'ordre de calcul
+    queue: Vec<(usize, usize)>,
+    next: AtomicUsize,
+    done: AtomicUsize,
+    cancel: AtomicBool,
+    /// Molécule en cours sur chaque thread : (début, fichier, ligne)
+    running: std::sync::Mutex<Vec<Option<(Instant, usize, usize)>>>,
+    slow_log: std::sync::Mutex<fs::File>,
+}
+
 /// Re-normalise tous les fichiers *.parquet de `input_dir` dans `output_dir` (mêmes noms de fichiers).
 ///
 /// Une seule file d'attente pour toute la base : les fichiers sont pris dans l'ordre, et dans chaque fichier
@@ -285,14 +298,19 @@ pub fn renormalize_database(
         queue.extend(rows.into_iter().map(|r| (p, r)));
     }
     let todo = queue.len();
-    let next = AtomicUsize::new(0);
-    let done = AtomicUsize::new(0);
-    let cancel = AtomicBool::new(false);
     let workers = rayon::current_num_threads().max(1);
-    // Molécule en cours sur chaque thread : (début, fichier, ligne)
-    let running: std::sync::Mutex<Vec<Option<(Instant, usize, usize)>>> = std::sync::Mutex::new(vec![None; workers + 1]);
-    let slow_log = std::sync::Mutex::new(
-        fs::OpenOptions::new().create(true).append(true).open(output_dir.join("_molecules_lentes.tsv")).map_err(|e| e.to_string())?);
+    // État partagé avec le thread de calcul. Ce thread n'est pas attendu à l'arrêt (Ctrl+C) : une molécule
+    // géante en cours peut durer des heures ; on enregistre ce qui est calculé et on rend la main tout de suite.
+    let shared = std::sync::Arc::new(Shared {
+        parts, queue,
+        next: AtomicUsize::new(0),
+        done: AtomicUsize::new(0),
+        cancel: AtomicBool::new(false),
+        running: std::sync::Mutex::new(vec![None; workers + 1]),
+        slow_log: std::sync::Mutex::new(
+            fs::OpenOptions::new().create(true).append(true).open(output_dir.join("_molecules_lentes.tsv")).map_err(|e| e.to_string())?),
+    });
+    let parts = &shared.parts;
 
     // Écrit un fichier terminé (sur le thread principal)
     let write_part = |part: &Part, total: &mut RenormStats| -> Result<(), String> {
@@ -316,59 +334,66 @@ pub fn renormalize_database(
 
     let mut stopped = false;
     let mut error: Option<String> = None;
-    std::thread::scope(|scope| {
-        let worker = scope.spawn(|| {
+    let worker = {
+        let sh = shared.clone();
+        std::thread::spawn(move || {
             (0..workers).into_par_iter().for_each(|_| {
                 let slot = rayon::current_thread_index().unwrap_or(workers);
-                while !cancel.load(Ordering::Relaxed) {
-                    let k = next.fetch_add(1, Ordering::Relaxed);
-                    let Some(&(p, row)) = queue.get(k) else { break };
-                    let part = &parts[p];
+                while !sh.cancel.load(Ordering::Relaxed) {
+                    let k = sh.next.fetch_add(1, Ordering::Relaxed);
+                    let Some(&(p, row)) = sh.queue.get(k) else { break };
+                    let part = &sh.parts[p];
                     let target = part.targets[row].as_ref().unwrap();
                     let start = Instant::now();
-                    running.lock().unwrap()[slot] = Some((start, p, row));
+                    sh.running.lock().unwrap()[slot] = Some((start, p, row));
                     let out = compute_one(target);
-                    running.lock().unwrap()[slot] = None;
+                    sh.running.lock().unwrap()[slot] = None;
                     let secs = start.elapsed().as_secs_f64();
                     if secs >= SLOW_SECS {
-                        let _ = writeln!(slow_log.lock().unwrap(), "{secs:.0}\t{}\t{row}\t{target}", part.name);
+                        let _ = writeln!(sh.slow_log.lock().unwrap(), "{secs:.0}\t{}\t{row}\t{target}", part.name);
                     }
                     if let Some(w) = part.writer.lock().unwrap().as_mut() {
                         let _ = w.write_all(checkpoint_line(row, &out).as_bytes());
                     }
                     part.results.lock().unwrap()[row] = Some(out);
                     part.remaining.fetch_sub(1, Ordering::Relaxed);
-                    done.fetch_add(1, Ordering::Relaxed);
+                    sh.done.fetch_add(1, Ordering::Relaxed);
                 }
             });
-        });
-        // Thread principal : écrit les fichiers terminés, affiche l'avancement, gère l'arrêt
-        loop {
-            let finished = worker.is_finished();
-            for part in &parts {
-                if !part.written.load(Ordering::Relaxed) && part.remaining.load(Ordering::Relaxed) == 0 && error.is_none() {
-                    if let Err(e) = write_part(part, &mut total) { error = Some(e); cancel.store(true, Ordering::Relaxed); }
-                }
-                // Le fichier de reprise est vidé sur le disque régulièrement
-                if let Some(w) = part.writer.lock().unwrap().as_mut() { let _ = w.flush(); }
+        })
+    };
+    // Thread principal : écrit les fichiers terminés, affiche l'avancement, gère l'arrêt
+    loop {
+        let finished = worker.is_finished();
+        for part in parts {
+            if !part.written.load(Ordering::Relaxed) && part.remaining.load(Ordering::Relaxed) == 0 && error.is_none() {
+                if let Err(e) = write_part(part, &mut total) { error = Some(e); shared.cancel.store(true, Ordering::Relaxed); }
             }
-            let slow: Vec<(f64, String, String)> = running.lock().unwrap().iter().flatten()
-                .filter(|(s, _, _)| s.elapsed().as_secs_f64() >= SLOW_SECS)
-                .map(|(s, p, r)| (s.elapsed().as_secs_f64(), parts[*p].name.clone(), parts[*p].targets[*r].clone().unwrap_or_default()))
-                .collect();
-            let written = files_done + parts.iter().filter(|p| p.written.load(Ordering::Relaxed)).count();
-            let info = Progress { done: done.load(Ordering::Relaxed), total: todo, files_done: written, files_total, slow };
-            if !stopped && !progress(&info) {
-                stopped = true;
-                cancel.store(true, Ordering::Relaxed);
-            }
-            if finished { break; }
-            std::thread::sleep(Duration::from_millis(500));
+            // Le fichier de reprise est vidé sur le disque régulièrement
+            if let Some(w) = part.writer.lock().unwrap().as_mut() { let _ = w.flush(); }
         }
+        let slow: Vec<(f64, String, String)> = shared.running.lock().unwrap().iter().flatten()
+            .filter(|(s, _, _)| s.elapsed().as_secs_f64() >= SLOW_SECS)
+            .map(|(s, p, r)| (s.elapsed().as_secs_f64(), parts[*p].name.clone(), parts[*p].targets[*r].clone().unwrap_or_default()))
+            .collect();
+        let written = files_done + parts.iter().filter(|p| p.written.load(Ordering::Relaxed)).count();
+        let info = Progress { done: shared.done.load(Ordering::Relaxed), total: todo, files_done: written, files_total, slow };
+        if !progress(&info) {
+            // Arrêt demandé : on n'attend pas les molécules en cours (le thread de calcul s'arrêtera de lui-même
+            // après elles, ou avec la fin du programme) ; tout ce qui est calculé est dans les fichiers de reprise.
+            stopped = true;
+            shared.cancel.store(true, Ordering::Relaxed);
+            break;
+        }
+        if finished || error.is_some() { break; }
+        std::thread::sleep(Duration::from_millis(500));
+    }
+    if !stopped && error.is_none() {
         if let Err(panic) = worker.join() { std::panic::resume_unwind(panic); }
-    });
-    for part in &parts {
-        if let Some(mut w) = part.writer.lock().unwrap().take() { let _ = w.flush(); }
+    }
+    for part in parts {
+        // Arrêt : on vide le fichier de reprise sans le fermer (le thread de calcul peut encore y écrire)
+        if let Some(w) = part.writer.lock().unwrap().as_mut() { let _ = w.flush(); }
     }
     if let Some(e) = error { return Err(e); }
     if stopped { return Err("interrompu".into()); }
@@ -551,6 +576,29 @@ mod tests {
         assert_eq!(smi.as_deref(), Some("REPERE"));
         // Le 1er fichier, lui, est identique à la référence
         assert!(read(&dst.join("part_0000.parquet")).equals_missing(&read(&ref_.join("part_0000.parquet"))));
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn arret_sans_attendre_une_molecule_geante() {
+        // Macrocycle C99H90O54 de la base : environ 270 s de calcul du tautomère. L'arrêt doit rendre la main
+        // tout de suite, sans attendre la fin de ce calcul.
+        let dir = std::env::temp_dir().join(format!("fraghub_renorm_geant_{}", std::process::id()));
+        let (src, dst) = (dir.join("in"), dir.join("out"));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&src).unwrap();
+        let mut df = DataFrame::new(vec![
+            Series::new("INCHIKEY", &[Some("AAAAAAAAAAAAAA-UHFFFAOYSA-N")]),
+            Series::new("INCHI", &[Some("InChI=1S/C99H90O54/c100-82(101)28-136-64-12-48-2-50-14-70(142-34-88(112)113)52(16-68(50)140-32-86(108)109)4-54-18-74(146-38-92(120)121)56(20-72(54)144-36-90(116)117)6-58-22-78(150-42-96(128)129)60(24-76(58)148-40-94(124)125)8-62-26-81(153-45-99(134)135)63(27-80(62)152-44-98(132)133)9-61-25-77(149-41-95(126)127)59(23-79(61)151-43-97(130)131)7-57-21-73(145-37-91(118)119)55(19-75(57)147-39-93(122)123)5-53-17-69(141-33-87(110)111)51(15-71(53)143-35-89(114)115)3-49-13-65(137-29-83(102)103)47(11-67(49)139-31-85(106)107)1-46(64)10-66(48)138-30-84(104)105/h10-27H,1-9,28-45H2,(H,100,101)(H,102,103)(H,104,105)(H,106,107)(H,108,109)(H,110,111)(H,112,113)(H,114,115)(H,116,117)(H,118,119)(H,120,121)(H,122,123)(H,124,125)(H,126,127)(H,128,129)(H,130,131)(H,132,133)(H,134,135)")]),
+            Series::new("SMILES", &[None::<&str>]),
+        ]).unwrap();
+        ParquetWriter::new(fs::File::create(src.join("part_0000.parquet")).unwrap()).finish(&mut df).unwrap();
+        let t = Instant::now();
+        let calls = AtomicUsize::new(0);
+        let r = renormalize_database(&src, &dst, None, &|_| {}, &|_: &Progress| calls.fetch_add(1, Ordering::Relaxed) < 4);
+        assert!(r.is_err());
+        assert!(t.elapsed() < Duration::from_secs(20), "arrêt en {:?}", t.elapsed());
+        assert!(!dst.join("part_0000.parquet").exists());
         let _ = fs::remove_dir_all(&dir);
     }
 
