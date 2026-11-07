@@ -7,9 +7,9 @@ normalisé (tautomère canonique quand il garde le même InChI).
 Colonnes réécrites : INCHI, INCHIKEY, SMILES, FORMULA, EXACTMASS, AVERAGEMASS. NAME et ontologies
 sont recopiés. Le résultat est écrit dans un NOUVEAU dossier : la base d'origine n'est pas modifiée.
 
-Le traitement est long (plusieurs heures). Il affiche sa progression ; Ctrl+C l'arrête, et le relancer
-reprend au fichier suivant (les fichiers déjà terminés sont gardés). L'ordinateur (Windows ou macOS) ne
-se met pas en veille pendant le calcul.
+Le traitement est long (plusieurs heures). Il affiche sa progression et les molécules longues en cours
+(notées aussi dans _molecules_lentes.tsv) ; Ctrl+C l'arrête, et le relancer reprend à la molécule près
+(fichiers <nom>.reprise). L'ordinateur (Windows ou macOS) ne se met pas en veille pendant le calcul.
 
 Usage (depuis la racine du projet) :
   Windows : .venv\\Scripts\\python.exe scripts\\build_dataset\\renormalize_db.py [--processes N] [dossier_sortie]
@@ -82,7 +82,7 @@ if args.worker is not None:
 if os.path.abspath(src) == os.path.abspath(dst):
     sys.exit("ERREUR : le dossier de sortie doit être différent de la base d'origine.")
 if os.path.exists(dst) and os.listdir(dst):
-    print(f"{dst} existe déjà : les fichiers déjà terminés sont gardés, le traitement reprend au fichier suivant.")
+    print(f"{dst} existe déjà : ce qui est déjà calculé est gardé, le traitement reprend là où il s'était arrêté.")
     print("(Pour tout recommencer, supprimez ce dossier.)")
 
 print(f"Base d'origine : {src}")
@@ -121,14 +121,14 @@ try:
         except KeyboardInterrupt:
             for p in procs:
                 p.wait()
-            sys.exit("\nArrêté (Ctrl+C). Relancer le script reprend au fichier suivant.")
+            sys.exit("\nArrêté (Ctrl+C). Relancer le script reprend là où il s'était arrêté.")
         if any(codes):
-            sys.exit("\nUn processus s'est arrêté avec une erreur (voir ci-dessus). Relancer le script reprend au fichier suivant.")
+            sys.exit("\nUn processus s'est arrêté avec une erreur (voir ci-dessus). Relancer le script reprend là où il s'était arrêté.")
         # Tous les fichiers sont faits : ce dernier passage ne recalcule rien et compte les InChIKey en double
         duplicates = fraghub_rust.renormalize_internal_database(src, dst)[5]
         print(f"\nTerminé en {(time.time() - t) / 60:.1f} min (détail par fichier ci-dessus).")
         print(f"  {duplicates} InChIKey présentes sur plusieurs lignes (FragHub garde la dernière lue)")
 except KeyboardInterrupt:
-    sys.exit("\nArrêté (Ctrl+C). Relancer le script reprend au fichier suivant.")
+    sys.exit("\nArrêté (Ctrl+C). Relancer le script reprend là où il s'était arrêté.")
 finally:
     keep_awake(False)
