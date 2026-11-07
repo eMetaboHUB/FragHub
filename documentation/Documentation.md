@@ -165,6 +165,7 @@ Processing of one molecule (`shim.cc`, `process_single`), in this order:
 ### Internal database
 The InChIKeys of the spectra are looked up in `datas/internal_databases.parquet` (PubChem completion, ontologies). For keys and SMILES to be computed the same way on both sides, the database must be re-normalized with the same processing whenever this processing (or the RDKit version) changes:
 ```bash
-python -c "import fraghub_rust; print(fraghub_rust.renormalize_internal_database('datas/internal_databases.parquet', 'internal_databases_new.parquet'))"
+python scripts/build_dataset/renormalize_db.py              # one process using all cores
+python scripts/build_dataset/renormalize_db.py --processes 4 # 4 processes sharing the 16 files
 ```
-It writes a new folder (the original database is not modified) and prints the counts: rows, rows with a structure, InChIKeys changed, SMILES changed, unreadable molecules, InChIKeys present on several rows. Then replace `datas/internal_databases.parquet` with the new folder. (On Windows, the RDKit DLL folder must be added first, as in `scripts/FragHub.py`.)
+It writes a new folder, `scratch/renormalize_db/internal_databases.parquet` (the original database is not modified), shows its progress with an estimated time left, can be stopped with Ctrl+C and resumes at the next file when run again, and keeps the computer awake (Windows and macOS). At the end it prints the counts: rows, rows with a structure, InChIKeys changed, SMILES changed, unreadable molecules, InChIKeys present on several rows. Then replace `datas/internal_databases.parquet` with the new folder. It takes several hours: a few very large molecules (peptides, macrocycles) take up to several minutes each for the canonical tautomer.
